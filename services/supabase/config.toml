@@ -48,6 +48,16 @@ max_enrolled_factors = 10
 enroll_enabled = true
 verify_enabled = true
 
+# Telemetry endpoints are called by anonymous family devices without a
+# Supabase session. JWT verification at the gateway would reject every call
+# (review #1); the handlers validate, rate-limit and consent-gate instead.
+# Deploy with: supabase functions deploy <name> --no-verify-jwt (D-033).
+[functions.telemetry-ingest]
+verify_jwt = false
+
+[functions.deletion-request]
+verify_jwt = false
+
 [edge_runtime]
 enabled = true
 policy = "per_worker"

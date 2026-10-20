@@ -1646,6 +1646,18 @@
                   "type": "string",
                   "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
                 },
+                "area": {
+                  "type": "string",
+                  "enum": [
+                    "maths",
+                    "sciences",
+                    "computing",
+                    "commerce-economics",
+                    "humanities-social",
+                    "arts-design",
+                    "languages"
+                  ]
+                },
                 "board": {
                   "type": "string",
                   "enum": [
@@ -1809,6 +1821,7 @@
               },
               "required": [
                 "key",
+                "area",
                 "board",
                 "boardCode",
                 "name",
@@ -9601,13 +9614,21 @@
               "CISCE"
             ]
           },
-          "subjects": {
-            "minItems": 4,
-            "maxItems": 8,
+          "subjectAreas": {
+            "minItems": 1,
+            "maxItems": 7,
             "type": "array",
             "items": {
               "type": "string",
-              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              "enum": [
+                "maths",
+                "sciences",
+                "computing",
+                "commerce-economics",
+                "humanities-social",
+                "arts-design",
+                "languages"
+              ]
             }
           },
           "cityTier": {
@@ -9629,7 +9650,7 @@
           "deviceClass",
           "classYear",
           "board",
-          "subjects",
+          "subjectAreas",
           "cityTier"
         ],
         "additionalProperties": false

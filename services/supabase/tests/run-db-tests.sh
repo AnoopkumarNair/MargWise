@@ -30,5 +30,5 @@ done
 for t in "$here"/sql/*.test.sql; do
   echo "test: $(basename "$t")"
   psql_ -f "$t" >/dev/null
-  echo "  passed ($(grep -cE 'expect_(denied|rows|violation)\(' "$t") assertions)"
+  echo "  passed ($(grep -cE 'expect_(denied|rows|violation|rejected|status)\(' "$t") assertions)"
 done

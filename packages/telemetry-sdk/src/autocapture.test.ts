@@ -100,6 +100,23 @@ describe('createNavigationTracker — screen-level time and navigation path', ()
     expect(rec.tracked).toContainEqual({ type: 'scene_exited', scene: 'hall', durationMs: 5_000 });
   });
 
+  it('clamps durations so a phone left open for days or a clock going backwards cannot break navigation', () => {
+    const rec = recorder();
+    const nav = createNavigationTracker({ track: rec.track, clock });
+    nav.enter('hall');
+    now = 3 * 24 * 60 * 60 * 1000;
+    nav.enter('dossier', 'tap');
+    now = 0;
+    nav.enter('isles_map', 'back');
+    expect(rec.tracked).toContainEqual({
+      type: 'scene_exited',
+      scene: 'hall',
+      durationMs: 86_400_000,
+    });
+    expect(rec.tracked).toContainEqual({ type: 'scene_exited', scene: 'dossier', durationMs: 0 });
+    expect(nav.current()).toBe('isles_map');
+  });
+
   it('end() closes the current screen', () => {
     const rec = recorder();
     const nav = createNavigationTracker({ track: rec.track, clock });

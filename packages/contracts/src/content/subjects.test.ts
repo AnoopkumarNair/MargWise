@@ -15,6 +15,7 @@ describe('Subject (catalogue entry, sourced from the board)', () => {
     boardCode: '074',
     name: 'Legal Studies',
     kind: 'elective',
+    area: 'humanities-social',
     provenance: sourcedProv({ unit: 'subject' }),
   };
 

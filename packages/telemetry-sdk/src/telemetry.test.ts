@@ -18,7 +18,7 @@ const responses = {
   deviceClass: 'mid' as const,
   classYear: 11 as const,
   board: 'CBSE' as const,
-  subjects: ['english', 'physics', 'chemistry', 'mathematics'] as string[],
+  subjectAreas: ['maths', 'sciences', 'languages'] as Array<'maths' | 'sciences' | 'languages'>,
   cityTier: 'metro' as const,
 };
 

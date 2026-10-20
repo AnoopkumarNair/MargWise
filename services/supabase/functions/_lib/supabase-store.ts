@@ -81,6 +81,18 @@ export function supabaseTelemetryStore(db: SchemaClient): TelemetryStore {
         consentedAt: String(r.consented_at),
       };
     },
+    async deletionCodeHash(sessionId) {
+      const rows = check(
+        await db
+          .from('consents')
+          .select('deletion_code_hash')
+          .eq('session_id', sessionId)
+          .order('received_at', { ascending: true })
+          .limit(1),
+      );
+      const first = rows?.[0];
+      return first ? String(first.deletion_code_hash) : null;
+    },
     async recordConsent(c: ConsentRecord) {
       await ensureSession(c.sessionId);
       check(
@@ -122,7 +134,7 @@ export function supabaseTelemetryStore(db: SchemaClient): TelemetryStore {
           device_class: r.deviceClass,
           class_year: r.classYear,
           board: r.board,
-          subjects: r.subjects,
+          subject_areas: r.subjectAreas,
           city_tier: r.cityTier,
         }),
       );

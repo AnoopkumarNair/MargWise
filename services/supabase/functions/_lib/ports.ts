@@ -10,12 +10,15 @@ import type {
 export interface TelemetryStore {
   minorsTelemetryEnabled(): Promise<boolean>;
   latestConsent(sessionId: string): Promise<ConsentRecord | null>;
+  /** Hash from the session's first consent; fixed for the life of the session (review #6). */
+  deletionCodeHash(sessionId: string): Promise<string | null>;
   recordConsent(consent: ConsentRecord): Promise<void>;
   /** Idempotent on eventId: retried batches never duplicate rows. */
   insertEvents(batch: EventBatch): Promise<void>;
   insertResponses(responses: ItemResponses): Promise<void>;
   insertCoverageRequest(request: CoverageRequest): Promise<void>;
   insertFeedback(feedback: Feedback): Promise<void>;
+  /** Records the request and deletes every row for the session. */
   requestDeletion(sessionId: string): Promise<void>;
 }
 

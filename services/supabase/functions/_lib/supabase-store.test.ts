@@ -71,6 +71,14 @@ describe('supabaseTelemetryStore', () => {
     expect(await supabaseTelemetryStore(fakeClient().client).latestConsent(SESSION)).toBeNull();
   });
 
+  it('reads the deletion code hash from the session’s first consent', async () => {
+    const store = supabaseTelemetryStore(
+      fakeClient({ consents: [{ deletion_code_hash: 'a'.repeat(64) }] }).client,
+    );
+    expect(await store.deletionCodeHash(SESSION)).toBe('a'.repeat(64));
+    expect(await supabaseTelemetryStore(fakeClient().client).deletionCodeHash(SESSION)).toBeNull();
+  });
+
   it('creates the session before recording consent', async () => {
     const { client, calls } = fakeClient();
     await supabaseTelemetryStore(client).recordConsent({
@@ -137,7 +145,7 @@ describe('supabaseTelemetryStore', () => {
       deviceClass: 'low',
       classYear: 11,
       board: 'CBSE',
-      subjects: ['english', 'physics', 'chemistry', 'mathematics'],
+      subjectAreas: ['maths', 'sciences', 'languages'],
       cityTier: 'tier-3',
     });
     await store.insertCoverageRequest({ sessionId: SESSION, kind: 'city', label: 'Indore' });

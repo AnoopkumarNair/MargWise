@@ -13,9 +13,25 @@ export type Board = z.infer<typeof Board>;
 export const SubjectKey = Slug;
 export type SubjectKey = z.infer<typeof SubjectKey>;
 
+/**
+ * Coarse subject areas. Research telemetry carries only these, never the exact
+ * subject list, so an unusual mix cannot single out a student (review #9).
+ */
+export const SubjectArea = z.enum([
+  'maths',
+  'sciences',
+  'computing',
+  'commerce-economics',
+  'humanities-social',
+  'arts-design',
+  'languages',
+]);
+export type SubjectArea = z.infer<typeof SubjectArea>;
+
 /** A board's official Class 11–12 subject. Catalogue facts come from the board (sourced only). */
 export const Subject = z.strictObject({
   key: SubjectKey,
+  area: SubjectArea,
   board: Board,
   boardCode: z.string().min(1).max(16),
   name: z.string().min(1),

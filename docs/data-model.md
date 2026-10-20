@@ -93,7 +93,9 @@ grants (baseline migration).
 | pipeline  | ✗    | ✗ (0 rows)               | read          | read + decide on own streams | read + decide on all                     | read/write    |
 | telemetry | ✗    | ✗                        | ✗             | ✗                            | ✗ (aggregates via Studio views, Phase 8) | insert/delete |
 
-Decisions are inserted with `reviewer = auth.uid()` (no impersonation); a
-trigger updates the task status so reviewers never need UPDATE on
+Decisions are inserted with `reviewer = auth.uid()` (no impersonation), only
+on pending tasks, one per person per task. A trigger sets the task status per
+05 §8: critical needs the stream reviewer **and** the owner, any rejection is
+final, low severity is owner-only (D-035). Reviewers never need UPDATE on
 `review_tasks`. Helpers live in `private` (security definer,
 `search_path = ''`) and are called as `(select private.fn())`.

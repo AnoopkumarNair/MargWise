@@ -35,6 +35,11 @@ export interface TelemetryOptions {
   uuid: () => string;
   /** Consent state the app persisted from a previous run. */
   restoredConsent?: { tier: Tier; recorded: boolean };
+  /**
+   * Called whenever the effective consent state changes (consent recorded,
+   * downgrade, server 403, deletion) so the app can persist it.
+   */
+  onConsentChange?: (tier: Tier, recorded: boolean) => void;
 }
 
 export type ConsentInput =
@@ -47,6 +52,9 @@ const BASE_BACKOFF_MS = 2_000;
 const MAX_BACKOFF_MS = 5 * 60_000;
 
 type SendResult = 'sent' | 'rejected' | 'forbidden' | 'retry';
+
+/** Statuses meaning "this payload will never be accepted": drop it. Anything else unexpected is retried. */
+const DROP_STATUSES = new Set([400, 413, 422]);
 
 /**
  * Consent-aware telemetry queue (04 §6). Nothing is queued or sent unless the
@@ -64,6 +72,8 @@ export function createTelemetry(opts: TelemetryOptions) {
   let failures = 0;
   let nextAttemptAt = 0;
   let chain: Promise<void> = Promise.resolve();
+  /** Bumped on every consent change; an in-flight flush stops when it moves. */
+  let generation = 0;
 
   const effectiveTier = (): Tier => (config.minorsTelemetryEnabled ? chosenTier : 0);
   const allows = (minTier: 1 | 2) => effectiveTier() >= minTier;
@@ -83,17 +93,37 @@ export function createTelemetry(opts: TelemetryOptions) {
     state = {
       events: [...saved.events, ...state.events],
       pending: [...saved.pending, ...state.pending],
+      ...(saved.consent && !consentRecorded ? { consent: saved.consent } : {}),
     };
+    if (!pendingConsent && state.consent) pendingConsent = state.consent;
     capQueue();
     seq = Math.max(seq, ...state.events.map((e) => e.seq + 1));
   });
 
-  const persist = () => store.save(state);
+  const persist = () =>
+    store.save(
+      pendingConsent
+        ? { ...state, consent: pendingConsent }
+        : { events: state.events, pending: state.pending },
+    );
+
+  function notify() {
+    opts.onConsentChange?.(chosenTier, consentRecorded);
+  }
 
   async function clearAll() {
     state = { events: [], pending: [] };
     pendingConsent = undefined;
     await persist();
+  }
+
+  /** Stops collection immediately: anything in flight finishes, nothing new is sent. */
+  function stopCollecting() {
+    generation += 1;
+    chosenTier = 0;
+    consentRecorded = false;
+    notify();
+    return run(clearAll);
   }
 
   async function send(path: string, body: unknown): Promise<SendResult> {
@@ -105,8 +135,7 @@ export function createTelemetry(opts: TelemetryOptions) {
     }
     if (status >= 200 && status < 300) return 'sent';
     if (status === 403) return 'forbidden';
-    if (status === 429 || status >= 500) return 'retry';
-    return 'rejected';
+    return DROP_STATUSES.has(status) ? 'rejected' : 'retry';
   }
 
   function backoff() {
@@ -117,8 +146,10 @@ export function createTelemetry(opts: TelemetryOptions) {
   /** Handles a non-success result. Returns true if the flush must stop. */
   async function handleFailure(result: Exclude<SendResult, 'sent' | 'rejected'>): Promise<boolean> {
     if (result === 'forbidden') {
+      generation += 1;
       chosenTier = 0;
       consentRecorded = false;
+      notify();
       await clearAll();
     } else {
       backoff();
@@ -128,10 +159,15 @@ export function createTelemetry(opts: TelemetryOptions) {
 
   async function doFlush() {
     if (effectiveTier() === 0 || clock() < nextAttemptAt) return;
+    const started = generation;
+    /** True once consent changed while we were awaiting the network. */
+    const stale = () => generation !== started || effectiveTier() === 0;
 
     if (!consentRecorded) {
       if (!pendingConsent) return;
-      const result = await send('/telemetry/v1/consent', pendingConsent);
+      const record = pendingConsent;
+      const result = await send('/telemetry/v1/consent', record);
+      if (stale()) return;
       if (result === 'rejected') return;
       if (result !== 'sent') {
         await handleFailure(result);
@@ -139,11 +175,14 @@ export function createTelemetry(opts: TelemetryOptions) {
       }
       consentRecorded = true;
       pendingConsent = undefined;
+      await persist();
+      notify();
     }
 
     while (state.events.length > 0) {
       const batch = state.events.slice(0, MAX_EVENTS_PER_REQUEST);
       const result = await send('/telemetry/v1/events', { sessionId, events: batch });
+      if (stale()) return;
       if (result === 'sent' || result === 'rejected') {
         state.events = state.events.slice(batch.length);
         await persist();
@@ -157,6 +196,7 @@ export function createTelemetry(opts: TelemetryOptions) {
         continue;
       }
       const result = await send(next.path, next.body);
+      if (stale()) return;
       if (result === 'sent' || result === 'rejected') {
         state.pending.shift();
         await persist();
@@ -166,20 +206,18 @@ export function createTelemetry(opts: TelemetryOptions) {
   }
 
   async function setConsent(input: ConsentInput): Promise<void> {
-    if (input.tier === 0) {
-      chosenTier = 0;
-      consentRecorded = false;
-      return run(clearAll);
-    }
+    if (input.tier === 0) return stopCollecting();
     const record = ConsentRecord.parse({
       ...input,
       sessionId,
       consentedAt: new Date(clock()).toISOString(),
     });
+    generation += 1;
     return run(async () => {
       chosenTier = record.tier;
       consentRecorded = false;
       pendingConsent = record;
+      notify();
       state.pending = state.pending.filter((p) => p.minTier <= record.tier);
       await persist();
       nextAttemptAt = 0;
@@ -187,16 +225,21 @@ export function createTelemetry(opts: TelemetryOptions) {
     });
   }
 
+  /**
+   * Validates at every tier (so instrumentation bugs show up before any family
+   * consents) and queues only when the tier allows it.
+   */
   function track(input: EventInput): 'queued' | 'dropped' {
-    if (!allows(TIER_REQUIRED.events)) return 'dropped';
     const event = TelemetryEvent.parse({
       ...input,
       eventId: uuid(),
       sessionId,
-      seq: seq++,
+      seq,
       occurredAt: new Date(clock()).toISOString(),
       actor,
     });
+    if (!allows(TIER_REQUIRED.events)) return 'dropped';
+    seq += 1;
     state.events.push(event);
     capQueue();
     const full = state.events.length >= config.batchSize;
@@ -253,7 +296,10 @@ export function createTelemetry(opts: TelemetryOptions) {
    */
   async function requestDeletion(deletionCode: string): Promise<'accepted' | 'failed'> {
     const body = DeletionRequest.parse({ sessionId, deletionCode });
-    return (await send('/telemetry/v1/deletion', body)) === 'sent' ? 'accepted' : 'failed';
+    if ((await send('/telemetry/v1/deletion', body)) !== 'sent') return 'failed';
+    // The server has deleted the session; stop collecting so nothing recreates it.
+    await stopCollecting();
+    return 'accepted';
   }
 
   /** Hand-off between teen and parent (02 §2.3 "The Patron arrives"). */

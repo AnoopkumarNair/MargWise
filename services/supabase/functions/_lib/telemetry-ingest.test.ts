@@ -28,7 +28,7 @@ const responses = {
   deviceClass: 'mid',
   classYear: 12,
   board: 'CBSE',
-  subjects: ['english', 'physics', 'chemistry', 'mathematics'],
+  subjectAreas: ['maths', 'sciences', 'languages'],
   cityTier: 'tier-2',
 };
 

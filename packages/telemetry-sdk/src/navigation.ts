@@ -5,6 +5,9 @@ import type { z } from 'zod';
 type SceneId = z.infer<typeof Scene>;
 type Via = 'tap' | 'back' | 'swipe' | 'deeplink' | 'auto';
 
+/** Upper bound of `durationMs` in the event contract (24 h). */
+const MAX_SCREEN_MS = 24 * 60 * 60 * 1000;
+
 export interface NavigationTrackerOptions {
   track: (event: EventInput) => unknown;
   clock: () => number;
@@ -23,7 +26,10 @@ export function createNavigationTracker({ track, clock }: NavigationTrackerOptio
 
   function exitCurrent() {
     if (scene === undefined) return;
-    track({ type: 'scene_exited', scene, durationMs: Math.round(elapsed()) });
+    // Clamp: a clock moving backwards or a phone left open for days must not
+    // produce an invalid event (and so must never break navigation).
+    const durationMs = Math.min(MAX_SCREEN_MS, Math.max(0, Math.round(elapsed())));
+    track({ type: 'scene_exited', scene, durationMs });
   }
 
   return {

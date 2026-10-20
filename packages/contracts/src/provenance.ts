@@ -18,14 +18,36 @@ export const FORBIDDEN_SOURCE_DOMAINS = [
   'quora.com',
 ] as const;
 
+/** Brands forbidden under every country domain (glassdoor.co.uk, glassdoor.ca, …). */
+const FORBIDDEN_BRANDS = [
+  'glassdoor',
+  'ambitionbox',
+  'naukri',
+  'linkedin',
+  'quora',
+  'reddit',
+] as const;
+
 export function isForbiddenSource(url: string): boolean {
   let host: string;
   try {
-    host = new URL(url).hostname.toLowerCase();
+    // Lowercase and drop a trailing dot: `linkedin.com.` is the same host (review #14).
+    host = new URL(url).hostname.toLowerCase().replace(/\.+$/, '');
   } catch {
     return true;
   }
-  return FORBIDDEN_SOURCE_DOMAINS.some((d) => host === d || host.endsWith(`.${d}`));
+  if (FORBIDDEN_SOURCE_DOMAINS.some((d) => host === d || host.endsWith(`.${d}`))) return true;
+  const labels = host.split('.');
+  return FORBIDDEN_BRANDS.some((brand) => {
+    const i = labels.indexOf(brand);
+    // brand followed only by a public-suffix-like tail: glassdoor.co.uk, glassdoor.ca
+    return (
+      i >= 0 &&
+      labels.length - i - 1 >= 1 &&
+      labels.length - i - 1 <= 2 &&
+      labels.slice(i + 1).every((l) => l.length <= 3)
+    );
+  });
 }
 
 export const Confidence = z.enum(['high', 'medium', 'low']);

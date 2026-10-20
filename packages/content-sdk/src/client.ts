@@ -12,6 +12,7 @@ import {
   type CountryBundle,
   type PolicyWeatherBundle,
 } from '@margwise/contracts';
+import * as ed25519 from '@noble/ed25519';
 import type { z } from 'zod';
 import type { ContentCache } from './cache.ts';
 import { ContentIntegrityError, ContentUnavailableError } from './errors.ts';
@@ -72,27 +73,56 @@ function fromBase64Url(text: string): Uint8Array<ArrayBuffer> {
   return Uint8Array.from(bin, (c) => c.charCodeAt(0));
 }
 
-export function createContentClient({ baseUrl, fetch, cache, trustedKeys }: ContentClientOptions) {
-  const keys = new Map<string, Promise<CryptoKey>>();
+/**
+ * Ed25519 verification. Uses WebCrypto where the browser supports Ed25519
+ * (Chrome 137+, Safari 17+, Firefox 129+); older Android WebViews fall back to
+ * the audited pure-JS @noble/ed25519 (review #11). Never throws for an
+ * unsupported platform; returns false for a bad signature.
+ */
+async function verifyEd25519(
+  publicKey: Uint8Array<ArrayBuffer>,
+  signature: Uint8Array<ArrayBuffer>,
+  message: Uint8Array<ArrayBuffer>,
+): Promise<boolean> {
+  try {
+    const key = await crypto.subtle.importKey('raw', publicKey, { name: 'Ed25519' }, false, [
+      'verify',
+    ]);
+    return await crypto.subtle.verify({ name: 'Ed25519' }, key, signature, message);
+  } catch {
+    try {
+      return await ed25519.verifyAsync(signature, message, publicKey);
+    } catch {
+      return false;
+    }
+  }
+}
 
+interface CachedManifest {
+  manifest: Manifest;
+  /** Hash the manifest was verified against before it was cached. */
+  sha256: string;
+}
+
+export function createContentClient({ baseUrl, fetch, cache, trustedKeys }: ContentClientOptions) {
   async function verifyPointer(pointer: CurrentPointer, where: string): Promise<void> {
     const raw = trustedKeys[pointer.keyId];
     if (raw === undefined)
       throw new ContentIntegrityError(`${where}: unknown signing key ${pointer.keyId}`);
-    let key = keys.get(pointer.keyId);
-    if (!key) {
-      key = crypto.subtle.importKey('raw', fromBase64Url(raw), { name: 'Ed25519' }, false, [
-        'verify',
-      ]);
-      keys.set(pointer.keyId, key);
-    }
-    const ok = await crypto.subtle.verify(
-      { name: 'Ed25519' },
-      await key,
+    const ok = await verifyEd25519(
+      fromBase64Url(raw),
       fromBase64Url(pointer.signature),
       new TextEncoder().encode(releaseSigningPayload(pointer)),
     );
     if (!ok) throw new ContentIntegrityError(`${where}: invalid signature`);
+  }
+
+  async function cachedManifest(releaseId: ReleaseId): Promise<CachedManifest | undefined> {
+    const entry = (await cache.get(KEY.manifest(releaseId))) as Partial<CachedManifest> | undefined;
+    const parsed = Manifest.safeParse(entry?.manifest);
+    return parsed.success && typeof entry?.sha256 === 'string'
+      ? { manifest: parsed.data, sha256: entry.sha256 }
+      : undefined;
   }
 
   /** Returns the body text, or `undefined` when the network is unavailable or errors. */
@@ -111,6 +141,14 @@ export function createContentClient({ baseUrl, fetch, cache, trustedKeys }: Cont
       const parsed = CurrentPointer.safeParse(parseJson(text, 'current.json'));
       if (!parsed.success) throw new ContentIntegrityError('current.json schema validation failed');
       await verifyPointer(parsed.data, 'current.json');
+      // Replay protection (review #4b): a validly signed but older pointer is
+      // refused. Rollbacks publish a new pointer with a fresh publishedAt.
+      const known = CurrentPointer.safeParse(await cache.get(KEY.current));
+      if (known.success && parsed.data.publishedAt < known.data.publishedAt) {
+        throw new ContentIntegrityError(
+          'current.json is older than the release already on this device',
+        );
+      }
       await cache.put(KEY.current, parsed.data);
       return { data: parsed.data, releaseId: parsed.data.releaseId, source: 'network' };
     }
@@ -120,20 +158,34 @@ export function createContentClient({ baseUrl, fetch, cache, trustedKeys }: Cont
     throw new ContentUnavailableError('No network and no cached release on this device');
   }
 
-  async function getManifest(releaseId: ReleaseId, expectedSha256?: string): Promise<Manifest> {
-    const cached = Manifest.safeParse(await cache.get(KEY.manifest(releaseId)));
-    if (cached.success) return cached.data;
+  /**
+   * Returns the manifest for a release, always checked against a signed hash.
+   * Internal (review #4a): only verified manifests ever enter the cache.
+   */
+  async function getManifest(releaseId: ReleaseId, expectedSha256: string): Promise<Manifest> {
+    const cached = await cachedManifest(releaseId);
+    if (cached) {
+      if (cached.sha256 !== expectedSha256) {
+        throw new ContentIntegrityError(
+          `cached manifest for ${releaseId} does not match the signed hash`,
+        );
+      }
+      return cached.manifest;
+    }
     const text = await fetchText(`releases/${releaseId}/manifest.json`);
     if (text === undefined)
       throw new ContentUnavailableError(`Manifest for ${releaseId} unavailable`);
-    if (expectedSha256 !== undefined && (await sha256Hex(text)) !== expectedSha256) {
+    if ((await sha256Hex(text)) !== expectedSha256) {
       throw new ContentIntegrityError(`manifest hash mismatch for ${releaseId}`);
     }
     const parsed = Manifest.safeParse(parseJson(text, 'manifest'));
     if (!parsed.success || parsed.data.releaseId !== releaseId) {
       throw new ContentIntegrityError(`manifest schema validation failed for ${releaseId}`);
     }
-    await cache.put(KEY.manifest(releaseId), parsed.data);
+    await cache.put(KEY.manifest(releaseId), {
+      manifest: parsed.data,
+      sha256: expectedSha256,
+    } satisfies CachedManifest);
     return parsed.data;
   }
 
@@ -141,8 +193,9 @@ export function createContentClient({ baseUrl, fetch, cache, trustedKeys }: Cont
    * For a pinned release whose manifest is not cached yet, fetch and verify the
    * release's own signed `release.json`, so the manifest is still hash-checked.
    */
-  async function pinnedManifestHash(releaseId: ReleaseId): Promise<string | undefined> {
-    if (Manifest.safeParse(await cache.get(KEY.manifest(releaseId))).success) return undefined;
+  async function pinnedManifestHash(releaseId: ReleaseId): Promise<string> {
+    const cached = await cachedManifest(releaseId);
+    if (cached) return cached.sha256;
     const text = await fetchText(`releases/${releaseId}/release.json`);
     if (text === undefined)
       throw new ContentUnavailableError(`release.json for ${releaseId} unavailable`);
@@ -164,7 +217,7 @@ export function createContentClient({ baseUrl, fetch, cache, trustedKeys }: Cont
     opts: { releaseId?: string } = {},
   ): Promise<Loaded<BundleData<N>>> {
     let releaseId: ReleaseId;
-    let manifestSha: string | undefined;
+    let manifestSha: string;
     if (opts.releaseId !== undefined) {
       const pinned = ReleaseId.safeParse(opts.releaseId);
       if (!pinned.success) throw new ContentIntegrityError(`Invalid release id: ${opts.releaseId}`);
@@ -200,7 +253,7 @@ export function createContentClient({ baseUrl, fetch, cache, trustedKeys }: Cont
     return { data: parsed.data as BundleData<N>, releaseId, source: 'network' };
   }
 
-  return { getCurrent, getManifest, getBundle };
+  return { getCurrent, getBundle };
 }
 
 export type ContentClient = ReturnType<typeof createContentClient>;

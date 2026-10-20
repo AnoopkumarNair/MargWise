@@ -23,6 +23,9 @@ export class MemoryTelemetryStore implements TelemetryStore {
   async latestConsent(sessionId: string) {
     return this.consents.filter((c) => c.sessionId === sessionId).at(-1) ?? null;
   }
+  async deletionCodeHash(sessionId: string) {
+    return this.consents.find((c) => c.sessionId === sessionId)?.deletionCodeHash ?? null;
+  }
   async recordConsent(consent: ConsentRecord) {
     this.consents.push(consent);
   }
@@ -40,5 +43,12 @@ export class MemoryTelemetryStore implements TelemetryStore {
   }
   async requestDeletion(sessionId: string) {
     this.deletionRequests.push(sessionId);
+    const keep = <T extends { sessionId: string }>(xs: T[]) =>
+      xs.filter((x) => x.sessionId !== sessionId);
+    this.consents = keep(this.consents);
+    this.responses = keep(this.responses);
+    this.coverage = keep(this.coverage);
+    this.feedback = keep(this.feedback);
+    for (const [id, e] of this.events) if (e.sessionId === sessionId) this.events.delete(id);
   }
 }

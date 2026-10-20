@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createContentClient,
   ContentIntegrityError,
@@ -10,6 +10,7 @@ import {
   fixtureFetch,
   generateSigningKey,
   RELEASE_ID,
+  sha256Hex,
   signPointer,
   type FixtureRelease,
   type SigningKey,
@@ -191,6 +192,116 @@ describe('content-sdk', () => {
       await expect(client().getBundle('core', { releaseId: RELEASE_ID })).rejects.toThrow(
         /does not match/,
       );
+    });
+  });
+
+  describe('review #4: manifest cache and replay', () => {
+    it('does not expose an unverified manifest fetch', () => {
+      expect(Object.keys(client())).toEqual(['getCurrent', 'getBundle']);
+    });
+
+    it('rejects a cached manifest that does not match the signed hash', async () => {
+      await cache.put(`manifest:${RELEASE_ID}`, {
+        manifest: release.manifest,
+        sha256: 'b'.repeat(64),
+      });
+      await expect(client().getBundle('core')).rejects.toThrow(/does not match the signed hash/);
+    });
+
+    it('refuses a validly signed but older current.json (replay)', async () => {
+      const newer = await buildFixtureRelease(key, { releaseId: '2026-10-27.1' });
+      const newerPointer = await signPointer(
+        {
+          releaseId: '2026-10-27.1',
+          publishedAt: '2026-10-27T10:00:00Z',
+          contentDate: '2026-10-27',
+          manifestSha256: newer.current.manifestSha256,
+        },
+        key,
+      );
+      await cache.put('current', newerPointer);
+      await expect(client().getCurrent()).rejects.toThrow(
+        /older than the release already on this device/,
+      );
+    });
+
+    it('accepts a rollback published later that points to an earlier release', async () => {
+      await cache.put('current', { ...release.current, publishedAt: '2026-10-19T10:00:00Z' });
+      const rollback = await signPointer(
+        {
+          releaseId: RELEASE_ID,
+          publishedAt: '2026-10-28T09:00:00Z',
+          contentDate: release.current.contentDate,
+          manifestSha256: release.current.manifestSha256,
+        },
+        key,
+      );
+      const files = new Map(release.files);
+      files.set('releases/current.json', JSON.stringify(rollback));
+      net = fixtureFetch(files, BASE);
+      expect((await client().getCurrent()).releaseId).toBe(RELEASE_ID);
+    });
+  });
+
+  describe('pinned releases', () => {
+    it('serves a pinned release from its verified cached manifest without refetching release.json', async () => {
+      await client().getBundle('core');
+      net.calls.length = 0;
+      const c = client();
+      await cache.put(`bundle:${RELEASE_ID}:core`, undefined);
+      expect((await c.getBundle('core', { releaseId: RELEASE_ID })).source).toBe('network');
+      expect(net.calls).toEqual([`${BASE}releases/${RELEASE_ID}/core.json`]);
+    });
+
+    it('reports a missing release.json as unavailable', async () => {
+      const files = new Map(release.files);
+      files.delete(`releases/${RELEASE_ID}/release.json`);
+      net = fixtureFetch(files, BASE);
+      await expect(client().getBundle('core', { releaseId: RELEASE_ID })).rejects.toBeInstanceOf(
+        ContentUnavailableError,
+      );
+    });
+
+    it('rejects a manifest whose hash matches but whose content fails the schema', async () => {
+      const badManifest = JSON.stringify({ releaseId: RELEASE_ID, bundles: 'nope' });
+      const pointer = await signPointer(
+        {
+          releaseId: RELEASE_ID,
+          publishedAt: release.current.publishedAt,
+          contentDate: release.current.contentDate,
+          manifestSha256: await sha256Hex(badManifest),
+        },
+        key,
+      );
+      const files = new Map(release.files);
+      files.set(`releases/${RELEASE_ID}/manifest.json`, badManifest);
+      files.set('releases/current.json', JSON.stringify(pointer));
+      net = fixtureFetch(files, BASE);
+      await expect(client().getBundle('core')).rejects.toThrow(/manifest schema validation failed/);
+    });
+  });
+
+  describe('review #11: browsers without WebCrypto Ed25519', () => {
+    afterEach(() => vi.restoreAllMocks());
+
+    it('falls back to the pure-JS verifier and still accepts a valid signature', async () => {
+      vi.spyOn(crypto.subtle, 'importKey').mockRejectedValue(
+        new DOMException('Unsupported', 'NotSupportedError'),
+      );
+      expect((await client().getCurrent()).releaseId).toBe(RELEASE_ID);
+    });
+
+    it('the fallback still rejects a tampered pointer', async () => {
+      vi.spyOn(crypto.subtle, 'importKey').mockRejectedValue(
+        new DOMException('Unsupported', 'NotSupportedError'),
+      );
+      const altered = new Map(release.files);
+      altered.set(
+        'releases/current.json',
+        JSON.stringify({ ...release.current, contentDate: '2030-01-01' }),
+      );
+      net = fixtureFetch(altered, BASE);
+      await expect(client().getCurrent()).rejects.toBeInstanceOf(ContentIntegrityError);
     });
   });
 
