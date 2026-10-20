@@ -6,6 +6,6 @@
     "lib": ["ES2023", "DOM"],
     "types": ["node"]
   },
-  "include": ["functions/_lib", "tests"],
+  "include": ["functions/_lib"],
   "references": [{ "path": "../../packages/contracts" }]
 }
