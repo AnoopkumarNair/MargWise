@@ -1,0 +1,6 @@
+{
+  "extends": "./packages/config/tsconfig.base.json",
+  "compilerOptions": { "noEmit": true, "composite": false, "emitDeclarationOnly": false, "declaration": false, "types": ["node"] },
+  "exclude": ["**/node_modules"],
+  "include": ["vitest.config.ts", "**/vitest.config.ts", "apps/*/vite.config.ts", "playwright.config.ts", "eslint.config.js", "scripts", "packages/config/vitest.shared.ts"]
+}

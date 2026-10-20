@@ -1,0 +1,42 @@
+{
+  "name": "margwise",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "typecheck": "tsc --build && tsc -p tsconfig.tooling.json",
+    "lint": "eslint . --max-warnings=0",
+    "lint:boundaries": "depcruise apps packages pipeline services --config .dependency-cruiser.cjs",
+    "prove:boundaries": "node scripts/prove-boundaries.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "test:db": "bash services/supabase/tests/run-db-tests.sh",
+    "openapi:generate": "pnpm --filter @margwise/contracts run openapi:generate",
+    "openapi:check": "pnpm --filter @margwise/contracts run openapi:generate && git diff --exit-code -- packages/contracts/openapi/openapi.json",
+    "e2e": "playwright test",
+    "check": "pnpm typecheck && pnpm lint && pnpm lint:boundaries && pnpm format:check && pnpm test:coverage"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "@types/node": "26.6.5",
+    "@vitest/coverage-v8": "5.0.5",
+    "dependency-cruiser": "18.7.0",
+    "eslint": "10.13.0",
+    "fast-check": "4.10.2",
+    "globals": "17.13.0",
+    "prettier": "3.9.10",
+    "turbo": "2.11.9",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.0",
+    "vitest": "5.0.5"
+  }
+}
