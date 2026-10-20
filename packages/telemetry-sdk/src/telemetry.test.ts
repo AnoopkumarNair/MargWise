@@ -17,7 +17,8 @@ const responses = {
   parentPresent: 'no' as const,
   deviceClass: 'mid' as const,
   classYear: 11 as const,
-  subjectCombination: 'pcm' as const,
+  board: 'CBSE' as const,
+  subjects: ['english', 'physics', 'chemistry', 'mathematics'] as string[],
   cityTier: 'metro' as const,
 };
 

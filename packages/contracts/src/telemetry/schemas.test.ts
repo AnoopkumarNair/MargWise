@@ -173,12 +173,22 @@ describe('ItemResponses (Tier 2, 03 §2.7)', () => {
     parentPresent: 'no',
     deviceClass: 'mid',
     classYear: 11,
-    subjectCombination: 'pcm',
+    board: 'CBSE',
+    subjects: ['english', 'physics', 'chemistry', 'mathematics'],
     cityTier: 'metro',
   };
 
   it('accepts 60 integer values 0–4 and area scores 0–40', () => {
     expect(ItemResponses.safeParse(responses).success).toBe(true);
+  });
+
+  it('rejects duplicate-free but oversized subject lists', () => {
+    expect(
+      ItemResponses.safeParse({
+        ...responses,
+        subjects: Array.from({ length: 9 }, (_, i) => `s-${i}`),
+      }).success,
+    ).toBe(false);
   });
 
   it('rejects 59 values, a value of 5, or a fractional value', () => {

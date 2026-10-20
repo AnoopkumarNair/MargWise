@@ -26,7 +26,8 @@ const responses = {
   parentPresent: 'no',
   deviceClass: 'mid',
   classYear: 12,
-  subjectCombination: 'humanities',
+  board: 'CBSE',
+  subjects: ['english', 'physics', 'chemistry', 'mathematics'],
   cityTier: 'tier-2',
 };
 

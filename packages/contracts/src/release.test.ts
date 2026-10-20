@@ -98,6 +98,7 @@ describe('CoreBundle referential integrity (05 §9: broken reference refuses the
     interestVectors: [],
     careerLevels: [],
     routes: [],
+    subjects: [],
     gates: [],
     licensing: [],
     cities: [],
@@ -122,13 +123,54 @@ describe('CoreBundle referential integrity (05 §9: broken reference refuses the
   it('rejects a gate pointing at a missing route', () => {
     const gate = {
       routeId: 'nope',
-      subjectCombination: 'pcm',
-      status: 'OPEN',
+      requirement: { allOf: [], anyOf: [] },
+      whenUnmet: 'LOCKED',
       reason: 'x',
       provenance: sourcedProv(),
     };
     const result = CoreBundle.safeParse({ ...core, gates: [gate] });
     expect(JSON.stringify(result.error?.issues)).toContain('Unknown route nope');
+  });
+
+  it('rejects a gate that names a subject missing from the catalogue', () => {
+    const route = {
+      id: 'psy-1-ba',
+      careerId: 'psy-1',
+      title: 't',
+      kind: 'main',
+      stages: [
+        {
+          order: 1,
+          kind: 'ug',
+          title: 'u',
+          durationYears: { value: 3, provenance: sourcedProv() },
+          entranceTests: [],
+          country: 'IN',
+        },
+      ],
+    };
+    const gate = {
+      routeId: 'psy-1-ba',
+      requirement: { allOf: ['psychology'], anyOf: [] },
+      whenUnmet: 'BRIDGE',
+      bridgeNote: 'x',
+      reason: 'x',
+      provenance: sourcedProv(),
+    };
+    const result = CoreBundle.safeParse({ ...core, routes: [route], gates: [gate] });
+    expect(JSON.stringify(result.error?.issues)).toContain('Unknown subject psychology');
+    const subject = {
+      key: 'psychology',
+      board: 'CBSE',
+      boardCode: '037',
+      name: 'Psychology',
+      kind: 'elective',
+      provenance: sourcedProv(),
+    };
+    expect(
+      CoreBundle.safeParse({ ...core, routes: [route], gates: [gate], subjects: [subject] })
+        .success,
+    ).toBe(true);
   });
 
   it('rejects a quest for an unknown career', () => {
@@ -265,6 +307,7 @@ describe('CoreBundle — every cross-reference is enforced', () => {
     interestVectors: [],
     careerLevels: [],
     routes: [],
+    subjects: [],
     gates: [],
     licensing: [],
     cities: [],

@@ -4,7 +4,6 @@ import {
   Career,
   CareerInterestVector,
   CareerLevel,
-  Gate,
   OnetSocCode,
   REQUIRED_DOSSIER_SECTIONS,
   Route,
@@ -90,30 +89,6 @@ describe('CareerLevel (ladder)', () => {
   it('rejects negative pay (03 §3.12 sanity)', () => {
     const bad = { ...level, payIndia: { ...level.payIndia, value: { p10: -1, p50: 5, p90: 10 } } };
     expect(CareerLevel.safeParse(bad).success).toBe(false);
-  });
-});
-
-describe('Gate', () => {
-  const gate = {
-    routeId: 'tec-1-btech-cse',
-    subjectCombination: 'pcm',
-    status: 'OPEN',
-    reason: 'JEE Main eligibility requires Physics, Chemistry and Mathematics.',
-    provenance: sourcedProv({ unit: 'gate_status' }),
-  };
-
-  it('accepts OPEN / BRIDGE / LOCKED with reason and source', () => {
-    for (const status of ['OPEN', 'BRIDGE', 'LOCKED']) {
-      expect(Gate.safeParse({ ...gate, status }).success).toBe(true);
-    }
-  });
-
-  it('requires a non-empty reason', () => {
-    expect(Gate.safeParse({ ...gate, reason: '' }).success).toBe(false);
-  });
-
-  it('requires a sourced (not assumed) provenance — eligibility is never a guess', () => {
-    expect(Gate.safeParse({ ...gate, provenance: assumedProv() }).success).toBe(false);
   });
 });
 

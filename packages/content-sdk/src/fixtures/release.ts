@@ -26,6 +26,7 @@ export const core: CoreBundle = {
   interestVectors: [],
   careerLevels: [],
   routes: [],
+  subjects: [],
   gates: [],
   licensing: [],
   cities: [],

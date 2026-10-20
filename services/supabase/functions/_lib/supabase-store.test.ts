@@ -134,7 +134,8 @@ describe('supabaseTelemetryStore', () => {
       parentPresent: 'unsure',
       deviceClass: 'low',
       classYear: 11,
-      subjectCombination: 'commerce',
+      board: 'CBSE',
+      subjects: ['english', 'physics', 'chemistry', 'mathematics'],
       cityTier: 'tier-3',
     });
     await store.insertCoverageRequest({ sessionId: SESSION, kind: 'city', label: 'Indore' });

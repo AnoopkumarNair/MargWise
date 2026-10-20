@@ -5,6 +5,7 @@ export * from './content/colleges.ts';
 export * from './content/guidance.ts';
 export * from './content/money.ts';
 export * from './content/places.ts';
+export * from './content/subjects.ts';
 export * from './release.ts';
 export * from './review.ts';
 export * from './telemetry/pii.ts';

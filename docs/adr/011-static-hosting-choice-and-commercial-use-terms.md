@@ -1,6 +1,6 @@
 # ADR 011: Static hosting choice and commercial-use terms
 
-- **Status:** Proposed — awaiting Anu's approval
+- **Status:** Accepted (Anu, 2026-10-20)
 - **Date:** 2026-10-20
 - **Spec:** 04 §12
 
@@ -10,7 +10,7 @@ apps/web and apps/studio are static builds; 04 §9 names Vercel or Cloudflare Pa
 
 ## Decision
 
-**Open — needs Anu.** Recommendation: Cloudflare Pages (free tier permits commercial use; headers via `_headers`; preview deploys per PR; India PoPs). Alternative: Vercel Pro (Hobby plan disallows commercial use).
+Cloudflare Pages for both apps, set up like fire.byteheaven.in: production on `margwise.byteheaven.in` and `studio.margwise.byteheaven.in`, preview deploys per PR, security headers via `_headers`. Commercial-use terms to be re-checked before charging money.
 
 ## Consequences
 
