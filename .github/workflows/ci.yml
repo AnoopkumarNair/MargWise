@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -32,9 +35,8 @@ jobs:
       - run: pnpm format:check
       - name: OpenAPI is generated from the contracts and committed
         run: pnpm openapi:check
-      - name: Golden JSON changes only with the spreadsheet (04 §10)
-        if: github.event_name == 'pull_request'
-        run: node scripts/check-golden-provenance.mjs origin/${{ github.base_ref }}
+      - name: Golden JSON changes only with the spreadsheet and matches its hash (04 §10)
+        run: node scripts/check-golden-provenance.mjs ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || '' }}
 
   unit:
     name: Unit, property, contract and SDK tests (with coverage gates)

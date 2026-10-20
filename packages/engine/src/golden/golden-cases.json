@@ -1,0 +1,787 @@
+{
+  "status": "draft-awaiting-approval",
+  "source": "docs/golden/golden-cases.xlsx",
+  "sourceSha256": "62e336aca5fafea922d86f3b60fae886cc4cb9a333f59c9ec5c042449cb13101",
+  "tolerance": {
+    "absoluteInr": 1,
+    "relative": 0.0001
+  },
+  "rules": {
+    "new": {
+      "regime": "new",
+      "slabs": [
+        {
+          "from": 0,
+          "to": 400000,
+          "rate": 0
+        },
+        {
+          "from": 400000,
+          "to": 800000,
+          "rate": 0.05
+        },
+        {
+          "from": 800000,
+          "to": 1200000,
+          "rate": 0.1
+        },
+        {
+          "from": 1200000,
+          "to": 1600000,
+          "rate": 0.15
+        },
+        {
+          "from": 1600000,
+          "to": 2000000,
+          "rate": 0.2
+        },
+        {
+          "from": 2000000,
+          "to": 2400000,
+          "rate": 0.25
+        },
+        {
+          "from": 2400000,
+          "to": null,
+          "rate": 0.3
+        }
+      ],
+      "standardDeduction": 75000,
+      "rebate": {
+        "maxTaxableIncome": 1200000,
+        "maxRebate": 60000
+      },
+      "cessRate": 0.04,
+      "section129Allowed": false
+    },
+    "old": {
+      "regime": "old",
+      "slabs": [
+        {
+          "from": 0,
+          "to": 250000,
+          "rate": 0
+        },
+        {
+          "from": 250000,
+          "to": 500000,
+          "rate": 0.05
+        },
+        {
+          "from": 500000,
+          "to": 1000000,
+          "rate": 0.2
+        },
+        {
+          "from": 1000000,
+          "to": null,
+          "rate": 0.3
+        }
+      ],
+      "standardDeduction": 50000,
+      "rebate": {
+        "maxTaxableIncome": 500000,
+        "maxRebate": 12500
+      },
+      "cessRate": 0.04,
+      "section129Allowed": true
+    }
+  },
+  "cases": [
+    {
+      "id": "TAX-N-4L",
+      "category": "tax",
+      "inputs": {
+        "regime": "new",
+        "gross": 475000,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 0
+      }
+    },
+    {
+      "id": "TAX-N-8L",
+      "category": "tax",
+      "inputs": {
+        "regime": "new",
+        "gross": 875000,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 0
+      }
+    },
+    {
+      "id": "TAX-N-12L",
+      "category": "tax",
+      "inputs": {
+        "regime": "new",
+        "gross": 1275000,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 0
+      }
+    },
+    {
+      "id": "TAX-N-12L+1",
+      "category": "tax",
+      "inputs": {
+        "regime": "new",
+        "gross": 1275001,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 62400.156
+      }
+    },
+    {
+      "id": "TAX-N-REL",
+      "category": "tax",
+      "inputs": {
+        "regime": "new",
+        "gross": 1300000,
+        "marginalRelief": true
+      },
+      "expected": {
+        "total": 26000
+      }
+    },
+    {
+      "id": "TAX-N-24L",
+      "category": "tax",
+      "inputs": {
+        "regime": "new",
+        "gross": 2475000,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 312000
+      }
+    },
+    {
+      "id": "TAX-N-30L",
+      "category": "tax",
+      "inputs": {
+        "regime": "new",
+        "gross": 3075000,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 499200
+      }
+    },
+    {
+      "id": "TAX-O-2.5L",
+      "category": "tax",
+      "inputs": {
+        "regime": "old",
+        "gross": 300000,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 0
+      }
+    },
+    {
+      "id": "TAX-O-5L",
+      "category": "tax",
+      "inputs": {
+        "regime": "old",
+        "gross": 550000,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 0
+      }
+    },
+    {
+      "id": "TAX-O-5L+1",
+      "category": "tax",
+      "inputs": {
+        "regime": "old",
+        "gross": 550001,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 13000.208
+      }
+    },
+    {
+      "id": "TAX-O-10L",
+      "category": "tax",
+      "inputs": {
+        "regime": "old",
+        "gross": 1050000,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 117000
+      }
+    },
+    {
+      "id": "TAX-O-20L",
+      "category": "tax",
+      "inputs": {
+        "regime": "old",
+        "gross": 2050000,
+        "marginalRelief": false
+      },
+      "expected": {
+        "total": 429000
+      }
+    },
+    {
+      "id": "EMI-10L-10%-10y",
+      "category": "emi",
+      "inputs": {
+        "principal": 1000000,
+        "annualRate": 0.1,
+        "months": 120
+      },
+      "expected": {
+        "emi": 13215.0736881762
+      }
+    },
+    {
+      "id": "EMI-7.5L-10.15%-7y",
+      "category": "emi",
+      "inputs": {
+        "principal": 750000,
+        "annualRate": 0.1015,
+        "months": 84
+      },
+      "expected": {
+        "emi": 12509.0934126711
+      }
+    },
+    {
+      "id": "EMI-20L-9.15%-15y",
+      "category": "emi",
+      "inputs": {
+        "principal": 2000000,
+        "annualRate": 0.0915,
+        "months": 180
+      },
+      "expected": {
+        "emi": 20464.1828791462
+      }
+    },
+    {
+      "id": "EMI-zero-rate",
+      "category": "emi",
+      "inputs": {
+        "principal": 120000,
+        "annualRate": 0,
+        "months": 12
+      },
+      "expected": {
+        "emi": 10000
+      }
+    },
+    {
+      "id": "MOR-capitalised",
+      "category": "moratorium",
+      "inputs": {
+        "d1_amount": 250000,
+        "d1_month": 0,
+        "d2_amount": 250000,
+        "d2_month": 12,
+        "repay_month": 36,
+        "annual_rate": 0.09,
+        "subvention": "none",
+        "reduction": 0,
+        "tenure_months": 60
+      },
+      "expected": {
+        "capitalised": 112500,
+        "principalAtRepayment": 612500,
+        "emi": 12714.4925761418
+      }
+    },
+    {
+      "id": "MOR-PMV-3pct-subvention",
+      "category": "moratorium",
+      "inputs": {
+        "d1_amount": 250000,
+        "d1_month": 0,
+        "d2_amount": 250000,
+        "d2_month": 12,
+        "repay_month": 36,
+        "annual_rate": 0.09,
+        "subvention": "rate",
+        "reduction": 0.03,
+        "tenure_months": 60
+      },
+      "expected": {
+        "capitalised": 75000,
+        "principalAtRepayment": 575000,
+        "emi": 11936.0542551536
+      }
+    },
+    {
+      "id": "MOR-PMUSP-full-subvention",
+      "category": "moratorium",
+      "inputs": {
+        "d1_amount": 400000,
+        "d1_month": 0,
+        "d2_amount": 400000,
+        "d2_month": 12,
+        "repay_month": 36,
+        "annual_rate": 0.0865,
+        "subvention": "full",
+        "reduction": 0,
+        "tenure_months": 120
+      },
+      "expected": {
+        "capitalised": 0,
+        "principalAtRepayment": 800000,
+        "emi": 9983.14946978849
+      }
+    },
+    {
+      "id": "MOR-SBI-student-1y",
+      "category": "moratorium",
+      "inputs": {
+        "d1_amount": 300000,
+        "d1_month": 0,
+        "d2_amount": 300000,
+        "d2_month": 12,
+        "repay_month": 48,
+        "annual_rate": 0.1015,
+        "subvention": "none",
+        "reduction": 0,
+        "tenure_months": 120
+      },
+      "expected": {
+        "capitalised": 213150,
+        "principalAtRepayment": 813150,
+        "emi": 10813.493618269
+      }
+    },
+    {
+      "id": "S129-old-30pct",
+      "category": "section129",
+      "inputs": {
+        "interestPaid": 100000,
+        "parentGross": 1100000,
+        "regime": "old",
+        "yearIndex": 1,
+        "maxYears": 8
+      },
+      "expected": {
+        "saving": 31200
+      }
+    },
+    {
+      "id": "S129-old-20pct",
+      "category": "section129",
+      "inputs": {
+        "interestPaid": 80000,
+        "parentGross": 800000,
+        "regime": "old",
+        "yearIndex": 3,
+        "maxYears": 8
+      },
+      "expected": {
+        "saving": 16640
+      }
+    },
+    {
+      "id": "S129-new-zero",
+      "category": "section129",
+      "inputs": {
+        "interestPaid": 100000,
+        "parentGross": 1100000,
+        "regime": "new",
+        "yearIndex": 1,
+        "maxYears": 8
+      },
+      "expected": {
+        "saving": 0
+      }
+    },
+    {
+      "id": "S129-notsure-zero",
+      "category": "section129",
+      "inputs": {
+        "interestPaid": 100000,
+        "parentGross": 1100000,
+        "regime": "not_sure",
+        "yearIndex": 1,
+        "maxYears": 8
+      },
+      "expected": {
+        "saving": 0
+      }
+    },
+    {
+      "id": "S129-old-year9-zero",
+      "category": "section129",
+      "inputs": {
+        "interestPaid": 100000,
+        "parentGross": 1100000,
+        "regime": "old",
+        "yearIndex": 9,
+        "maxYears": 8
+      },
+      "expected": {
+        "saving": 0
+      }
+    },
+    {
+      "id": "FX-EUR-y1",
+      "category": "fx",
+      "inputs": {
+        "base": 95,
+        "depreciation": 0.02,
+        "year": 1,
+        "amountLocal": 10000
+      },
+      "expected": {
+        "inr": 950000
+      }
+    },
+    {
+      "id": "FX-EUR-y5",
+      "category": "fx",
+      "inputs": {
+        "base": 95,
+        "depreciation": 0.02,
+        "year": 5,
+        "amountLocal": 10000
+      },
+      "expected": {
+        "inr": 1028310.552
+      }
+    },
+    {
+      "id": "FX-USD-y8-4pct",
+      "category": "fx",
+      "inputs": {
+        "base": 83,
+        "depreciation": 0.04,
+        "year": 8,
+        "amountLocal": 60000
+      },
+      "expected": {
+        "inr": 6553340.26059448
+      }
+    },
+    {
+      "id": "ROC-6",
+      "category": "roc",
+      "inputs": {
+        "n": 6
+      },
+      "expected": {
+        "weights": [
+          0.408333333333333, 0.241666666666667, 0.158333333333333, 0.102777777777778,
+          0.0611111111111111, 0.0277777777777778
+        ]
+      }
+    },
+    {
+      "id": "NPV-core-india",
+      "category": "npv",
+      "inputs": {
+        "start_age": 17,
+        "horizon_age": 35,
+        "gap_years": 0,
+        "gap_year_cost_inr": 0,
+        "stage_years": 4,
+        "stage_currency_fx": 1,
+        "tuition": 200000,
+        "living": 100000,
+        "one_time": 0,
+        "work_india": 1,
+        "work_fx": 1,
+        "start_gross_today": 900000,
+        "growth": 0.08,
+        "ai_delta": 0.005,
+        "effective_tax_rate": 0,
+        "living_after_today": 250000,
+        "switch_after_years": 99,
+        "ret_start_gross_today": 0,
+        "ret_growth": 0,
+        "ret_living_today": 0,
+        "infl_education": 0.08,
+        "infl_general": 0.04,
+        "infl_stage_local": 0.04,
+        "infl_work_local": 0.04,
+        "fx_depreciation": 0.02,
+        "discount_rate": 0.07,
+        "loan_amount": 0,
+        "loan_rate": 0,
+        "loan_tenure_years": 10,
+        "loan_moratorium_months": 12,
+        "loan_serviced": 0,
+        "parent_old_regime": 0,
+        "parent_gross": 1500000,
+        "s129_max_years": 8
+      },
+      "expected": {
+        "npv": 6485535.21782503
+      }
+    },
+    {
+      "id": "NPV-repeat-year",
+      "category": "npv",
+      "inputs": {
+        "start_age": 17,
+        "horizon_age": 35,
+        "gap_years": 1,
+        "gap_year_cost_inr": 150000,
+        "stage_years": 4,
+        "stage_currency_fx": 1,
+        "tuition": 200000,
+        "living": 100000,
+        "one_time": 0,
+        "work_india": 1,
+        "work_fx": 1,
+        "start_gross_today": 900000,
+        "growth": 0.08,
+        "ai_delta": 0.005,
+        "effective_tax_rate": 0,
+        "living_after_today": 250000,
+        "switch_after_years": 99,
+        "ret_start_gross_today": 0,
+        "ret_growth": 0,
+        "ret_living_today": 0,
+        "infl_education": 0.08,
+        "infl_general": 0.04,
+        "infl_stage_local": 0.04,
+        "infl_work_local": 0.04,
+        "fx_depreciation": 0.02,
+        "discount_rate": 0.07,
+        "loan_amount": 0,
+        "loan_rate": 0,
+        "loan_tenure_years": 10,
+        "loan_moratorium_months": 12,
+        "loan_serviced": 0,
+        "parent_old_regime": 0,
+        "parent_gross": 1500000,
+        "s129_max_years": 8
+      },
+      "expected": {
+        "npv": 5573387.67600449
+      }
+    },
+    {
+      "id": "NPV-fallback",
+      "category": "npv",
+      "inputs": {
+        "start_age": 17,
+        "horizon_age": 35,
+        "gap_years": 0,
+        "gap_year_cost_inr": 0,
+        "stage_years": 4,
+        "stage_currency_fx": 1,
+        "tuition": 200000,
+        "living": 100000,
+        "one_time": 0,
+        "work_india": 1,
+        "work_fx": 1,
+        "start_gross_today": 450000,
+        "growth": 0.06,
+        "ai_delta": 0,
+        "effective_tax_rate": 0,
+        "living_after_today": 200000,
+        "switch_after_years": 99,
+        "ret_start_gross_today": 0,
+        "ret_growth": 0,
+        "ret_living_today": 0,
+        "infl_education": 0.08,
+        "infl_general": 0.04,
+        "infl_stage_local": 0.04,
+        "infl_work_local": 0.04,
+        "fx_depreciation": 0.02,
+        "discount_rate": 0.07,
+        "loan_amount": 0,
+        "loan_rate": 0,
+        "loan_tenure_years": 10,
+        "loan_moratorium_months": 12,
+        "loan_serviced": 0,
+        "parent_old_regime": 0,
+        "parent_gross": 1500000,
+        "s129_max_years": 8
+      },
+      "expected": {
+        "npv": 1876500.24303175
+      }
+    },
+    {
+      "id": "NPV-abroad-return",
+      "category": "npv",
+      "inputs": {
+        "start_age": 17,
+        "horizon_age": 35,
+        "gap_years": 0,
+        "gap_year_cost_inr": 0,
+        "stage_years": 2,
+        "stage_currency_fx": 95,
+        "tuition": 3000,
+        "living": 11000,
+        "one_time": 1000,
+        "work_india": 0,
+        "work_fx": 95,
+        "start_gross_today": 50000,
+        "growth": 0.03,
+        "ai_delta": 0,
+        "effective_tax_rate": 0.35,
+        "living_after_today": 14000,
+        "switch_after_years": 3,
+        "ret_start_gross_today": 1200000,
+        "ret_growth": 0.07,
+        "ret_living_today": 300000,
+        "infl_education": 0.03,
+        "infl_general": 0.04,
+        "infl_stage_local": 0.02,
+        "infl_work_local": 0.02,
+        "fx_depreciation": 0.02,
+        "discount_rate": 0.07,
+        "loan_amount": 0,
+        "loan_rate": 0,
+        "loan_tenure_years": 10,
+        "loan_moratorium_months": 12,
+        "loan_serviced": 0,
+        "parent_old_regime": 0,
+        "parent_gross": 1500000,
+        "s129_max_years": 8
+      },
+      "expected": {
+        "npv": 10609859.3247388
+      }
+    },
+    {
+      "id": "NPV-custom-path",
+      "category": "npv",
+      "inputs": {
+        "start_age": 17,
+        "horizon_age": 35,
+        "gap_years": 0,
+        "gap_year_cost_inr": 0,
+        "stage_years": 3,
+        "stage_currency_fx": 1,
+        "tuition": 350000,
+        "living": 180000,
+        "one_time": 50000,
+        "work_india": 1,
+        "work_fx": 1,
+        "start_gross_today": 600000,
+        "growth": 0.07,
+        "ai_delta": 0.01,
+        "effective_tax_rate": 0,
+        "living_after_today": 240000,
+        "switch_after_years": 99,
+        "ret_start_gross_today": 0,
+        "ret_growth": 0,
+        "ret_living_today": 0,
+        "infl_education": 0.08,
+        "infl_general": 0.04,
+        "infl_stage_local": 0.04,
+        "infl_work_local": 0.04,
+        "fx_depreciation": 0.02,
+        "discount_rate": 0.07,
+        "loan_amount": 0,
+        "loan_rate": 0,
+        "loan_tenure_years": 10,
+        "loan_moratorium_months": 12,
+        "loan_serviced": 0,
+        "parent_old_regime": 0,
+        "parent_gross": 1500000,
+        "s129_max_years": 8
+      },
+      "expected": {
+        "npv": 3052837.96265537
+      }
+    },
+    {
+      "id": "NPV-loan-old-regime-s129",
+      "category": "npv",
+      "inputs": {
+        "start_age": 17,
+        "horizon_age": 35,
+        "gap_years": 0,
+        "gap_year_cost_inr": 0,
+        "stage_years": 4,
+        "stage_currency_fx": 1,
+        "tuition": 200000,
+        "living": 100000,
+        "one_time": 0,
+        "work_india": 1,
+        "work_fx": 1,
+        "start_gross_today": 900000,
+        "growth": 0.08,
+        "ai_delta": 0.005,
+        "effective_tax_rate": 0,
+        "living_after_today": 250000,
+        "switch_after_years": 99,
+        "ret_start_gross_today": 0,
+        "ret_growth": 0,
+        "ret_living_today": 0,
+        "infl_education": 0.08,
+        "infl_general": 0.04,
+        "infl_stage_local": 0.04,
+        "infl_work_local": 0.04,
+        "fx_depreciation": 0.02,
+        "discount_rate": 0.07,
+        "loan_amount": 800000,
+        "loan_rate": 0.1015,
+        "loan_tenure_years": 10,
+        "loan_moratorium_months": 12,
+        "loan_serviced": 0,
+        "parent_old_regime": 1,
+        "parent_gross": 1500000,
+        "s129_max_years": 8
+      },
+      "expected": {
+        "npv": 6395017.52459645
+      }
+    },
+    {
+      "id": "NPV-loan-serviced",
+      "category": "npv",
+      "inputs": {
+        "start_age": 17,
+        "horizon_age": 35,
+        "gap_years": 0,
+        "gap_year_cost_inr": 0,
+        "stage_years": 4,
+        "stage_currency_fx": 1,
+        "tuition": 200000,
+        "living": 100000,
+        "one_time": 0,
+        "work_india": 1,
+        "work_fx": 1,
+        "start_gross_today": 900000,
+        "growth": 0.08,
+        "ai_delta": 0.005,
+        "effective_tax_rate": 0,
+        "living_after_today": 250000,
+        "switch_after_years": 99,
+        "ret_start_gross_today": 0,
+        "ret_growth": 0,
+        "ret_living_today": 0,
+        "infl_education": 0.08,
+        "infl_general": 0.04,
+        "infl_stage_local": 0.04,
+        "infl_work_local": 0.04,
+        "fx_depreciation": 0.02,
+        "discount_rate": 0.07,
+        "loan_amount": 800000,
+        "loan_rate": 0.0915,
+        "loan_tenure_years": 10,
+        "loan_moratorium_months": 12,
+        "loan_serviced": 1,
+        "parent_old_regime": 0,
+        "parent_gross": 1500000,
+        "s129_max_years": 8
+      },
+      "expected": {
+        "npv": 6336459.55524335
+      }
+    }
+  ]
+}

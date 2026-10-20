@@ -23,7 +23,10 @@
     "openapi:check": "pnpm --filter @margwise/contracts run openapi:generate && git diff --exit-code -- packages/contracts/openapi/openapi.json",
     "e2e": "playwright test",
     "check": "pnpm typecheck && pnpm lint && pnpm lint:boundaries && pnpm format:check && pnpm test:coverage",
-    "budget:bundle": "node scripts/check-bundle-size.mjs"
+    "budget:bundle": "node scripts/check-bundle-size.mjs",
+    "golden:build": "python3 -I scripts/golden/build_golden.py docs/golden/golden-cases.xlsx && echo 'now recalculate in LibreOffice, then pnpm golden:export'",
+    "golden:export": "python3 -I scripts/golden/export_golden.py docs/golden/golden-cases.xlsx packages/engine/src/golden/golden-cases.json",
+    "golden:check": "node scripts/check-golden-provenance.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
