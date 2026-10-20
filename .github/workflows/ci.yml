@@ -1,0 +1,124 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: Typecheck, lint, boundaries, format, OpenAPI diff
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm lint:boundaries
+      - name: Boundary lint rejects a deliberate bad import
+        run: pnpm prove:boundaries
+      - run: pnpm format:check
+      - name: OpenAPI is generated from the contracts and committed
+        run: pnpm openapi:check
+      - name: Golden JSON changes only with the spreadsheet (04 §10)
+        if: github.event_name == 'pull_request'
+        run: node scripts/check-golden-provenance.mjs origin/${{ github.base_ref }}
+
+  unit:
+    name: Unit, property, contract and SDK tests (with coverage gates)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage/
+
+  database:
+    name: Migration dry-run and RLS tests
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        # Supabase runs Postgres 17 (services/supabase/config.toml).
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
+      - run: bash services/supabase/tests/run-db-tests.sh
+
+  edge-functions:
+    name: Deno check of Edge Function entrypoints
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - working-directory: services/supabase/functions
+        run: deno check --config deno.json telemetry-ingest/index.ts deletion-request/index.ts
+
+  e2e:
+    name: E2E (Pixel 7, iPhone 14), axe, bundle and Lighthouse budgets
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Initial JS budget (≤ 200 KB gzip)
+        run: pnpm budget:bundle
+      - run: pnpm exec playwright install --with-deps chromium webkit
+      - run: pnpm e2e
+        env:
+          CI: 'true'
+      - name: Lighthouse budgets (performance ≥ 85, accessibility ≥ 95)
+        run: pnpm dlx @lhci/cli@0.15.1 autorun
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-and-lighthouse
+          path: |
+            playwright-report/
+            lighthouse-report/
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
