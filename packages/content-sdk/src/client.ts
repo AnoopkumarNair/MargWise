@@ -2,6 +2,7 @@ import {
   CurrentPointer,
   Manifest,
   ReleaseId,
+  releaseSigningPayload,
   schemaForBundle,
   type AiExposureBundle,
   type BoundsBundle,
@@ -39,6 +40,11 @@ export interface ContentClientOptions {
   baseUrl: string;
   fetch: (input: string) => Promise<Response>;
   cache: ContentCache;
+  /**
+   * Ed25519 public keys (raw 32 bytes, base64url) by key id. More than one
+   * allows key rotation. Pointers signed by any other key are rejected.
+   */
+  trustedKeys: Readonly<Record<string, string>>;
 }
 
 const KEY = {
@@ -60,7 +66,35 @@ async function sha256Hex(text: string): Promise<string> {
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-export function createContentClient({ baseUrl, fetch, cache }: ContentClientOptions) {
+function fromBase64Url(text: string): Uint8Array<ArrayBuffer> {
+  const b64 = text.replace(/-/g, '+').replace(/_/g, '/');
+  const bin = atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4));
+  return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+}
+
+export function createContentClient({ baseUrl, fetch, cache, trustedKeys }: ContentClientOptions) {
+  const keys = new Map<string, Promise<CryptoKey>>();
+
+  async function verifyPointer(pointer: CurrentPointer, where: string): Promise<void> {
+    const raw = trustedKeys[pointer.keyId];
+    if (raw === undefined)
+      throw new ContentIntegrityError(`${where}: unknown signing key ${pointer.keyId}`);
+    let key = keys.get(pointer.keyId);
+    if (!key) {
+      key = crypto.subtle.importKey('raw', fromBase64Url(raw), { name: 'Ed25519' }, false, [
+        'verify',
+      ]);
+      keys.set(pointer.keyId, key);
+    }
+    const ok = await crypto.subtle.verify(
+      { name: 'Ed25519' },
+      await key,
+      fromBase64Url(pointer.signature),
+      new TextEncoder().encode(releaseSigningPayload(pointer)),
+    );
+    if (!ok) throw new ContentIntegrityError(`${where}: invalid signature`);
+  }
+
   /** Returns the body text, or `undefined` when the network is unavailable or errors. */
   async function fetchText(path: string): Promise<string | undefined> {
     try {
@@ -76,6 +110,7 @@ export function createContentClient({ baseUrl, fetch, cache }: ContentClientOpti
     if (text !== undefined) {
       const parsed = CurrentPointer.safeParse(parseJson(text, 'current.json'));
       if (!parsed.success) throw new ContentIntegrityError('current.json schema validation failed');
+      await verifyPointer(parsed.data, 'current.json');
       await cache.put(KEY.current, parsed.data);
       return { data: parsed.data, releaseId: parsed.data.releaseId, source: 'network' };
     }
@@ -103,6 +138,23 @@ export function createContentClient({ baseUrl, fetch, cache }: ContentClientOpti
   }
 
   /**
+   * For a pinned release whose manifest is not cached yet, fetch and verify the
+   * release's own signed `release.json`, so the manifest is still hash-checked.
+   */
+  async function pinnedManifestHash(releaseId: ReleaseId): Promise<string | undefined> {
+    if (Manifest.safeParse(await cache.get(KEY.manifest(releaseId))).success) return undefined;
+    const text = await fetchText(`releases/${releaseId}/release.json`);
+    if (text === undefined)
+      throw new ContentUnavailableError(`release.json for ${releaseId} unavailable`);
+    const parsed = CurrentPointer.safeParse(parseJson(text, 'release.json'));
+    if (!parsed.success) throw new ContentIntegrityError('release.json schema validation failed');
+    if (parsed.data.releaseId !== releaseId)
+      throw new ContentIntegrityError(`release.json does not match ${releaseId}`);
+    await verifyPointer(parsed.data, 'release.json');
+    return parsed.data.manifestSha256;
+  }
+
+  /**
    * Loads a bundle, verifying its hash against the manifest and validating it
    * with the contract schema before it is cached or returned. Pass `releaseId`
    * to pin a release (saved plans); otherwise `current.json` decides.
@@ -117,6 +169,7 @@ export function createContentClient({ baseUrl, fetch, cache }: ContentClientOpti
       const pinned = ReleaseId.safeParse(opts.releaseId);
       if (!pinned.success) throw new ContentIntegrityError(`Invalid release id: ${opts.releaseId}`);
       releaseId = pinned.data;
+      manifestSha = await pinnedManifestHash(releaseId);
     } else {
       const current = await getCurrent();
       releaseId = current.releaseId;
