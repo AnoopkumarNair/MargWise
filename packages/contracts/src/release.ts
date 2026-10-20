@@ -40,14 +40,36 @@ export const BundleName = z
   );
 export type BundleName = z.infer<typeof BundleName>;
 
-/** `releases/current.json` — the only mutable file; it pins the live manifest by hash. */
+/**
+ * Signed release pointer (D-010). Published twice: as `releases/current.json`
+ * (the only mutable file) and as the immutable `releases/{id}/release.json`,
+ * so a pinned release can be verified without trusting `current.json`.
+ */
 export const CurrentPointer = z.strictObject({
   releaseId: ReleaseId,
   publishedAt: IsoDateTime,
   contentDate: IsoDate,
   manifestSha256: Sha256Hex,
+  /** Id of the Ed25519 key that signed this pointer; clients ship the matching public key. */
+  keyId: z.string().regex(/^[a-z0-9-]{1,32}$/),
+  /** Ed25519 signature (base64url, 64 bytes) over `releaseSigningPayload(pointer)`. */
+  signature: z.string().regex(/^[A-Za-z0-9_-]{86}$/),
 });
 export type CurrentPointer = z.infer<typeof CurrentPointer>;
+
+/** Exact bytes the publisher signs and clients verify. Changing this is a breaking change. */
+export function releaseSigningPayload(
+  p: Pick<CurrentPointer, 'releaseId' | 'manifestSha256' | 'contentDate' | 'publishedAt' | 'keyId'>,
+): string {
+  return [
+    'margwise-release:v1',
+    p.keyId,
+    p.releaseId,
+    p.manifestSha256,
+    p.contentDate,
+    p.publishedAt,
+  ].join('\n');
+}
 
 export const ManifestEntry = z.strictObject({
   name: BundleName,

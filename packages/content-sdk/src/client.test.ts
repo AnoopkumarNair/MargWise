@@ -8,8 +8,11 @@ import {
 import {
   buildFixtureRelease,
   fixtureFetch,
+  generateSigningKey,
   RELEASE_ID,
+  signPointer,
   type FixtureRelease,
+  type SigningKey,
 } from './fixtures/release.ts';
 
 const BASE = 'https://cdn.example.test/';
@@ -18,14 +21,17 @@ describe('content-sdk', () => {
   let release: FixtureRelease;
   let net: ReturnType<typeof fixtureFetch>;
   let cache: MemoryContentCache;
+  let key: SigningKey;
 
   beforeEach(async () => {
-    release = await buildFixtureRelease();
+    key = await generateSigningKey('release-2026');
+    release = await buildFixtureRelease(key);
     net = fixtureFetch(release.files, BASE);
     cache = new MemoryContentCache();
   });
 
-  const client = () => createContentClient({ baseUrl: BASE, fetch: net.fetch, cache });
+  const client = (trustedKeys: Record<string, string> = { [key.keyId]: key.publicKey }) =>
+    createContentClient({ baseUrl: BASE, fetch: net.fetch, cache, trustedKeys });
 
   describe('happy path', () => {
     it('resolves current → manifest → core and validates the bundle', async () => {
@@ -74,7 +80,7 @@ describe('content-sdk', () => {
     });
 
     it('rejects a bundle that matches its hash but fails schema validation', async () => {
-      const bad = await buildFixtureRelease({
+      const bad = await buildFixtureRelease(key, {
         coreText: JSON.stringify({ releaseId: RELEASE_ID, clusters: 'nope' }),
       });
       net = fixtureFetch(bad.files, BASE);
@@ -82,7 +88,7 @@ describe('content-sdk', () => {
     });
 
     it('rejects a bundle whose releaseId disagrees with the manifest', async () => {
-      const release2 = await buildFixtureRelease({
+      const release2 = await buildFixtureRelease(key, {
         coreText: JSON.stringify({
           ...(await import('./fixtures/release.ts')).core,
           releaseId: '2026-10-21.1',
@@ -116,6 +122,75 @@ describe('content-sdk', () => {
 
     it('fails clearly when a bundle is not in the manifest', async () => {
       await expect(client().getBundle('countries/DE')).rejects.toThrow(/not in manifest/);
+    });
+  });
+
+  describe('signed release pointer (D-010)', () => {
+    it('rejects current.json signed by an untrusted key', async () => {
+      const other = await generateSigningKey('release-2026');
+      await expect(client({ [key.keyId]: other.publicKey }).getCurrent()).rejects.toThrow(
+        /signature/,
+      );
+    });
+
+    it('rejects current.json with an unknown key id', async () => {
+      await expect(client({ 'some-other-key': key.publicKey }).getCurrent()).rejects.toThrow(
+        /unknown signing key/,
+      );
+    });
+
+    it('rejects a pointer whose fields were altered after signing', async () => {
+      const altered = new Map(release.files);
+      altered.set(
+        'releases/current.json',
+        JSON.stringify({ ...release.current, contentDate: '2030-01-01' }),
+      );
+      net = fixtureFetch(altered, BASE);
+      await expect(client().getCurrent()).rejects.toBeInstanceOf(ContentIntegrityError);
+    });
+
+    it('accepts any trusted key, so keys can be rotated', async () => {
+      const next = await generateSigningKey('release-2027');
+      const resigned = await signPointer(
+        {
+          releaseId: release.current.releaseId,
+          publishedAt: release.current.publishedAt,
+          contentDate: release.current.contentDate,
+          manifestSha256: release.current.manifestSha256,
+        },
+        next,
+      );
+      const files = new Map(release.files);
+      files.set('releases/current.json', JSON.stringify(resigned));
+      net = fixtureFetch(files, BASE);
+      const c = client({ [key.keyId]: key.publicKey, [next.keyId]: next.publicKey });
+      expect((await c.getCurrent()).data.keyId).toBe('release-2027');
+    });
+
+    it('a first-time pinned release is verified through its signed release.json', async () => {
+      const tampered = new Map(release.files);
+      tampered.set(
+        `releases/${RELEASE_ID}/manifest.json`,
+        JSON.stringify({ ...release.manifest, contentDate: '2020-01-01' }),
+      );
+      net = fixtureFetch(tampered, BASE);
+      await expect(client().getBundle('core', { releaseId: RELEASE_ID })).rejects.toThrow(
+        /manifest hash mismatch/,
+      );
+      expect(net.calls).toContain(`${BASE}releases/${RELEASE_ID}/release.json`);
+    });
+
+    it('rejects a pinned release whose release.json is for a different release', async () => {
+      const files = new Map(release.files);
+      const other = await buildFixtureRelease(key, { releaseId: '2026-10-27.1' });
+      files.set(
+        `releases/${RELEASE_ID}/release.json`,
+        other.files.get('releases/2026-10-27.1/release.json') ?? '',
+      );
+      net = fixtureFetch(files, BASE);
+      await expect(client().getBundle('core', { releaseId: RELEASE_ID })).rejects.toThrow(
+        /does not match/,
+      );
     });
   });
 
@@ -165,7 +240,7 @@ describe('content-sdk', () => {
 
     it('a pinned release keeps working after current moves on', async () => {
       await client().getBundle('core');
-      const next = await buildFixtureRelease({ releaseId: '2026-10-27.1' });
+      const next = await buildFixtureRelease(key, { releaseId: '2026-10-27.1' });
       const files = new Map([...release.files, ...next.files]);
       net = fixtureFetch(files, BASE);
       expect((await client().getBundle('core')).releaseId).toBe('2026-10-27.1');

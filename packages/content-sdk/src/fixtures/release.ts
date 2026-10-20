@@ -1,4 +1,5 @@
 import {
+  releaseSigningPayload,
   REQUIRED_DOSSIER_SECTIONS,
   type CoreBundle,
   type CurrentPointer,
@@ -43,6 +44,40 @@ export async function sha256Hex(text: string): Promise<string> {
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
+const b64url = (bytes: ArrayBuffer) => Buffer.from(bytes).toString('base64url');
+
+export interface SigningKey {
+  keyId: string;
+  privateKey: CryptoKey;
+  /** Raw 32-byte public key, base64url — what the app ships in its config. */
+  publicKey: string;
+}
+
+export async function generateSigningKey(keyId = 'test-key'): Promise<SigningKey> {
+  const pair = (await crypto.subtle.generateKey({ name: 'Ed25519' }, true, [
+    'sign',
+    'verify',
+  ])) as CryptoKeyPair;
+  return {
+    keyId,
+    privateKey: pair.privateKey,
+    publicKey: b64url(await crypto.subtle.exportKey('raw', pair.publicKey)),
+  };
+}
+
+export async function signPointer(
+  unsigned: Omit<CurrentPointer, 'signature' | 'keyId'>,
+  key: SigningKey,
+): Promise<CurrentPointer> {
+  const withKey = { ...unsigned, keyId: key.keyId };
+  const sig = await crypto.subtle.sign(
+    { name: 'Ed25519' },
+    key.privateKey,
+    new TextEncoder().encode(releaseSigningPayload(withKey)),
+  );
+  return { ...withKey, signature: b64url(sig) };
+}
+
 export interface FixtureRelease {
   files: Map<string, string>;
   current: CurrentPointer;
@@ -51,6 +86,7 @@ export interface FixtureRelease {
 
 /** Builds `releases/current.json`, the manifest and the core bundle as served files. */
 export async function buildFixtureRelease(
+  key: SigningKey,
   overrides: { coreText?: string; releaseId?: string } = {},
 ): Promise<FixtureRelease> {
   const releaseId = overrides.releaseId ?? RELEASE_ID;
@@ -70,14 +106,18 @@ export async function buildFixtureRelease(
     ],
   };
   const manifestText = JSON.stringify(manifest);
-  const current: CurrentPointer = {
-    releaseId,
-    publishedAt: manifest.publishedAt,
-    contentDate: manifest.contentDate,
-    manifestSha256: await sha256Hex(manifestText),
-  };
+  const current = await signPointer(
+    {
+      releaseId,
+      publishedAt: manifest.publishedAt,
+      contentDate: manifest.contentDate,
+      manifestSha256: await sha256Hex(manifestText),
+    },
+    key,
+  );
   const files = new Map<string, string>([
     ['releases/current.json', JSON.stringify(current)],
+    [`releases/${releaseId}/release.json`, JSON.stringify(current)],
     [`releases/${releaseId}/manifest.json`, manifestText],
     [`releases/${releaseId}/core.json`, coreText],
   ]);

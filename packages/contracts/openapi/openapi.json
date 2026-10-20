@@ -553,13 +553,23 @@
           "manifestSha256": {
             "type": "string",
             "pattern": "^[0-9a-f]{64}$"
+          },
+          "keyId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{1,32}$"
+          },
+          "signature": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{86}$"
           }
         },
         "required": [
           "releaseId",
           "publishedAt",
           "contentDate",
-          "manifestSha256"
+          "manifestSha256",
+          "keyId",
+          "signature"
         ],
         "additionalProperties": false
       },

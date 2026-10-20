@@ -12,6 +12,7 @@ import {
   Manifest,
   PolicyWeatherBundle,
   ReleaseId,
+  releaseSigningPayload,
   schemaForBundle,
 } from './release.ts';
 
@@ -41,15 +42,29 @@ describe('BundleName', () => {
 });
 
 describe('CurrentPointer', () => {
-  it('pins the manifest by hash', () => {
-    const p = {
-      releaseId: '2026-10-20.1',
-      publishedAt: '2026-10-20T10:00:00Z',
-      contentDate: '2026-10-20',
-      manifestSha256: sha,
-    };
+  const p = {
+    releaseId: '2026-10-20.1',
+    publishedAt: '2026-10-20T10:00:00Z',
+    contentDate: '2026-10-20',
+    manifestSha256: sha,
+    keyId: 'release-2026',
+    signature: 'A'.repeat(86),
+  };
+
+  it('pins the manifest by hash and carries a signature', () => {
     expect(CurrentPointer.safeParse(p).success).toBe(true);
     expect(CurrentPointer.safeParse({ ...p, manifestSha256: 'xyz' }).success).toBe(false);
+  });
+
+  it('rejects an unsigned pointer', () => {
+    const { signature: _s, ...unsigned } = p;
+    expect(CurrentPointer.safeParse(unsigned).success).toBe(false);
+  });
+
+  it('signing payload binds key, release, manifest hash and dates', () => {
+    expect(releaseSigningPayload(p)).toBe(
+      `margwise-release:v1\nrelease-2026\n2026-10-20.1\n${sha}\n2026-10-20\n2026-10-20T10:00:00Z`,
+    );
   });
 });
 
