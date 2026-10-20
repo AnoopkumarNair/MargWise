@@ -7,6 +7,7 @@ import {
   Gate,
   OnetSocCode,
   REQUIRED_DOSSIER_SECTIONS,
+  Route,
 } from './careers.ts';
 
 describe('OnetSocCode', () => {
@@ -150,5 +151,32 @@ describe('Career', () => {
 
   it('lists the 13 sections named in 01 §4.3', () => {
     expect(REQUIRED_DOSSIER_SECTIONS).toHaveLength(13);
+  });
+});
+
+describe('Route', () => {
+  const stage = (order: number) => ({
+    order,
+    kind: 'ug',
+    title: `Stage ${order}`,
+    durationYears: { value: 4, provenance: sourcedProv({ unit: 'years' }) },
+    entranceTests: [],
+    country: 'IN',
+  });
+  const route = {
+    id: 'tec-1-btech',
+    careerId: 'tec-1',
+    title: 'B.Tech',
+    kind: 'main',
+    stages: [stage(1), stage(2)],
+  };
+
+  it('accepts stages ordered 1..n', () => {
+    expect(Route.safeParse(route).success).toBe(true);
+  });
+
+  it('rejects gaps or reordering in stage order', () => {
+    expect(Route.safeParse({ ...route, stages: [stage(1), stage(3)] }).success).toBe(false);
+    expect(Route.safeParse({ ...route, stages: [stage(2), stage(1)] }).success).toBe(false);
   });
 });
