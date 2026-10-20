@@ -54,18 +54,48 @@ const DurationMs = z
   .max(24 * 60 * 60 * 1000);
 const Day = z.int().min(1).max(6);
 
+export const Actor = z.enum(['teen', 'patron', 'family']);
+export type Actor = z.infer<typeof Actor>;
+
+/**
+ * Developer-defined control id from a `data-track` attribute, e.g. `dial.like`
+ * or `map.hall_psy-1`. Lowercase identifier shape only, so user-entered text
+ * (names, emails, numbers) can never pass as a control id.
+ */
+export const ControlId = z
+  .string()
+  .regex(/^[a-z][a-z0-9_-]*(\.[a-z0-9_-]+)*$/)
+  .max(64);
+
 const envelope = {
   eventId: Uuid,
   sessionId: Uuid,
   /** Monotonic per session; lets the server de-duplicate retried batches. */
   seq: z.int().min(0),
   occurredAt: IsoDateTime,
+  /** Who is holding the phone: the teen, the parent (Patron) or both together. */
+  actor: Actor,
 };
 
 const event = <T extends string, S extends z.ZodRawShape>(type: T, shape: S) =>
   z.strictObject({ type: z.literal(type), ...envelope, ...shape });
 
 export const TelemetryEvent = z.discriminatedUnion('type', [
+  event('session_started', {
+    deviceClass: z.enum(['low', 'mid', 'high']),
+    liteMode: z.boolean(),
+    reducedMotion: z.boolean(),
+    arm: z.enum(['game', 'plain', 'none']),
+  }),
+  event('navigated', {
+    from: Scene,
+    to: Scene,
+    via: z.enum(['tap', 'back', 'swipe', 'deeplink', 'auto']),
+  }),
+  event('control_activated', { scene: Scene, control: ControlId }),
+  event('actor_changed', { from: Actor, to: Actor }),
+  /** Screen-level only: app moved to foreground/background (no dwell inside a screen). */
+  event('app_visibility', { state: z.enum(['visible', 'hidden']) }),
   event('scene_entered', { scene: Scene }),
   event('scene_exited', { scene: Scene, durationMs: DurationMs }),
   event('day_started', { day: Day }),

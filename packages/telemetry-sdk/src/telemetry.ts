@@ -6,13 +6,14 @@ import {
   ItemResponses,
   TelemetryEvent,
   TIER_REQUIRED,
+  type Actor,
   type ConsentTier,
 } from '@margwise/contracts';
 import type { PendingPayload, QueueState, QueueStore } from './store.ts';
 import type { Transport } from './transport.ts';
 
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
-type Envelope = 'eventId' | 'sessionId' | 'seq' | 'occurredAt';
+type Envelope = 'eventId' | 'sessionId' | 'seq' | 'occurredAt' | 'actor';
 export type EventInput = DistributiveOmit<TelemetryEvent, Envelope>;
 type WithoutSession<T> = Omit<T, 'sessionId'>;
 
@@ -55,6 +56,7 @@ type SendResult = 'sent' | 'rejected' | 'forbidden' | 'retry';
 export function createTelemetry(opts: TelemetryOptions) {
   const { sessionId, config, transport, store, clock, uuid } = opts;
   let chosenTier: Tier = opts.restoredConsent?.tier ?? 0;
+  let actor: Actor = 'teen';
   let consentRecorded = opts.restoredConsent?.recorded ?? false;
   let pendingConsent: ConsentRecord | undefined;
   let state: QueueState = { events: [], pending: [] };
@@ -193,6 +195,7 @@ export function createTelemetry(opts: TelemetryOptions) {
       sessionId,
       seq: seq++,
       occurredAt: new Date(clock()).toISOString(),
+      actor,
     });
     state.events.push(event);
     capQueue();
@@ -253,7 +256,19 @@ export function createTelemetry(opts: TelemetryOptions) {
     return (await send('/telemetry/v1/deletion', body)) === 'sent' ? 'accepted' : 'failed';
   }
 
+  /** Hand-off between teen and parent (02 §2.3 "The Patron arrives"). */
+  function setActor(next: Actor) {
+    if (next === actor) return;
+    const from = actor;
+    actor = next;
+    track({ type: 'actor_changed', from, to: next });
+  }
+
   return {
+    get actor(): Actor {
+      return actor;
+    },
+    setActor,
     get tier(): Tier {
       return effectiveTier();
     },

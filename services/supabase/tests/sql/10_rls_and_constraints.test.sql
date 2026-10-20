@@ -196,7 +196,7 @@ select pg_temp.expect_violation($$insert into content.releases (id, content_date
 set local role service_role;
 insert into telemetry.consents (session_id, tier, notice_version, teen_assent, deletion_code_hash, consented_at)
   values ('30000000-0000-4000-8000-000000000001', 2, 'v', true, repeat('f', 64), now());
-insert into telemetry.events (event_id, session_id, seq, type, occurred_at) values (gen_random_uuid(), '30000000-0000-4000-8000-000000000001', 0, 'reveal_viewed', now());
+insert into telemetry.events (event_id, session_id, seq, type, occurred_at, actor) values (gen_random_uuid(), '30000000-0000-4000-8000-000000000001', 0, 'reveal_viewed', now(), 'teen');
 insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subjects, city_tier)
   values ('30000000-0000-4000-8000-000000000001', 'plain', array_fill(2::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{english,physics,chemistry,mathematics}', 'metro');
 insert into telemetry.coverage_requests (session_id, kind, label) values ('30000000-0000-4000-8000-000000000001', 'country', 'France');

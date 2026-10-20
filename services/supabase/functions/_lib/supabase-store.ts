@@ -95,14 +95,17 @@ export function supabaseTelemetryStore(db: SchemaClient): TelemetryStore {
       );
     },
     async insertEvents(batch: EventBatch) {
-      const rows = batch.events.map(({ type, eventId, sessionId, seq, occurredAt, ...props }) => ({
-        event_id: eventId,
-        session_id: sessionId,
-        seq,
-        type,
-        occurred_at: occurredAt,
-        props,
-      }));
+      const rows = batch.events.map(
+        ({ type, eventId, sessionId, seq, occurredAt, actor, ...props }) => ({
+          event_id: eventId,
+          session_id: sessionId,
+          seq,
+          type,
+          occurred_at: occurredAt,
+          actor,
+          props,
+        }),
+      );
       check(
         await db.from('events').upsert(rows, { onConflict: 'event_id', ignoreDuplicates: true }),
       );

@@ -97,6 +97,7 @@ describe('supabaseTelemetryStore', () => {
           sessionId: SESSION,
           seq: 3,
           occurredAt: '2026-10-20T10:00:00Z',
+          actor: 'patron',
         },
       ],
     });
@@ -111,6 +112,7 @@ describe('supabaseTelemetryStore', () => {
           seq: 3,
           type: 'hall_visited',
           occurred_at: '2026-10-20T10:00:00Z',
+          actor: 'patron',
           props: { careerId: 'psy-1' },
         },
       ],

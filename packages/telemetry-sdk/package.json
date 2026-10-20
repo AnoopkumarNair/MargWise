@@ -10,9 +10,11 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@margwise/contracts": "workspace:*"
+    "@margwise/contracts": "workspace:*",
+    "zod": "4.6.7"
   },
   "devDependencies": {
-    "@margwise/config": "workspace:*"
+    "@margwise/config": "workspace:*",
+    "jsdom": "29.1.1"
   }
 }
