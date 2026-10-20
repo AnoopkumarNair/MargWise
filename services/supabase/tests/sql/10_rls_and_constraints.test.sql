@@ -55,6 +55,23 @@ begin
   if bad is not null then raise exception 'tables without RLS: %', bad; end if;
 end $$;
 
+-- 1b. Every foreign key in the application schemas has a covering index
+-- (mirrors the Supabase performance advisor "unindexed foreign keys").
+do $$
+declare bad text;
+begin
+  select string_agg(c.conrelid::regclass || '.' || c.conname, ', ') into bad
+    from pg_constraint c
+    join pg_namespace n on n.oid = c.connamespace
+   where c.contype = 'f' and n.nspname in ('content', 'pipeline', 'telemetry', 'private')
+     and not exists (
+       select 1 from pg_index i
+        where i.indrelid = c.conrelid
+          and (i.indkey::int2[])[0:cardinality(c.conkey) - 1] = c.conkey
+     );
+  if bad is not null then raise exception 'foreign keys without a covering index: %', bad; end if;
+end $$;
+
 -- Fixtures (as superuser, i.e. the migration owner).
 insert into auth.users (id) values
   ('00000000-0000-4000-8000-000000000001'),  -- owner
