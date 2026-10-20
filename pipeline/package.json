@@ -9,7 +9,9 @@
   "scripts": {
     "test": "vitest run"
   },
-  "dependencies": {"@margwise/contracts": "workspace:*"},
+  "dependencies": {
+    "@margwise/contracts": "workspace:*"
+  },
   "devDependencies": {
     "@margwise/config": "workspace:*"
   }

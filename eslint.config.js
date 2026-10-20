@@ -23,7 +23,10 @@ export default tseslint.config(
     },
     rules: {
       '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', ignoreRestSiblings: true },
+      ],
       'no-console': ['error', { allow: ['warn', 'error'] }],
     },
   },
@@ -54,7 +57,14 @@ export default tseslint.config(
     rules: {
       'no-restricted-imports': [
         'error',
-        { patterns: [{ group: ['@margwise/engine', '@margwise/engine/*'], message: 'UI does no maths; receive engine outputs via props.' }] },
+        {
+          patterns: [
+            {
+              group: ['@margwise/engine', '@margwise/engine/*'],
+              message: 'UI does no maths; receive engine outputs via props.',
+            },
+          ],
+        },
       ],
     },
   },
