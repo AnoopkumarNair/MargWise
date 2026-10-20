@@ -1,0 +1,11 @@
+pnpm-lock.yaml
+coverage/
+dist/
+docs/00_Build_Prompt.md
+docs/product/
+docs/game/
+docs/assessment/
+docs/architecture/04_Architecture_and_Design.md
+docs/pipeline/05_Data_Pipeline.md
+packages/contracts/openapi/
+services/supabase/migrations/

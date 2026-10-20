@@ -1,0 +1,16 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/contracts" },
+    { "path": "packages/engine" },
+    { "path": "packages/content-sdk" },
+    { "path": "packages/telemetry-sdk" },
+    { "path": "packages/i18n" },
+    { "path": "packages/ui" },
+    { "path": "packages/game-kit" },
+    { "path": "pipeline" },
+    { "path": "services/supabase" },
+    { "path": "apps/web" },
+    { "path": "apps/studio" }
+  ]
+}

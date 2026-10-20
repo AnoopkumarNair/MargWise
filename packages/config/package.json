@@ -1,0 +1,12 @@
+{
+  "name": "@margwise/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "files": ["tsconfig.base.json", "tsconfig.dom.json", "vitest.shared.ts"],
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsconfig.dom.json": "./tsconfig.dom.json",
+    "./vitest": "./vitest.shared.ts"
+  }
+}

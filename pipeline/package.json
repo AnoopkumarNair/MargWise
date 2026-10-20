@@ -1,0 +1,16 @@
+{
+  "name": "@margwise/pipeline",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {"@margwise/contracts": "workspace:*"},
+  "devDependencies": {
+    "@margwise/config": "workspace:*"
+  }
+}
