@@ -136,3 +136,16 @@ describe('FxRate', () => {
     expect(FxRate.safeParse(fx).success).toBe(false);
   });
 });
+
+describe('TaxRegimeRules — empty slab', () => {
+  it('rejects a slab whose upper bound equals its lower bound', () => {
+    const empty = {
+      ...regime,
+      slabs: [
+        { from: 0, to: 0, rate: 0 },
+        { from: 0, to: null, rate: 0.1 },
+      ],
+    };
+    expect(TaxRegimeRules.safeParse(empty).success).toBe(false);
+  });
+});
