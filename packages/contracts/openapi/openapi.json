@@ -8158,6 +8158,374 @@
                   "properties": {
                     "type": {
                       "type": "string",
+                      "const": "session_started"
+                    },
+                    "eventId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "sessionId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "occurredAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
+                    "deviceClass": {
+                      "type": "string",
+                      "enum": [
+                        "low",
+                        "mid",
+                        "high"
+                      ]
+                    },
+                    "liteMode": {
+                      "type": "boolean"
+                    },
+                    "reducedMotion": {
+                      "type": "boolean"
+                    },
+                    "arm": {
+                      "type": "string",
+                      "enum": [
+                        "game",
+                        "plain",
+                        "none"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "eventId",
+                    "sessionId",
+                    "seq",
+                    "occurredAt",
+                    "actor",
+                    "deviceClass",
+                    "liteMode",
+                    "reducedMotion",
+                    "arm"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "navigated"
+                    },
+                    "eventId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "sessionId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "occurredAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
+                    "from": {
+                      "type": "string",
+                      "enum": [
+                        "welcome",
+                        "consent",
+                        "prologue",
+                        "avatar",
+                        "market_day",
+                        "evening",
+                        "council",
+                        "isles_map",
+                        "hall",
+                        "dossier",
+                        "harbour_ledger",
+                        "voyage_planner",
+                        "voyage_chart",
+                        "logbook",
+                        "settings",
+                        "feedback",
+                        "plain_questionnaire"
+                      ]
+                    },
+                    "to": {
+                      "type": "string",
+                      "enum": [
+                        "welcome",
+                        "consent",
+                        "prologue",
+                        "avatar",
+                        "market_day",
+                        "evening",
+                        "council",
+                        "isles_map",
+                        "hall",
+                        "dossier",
+                        "harbour_ledger",
+                        "voyage_planner",
+                        "voyage_chart",
+                        "logbook",
+                        "settings",
+                        "feedback",
+                        "plain_questionnaire"
+                      ]
+                    },
+                    "via": {
+                      "type": "string",
+                      "enum": [
+                        "tap",
+                        "back",
+                        "swipe",
+                        "deeplink",
+                        "auto"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "eventId",
+                    "sessionId",
+                    "seq",
+                    "occurredAt",
+                    "actor",
+                    "from",
+                    "to",
+                    "via"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "control_activated"
+                    },
+                    "eventId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "sessionId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "occurredAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
+                    "scene": {
+                      "type": "string",
+                      "enum": [
+                        "welcome",
+                        "consent",
+                        "prologue",
+                        "avatar",
+                        "market_day",
+                        "evening",
+                        "council",
+                        "isles_map",
+                        "hall",
+                        "dossier",
+                        "harbour_ledger",
+                        "voyage_planner",
+                        "voyage_chart",
+                        "logbook",
+                        "settings",
+                        "feedback",
+                        "plain_questionnaire"
+                      ]
+                    },
+                    "control": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z0-9_-]+)*$"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "eventId",
+                    "sessionId",
+                    "seq",
+                    "occurredAt",
+                    "actor",
+                    "scene",
+                    "control"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "actor_changed"
+                    },
+                    "eventId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "sessionId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "occurredAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
+                    "from": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
+                    "to": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "eventId",
+                    "sessionId",
+                    "seq",
+                    "occurredAt",
+                    "actor",
+                    "from",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "app_visibility"
+                    },
+                    "eventId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "sessionId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "occurredAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": [
+                        "visible",
+                        "hidden"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "eventId",
+                    "sessionId",
+                    "seq",
+                    "occurredAt",
+                    "actor",
+                    "state"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
                       "const": "scene_entered"
                     },
                     "eventId": {
@@ -8179,6 +8547,14 @@
                       "type": "string",
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
                     },
                     "scene": {
                       "type": "string",
@@ -8209,6 +8585,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "scene"
                   ],
                   "additionalProperties": false
@@ -8239,6 +8616,14 @@
                       "type": "string",
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
                     },
                     "scene": {
                       "type": "string",
@@ -8274,6 +8659,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "scene",
                     "durationMs"
                   ],
@@ -8306,6 +8692,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "day": {
                       "type": "integer",
                       "minimum": 1,
@@ -8318,6 +8712,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "day"
                   ],
                   "additionalProperties": false
@@ -8349,6 +8744,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "day": {
                       "type": "integer",
                       "minimum": 1,
@@ -8366,6 +8769,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "day",
                     "durationMs"
                   ],
@@ -8398,6 +8802,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "itemNumber": {
                       "type": "integer",
                       "minimum": 1,
@@ -8415,6 +8827,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "itemNumber",
                     "undoCount"
                   ],
@@ -8446,6 +8859,14 @@
                       "type": "string",
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
                     }
                   },
                   "required": [
@@ -8453,7 +8874,8 @@
                     "eventId",
                     "sessionId",
                     "seq",
-                    "occurredAt"
+                    "occurredAt",
+                    "actor"
                   ],
                   "additionalProperties": false
                 },
@@ -8484,6 +8906,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "careerId": {
                       "type": "string",
                       "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
@@ -8495,6 +8925,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "careerId"
                   ],
                   "additionalProperties": false
@@ -8526,6 +8957,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "careerId": {
                       "type": "string",
                       "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
@@ -8551,6 +8990,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "careerId",
                     "tab"
                   ],
@@ -8583,6 +9023,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "questId": {
                       "type": "string",
                       "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
@@ -8594,6 +9042,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "questId"
                   ],
                   "additionalProperties": false
@@ -8625,6 +9074,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "questId": {
                       "type": "string",
                       "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
@@ -8636,6 +9093,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "questId"
                   ],
                   "additionalProperties": false
@@ -8667,6 +9125,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "planCount": {
                       "type": "integer",
                       "minimum": 1,
@@ -8685,6 +9151,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "planCount",
                     "hasAbroadStage",
                     "usesCustom"
@@ -8718,6 +9185,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "method": {
                       "type": "string",
                       "enum": [
@@ -8734,6 +9209,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "method"
                   ],
                   "additionalProperties": false
@@ -8765,6 +9241,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "format": {
                       "type": "string",
                       "enum": [
@@ -8779,6 +9263,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "format"
                   ],
                   "additionalProperties": false
@@ -8809,6 +9294,14 @@
                       "type": "string",
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
                     },
                     "code": {
                       "type": "string",
@@ -8843,6 +9336,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "code"
                   ],
                   "additionalProperties": false
@@ -8874,6 +9368,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "enabled": {
                       "type": "boolean"
                     },
@@ -8892,6 +9394,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "enabled",
                     "reason"
                   ],
@@ -8924,6 +9427,14 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
                     },
+                    "actor": {
+                      "type": "string",
+                      "enum": [
+                        "teen",
+                        "patron",
+                        "family"
+                      ]
+                    },
                     "durationMs": {
                       "type": "integer",
                       "minimum": 0,
@@ -8936,6 +9447,7 @@
                     "sessionId",
                     "seq",
                     "occurredAt",
+                    "actor",
                     "durationMs"
                   ],
                   "additionalProperties": false

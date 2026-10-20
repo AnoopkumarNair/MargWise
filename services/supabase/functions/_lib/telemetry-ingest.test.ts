@@ -15,6 +15,7 @@ const event = (n = 0) => ({
   sessionId: SESSION,
   seq: n,
   occurredAt: '2026-10-20T10:00:00Z',
+  actor: 'teen',
 });
 
 const responses = {

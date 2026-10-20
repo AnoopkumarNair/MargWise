@@ -183,10 +183,16 @@ importers:
       '@margwise/contracts':
         specifier: workspace:*
         version: link:../contracts
+      zod:
+        specifier: 4.6.7
+        version: 4.6.7
     devDependencies:
       '@margwise/config':
         specifier: workspace:*
         version: link:../config
+      jsdom:
+        specifier: 29.1.1
+        version: 29.1.1
 
   packages/ui:
     dependencies:

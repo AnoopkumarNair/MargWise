@@ -33,6 +33,7 @@ const env = {
   sessionId,
   seq: 0,
   occurredAt: '2026-10-20T10:00:00Z',
+  actor: 'teen',
 };
 
 describe('Closed schemas (04 §6.4)', () => {
@@ -92,6 +93,79 @@ describe('Events (02 §10)', () => {
       ]),
     );
   });
+
+  it('covers navigation and interaction analytics (D-027)', () => {
+    expect(EVENT_TYPES).toEqual(
+      expect.arrayContaining([
+        'session_started',
+        'navigated',
+        'control_activated',
+        'actor_changed',
+        'app_visibility',
+      ]),
+    );
+  });
+
+  it('every event says which family member is active', () => {
+    const { actor: _a, ...noActor } = env;
+    expect(TelemetryEvent.safeParse({ ...noActor, type: 'reveal_viewed' }).success).toBe(false);
+    expect(
+      TelemetryEvent.safeParse({ ...env, actor: 'patron', type: 'reveal_viewed' }).success,
+    ).toBe(true);
+    expect(
+      TelemetryEvent.safeParse({ ...env, actor: 'grandparent', type: 'reveal_viewed' }).success,
+    ).toBe(false);
+  });
+
+  it('navigated records from, to and how — never coordinates', () => {
+    expect(
+      TelemetryEvent.safeParse({
+        ...env,
+        type: 'navigated',
+        from: 'isles_map',
+        to: 'hall',
+        via: 'tap',
+      }).success,
+    ).toBe(true);
+    expect(
+      TelemetryEvent.safeParse({
+        ...env,
+        type: 'navigated',
+        from: 'isles_map',
+        to: 'hall',
+        via: 'tap',
+        x: 10,
+      }).success,
+    ).toBe(false);
+  });
+
+  it.each(['dial.like', 'map.hall_psy-1', 'ledger.save'])(
+    'control_activated accepts developer control id %s',
+    (control) => {
+      expect(
+        TelemetryEvent.safeParse({
+          ...env,
+          type: 'control_activated',
+          scene: 'market_day',
+          control,
+        }).success,
+      ).toBe(true);
+    },
+  );
+
+  it.each(['Ravi Kumar', 'a@b.c', '9876543210', 'x'.repeat(65)])(
+    'control_activated rejects free text like %j',
+    (control) => {
+      expect(
+        TelemetryEvent.safeParse({
+          ...env,
+          type: 'control_activated',
+          scene: 'market_day',
+          control,
+        }).success,
+      ).toBe(false);
+    },
+  );
 
   it('item_answered carries the item number and undo count but never the response value (Tier 2 only)', () => {
     expect(

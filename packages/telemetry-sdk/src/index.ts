@@ -14,3 +14,9 @@ export {
   type QueueStore,
 } from './store.ts';
 export { fetchTransport, type Transport } from './transport.ts';
+export { attachAutoCapture, type AutoCaptureOptions } from './autocapture.ts';
+export {
+  createNavigationTracker,
+  type NavigationTracker,
+  type NavigationTrackerOptions,
+} from './navigation.ts';
