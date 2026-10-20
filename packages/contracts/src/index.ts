@@ -10,3 +10,4 @@ export * from './release.ts';
 export * from './review.ts';
 export * from './telemetry/pii.ts';
 export * from './telemetry/schemas.ts';
+export * from './content/instrument.ts';

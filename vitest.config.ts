@@ -30,6 +30,7 @@ export default defineConfig({
         functions: 85,
         statements: 85,
         'packages/contracts/src/**': { lines: 95, branches: 90, functions: 95, statements: 95 },
+        'packages/engine/src/**': { lines: 95, branches: 90, functions: 95, statements: 95 },
         'packages/content-sdk/src/**': { lines: 95, branches: 90, functions: 95, statements: 95 },
         'packages/telemetry-sdk/src/**': { lines: 95, branches: 90, functions: 95, statements: 95 },
         'services/supabase/functions/_lib/**': {

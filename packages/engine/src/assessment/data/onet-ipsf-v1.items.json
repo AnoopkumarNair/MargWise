@@ -1,0 +1,542 @@
+[
+  {
+    "id": "R1",
+    "area": "R",
+    "text": "Build kitchen cabinets",
+    "paper": {
+      "column": 1,
+      "row": 1
+    }
+  },
+  {
+    "id": "R2",
+    "area": "R",
+    "text": "Lay brick or tile",
+    "paper": {
+      "column": 1,
+      "row": 2
+    }
+  },
+  {
+    "id": "R3",
+    "area": "R",
+    "text": "Repair household appliances",
+    "paper": {
+      "column": 1,
+      "row": 3
+    }
+  },
+  {
+    "id": "R4",
+    "area": "R",
+    "text": "Raise fish in a fish hatchery",
+    "paper": {
+      "column": 1,
+      "row": 4
+    }
+  },
+  {
+    "id": "R5",
+    "area": "R",
+    "text": "Assemble electronic parts",
+    "paper": {
+      "column": 1,
+      "row": 5
+    }
+  },
+  {
+    "id": "R6",
+    "area": "R",
+    "text": "Drive a truck to deliver packages to offices and homes",
+    "paper": {
+      "column": 2,
+      "row": 1
+    }
+  },
+  {
+    "id": "R7",
+    "area": "R",
+    "text": "Test the quality of parts before shipment",
+    "paper": {
+      "column": 2,
+      "row": 2
+    }
+  },
+  {
+    "id": "R8",
+    "area": "R",
+    "text": "Repair and install locks",
+    "paper": {
+      "column": 2,
+      "row": 3
+    }
+  },
+  {
+    "id": "R9",
+    "area": "R",
+    "text": "Set up and operate machines to make products",
+    "paper": {
+      "column": 2,
+      "row": 4
+    }
+  },
+  {
+    "id": "R10",
+    "area": "R",
+    "text": "Put out forest fires",
+    "paper": {
+      "column": 2,
+      "row": 5
+    }
+  },
+  {
+    "id": "I1",
+    "area": "I",
+    "text": "Develop a new medicine",
+    "paper": {
+      "column": 1,
+      "row": 1
+    }
+  },
+  {
+    "id": "I2",
+    "area": "I",
+    "text": "Study ways to reduce water pollution",
+    "paper": {
+      "column": 1,
+      "row": 2
+    }
+  },
+  {
+    "id": "I3",
+    "area": "I",
+    "text": "Conduct chemical experiments",
+    "paper": {
+      "column": 1,
+      "row": 3
+    }
+  },
+  {
+    "id": "I4",
+    "area": "I",
+    "text": "Study the movement of planets",
+    "paper": {
+      "column": 1,
+      "row": 4
+    }
+  },
+  {
+    "id": "I5",
+    "area": "I",
+    "text": "Examine blood samples using a microscope",
+    "paper": {
+      "column": 1,
+      "row": 5
+    }
+  },
+  {
+    "id": "I6",
+    "area": "I",
+    "text": "Investigate the cause of a fire",
+    "paper": {
+      "column": 2,
+      "row": 1
+    }
+  },
+  {
+    "id": "I7",
+    "area": "I",
+    "text": "Develop a way to better predict the weather",
+    "paper": {
+      "column": 2,
+      "row": 2
+    }
+  },
+  {
+    "id": "I8",
+    "area": "I",
+    "text": "Work in a biology lab",
+    "paper": {
+      "column": 2,
+      "row": 3
+    }
+  },
+  {
+    "id": "I9",
+    "area": "I",
+    "text": "Invent a replacement for sugar",
+    "paper": {
+      "column": 2,
+      "row": 4
+    }
+  },
+  {
+    "id": "I10",
+    "area": "I",
+    "text": "Do laboratory tests to identify diseases",
+    "paper": {
+      "column": 2,
+      "row": 5
+    }
+  },
+  {
+    "id": "A1",
+    "area": "A",
+    "text": "Write books or plays",
+    "paper": {
+      "column": 1,
+      "row": 1
+    }
+  },
+  {
+    "id": "A2",
+    "area": "A",
+    "text": "Play a musical instrument",
+    "paper": {
+      "column": 1,
+      "row": 2
+    }
+  },
+  {
+    "id": "A3",
+    "area": "A",
+    "text": "Compose or arrange music",
+    "paper": {
+      "column": 1,
+      "row": 3
+    }
+  },
+  {
+    "id": "A4",
+    "area": "A",
+    "text": "Draw pictures",
+    "paper": {
+      "column": 1,
+      "row": 4
+    }
+  },
+  {
+    "id": "A5",
+    "area": "A",
+    "text": "Create special effects for movies",
+    "paper": {
+      "column": 1,
+      "row": 5
+    }
+  },
+  {
+    "id": "A6",
+    "area": "A",
+    "text": "Paint sets for plays",
+    "paper": {
+      "column": 2,
+      "row": 1
+    }
+  },
+  {
+    "id": "A7",
+    "area": "A",
+    "text": "Write scripts for movies or television shows",
+    "paper": {
+      "column": 2,
+      "row": 2
+    }
+  },
+  {
+    "id": "A8",
+    "area": "A",
+    "text": "Perform jazz or tap dance",
+    "paper": {
+      "column": 2,
+      "row": 3
+    }
+  },
+  {
+    "id": "A9",
+    "area": "A",
+    "text": "Sing in a band",
+    "paper": {
+      "column": 2,
+      "row": 4
+    }
+  },
+  {
+    "id": "A10",
+    "area": "A",
+    "text": "Edit movies",
+    "paper": {
+      "column": 2,
+      "row": 5
+    }
+  },
+  {
+    "id": "S1",
+    "area": "S",
+    "text": "Teach an individual an exercise routine",
+    "paper": {
+      "column": 1,
+      "row": 1
+    }
+  },
+  {
+    "id": "S2",
+    "area": "S",
+    "text": "Help people with personal or emotional problems",
+    "paper": {
+      "column": 1,
+      "row": 2
+    }
+  },
+  {
+    "id": "S3",
+    "area": "S",
+    "text": "Give career guidance to people",
+    "paper": {
+      "column": 1,
+      "row": 3
+    }
+  },
+  {
+    "id": "S4",
+    "area": "S",
+    "text": "Perform rehabilitation therapy",
+    "paper": {
+      "column": 1,
+      "row": 4
+    }
+  },
+  {
+    "id": "S5",
+    "area": "S",
+    "text": "Do volunteer work at a non-profit organization",
+    "paper": {
+      "column": 1,
+      "row": 5
+    }
+  },
+  {
+    "id": "S6",
+    "area": "S",
+    "text": "Teach children how to play sports",
+    "paper": {
+      "column": 2,
+      "row": 1
+    }
+  },
+  {
+    "id": "S7",
+    "area": "S",
+    "text": "Teach sign language to people who are deaf or hard of hearing",
+    "paper": {
+      "column": 2,
+      "row": 2
+    }
+  },
+  {
+    "id": "S8",
+    "area": "S",
+    "text": "Help conduct a group therapy session",
+    "paper": {
+      "column": 2,
+      "row": 3
+    }
+  },
+  {
+    "id": "S9",
+    "area": "S",
+    "text": "Take care of children at a day-care center",
+    "paper": {
+      "column": 2,
+      "row": 4
+    }
+  },
+  {
+    "id": "S10",
+    "area": "S",
+    "text": "Teach a high-school class",
+    "paper": {
+      "column": 2,
+      "row": 5
+    }
+  },
+  {
+    "id": "E1",
+    "area": "E",
+    "text": "Buy and sell stocks and bonds",
+    "paper": {
+      "column": 1,
+      "row": 1
+    }
+  },
+  {
+    "id": "E2",
+    "area": "E",
+    "text": "Manage a retail store",
+    "paper": {
+      "column": 1,
+      "row": 2
+    }
+  },
+  {
+    "id": "E3",
+    "area": "E",
+    "text": "Operate a beauty salon or barber shop",
+    "paper": {
+      "column": 1,
+      "row": 3
+    }
+  },
+  {
+    "id": "E4",
+    "area": "E",
+    "text": "Manage a department within a large company",
+    "paper": {
+      "column": 1,
+      "row": 4
+    }
+  },
+  {
+    "id": "E5",
+    "area": "E",
+    "text": "Start your own business",
+    "paper": {
+      "column": 1,
+      "row": 5
+    }
+  },
+  {
+    "id": "E6",
+    "area": "E",
+    "text": "Negotiate business contracts",
+    "paper": {
+      "column": 2,
+      "row": 1
+    }
+  },
+  {
+    "id": "E7",
+    "area": "E",
+    "text": "Represent a client in a lawsuit",
+    "paper": {
+      "column": 2,
+      "row": 2
+    }
+  },
+  {
+    "id": "E8",
+    "area": "E",
+    "text": "Market a new line of clothing",
+    "paper": {
+      "column": 2,
+      "row": 3
+    }
+  },
+  {
+    "id": "E9",
+    "area": "E",
+    "text": "Sell merchandise at a department store",
+    "paper": {
+      "column": 2,
+      "row": 4
+    }
+  },
+  {
+    "id": "E10",
+    "area": "E",
+    "text": "Manage a clothing store",
+    "paper": {
+      "column": 2,
+      "row": 5
+    }
+  },
+  {
+    "id": "C1",
+    "area": "C",
+    "text": "Develop a spreadsheet using computer software",
+    "paper": {
+      "column": 1,
+      "row": 1
+    }
+  },
+  {
+    "id": "C2",
+    "area": "C",
+    "text": "Proofread records or forms",
+    "paper": {
+      "column": 1,
+      "row": 2
+    }
+  },
+  {
+    "id": "C3",
+    "area": "C",
+    "text": "Install software across computers on a large network",
+    "paper": {
+      "column": 1,
+      "row": 3
+    }
+  },
+  {
+    "id": "C4",
+    "area": "C",
+    "text": "Operate a calculator",
+    "paper": {
+      "column": 1,
+      "row": 4
+    }
+  },
+  {
+    "id": "C5",
+    "area": "C",
+    "text": "Keep shipping and receiving records",
+    "paper": {
+      "column": 1,
+      "row": 5
+    }
+  },
+  {
+    "id": "C6",
+    "area": "C",
+    "text": "Calculate the wages of employees",
+    "paper": {
+      "column": 2,
+      "row": 1
+    }
+  },
+  {
+    "id": "C7",
+    "area": "C",
+    "text": "Inventory supplies using a hand-held computer",
+    "paper": {
+      "column": 2,
+      "row": 2
+    }
+  },
+  {
+    "id": "C8",
+    "area": "C",
+    "text": "Record rent payments",
+    "paper": {
+      "column": 2,
+      "row": 3
+    }
+  },
+  {
+    "id": "C9",
+    "area": "C",
+    "text": "Keep inventory records",
+    "paper": {
+      "column": 2,
+      "row": 4
+    }
+  },
+  {
+    "id": "C10",
+    "area": "C",
+    "text": "Stamp, sort, and distribute mail for an organization",
+    "paper": {
+      "column": 2,
+      "row": 5
+    }
+  }
+]
