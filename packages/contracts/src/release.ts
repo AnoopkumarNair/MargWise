@@ -5,10 +5,10 @@ import {
   CareerInterestVector,
   CareerLevel,
   Cluster,
-  Gate,
   Licensing,
   Route,
 } from './content/careers.ts';
+import { Gate, Subject } from './content/subjects.ts';
 import {
   AbroadUniversity,
   Cutoff,
@@ -98,6 +98,7 @@ export const CoreBundle = z
     interestVectors: z.array(CareerInterestVector),
     careerLevels: z.array(CareerLevel),
     routes: z.array(Route),
+    subjects: z.array(Subject),
     gates: z.array(Gate),
     licensing: z.array(Licensing),
     cities: z.array(City),
@@ -174,6 +175,14 @@ export const CoreBundle = z
       'route',
       routes,
       b.gates.map((g) => g.routeId),
+    );
+    const subjectKeys = new Set(b.subjects.map((s) => s.key));
+    mustExist(
+      ctx,
+      'gates',
+      'subject',
+      subjectKeys,
+      b.gates.flatMap((g) => [...g.requirement.allOf, ...g.requirement.anyOf.flat()]),
     );
     mustExist(
       ctx,

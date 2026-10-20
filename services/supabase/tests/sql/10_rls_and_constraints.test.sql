@@ -160,10 +160,20 @@ select pg_temp.expect_violation($$insert into content.provenance (status, unit, 
   values ('assumption', 'x', '2026-10-15', '2026-01-01', 'low', 'r')$$, 'provenance_valid_to_after_as_of');
 insert into content.careers (id, cluster_id, title) values ('psy-1', 'psychology', 'Fixture');
 insert into content.routes (id, career_id, title, kind) values ('psy-1-ma', 'psy-1', 'Fixture', 'main');
-select pg_temp.expect_violation($$insert into content.gates (route_id, subject_combination, status, reason, provenance_id)
-  values ('psy-1-ma', 'pcm', 'OPEN', 'r', '10000000-0000-4000-8000-000000000002')$$, '*');
-insert into content.gates (route_id, subject_combination, status, reason, provenance_id)
-  values ('psy-1-ma', 'pcm', 'OPEN', 'r', '10000000-0000-4000-8000-000000000001');
+select pg_temp.expect_violation($$insert into content.gates (route_id, all_of, when_unmet, reason, provenance_id)
+  values ('psy-1-ma', '{psychology}', 'LOCKED', 'r', '10000000-0000-4000-8000-000000000002')$$, '*');
+select pg_temp.expect_violation($$insert into content.gates (route_id, when_unmet, reason, provenance_id)
+  values ('psy-1-ma', 'BRIDGE', 'r', '10000000-0000-4000-8000-000000000001')$$, 'gates_bridge_note');
+select pg_temp.expect_violation($$insert into content.gates (route_id, any_of, when_unmet, reason, provenance_id)
+  values ('psy-1-ma', '[[]]', 'LOCKED', 'r', '10000000-0000-4000-8000-000000000001')$$, 'gates_any_of_shape');
+select pg_temp.expect_violation($$insert into content.gates (route_id, when_unmet, reason, provenance_id)
+  values ('psy-1-ma', 'OPEN', 'r', '10000000-0000-4000-8000-000000000001')$$, 'gates_when_unmet_check');
+insert into content.gates (route_id, all_of, any_of, when_unmet, bridge_note, reason, provenance_id)
+  values ('psy-1-ma', '{psychology}', '[["english"]]', 'BRIDGE', 'bridge', 'r', '10000000-0000-4000-8000-000000000001');
+select pg_temp.expect_violation($$insert into content.subjects (key, board, board_code, name, kind, provenance_id)
+  values ('psychology', 'CBSE', '037', 'Psychology', 'elective', '10000000-0000-4000-8000-000000000002')$$, '*');
+insert into content.subjects (key, board, board_code, name, kind, provenance_id)
+  values ('psychology', 'CBSE', '037', 'Psychology', 'elective', '10000000-0000-4000-8000-000000000001');
 insert into content.cities (id, name, tier, kind) values ('pune', 'Pune', 'metro', 'covered');
 select pg_temp.expect_violation($$insert into content.city_costs (city_id, item, low, likely, high, provenance_id)
   values ('pune', 'food', 3, 2, 4, '10000000-0000-4000-8000-000000000002')$$, 'city_costs_range');
@@ -175,10 +185,10 @@ select pg_temp.expect_violation($$insert into pipeline.review_decisions (task_id
   values ('20000000-0000-4000-8000-000000000006', 'reject', '00000000-0000-4000-8000-000000000001')$$, 'review_decisions_note_required');
 select pg_temp.expect_violation($$insert into telemetry.consents (session_id, tier, notice_version, teen_assent, deletion_code_hash, consented_at)
   values ('30000000-0000-4000-8000-000000000001', 2, 'v', false, repeat('f', 64), now())$$, 'consents_tier2_assent');
-select pg_temp.expect_violation($$insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, subject_combination, city_tier)
-  values ('30000000-0000-4000-8000-000000000001', 'game', array_fill(2::smallint, array[59]), '{}', '{}', 'no', 'mid', 11, 'pcm', 'metro')$$, 'item_responses_sixty');
-select pg_temp.expect_violation($$insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, subject_combination, city_tier)
-  values ('30000000-0000-4000-8000-000000000001', 'game', array_fill(5::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'pcm', 'metro')$$, 'item_responses_range');
+select pg_temp.expect_violation($$insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subjects, city_tier)
+  values ('30000000-0000-4000-8000-000000000001', 'game', array_fill(2::smallint, array[59]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{english,physics,chemistry,mathematics}', 'metro')$$, 'item_responses_sixty');
+select pg_temp.expect_violation($$insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subjects, city_tier)
+  values ('30000000-0000-4000-8000-000000000001', 'game', array_fill(5::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{english,physics,chemistry,mathematics}', 'metro')$$, 'item_responses_range');
 select pg_temp.expect_violation($$insert into content.releases (id, content_date, manifest_sha256, is_current) values
   ('2026-10-20.1', '2026-10-20', repeat('a', 64), true), ('2026-10-20.2', '2026-10-20', repeat('b', 64), true)$$, 'releases_single_current');
 
@@ -187,8 +197,8 @@ set local role service_role;
 insert into telemetry.consents (session_id, tier, notice_version, teen_assent, deletion_code_hash, consented_at)
   values ('30000000-0000-4000-8000-000000000001', 2, 'v', true, repeat('f', 64), now());
 insert into telemetry.events (event_id, session_id, seq, type, occurred_at) values (gen_random_uuid(), '30000000-0000-4000-8000-000000000001', 0, 'reveal_viewed', now());
-insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, subject_combination, city_tier)
-  values ('30000000-0000-4000-8000-000000000001', 'plain', array_fill(2::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'pcm', 'metro');
+insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subjects, city_tier)
+  values ('30000000-0000-4000-8000-000000000001', 'plain', array_fill(2::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{english,physics,chemistry,mathematics}', 'metro');
 insert into telemetry.coverage_requests (session_id, kind, label) values ('30000000-0000-4000-8000-000000000001', 'country', 'France');
 insert into telemetry.feedback (session_id, answers) values ('30000000-0000-4000-8000-000000000001', '{"recommend": 9}');
 insert into telemetry.deletion_requests (session_id) values ('30000000-0000-4000-8000-000000000001');

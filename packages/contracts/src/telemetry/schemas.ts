@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { IsoDateTime, Riasec, Slug, Uuid } from '../primitives.ts';
-import { SubjectCombination } from '../content/careers.ts';
+import { Board, SubjectKey } from '../content/subjects.ts';
 
 /**
  * Telemetry contracts (04 §5.2, §6). Every schema is closed (`strictObject`):
@@ -140,7 +140,9 @@ export const ItemResponses = z.strictObject({
   parentPresent: z.enum(['yes', 'no', 'unsure']),
   deviceClass: z.enum(['low', 'mid', 'high']),
   classYear: z.union([z.literal(11), z.literal(12)]),
-  subjectCombination: SubjectCombination,
+  board: Board,
+  /** Canonical subject keys only (no school names); 4–8 per student. */
+  subjects: z.array(SubjectKey).min(4).max(8),
   cityTier: z.enum(['metro', 'tier-2', 'tier-3']),
 });
 export type ItemResponses = z.infer<typeof ItemResponses>;

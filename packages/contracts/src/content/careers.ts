@@ -122,29 +122,6 @@ export const CareerLevel = z
   });
 export type CareerLevel = z.infer<typeof CareerLevel>;
 
-export const SubjectCombination = z.enum([
-  'pcm',
-  'pcb',
-  'pcmb',
-  'commerce-maths',
-  'commerce',
-  'humanities-maths',
-  'humanities',
-]);
-export type SubjectCombination = z.infer<typeof SubjectCombination>;
-
-export const GateStatus = z.enum(['OPEN', 'BRIDGE', 'LOCKED']);
-
-/** Route × subject combination eligibility. Always sourced (eligibility is never assumed). */
-export const Gate = z.strictObject({
-  routeId: Slug,
-  subjectCombination: SubjectCombination,
-  status: GateStatus,
-  reason: z.string().trim().min(1),
-  provenance: SourcedOnlyProvenance,
-});
-export type Gate = z.infer<typeof Gate>;
-
 export const RouteStage = z.strictObject({
   order: z.int().min(1),
   kind: z.enum(['ug', 'pg', 'bridge', 'professional', 'exam', 'internship', 'registration']),

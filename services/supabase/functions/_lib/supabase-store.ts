@@ -118,7 +118,8 @@ export function supabaseTelemetryStore(db: SchemaClient): TelemetryStore {
           parent_present: r.parentPresent,
           device_class: r.deviceClass,
           class_year: r.classYear,
-          subject_combination: r.subjectCombination,
+          board: r.board,
+          subjects: r.subjects,
           city_tier: r.cityTier,
         }),
       );

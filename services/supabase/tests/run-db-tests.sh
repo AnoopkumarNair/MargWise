@@ -27,7 +27,6 @@ for f in "$migrations"/*.sql; do
   echo "migrate: $(basename "$f")"
   psql_ -f "$f"
 done
-psql_ -f "$here/sql/01_grants_service_role.sql"
 for t in "$here"/sql/*.test.sql; do
   echo "test: $(basename "$t")"
   psql_ -f "$t" >/dev/null
