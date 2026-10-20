@@ -21,7 +21,15 @@ export const TaxRegimeRules = z
     regime: z.enum(['new', 'old']),
     slabs: z.array(TaxSlab).min(1),
     standardDeduction: Inr,
-    rebate: z.strictObject({ maxTaxableIncome: Inr, maxRebate: Inr }),
+    rebate: z.strictObject({
+      maxTaxableIncome: Inr,
+      maxRebate: Inr,
+      /**
+       * Marginal relief just above the rebate limit: tax payable is capped at
+       * the income above `maxTaxableIncome`. Whether it applies is a sourced fact.
+       */
+      marginalRelief: z.boolean().optional(),
+    }),
     cessRate: Ratio,
     /** Section 129 (ex-80E) education-loan interest deduction applies under this regime. */
     section129Allowed: z.boolean(),
