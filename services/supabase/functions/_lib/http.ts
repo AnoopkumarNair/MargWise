@@ -21,6 +21,9 @@ export type ParsedBody = { ok: true; value: unknown } | { ok: false; response: R
 
 /** Reads and parses a bounded JSON body. Never logs or echoes its contents. */
 export async function readJson(req: Request): Promise<ParsedBody> {
+  const declared = Number(req.headers.get('content-length'));
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES)
+    return { ok: false, response: json(413, { error: 'too_large' }) };
   const text = await req.text();
   if (new TextEncoder().encode(text).length > MAX_BODY_BYTES)
     return { ok: false, response: json(413, { error: 'too_large' }) };

@@ -20,8 +20,8 @@ export async function handleDeletionRequest(req: Request, deps: Deps): Promise<R
   const { sessionId, deletionCode } = parsed.data;
   if (!deps.rateLimiter.allow(`del:${sessionId}`)) return json(429, { error: 'rate_limited' });
 
-  const consent = await deps.store.latestConsent(sessionId);
-  if (!consent || consent.deletionCodeHash !== (await deps.sha256(deletionCode)))
+  const fixed = await deps.store.deletionCodeHash(sessionId);
+  if (fixed === null || fixed !== (await deps.sha256(deletionCode)))
     return json(404, { error: 'not_found' });
 
   await deps.store.requestDeletion(sessionId);

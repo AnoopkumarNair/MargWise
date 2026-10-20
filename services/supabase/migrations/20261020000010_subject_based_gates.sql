@@ -3,7 +3,10 @@
 -- route's gate is a sourced rule over canonical subject keys that the engine
 -- evaluates to OPEN / BRIDGE / LOCKED. Replaces the fixed stream list.
 -- content.gates and telemetry.item_responses.subject_combination held no data
--- in any environment when this ran.
+-- in any environment when this ran. (Originally numbered 007; renumbered to
+-- 010 before it was applied anywhere, because staging already had 008–009 —
+-- review #8.) Research telemetry stores coarse subject areas, never the exact
+-- subject list (review #9).
 --
 -- Reversible: yes, while gates hold no rule data. Down:
 --   drop table content.gates; drop table content.subjects; drop type content.board;
@@ -13,6 +16,7 @@ create type content.board as enum ('CBSE', 'CISCE');
 
 create table content.subjects (
   key text not null check (key ~ '^[a-z0-9]+(-[a-z0-9]+)*$'),
+  area text not null check (area in ('maths', 'sciences', 'computing', 'commerce-economics', 'humanities-social', 'arts-design', 'languages')),
   board content.board not null,
   board_code text not null check (length(board_code) between 1 and 16),
   name text not null,
@@ -64,4 +68,7 @@ create policy subjects_studio_read on content.subjects for select to authenticat
 alter table telemetry.item_responses drop column subject_combination;
 alter table telemetry.item_responses
   add column board text not null check (board in ('CBSE', 'CISCE')),
-  add column subjects text[] not null check (cardinality(subjects) between 4 and 8);
+  add column subject_areas text[] not null check (
+    cardinality(subject_areas) between 1 and 7
+    and subject_areas <@ array['maths', 'sciences', 'computing', 'commerce-economics', 'humanities-social', 'arts-design', 'languages']
+  );

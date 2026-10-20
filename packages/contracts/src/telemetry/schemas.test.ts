@@ -248,7 +248,7 @@ describe('ItemResponses (Tier 2, 03 §2.7)', () => {
     deviceClass: 'mid',
     classYear: 11,
     board: 'CBSE',
-    subjects: ['english', 'physics', 'chemistry', 'mathematics'],
+    subjectAreas: ['maths', 'sciences', 'languages'],
     cityTier: 'metro',
   };
 
@@ -256,12 +256,19 @@ describe('ItemResponses (Tier 2, 03 §2.7)', () => {
     expect(ItemResponses.safeParse(responses).success).toBe(true);
   });
 
-  it('rejects duplicate-free but oversized subject lists', () => {
+  it('carries coarse subject areas only — an exact subject list is rejected (review #9)', () => {
+    const { subjectAreas: _a, ...rest } = responses;
     expect(
       ItemResponses.safeParse({
-        ...responses,
-        subjects: Array.from({ length: 9 }, (_, i) => `s-${i}`),
+        ...rest,
+        subjects: ['psychology', 'painting', 'legal-studies', 'english'],
       }).success,
+    ).toBe(false);
+    expect(ItemResponses.safeParse({ ...responses, subjectAreas: ['psychology'] }).success).toBe(
+      false,
+    );
+    expect(
+      ItemResponses.safeParse({ ...responses, subjectAreas: ['maths', 'maths'] }).success,
     ).toBe(false);
   });
 

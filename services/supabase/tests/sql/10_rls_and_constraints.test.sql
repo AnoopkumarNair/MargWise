@@ -9,10 +9,43 @@ begin
     execute format('set local role %I', p_role);
     perform set_config('request.jwt.claim.sub', p_uid, true);
     execute p_sql;
-  exception when insufficient_privilege or check_violation then ok := true;
+  -- Only a privilege/RLS denial counts. A CHECK failure must not make an RLS
+  -- test pass (review #12); use expect_rejected for rule violations.
+  exception when insufficient_privilege then ok := true;
   end;
   reset role;
   if not ok then raise exception 'expected % to be denied: %', p_role, p_sql; end if;
+end $$;
+
+create or replace function pg_temp.expect_rejected(p_role text, p_sql text, p_uid text) returns void
+language plpgsql as $$
+declare ok boolean := false;
+begin
+  begin
+    execute format('set local role %I', p_role);
+    perform set_config('request.jwt.claim.sub', p_uid, true);
+    execute p_sql;
+  exception when insufficient_privilege or check_violation or unique_violation then ok := true;
+  end;
+  reset role;
+  if not ok then raise exception 'expected % to be rejected: %', p_role, p_sql; end if;
+end $$;
+
+create or replace function pg_temp.act(p_uid text, p_sql text) returns void
+language plpgsql as $$
+begin
+  execute 'set local role authenticated';
+  perform set_config('request.jwt.claim.sub', p_uid, true);
+  execute p_sql;
+  reset role;
+end $$;
+
+create or replace function pg_temp.expect_status(p_task uuid, p_status text) returns void
+language plpgsql as $$
+declare s text;
+begin
+  select status into s from pipeline.review_tasks where id = p_task;
+  if s is distinct from p_status then raise exception 'task %: expected %, got %', p_task, p_status, s; end if;
 end $$;
 
 create or replace function pg_temp.expect_rows(p_role text, p_sql text, p_expected bigint, p_uid text default '') returns void
@@ -77,17 +110,14 @@ insert into auth.users (id) values
   ('00000000-0000-4000-8000-000000000001'),  -- owner
   ('00000000-0000-4000-8000-000000000002'),  -- psychology reviewer
   ('00000000-0000-4000-8000-000000000003'),  -- viewer
-  ('00000000-0000-4000-8000-000000000004');  -- signed-in non-member
+  ('00000000-0000-4000-8000-000000000004'),  -- signed-in non-member
+  ('00000000-0000-4000-8000-000000000005');  -- general-stream reviewer
 insert into private.studio_members (user_id, role, streams) values
   ('00000000-0000-4000-8000-000000000001', 'owner', '{}'),
   ('00000000-0000-4000-8000-000000000002', 'reviewer', '{psychology}'),
-  ('00000000-0000-4000-8000-000000000003', 'viewer', '{}');
+  ('00000000-0000-4000-8000-000000000003', 'viewer', '{}'),
+  ('00000000-0000-4000-8000-000000000005', 'reviewer', '{general}');
 
-insert into content.clusters (id, title, summary) values ('psychology', 'Psychology', 'fixture');
-insert into content.provenance (id, status, unit, as_of, confidence, source_url, quote, snapshot_id)
-  values ('10000000-0000-4000-8000-000000000001', 'sourced', 'gate_status', '2026-10-15', 'high', 'https://example.gov.in/x', 'fixture quote', gen_random_uuid());
-insert into content.provenance (id, status, unit, as_of, confidence, rationale)
-  values ('10000000-0000-4000-8000-000000000002', 'assumption', 'ratio', '2026-10-15', 'low', 'fixture rationale');
 
 insert into pipeline.sources (id, title, owner_domain, url, type, schedule, extractor, entities, severity_default, terms_note)
   values ('fixture-source', 'Fixture', 'loans', 'https://example.gov.in/rates', 'html', 'weekly', 'fixture-parser@1', '{loan_schemes}', 'high', 'fixture');
@@ -103,6 +133,19 @@ insert into pipeline.change_events (id, source_id, extraction_id, kind, entity, 
   values ('20000000-0000-4000-8000-000000000005', 'fixture-source', '20000000-0000-4000-8000-000000000002', 'value_changed', 'loan_schemes', 'k', 'rate', 'high');
 insert into pipeline.review_tasks (id, change_event_id, stream, severity)
   values ('20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000005', 'finance', 'high');
+
+insert into pipeline.change_events (id, source_id, extraction_id, kind, entity, entity_key, field, severity)
+  values ('20000000-0000-4000-8000-000000000007', 'fixture-source', '20000000-0000-4000-8000-000000000002', 'value_changed', 'links', 'k', 'url', 'low'),
+         ('20000000-0000-4000-8000-000000000009', 'fixture-source', '20000000-0000-4000-8000-000000000002', 'value_changed', 'gates', 'k2', 'status', 'critical');
+insert into pipeline.review_tasks (id, change_event_id, stream, severity)
+  values ('20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000007', 'general', 'low'),
+         ('20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000009', 'psychology', 'critical');
+
+insert into content.clusters (id, title, summary) values ('psychology', 'Psychology', 'fixture');
+insert into content.provenance (id, status, unit, as_of, confidence, source_url, quote, snapshot_id)
+  values ('10000000-0000-4000-8000-000000000001', 'sourced', 'gate_status', '2026-10-15', 'high', 'https://example.gov.in/x', 'fixture quote', '20000000-0000-4000-8000-000000000001');
+insert into content.provenance (id, status, unit, as_of, confidence, rationale)
+  values ('10000000-0000-4000-8000-000000000002', 'assumption', 'ratio', '2026-10-15', 'low', 'fixture rationale');
 
 insert into telemetry.sessions (id) values ('30000000-0000-4000-8000-000000000001');
 
@@ -134,7 +177,7 @@ select pg_temp.expect_denied('anon', $$insert into content.clusters (id, title, 
 -- 3. authenticated: Studio members read content/pipeline; non-members see nothing.
 select pg_temp.expect_rows('authenticated', 'select * from content.clusters', 1, '00000000-0000-4000-8000-000000000003');
 select pg_temp.expect_rows('authenticated', 'select * from content.clusters', 0, '00000000-0000-4000-8000-000000000004');
-select pg_temp.expect_rows('authenticated', 'select * from pipeline.review_tasks', 2, '00000000-0000-4000-8000-000000000002');
+select pg_temp.expect_rows('authenticated', 'select * from pipeline.review_tasks', 4, '00000000-0000-4000-8000-000000000002');
 select pg_temp.expect_rows('authenticated', 'select * from pipeline.review_tasks', 0, '00000000-0000-4000-8000-000000000004');
 
 -- 4. Nobody but the service role touches telemetry — not even the owner.
@@ -146,23 +189,40 @@ select pg_temp.expect_denied('authenticated', $$select telemetry.delete_session(
 select pg_temp.expect_denied('authenticated', $$insert into content.clusters (id, title, summary) values ('law', 'x', 'y')$$, '00000000-0000-4000-8000-000000000001');
 select pg_temp.expect_denied('authenticated', $$update content.clusters set title = 'x'$$, '00000000-0000-4000-8000-000000000001');
 
--- 6. Review decisions: stream reviewer yes, other stream no, viewer no, impersonation no.
-set local role authenticated;
-select set_config('request.jwt.claim.sub', '00000000-0000-4000-8000-000000000002', true);
-insert into pipeline.review_decisions (task_id, decision, reviewer)
-  values ('20000000-0000-4000-8000-000000000004', 'approve', '00000000-0000-4000-8000-000000000002');
-reset role;
-do $$ begin
-  if (select status from pipeline.review_tasks where id = '20000000-0000-4000-8000-000000000004') <> 'approved' then
-    raise exception 'decision trigger did not approve the task';
-  end if;
-end $$;
-select pg_temp.expect_denied('authenticated', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
+-- 6. Review workflow (05 §8; review #5).
+-- 6a. Critical: the stream reviewer's approval alone leaves the task pending;
+--     the owner's approval completes it. One decision per person; none after resolution.
+select pg_temp.act('00000000-0000-4000-8000-000000000002', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
+  values ('20000000-0000-4000-8000-000000000004', 'approve', '00000000-0000-4000-8000-000000000002')$$);
+select pg_temp.expect_status('20000000-0000-4000-8000-000000000004', 'pending');
+select pg_temp.expect_rejected('authenticated', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
+  values ('20000000-0000-4000-8000-000000000004', 'approve', '00000000-0000-4000-8000-000000000002')$$, '00000000-0000-4000-8000-000000000002');
+select pg_temp.act('00000000-0000-4000-8000-000000000001', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
+  values ('20000000-0000-4000-8000-000000000004', 'approve', '00000000-0000-4000-8000-000000000001')$$);
+select pg_temp.expect_status('20000000-0000-4000-8000-000000000004', 'approved');
+select pg_temp.expect_rejected('authenticated', $$insert into pipeline.review_decisions (task_id, decision, note, reviewer)
+  values ('20000000-0000-4000-8000-000000000004', 'reject', 'late', '00000000-0000-4000-8000-000000000005')$$, '00000000-0000-4000-8000-000000000005');
+-- 6b. Critical: a single rejection is final.
+select pg_temp.act('00000000-0000-4000-8000-000000000002', $$insert into pipeline.review_decisions (task_id, decision, note, reviewer)
+  values ('20000000-0000-4000-8000-000000000010', 'reject', 'wrong table', '00000000-0000-4000-8000-000000000002')$$);
+select pg_temp.expect_status('20000000-0000-4000-8000-000000000010', 'rejected');
+-- 6c. High (finance stream): other-stream reviewer, viewer and impersonation are refused; owner decides.
+select pg_temp.expect_rejected('authenticated', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
   values ('20000000-0000-4000-8000-000000000006', 'approve', '00000000-0000-4000-8000-000000000002')$$, '00000000-0000-4000-8000-000000000002');
-select pg_temp.expect_denied('authenticated', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
+select pg_temp.expect_rejected('authenticated', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
   values ('20000000-0000-4000-8000-000000000006', 'approve', '00000000-0000-4000-8000-000000000003')$$, '00000000-0000-4000-8000-000000000003');
-select pg_temp.expect_denied('authenticated', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
+select pg_temp.expect_rejected('authenticated', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
   values ('20000000-0000-4000-8000-000000000006', 'approve', '00000000-0000-4000-8000-000000000002')$$, '00000000-0000-4000-8000-000000000001');
+select pg_temp.act('00000000-0000-4000-8000-000000000001', $$insert into pipeline.review_decisions (task_id, decision, note, edited_value, reviewer)
+  values ('20000000-0000-4000-8000-000000000006', 'edit', 'unit fix', '0.0815', '00000000-0000-4000-8000-000000000001')$$);
+select pg_temp.expect_status('20000000-0000-4000-8000-000000000006', 'edited');
+-- 6d. Low: owner only, even for a reviewer of that stream.
+select pg_temp.expect_rejected('authenticated', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
+  values ('20000000-0000-4000-8000-000000000008', 'approve', '00000000-0000-4000-8000-000000000005')$$, '00000000-0000-4000-8000-000000000005');
+select pg_temp.act('00000000-0000-4000-8000-000000000001', $$insert into pipeline.review_decisions (task_id, decision, reviewer)
+  values ('20000000-0000-4000-8000-000000000008', 'approve', '00000000-0000-4000-8000-000000000001')$$);
+select pg_temp.expect_status('20000000-0000-4000-8000-000000000008', 'approved');
+-- 6e. Nobody updates tasks directly.
 select pg_temp.expect_rows('authenticated', $$select 1 where (select private.can_review('finance'))$$, 1, '00000000-0000-4000-8000-000000000001');
 select pg_temp.expect_denied('authenticated', $$update pipeline.review_tasks set status = 'approved'$$, '00000000-0000-4000-8000-000000000001');
 
@@ -173,6 +233,16 @@ select pg_temp.expect_violation($$insert into content.provenance (status, unit, 
   values ('assumption', 'x', '2026-10-15', 'low', '  ')$$, 'provenance_assumption_rationale');
 select pg_temp.expect_violation($$insert into content.provenance (status, unit, as_of, confidence, source_url, quote, snapshot_id)
   values ('sourced', 'x', '2026-10-15', 'high', 'https://www.glassdoor.co.in/x', 'q', gen_random_uuid())$$, 'provenance_not_forbidden_source');
+select pg_temp.expect_violation($$insert into content.provenance (status, unit, as_of, confidence, source_url, quote, snapshot_id)
+  values ('sourced', 'x', '2026-10-15', 'high', 'https://www.linkedin.com./in/x', 'q', '20000000-0000-4000-8000-000000000001')$$, 'provenance_not_forbidden_source');
+select pg_temp.expect_violation($$insert into content.provenance (status, unit, as_of, confidence, source_url, quote, snapshot_id)
+  values ('sourced', 'x', '2026-10-15', 'high', 'https://x@www.reddit.com/r/india', 'q', '20000000-0000-4000-8000-000000000001')$$, 'provenance_not_forbidden_source');
+select pg_temp.expect_violation($$insert into content.provenance (status, unit, as_of, confidence, source_url, quote, snapshot_id)
+  values ('sourced', 'x', '2026-10-15', 'high', 'https://www.glassdoor.co.uk/Salary', 'q', '20000000-0000-4000-8000-000000000001')$$, 'provenance_not_forbidden_source');
+insert into content.provenance (status, unit, as_of, confidence, source_url, quote, snapshot_id)
+  values ('sourced', 'x', '2026-10-15', 'high', 'https://www.nirfindia.org/x', 'q', '20000000-0000-4000-8000-000000000001');
+select pg_temp.expect_violation($$insert into content.provenance (status, unit, as_of, confidence, source_url, quote, snapshot_id)
+  values ('sourced', 'x', '2026-10-15', 'high', 'https://a.gov.in/x', 'q', gen_random_uuid())$$, 'provenance_snapshot_fk');
 select pg_temp.expect_violation($$insert into content.provenance (status, unit, as_of, valid_to, confidence, rationale)
   values ('assumption', 'x', '2026-10-15', '2026-01-01', 'low', 'r')$$, 'provenance_valid_to_after_as_of');
 insert into content.careers (id, cluster_id, title) values ('psy-1', 'psychology', 'Fixture');
@@ -187,10 +257,16 @@ select pg_temp.expect_violation($$insert into content.gates (route_id, when_unme
   values ('psy-1-ma', 'OPEN', 'r', '10000000-0000-4000-8000-000000000001')$$, 'gates_when_unmet_check');
 insert into content.gates (route_id, all_of, any_of, when_unmet, bridge_note, reason, provenance_id)
   values ('psy-1-ma', '{psychology}', '[["english"]]', 'BRIDGE', 'bridge', 'r', '10000000-0000-4000-8000-000000000001');
-select pg_temp.expect_violation($$insert into content.subjects (key, board, board_code, name, kind, provenance_id)
-  values ('psychology', 'CBSE', '037', 'Psychology', 'elective', '10000000-0000-4000-8000-000000000002')$$, '*');
-insert into content.subjects (key, board, board_code, name, kind, provenance_id)
-  values ('psychology', 'CBSE', '037', 'Psychology', 'elective', '10000000-0000-4000-8000-000000000001');
+select pg_temp.expect_violation($$insert into content.subjects (key, area, board, board_code, name, kind, provenance_id)
+  values ('psychology', 'humanities-social', 'CBSE', '037', 'Psychology', 'elective', '10000000-0000-4000-8000-000000000002')$$, '*');
+insert into content.subjects (key, area, board, board_code, name, kind, provenance_id)
+  values ('psychology', 'humanities-social', 'CBSE', '037', 'Psychology', 'elective', '10000000-0000-4000-8000-000000000001');
+-- Rule 3: an O*NET vector cannot rest on an assumption.
+select pg_temp.expect_violation($$insert into content.career_onet_map (career_id, onet_soc, onet_release, oi_r, oi_i, oi_a, oi_s, oi_e, oi_c, provenance_id)
+  values ('psy-1', '19-3033.00', '30.0', 1, 6, 3, 7, 2, 3, '10000000-0000-4000-8000-000000000002')$$, '*');
+-- Rule 2: sourced provenance used by sourced-only facts cannot be downgraded.
+select pg_temp.expect_violation($$update content.provenance set status = 'assumption', rationale = 'r'
+  where id = '10000000-0000-4000-8000-000000000001'$$, '*');
 insert into content.cities (id, name, tier, kind) values ('pune', 'Pune', 'metro', 'covered');
 select pg_temp.expect_violation($$insert into content.city_costs (city_id, item, low, likely, high, provenance_id)
   values ('pune', 'food', 3, 2, 4, '10000000-0000-4000-8000-000000000002')$$, 'city_costs_range');
@@ -199,13 +275,15 @@ select pg_temp.expect_violation($$insert into content.loan_schemes (id, lender, 
 select pg_temp.expect_violation($$insert into pipeline.extractions (snapshot_id, extractor, method, fields, quotes, confidence)
   values ('20000000-0000-4000-8000-000000000001', 'llm:x@1', 'llm', '{}', '{}', 'high')$$, 'extractions_llm_confidence');
 select pg_temp.expect_violation($$insert into pipeline.review_decisions (task_id, decision, reviewer)
-  values ('20000000-0000-4000-8000-000000000006', 'reject', '00000000-0000-4000-8000-000000000001')$$, 'review_decisions_note_required');
+  values ('20000000-0000-4000-8000-000000000004', 'reject', '00000000-0000-4000-8000-000000000001')$$, 'review_decisions_note_required');
+select pg_temp.expect_violation($$insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subject_areas, city_tier)
+  values ('30000000-0000-4000-8000-000000000001', 'game', array_fill(2::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{psychology}', 'metro')$$, '*');
 select pg_temp.expect_violation($$insert into telemetry.consents (session_id, tier, notice_version, teen_assent, deletion_code_hash, consented_at)
   values ('30000000-0000-4000-8000-000000000001', 2, 'v', false, repeat('f', 64), now())$$, 'consents_tier2_assent');
-select pg_temp.expect_violation($$insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subjects, city_tier)
-  values ('30000000-0000-4000-8000-000000000001', 'game', array_fill(2::smallint, array[59]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{english,physics,chemistry,mathematics}', 'metro')$$, 'item_responses_sixty');
-select pg_temp.expect_violation($$insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subjects, city_tier)
-  values ('30000000-0000-4000-8000-000000000001', 'game', array_fill(5::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{english,physics,chemistry,mathematics}', 'metro')$$, 'item_responses_range');
+select pg_temp.expect_violation($$insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subject_areas, city_tier)
+  values ('30000000-0000-4000-8000-000000000001', 'game', array_fill(2::smallint, array[59]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{maths,sciences,languages}', 'metro')$$, 'item_responses_sixty');
+select pg_temp.expect_violation($$insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subject_areas, city_tier)
+  values ('30000000-0000-4000-8000-000000000001', 'game', array_fill(5::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{maths,sciences,languages}', 'metro')$$, 'item_responses_range');
 select pg_temp.expect_violation($$insert into content.releases (id, content_date, manifest_sha256, is_current) values
   ('2026-10-20.1', '2026-10-20', repeat('a', 64), true), ('2026-10-20.2', '2026-10-20', repeat('b', 64), true)$$, 'releases_single_current');
 
@@ -214,8 +292,8 @@ set local role service_role;
 insert into telemetry.consents (session_id, tier, notice_version, teen_assent, deletion_code_hash, consented_at)
   values ('30000000-0000-4000-8000-000000000001', 2, 'v', true, repeat('f', 64), now());
 insert into telemetry.events (event_id, session_id, seq, type, occurred_at, actor) values (gen_random_uuid(), '30000000-0000-4000-8000-000000000001', 0, 'reveal_viewed', now(), 'teen');
-insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subjects, city_tier)
-  values ('30000000-0000-4000-8000-000000000001', 'plain', array_fill(2::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{english,physics,chemistry,mathematics}', 'metro');
+insert into telemetry.item_responses (session_id, arm, item_values, area_scores, flags, parent_present, device_class, class_year, board, subject_areas, city_tier)
+  values ('30000000-0000-4000-8000-000000000001', 'plain', array_fill(2::smallint, array[60]), '{}', '{}', 'no', 'mid', 11, 'CBSE', '{maths,sciences,languages}', 'metro');
 insert into telemetry.coverage_requests (session_id, kind, label) values ('30000000-0000-4000-8000-000000000001', 'country', 'France');
 insert into telemetry.feedback (session_id, answers) values ('30000000-0000-4000-8000-000000000001', '{"recommend": 9}');
 insert into telemetry.deletion_requests (session_id) values ('30000000-0000-4000-8000-000000000001');

@@ -8,6 +8,7 @@ import {
   TIER_REQUIRED,
 } from '@margwise/contracts';
 import { json, preflight, readJson, schemaViolation, sessionIdOf } from './http.ts';
+import { clientIp } from './util.ts';
 import type { Deps } from './ports.ts';
 
 export { MAX_BODY_BYTES } from './http.ts';
@@ -65,15 +66,16 @@ export async function handleTelemetryIngest(req: Request, deps: Deps): Promise<R
   const pii = findPiiKeysInValue(body.value);
   if (pii.length > 0) return json(400, { error: 'pii_key', paths: pii });
 
-  if (!(await deps.store.minorsTelemetryEnabled()))
-    return json(403, { error: 'telemetry_disabled' });
-
+  // Rate limits run before any database call (review #7).
   const sessionId = sessionIdOf(body.value);
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+  const ip = clientIp(req.headers);
   if (sessionId && !deps.rateLimiter.allow(`s:${sessionId}`))
     return json(429, { error: 'rate_limited' });
   if (ip && !deps.rateLimiter.allow(`ip:${await deps.sha256(ip)}`))
     return json(429, { error: 'rate_limited' });
+
+  if (!(await deps.store.minorsTelemetryEnabled()))
+    return json(403, { error: 'telemetry_disabled' });
 
   const { schema, minTier, write } = ROUTES[route];
   const parsed = schema.safeParse(body.value);
@@ -82,6 +84,11 @@ export async function handleTelemetryIngest(req: Request, deps: Deps): Promise<R
   if (minTier !== null) {
     const consent = await deps.store.latestConsent(parsed.data.sessionId);
     if (!consent || consent.tier < minTier) return json(403, { error: 'no_consent' });
+  } else {
+    // The deletion code is fixed by the session's first consent (review #6).
+    const fixed = await deps.store.deletionCodeHash(parsed.data.sessionId);
+    const offered = (parsed.data as { deletionCodeHash: string }).deletionCodeHash;
+    if (fixed !== null && fixed !== offered) return json(409, { error: 'deletion_code_mismatch' });
   }
 
   await (write as (d: Deps, v: unknown) => Promise<void>)(deps, parsed.data);

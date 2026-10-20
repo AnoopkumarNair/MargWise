@@ -1,4 +1,4 @@
-import type { TelemetryEvent } from '@margwise/contracts';
+import type { ConsentRecord, TelemetryEvent } from '@margwise/contracts';
 
 /** A queued non-event payload (responses, coverage request, feedback). */
 export interface PendingPayload {
@@ -10,6 +10,8 @@ export interface PendingPayload {
 export interface QueueState {
   events: TelemetryEvent[];
   pending: PendingPayload[];
+  /** Consent record not yet accepted by the server (survives restarts). */
+  consent?: ConsentRecord;
 }
 
 /** Durable on-device queue. The web app injects an IndexedDB implementation. */

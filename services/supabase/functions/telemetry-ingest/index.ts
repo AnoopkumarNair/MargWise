@@ -2,7 +2,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { handleTelemetryIngest } from '../_lib/telemetry-ingest.ts';
 import { supabaseTelemetryStore, type SchemaClient } from '../_lib/supabase-store.ts';
-import { sha256Hex, windowRateLimiter } from '../_lib/util.ts';
+import { cachedFlag, sha256Hex, windowRateLimiter } from '../_lib/util.ts';
 
 const url = Deno.env.get('SUPABASE_URL');
 const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
@@ -12,8 +12,11 @@ const db = createClient(url, serviceKey, {
   auth: { persistSession: false },
   db: { schema: 'telemetry' },
 });
+const store = supabaseTelemetryStore(db as unknown as SchemaClient);
+// Kill switch read at most every 10 s per isolate (review #7).
+const minorsTelemetryEnabled = cachedFlag(() => store.minorsTelemetryEnabled(), 10_000);
 const deps = {
-  store: supabaseTelemetryStore(db as unknown as SchemaClient),
+  store: { ...store, minorsTelemetryEnabled },
   rateLimiter: windowRateLimiter({ limit: 120, windowMs: 60_000 }),
   sha256: sha256Hex,
 };

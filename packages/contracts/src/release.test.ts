@@ -180,10 +180,47 @@ describe('CoreBundle referential integrity (05 §9: broken reference refuses the
       boardCode: '037',
       name: 'Psychology',
       kind: 'elective',
+      area: 'humanities-social',
       provenance: sourcedProv(),
     };
     expect(
       CoreBundle.safeParse({ ...core, routes: [route], gates: [gate], subjects: [subject] })
+        .success,
+    ).toBe(true);
+  });
+
+  it('rejects two gates for the same route and board (review #18)', () => {
+    const route = {
+      id: 'psy-1-ba',
+      careerId: 'psy-1',
+      title: 't',
+      kind: 'main',
+      stages: [
+        {
+          order: 1,
+          kind: 'ug',
+          title: 'u',
+          durationYears: { value: 3, provenance: sourcedProv() },
+          entranceTests: [],
+          country: 'IN',
+        },
+      ],
+    };
+    const gate = {
+      routeId: 'psy-1-ba',
+      requirement: { allOf: [], anyOf: [] },
+      whenUnmet: 'LOCKED',
+      reason: 'x',
+      provenance: sourcedProv(),
+    };
+    const result = CoreBundle.safeParse({
+      ...core,
+      routes: [route],
+      gates: [gate, { ...gate, whenUnmet: 'BRIDGE', bridgeNote: 'b' }],
+    });
+    expect(JSON.stringify(result.error?.issues)).toContain('Duplicate gate psy-1-ba/all-boards');
+    expect(
+      CoreBundle.safeParse({ ...core, routes: [route], gates: [gate, { ...gate, board: 'CISCE' }] })
         .success,
     ).toBe(true);
   });

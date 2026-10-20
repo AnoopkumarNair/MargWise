@@ -97,10 +97,11 @@ export const Manifest = z
 export type Manifest = z.infer<typeof Manifest>;
 
 type Ctx = z.RefinementCtx;
-function uniqueIds(ctx: Ctx, path: string, ids: string[]) {
+function uniqueIds(ctx: Ctx, path: string, ids: string[], what = 'id') {
   const seen = new Set<string>();
   for (const id of ids) {
-    if (seen.has(id)) ctx.addIssue({ code: 'custom', message: `Duplicate id ${id}`, path: [path] });
+    if (seen.has(id))
+      ctx.addIssue({ code: 'custom', message: `Duplicate ${what} ${id}`, path: [path] });
     seen.add(id);
   }
   return seen;
@@ -197,6 +198,13 @@ export const CoreBundle = z
       'route',
       routes,
       b.gates.map((g) => g.routeId),
+    );
+    // One gate per route and board; a board-specific gate overrides the all-boards gate.
+    uniqueIds(
+      ctx,
+      'gates',
+      b.gates.map((g) => `${g.routeId}/${g.board ?? 'all-boards'}`),
+      'gate',
     );
     const subjectKeys = new Set(b.subjects.map((s) => s.key));
     mustExist(

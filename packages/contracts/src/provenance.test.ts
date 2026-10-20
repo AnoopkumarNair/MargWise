@@ -90,6 +90,17 @@ describe('Forbidden sources (CLAUDE.md rule 2)', () => {
     expect(isForbiddenSource(url)).toBe(false);
   });
 
+  it.each([
+    'https://www.linkedin.com./in/x',
+    'https://WWW.LinkedIn.COM/x',
+    'https://www.glassdoor.co.uk/Salary',
+    'https://www.glassdoor.ca/x',
+    'https://www.glassdoor.com.au/x',
+    'https://user@www.reddit.com/r/x',
+  ])('rejects bypass attempt %s (review #14)', (url) => {
+    expect(isForbiddenSource(url)).toBe(true);
+  });
+
   it('does not match look-alike suffixes (e.g. notreddit.com is not reddit.com)', () => {
     expect(isForbiddenSource('https://notreddit.com/x')).toBe(false);
   });

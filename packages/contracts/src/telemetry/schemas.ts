@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { IsoDateTime, Riasec, Slug, Uuid } from '../primitives.ts';
-import { Board, SubjectKey } from '../content/subjects.ts';
+import { Board, SubjectArea } from '../content/subjects.ts';
 
 /**
  * Telemetry contracts (04 §5.2, §6). Every schema is closed (`strictObject`):
@@ -59,8 +59,10 @@ export type Actor = z.infer<typeof Actor>;
 
 /**
  * Developer-defined control id from a `data-track` attribute, e.g. `dial.like`
- * or `map.hall_psy-1`. Lowercase identifier shape only, so user-entered text
- * (names, emails, numbers) can never pass as a control id.
+ * or `map.hall_psy-1`. The shape rejects most free text (spaces, capitals,
+ * `@`, leading digits), but a lowercase word like `priya` would still match:
+ * the real guarantee is that `data-track` values are static strings written by
+ * developers, never user input (review #17).
  */
 export const ControlId = z
   .string()
@@ -171,8 +173,12 @@ export const ItemResponses = z.strictObject({
   deviceClass: z.enum(['low', 'mid', 'high']),
   classYear: z.union([z.literal(11), z.literal(12)]),
   board: Board,
-  /** Canonical subject keys only (no school names); 4–8 per student. */
-  subjects: z.array(SubjectKey).min(4).max(8),
+  /** Coarse areas of the student's subjects (03 §2.7 "subject combination"), never the exact list. */
+  subjectAreas: z
+    .array(SubjectArea)
+    .min(1)
+    .max(SubjectArea.options.length)
+    .refine((a) => new Set(a).size === a.length, 'Duplicate subject area'),
   cityTier: z.enum(['metro', 'tier-2', 'tier-3']),
 });
 export type ItemResponses = z.infer<typeof ItemResponses>;
