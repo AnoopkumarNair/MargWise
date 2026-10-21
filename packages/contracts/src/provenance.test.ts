@@ -68,7 +68,7 @@ describe('Provenance — rule 2: never invent a number', () => {
   });
 });
 
-describe('Forbidden sources (CLAUDE.md rule 2)', () => {
+describe('Forbidden sources (RULES.md rule 2)', () => {
   it.each([
     'https://www.linkedin.com/salary/x',
     'https://glassdoor.co.in/Salaries/x',

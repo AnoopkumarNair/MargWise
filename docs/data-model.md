@@ -3,7 +3,7 @@
 Source of truth: SQL in `services/supabase/migrations/` and Zod schemas in
 `packages/contracts/src/`. Constraints are duplicated deliberately: the
 contracts reject bad data on the phone, in the pipeline and in Edge
-Functions; the database rejects it again (05 §9 release gate, CLAUDE.md
+Functions; the database rejects it again (05 §9 release gate, RULES.md
 rule 2). DB tests: `services/supabase/tests/sql/`.
 
 ## ERD — content

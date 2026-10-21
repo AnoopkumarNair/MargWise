@@ -1,4 +1,4 @@
-# Margwise — rules for anyone (human or agent) changing this repo
+# Margwise — rules for anyone changing this repo
 
 Margwise is a phone-first career and education game for Indian families with a
 Class 11–12 student. Specs live in `docs/` (01 product, 02 game, 03 engines,

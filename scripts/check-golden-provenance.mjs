@@ -1,4 +1,4 @@
-// CLAUDE.md rule 8 / 04 §10: golden JSON may change only together with the
+// RULES.md rule 8 / 04 §10: golden JSON may change only together with the
 // spreadsheet it is exported from. Fails if docs/golden/*.json changed against
 // the base ref while docs/golden/golden-cases.xlsx did not.
 import { execFileSync } from 'node:child_process';
