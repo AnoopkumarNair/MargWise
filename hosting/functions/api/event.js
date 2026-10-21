@@ -19,6 +19,7 @@ const V = {
   fields: d => ({ order: arr(d.order, 24, x => str(x, 12)), scores: arr(d.scores, 24, num) }),
   field_open: d => ({ id: str(d.id, 12) }),
   abroad: d => ({ field: d.field ? str(d.field, 12) : null, country: str(d.country, 3), route: d.route === 'B' ? 'B' : 'A' }),
+  apt: d => { const s = {}; if (d.s && typeof d.s === 'object') for (const k of ['N', 'V', 'S', 'P']) { const n = int(d.s[k], 0, 3); if (n !== null) s[k] = n; } const items = {}; if (d.items && typeof d.items === 'object') for (const k of ['N', 'V', 'S', 'P']) items[k] = arr(d.items[k], 2, x => (Array.isArray(x) ? x.slice(0, 4).map(v => int(v, 0, 600000)).filter(v => v !== null) : null)); return { s, items }; },
   self: d => ({ v: rate(d.v) }),
   areas: d => obj6(d, rate),
   feedback: d => ({ look: rate(d.look), clear: rate(d.clear), fun: rate(d.fun), text: str(d.text, 1500) }),

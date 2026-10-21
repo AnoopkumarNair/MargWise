@@ -33,3 +33,9 @@ After steps 1 to 3 pass: "interest snapshot with known reliability". "Fit" or "s
 - Validity of the O*NET Interest Profiler short form for Indian teenagers is itself not established. Use it as a reference, not as truth, and add counsellor ratings as a second criterion.
 - Random-responder null distributions: simulate players who tap at random or always pick the first card and set the "no signal" and "broad" thresholds so they are flagged.
 - Controlled-test status: the hosted build is for adult testers, or for minors only with parental agreement collected by the test owner. A verifiable parental consent flow is needed before any wider student use.
+
+## Lamp locks (aptitude puzzles) and India pay
+- Eight original puzzle items (numbers, words, shapes, patterns; two per area, the second item adapts up or down) sit inside the story after places 2, 4, 6 and 8. No commercial test items are used.
+- Scores are 0 to 3 per area and are shown as Growing / Steady / Strong. They never change the RIASEC radar. They nudge the field order by at most about 0.35 of a field-score standard deviation, using field-by-area weights that are my judgement, not validated. Treat the weights as a hypothesis.
+- Needed before trusting them: norms by class and board, item difficulty from real answers, reliability (8 items will be low), checks for English-language and schooling bias, and whether the nudge improves agreement with counsellor ratings.
+- India pay uses PLFS 2025 averages by broad occupation group (NCO-2015 division), mapped from O*NET SOC codes by hand. The mapping is approximate and the averages cover all ages and experience.

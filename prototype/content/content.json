@@ -687,6 +687,10 @@
     "growth": "Average",
     "openings": 2900,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -709,6 +713,10 @@
     "growth": "Faster than average",
     "openings": 4200,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -731,6 +739,10 @@
     "growth": "Faster than average",
     "openings": 180800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -753,6 +765,10 @@
     "growth": "Faster than average",
     "openings": 12500,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -775,6 +791,10 @@
     "growth": "Much faster than average",
     "openings": 13400,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -797,6 +817,10 @@
     "growth": "Much faster than average",
     "openings": 3100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -819,6 +843,10 @@
     "growth": "Much faster than average",
     "openings": 1300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -841,6 +869,10 @@
     "growth": "Faster than average",
     "openings": 4300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -863,6 +895,10 @@
     "growth": "Faster than average",
     "openings": 5900,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -885,6 +921,10 @@
     "growth": "Faster than average",
     "openings": 7300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -907,6 +947,10 @@
     "growth": "Much faster than average",
     "openings": 1900,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -929,6 +973,10 @@
     "growth": "Faster than average",
     "openings": 1000,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -951,6 +999,10 @@
     "growth": "Much faster than average",
     "openings": 17800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -973,6 +1025,10 @@
     "growth": "Faster than average",
     "openings": 22700,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -995,6 +1051,10 @@
     "growth": "Average",
     "openings": 4900,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1017,6 +1077,10 @@
     "growth": "Much faster than average",
     "openings": 3800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1039,6 +1103,10 @@
     "growth": "Faster than average",
     "openings": 1100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1061,6 +1129,10 @@
     "growth": "Much faster than average",
     "openings": 95300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1083,6 +1155,10 @@
     "growth": "Much faster than average",
     "openings": 24800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1105,6 +1181,10 @@
     "growth": "Much faster than average",
     "openings": 14100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1127,6 +1207,10 @@
     "growth": "Faster than average",
     "openings": 115300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1149,6 +1233,10 @@
     "growth": "Faster than average",
     "openings": 285000,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Managers",
+    "monthly": 50408
    }
   },
   {
@@ -1171,6 +1259,10 @@
     "growth": "Much faster than average",
     "openings": 24700,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1193,6 +1285,10 @@
     "growth": "Faster than average",
     "openings": 1100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1215,6 +1311,10 @@
     "growth": "Much faster than average",
     "openings": 34000,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Managers",
+    "monthly": 50408
    }
   },
   {
@@ -1237,6 +1337,10 @@
     "growth": "Faster than average",
     "openings": 73700,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1259,6 +1363,10 @@
     "growth": "Slower than average",
     "openings": 17100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -1281,6 +1389,10 @@
     "growth": "Decline",
     "openings": 6800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -1303,6 +1415,10 @@
     "growth": "Faster than average",
     "openings": 8300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1325,6 +1441,10 @@
     "growth": "Average",
     "openings": 6900,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1347,6 +1467,10 @@
     "growth": "Decline",
     "openings": 16000,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1369,6 +1493,10 @@
     "growth": "Little or no change",
     "openings": 2500,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1391,6 +1519,10 @@
     "growth": "Little or no change",
     "openings": 4200,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1413,6 +1545,10 @@
     "growth": "Average",
     "openings": 3100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -1435,6 +1571,10 @@
     "growth": "Average",
     "openings": 7700,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1457,6 +1597,10 @@
     "growth": "Much faster than average",
     "openings": 4100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1479,6 +1623,10 @@
     "growth": "Average",
     "openings": 27800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1501,6 +1649,10 @@
     "growth": "Much faster than average",
     "openings": 300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1524,6 +1676,10 @@
     "growth": "Much faster than average",
     "openings": 23100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1546,6 +1702,10 @@
     "growth": "Faster than average",
     "openings": 28700,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1568,6 +1728,10 @@
     "growth": "Average",
     "openings": 800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1590,6 +1754,10 @@
     "growth": "Decline",
     "openings": 3400,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1612,6 +1780,10 @@
     "growth": "Little or no change",
     "openings": 11900,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1634,6 +1806,10 @@
     "growth": "Slower than average",
     "openings": 23000,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1655,6 +1831,10 @@
     "growth": "Little or no change",
     "openings": 63500,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1677,6 +1857,10 @@
     "growth": "Average",
     "openings": 33900,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1699,6 +1883,10 @@
     "growth": "Slower than average",
     "openings": 6000,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1722,6 +1910,10 @@
     "growth": "Decline",
     "openings": 400,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1744,6 +1936,10 @@
     "growth": "Average",
     "openings": 3200,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1766,6 +1962,10 @@
     "growth": "Average",
     "openings": 51500,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Service and sales workers",
+    "monthly": 15541
    }
   },
   {
@@ -1788,6 +1988,10 @@
     "growth": "Average",
     "openings": 1100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Managers",
+    "monthly": 50408
    }
   },
   {
@@ -1809,6 +2013,10 @@
     "growth": "Much faster than average",
     "openings": 11200,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -1831,6 +2039,10 @@
     "growth": "Much faster than average",
     "openings": 25200,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -1853,6 +2065,10 @@
     "growth": "Average",
     "openings": 5500,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Managers",
+    "monthly": 50408
    }
   },
   {
@@ -1874,6 +2090,10 @@
     "growth": "Much faster than average",
     "openings": 18500,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Service and sales workers",
+    "monthly": 15541
    }
   },
   {
@@ -1896,6 +2116,10 @@
     "growth": "Much faster than average",
     "openings": 1400,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1918,6 +2142,10 @@
     "growth": "Faster than average",
     "openings": 200,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1940,6 +2168,10 @@
     "growth": "Slower than average",
     "openings": 900,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1962,6 +2194,10 @@
     "growth": "Faster than average",
     "openings": 2100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -1984,6 +2220,10 @@
     "growth": "Decline",
     "openings": 70800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Managers",
+    "monthly": 50408
    }
   },
   {
@@ -2006,6 +2246,10 @@
     "growth": "Much faster than average",
     "openings": 72700,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Craft and related trades workers",
+    "monthly": 16773
    }
   },
   {
@@ -2028,6 +2272,10 @@
     "growth": "Faster than average",
     "openings": 66200,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Craft and related trades workers",
+    "monthly": 16773
    }
   },
   {
@@ -2050,6 +2298,10 @@
     "growth": "Slower than average",
     "openings": 40300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Craft and related trades workers",
+    "monthly": 16773
    }
   },
   {
@@ -2072,6 +2324,10 @@
     "growth": "Slower than average",
     "openings": 8100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -2094,6 +2350,10 @@
     "growth": "Slower than average",
     "openings": 26100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Craft and related trades workers",
+    "monthly": 16773
    }
   },
   {
@@ -2116,6 +2376,10 @@
     "growth": "Average",
     "openings": 6100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -2137,6 +2401,10 @@
     "growth": "Little or no change",
     "openings": 17400,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -2158,6 +2426,10 @@
     "growth": "Little or no change",
     "openings": 6300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -2179,6 +2451,10 @@
     "growth": "Slower than average",
     "openings": 1600,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -2201,6 +2477,10 @@
     "growth": "Average",
     "openings": 12100,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -2223,6 +2503,10 @@
     "growth": "Decline",
     "openings": 10700,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -2245,6 +2529,10 @@
     "growth": "Average",
     "openings": 3800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -2267,6 +2555,10 @@
     "growth": "Much faster than average",
     "openings": 500,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -2289,6 +2581,10 @@
     "growth": "Much faster than average",
     "openings": 26600,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -2311,6 +2607,10 @@
     "growth": "Faster than average",
     "openings": 18300,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Managers",
+    "monthly": 50408
    }
   },
   {
@@ -2332,6 +2632,10 @@
     "growth": "Faster than average",
     "openings": 2200,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -2353,6 +2657,10 @@
     "growth": "Faster than average",
     "openings": 36400,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -2375,6 +2683,10 @@
     "growth": "Much faster than average",
     "openings": 68000,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -2398,6 +2710,10 @@
     "growth": "Faster than average",
     "openings": 22000,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Managers",
+    "monthly": 50408
    }
   },
   {
@@ -2420,6 +2736,10 @@
     "growth": "Average",
     "openings": 32700,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Professionals",
+    "monthly": 38466
    }
   },
   {
@@ -2442,6 +2762,10 @@
     "growth": "Average",
     "openings": 20800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -2464,6 +2788,10 @@
     "growth": "Faster than average",
     "openings": 13000,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   },
   {
@@ -2486,9 +2814,33 @@
     "growth": "Much faster than average",
     "openings": 2800,
     "wageYear": 2025
+   },
+   "in": {
+    "group": "Technicians and associate professionals",
+    "monthly": 26175
    }
   }
  ],
  "checked": "2026-10-21",
- "status": "DRAFT for counsellor review. Career profiles and US pay are from O*NET (official). Some exam and admission facts were read from official notices; others come from news and education sites and are marked in each field. All need a counsellor check."
+ "status": "DRAFT for counsellor review. Career profiles and US pay are from O*NET (official). Some exam and admission facts were read from official notices; others come from news and education sites and are marked in each field. All need a counsellor check.",
+ "plfs": {
+  "year": 2025,
+  "note": "Average monthly earnings of salaried (regular wage) employees in India, by broad occupation group (NCO-2015 division). All ages and experience; self-employed people are not included.",
+  "education": {
+   "Diploma or certificate": 25722,
+   "Graduate": 32683,
+   "Postgraduate and above": 45430,
+   "Higher secondary": 18539
+  },
+  "age": {
+   "20-24": 14779,
+   "25-29": 20860
+  },
+  "conf": "secondary",
+  "src": [
+   "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2246009&lang=1&reg=3",
+   "https://indialabourobservatory.com/data/plfs-2025/earnings/"
+  ],
+  "verify": "Headline figures (male 24,217 and female 18,353 a month) match the MoSPI press note. The occupation split is computed by the India Labour Observatory from MoSPI unit-level records."
+ }
 }
