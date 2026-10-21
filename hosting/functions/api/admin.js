@@ -1,21 +1,103 @@
-import { json, safeEq } from './_util.js';
+import { json, safeEq, readJson } from './_util.js';
 const safe = s => { try { return JSON.parse(s); } catch { return null; } };
+const clean = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f<>]/g, ' ').trim().slice(0, n);
+const csvCell = v => { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+const csvResp = (name, rows) => new Response(rows.map(r => r.map(csvCell).join(',')).join('\n'), { headers: { 'content-type': 'text/csv; charset=utf-8', 'content-disposition': 'attachment; filename="' + name + '"', 'cache-control': 'no-store' } });
+const ALPHA = 'abcdefghjkmnpqrstuvwxyz23456789';
+const genCode = () => { const a = new Uint8Array(8); crypto.getRandomValues(a); return [...a].map(x => ALPHA[x % ALPHA.length]).join(''); };
+const VERDICTS = { correct: 'correct', wrong: 'wrong', outdated: 'outdated', 'cannot find': 'cannot find', unclear: 'cannot find' };
 export async function onRequest({ request, env }) {
-  const u = new URL(request.url), key = request.headers.get('x-admin-key') || '';
+  const u = new URL(request.url), key = request.headers.get('x-admin-key') || '', q = u.searchParams, m = request.method;
   if (!safeEq(key, env.ADMIN_KEY || '')) return json({ error: 'Not allowed.' }, 403);
-  const t = u.searchParams.get('tester');
-  if (request.method === 'DELETE') {
+  const t = q.get('tester'), now = Date.now();
+  // ---- invite codes
+  if (q.get('invites')) {
+    if (m === 'GET') return json({ master: !!String(env.INVITE_CODE || '').trim(), invites: (await env.DB.prepare('SELECT id, code, label, max_uses, uses, expires_at, active, created_at FROM invites ORDER BY id DESC').all()).results });
+    const r = await readJson(request, 4000); if (r.err) return json({ error: r.err }, r.status); const b = r.b;
+    if (m === 'POST') {
+      const label = clean(b.label, 40); if (!label) return json({ error: 'Add a label, for example the school or group name.' }, 400);
+      let code = String(b.code || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 24) || genCode(); if (code.length < 4) return json({ error: 'A code needs at least 4 letters or digits.' }, 400);
+      const mx = b.max_uses === '' || b.max_uses == null ? null : Number(b.max_uses), ex = b.expires_at ? Number(b.expires_at) : null;
+      if (mx !== null && !(Number.isInteger(mx) && mx > 0 && mx < 100000)) return json({ error: 'Use limit must be a whole number above 0.' }, 400);
+      try { await env.DB.prepare('INSERT INTO invites (code, label, max_uses, uses, expires_at, active, created_at) VALUES (?, ?, ?, 0, ?, 1, ?)').bind(code, label, mx, Number.isFinite(ex) ? ex : null, now).run(); } catch { return json({ error: 'That code already exists. Try another.' }, 409); }
+      return json({ ok: true, code });
+    }
+    if (m === 'PATCH') {
+      const id = Number(b.id); if (!Number.isInteger(id)) return json({ error: 'id required' }, 400);
+      const sets = [], vals = [];
+      if (b.active !== undefined) { sets.push('active = ?'); vals.push(b.active ? 1 : 0); }
+      if (b.label !== undefined) { sets.push('label = ?'); vals.push(clean(b.label, 40)); }
+      if (b.max_uses !== undefined) { const mx = b.max_uses === '' || b.max_uses === null ? null : Number(b.max_uses); if (mx !== null && !(Number.isInteger(mx) && mx > 0)) return json({ error: 'Bad use limit.' }, 400); sets.push('max_uses = ?'); vals.push(mx); }
+      if (b.expires_at !== undefined) { const ex = b.expires_at ? Number(b.expires_at) : null; sets.push('expires_at = ?'); vals.push(Number.isFinite(ex) ? ex : null); }
+      if (!sets.length) return json({ error: 'Nothing to change.' }, 400);
+      await env.DB.prepare('UPDATE invites SET ' + sets.join(', ') + ' WHERE id = ?').bind(...vals, id).run(); return json({ ok: true });
+    }
+    return json({ error: 'Method not allowed.' }, 405);
+  }
+  // ---- fact checks for reviewers
+  const cl = q.get('claims');
+  if (cl) {
+    if (cl === 'generate' && m === 'POST') {
+      const r = await readJson(request, 2000); if (r.err) return json({ error: r.err }, r.status);
+      const size = Math.min(40, Math.max(5, Number(r.b.size) || 12));
+      const res = await env.ASSETS.fetch(new Request(new URL('/admin/claims.json', request.url))); if (!res.ok) return json({ error: 'claims.json is missing from this deploy.' }, 500);
+      const items = await res.json(); if (!Array.isArray(items) || !items.length) return json({ error: 'No claims found.' }, 500);
+      for (let i = items.length - 1; i > 0; i--) { const a = new Uint32Array(1); crypto.getRandomValues(a); const j = a[0] % (i + 1); [items[i], items[j]] = [items[j], items[i]]; }
+      const run = 'r' + now.toString(36), st = items.map((it, i) => { const a = new Uint8Array(4); crypto.getRandomValues(a); const id = [...a].map(x => x.toString(16).padStart(2, '0')).join(''); return env.DB.prepare('INSERT INTO claims (id, run, batch, field_key, statement, urls) VALUES (?, ?, ?, ?, ?, ?)').bind(run + '-' + id + i.toString(36), run, Math.floor(i / size) + 1, clean(it.key, 60), clean(it.statement, 900), clean(it.urls, 600)); });
+      for (let i = 0; i < st.length; i += 50) await env.DB.batch(st.slice(i, i + 50));
+      return json({ ok: true, run, tasks: items.length, batches: Math.ceil(items.length / size) });
+    }
+    if (cl === 'runs' && m === 'GET') {
+      const rs = (await env.DB.prepare('SELECT run, COUNT(*) AS tasks, MAX(batch) AS batches FROM claims GROUP BY run ORDER BY run DESC LIMIT 20').all()).results, out = [];
+      for (const x of rs) { const c = await env.DB.prepare('SELECT cr.verdict AS v, COUNT(*) AS n FROM claim_reviews cr JOIN claims c ON c.id = cr.claim_id WHERE c.run = ? GROUP BY cr.verdict').bind(x.run).all(); out.push({ ...x, verdicts: Object.fromEntries(c.results.map(y => [y.v, y.n])) }); }
+      return json({ runs: out });
+    }
+    if (cl === 'csv' && m === 'GET') {
+      const run = clean(q.get('run'), 40), batch = q.get('batch');
+      const rows = batch === 'all' ? (await env.DB.prepare('SELECT id, statement, urls FROM claims WHERE run = ? ORDER BY batch, id').bind(run).all()).results : (await env.DB.prepare('SELECT id, statement, urls FROM claims WHERE run = ? AND batch = ? ORDER BY id').bind(run, Number(batch) || 1).all()).results;
+      return csvResp('fact-check-' + run + '-' + (batch === 'all' ? 'all' : 'batch' + (Number(batch) || 1)) + '.csv', [['task_id', 'statement', 'official_pages_to_check', 'verdict (correct / wrong / outdated / cannot find)', 'what the page says (paste the exact words)', 'date you checked']].concat(rows.map(x => [x.id, x.statement, x.urls, '', '', ''])));
+    }
+    if (cl === 'upload' && m === 'POST') {
+      const r = await readJson(request, 400000); if (r.err) return json({ error: r.err }, r.status);
+      const reviewer = clean(r.b.reviewer, 40) || 'owner', rows = Array.isArray(r.b.rows) ? r.b.rows.slice(0, 400) : [], st = []; let skipped = 0;
+      for (const x of rows) {
+        const id = clean(x.id, 60), vd = VERDICTS[clean(x.verdict, 30).toLowerCase()];
+        if (!id || !vd) { skipped++; continue; }
+        const ok = await env.DB.prepare('SELECT 1 AS x FROM claims WHERE id = ?').bind(id).first(); if (!ok) { skipped++; continue; }
+        st.push(env.DB.prepare('INSERT INTO claim_reviews (claim_id, reviewer, verdict, says, checked_on, created_at) VALUES (?, ?, ?, ?, ?, ?)').bind(id, reviewer, vd, clean(x.says, 1200), clean(x.checked_on, 20), now));
+      }
+      for (let i = 0; i < st.length; i += 50) await env.DB.batch(st.slice(i, i + 50));
+      return json({ ok: true, saved: st.length, skipped });
+    }
+    if (cl === 'report' && m === 'GET') {
+      const run = clean(q.get('run'), 40);
+      const rows = (await env.DB.prepare('SELECT c.id, c.field_key, c.statement, c.urls, cr.reviewer, cr.verdict, cr.says, cr.checked_on, cr.applied, cr.id AS rid FROM claims c LEFT JOIN claim_reviews cr ON cr.claim_id = c.id WHERE c.run = ? ORDER BY c.field_key, c.id').bind(run).all()).results;
+      const by = {}; for (const x of rows) { (by[x.id] ||= { id: x.id, field_key: x.field_key, statement: x.statement, urls: x.urls, reviews: [] }); if (x.verdict) by[x.id].reviews.push({ rid: x.rid, reviewer: x.reviewer, verdict: x.verdict, says: x.says, checked_on: x.checked_on, applied: x.applied }); }
+      const all = Object.values(by).map(c => { const vs = new Set(c.reviews.map(r => r.verdict)); return { ...c, status: !c.reviews.length ? 'unreviewed' : vs.size > 1 ? 'disagree' : [...vs][0] === 'correct' ? 'correct' : 'needs change' }; });
+      if (q.get('format') === 'csv') return csvResp('fact-check-report-' + run + '.csv', [['field_key', 'status', 'statement', 'reviewer', 'verdict', 'what the page says', 'date checked', 'applied']].concat(all.filter(c => c.status !== 'correct').flatMap(c => c.reviews.length ? c.reviews.map(r => [c.field_key, c.status, c.statement, r.reviewer, r.verdict, r.says, r.checked_on, r.applied ? 'yes' : 'no']) : [[c.field_key, c.status, c.statement, '', '', '', '', '']])));
+      return json({ run, items: all });
+    }
+    if (cl === 'applied' && m === 'POST') {
+      const r = await readJson(request, 20000); if (r.err) return json({ error: r.err }, r.status);
+      const ids = (Array.isArray(r.b.ids) ? r.b.ids : []).slice(0, 400).map(x => Number(x)).filter(Number.isInteger);
+      for (let i = 0; i < ids.length; i += 50) await env.DB.batch(ids.slice(i, i + 50).map(id => env.DB.prepare('UPDATE claim_reviews SET applied = 1 WHERE id = ?').bind(id)));
+      return json({ ok: true, n: ids.length });
+    }
+    return json({ error: 'Unknown fact-check action.' }, 400);
+  }
+  // ---- testers
+  if (m === 'DELETE') {
     if (!t) return json({ error: 'tester required' }, 400);
     await env.DB.batch([env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(t)]);
     return json({ ok: true });
   }
   if (t) { const r = await env.DB.prepare('SELECT ts, type, data, session_id FROM events WHERE tester_id = ? ORDER BY id').bind(t).all(); return json({ events: r.results }); }
-  const tes = (await env.DB.prepare('SELECT id, name, created_at FROM testers ORDER BY created_at DESC').all()).results;
-  const ev = (await env.DB.prepare("SELECT tester_id, type, data, ts FROM events WHERE type IN ('result','self','areas','feedback','walk_start','place_done','fields') ORDER BY id").all()).results;
+  const tes = (await env.DB.prepare('SELECT t.id, t.name, t.created_at, i.label AS source FROM testers t LEFT JOIN invites i ON i.id = t.invite_id ORDER BY t.created_at DESC').all()).results;
+  const ev = (await env.DB.prepare("SELECT tester_id, type, data, ts FROM events WHERE type IN ('result','self','areas','feedback','walk_start','place_done','fields','apt') ORDER BY id").all()).results;
   const by = {}; for (const e of ev) { (by[e.tester_id] ||= []).push(e); }
   const out = tes.map(x => {
     const es = by[x.id] || [], last = ty => { const f = es.filter(e => e.type === ty); return f.length ? safe(f[f.length - 1].data) : null; };
-    return { ...x, walks: es.filter(e => e.type === 'walk_start').length, places: es.filter(e => e.type === 'place_done').length, lastTs: es.length ? es[es.length - 1].ts : x.created_at, result: last('result'), self: last('self'), areas: last('areas'), feedback: last('feedback'), fields: last('fields') };
+    return { ...x, walks: es.filter(e => e.type === 'walk_start').length, places: es.filter(e => e.type === 'place_done').length, lastTs: es.length ? es[es.length - 1].ts : x.created_at, result: last('result'), self: last('self'), areas: last('areas'), feedback: last('feedback'), fields: last('fields'), apt: last('apt') };
   });
   return json({ testers: out });
 }
