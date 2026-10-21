@@ -23,23 +23,23 @@ describe('CareerInterestVector — rule 3: vectors only from the O*NET Interests
     careerId: 'psy-1',
     onetSoc: '19-3033.00',
     onetRelease: '30.0',
-    values: { R: 1.5, I: 6.2, A: 3.1, S: 6.8, E: 2.0, C: 3.0 },
+    values: { R: 2, I: 76, A: 34, S: 93, E: 28, C: 42 },
     provenance: sourcedProv({
-      unit: 'onet_oi_rating',
+      unit: 'onet_oi_0_100',
       sourceUrl: 'https://www.onetcenter.org/database.html',
     }),
   };
 
-  it('accepts OI ratings on the 1–7 scale for all six areas', () => {
+  it('accepts OI ratings on the published 0–100 scale for all six areas', () => {
     expect(CareerInterestVector.safeParse(vector).success).toBe(true);
   });
 
-  it('rejects ratings outside 1–7', () => {
+  it('rejects ratings outside 0–100', () => {
     expect(
-      CareerInterestVector.safeParse({ ...vector, values: { ...vector.values, R: 0.5 } }).success,
+      CareerInterestVector.safeParse({ ...vector, values: { ...vector.values, R: -1 } }).success,
     ).toBe(false);
     expect(
-      CareerInterestVector.safeParse({ ...vector, values: { ...vector.values, C: 7.1 } }).success,
+      CareerInterestVector.safeParse({ ...vector, values: { ...vector.values, C: 100.5 } }).success,
     ).toBe(false);
   });
 
@@ -54,8 +54,16 @@ describe('CareerInterestVector — rule 3: vectors only from the O*NET Interests
     );
   });
 
-  it('rejects a vector sourced from anywhere but onetcenter.org', () => {
-    const prov = sourcedProv({ unit: 'onet_oi_rating', sourceUrl: 'https://example.com/vectors' });
+  it('accepts O*NET OnLine (onetonline.org), an official O*NET site', () => {
+    const prov = sourcedProv({
+      unit: 'onet_oi_0_100',
+      sourceUrl: 'https://www.onetonline.org/link/details/19-3033.00',
+    });
+    expect(CareerInterestVector.safeParse({ ...vector, provenance: prov }).success).toBe(true);
+  });
+
+  it('rejects a vector sourced from anywhere but O*NET sites', () => {
+    const prov = sourcedProv({ unit: 'onet_oi_0_100', sourceUrl: 'https://example.com/vectors' });
     expect(CareerInterestVector.safeParse({ ...vector, provenance: prov }).success).toBe(false);
   });
 });

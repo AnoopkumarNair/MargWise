@@ -75,10 +75,11 @@ export const Career = z
   });
 export type Career = z.infer<typeof Career>;
 
-const OiRating = z.number().min(1).max(7);
+/** O*NET OnLine "Occupational Interest" display scale, 0–100 (database OI 0–6 × 100/6; release 31.0). */
+const OiRating = z.number().min(0).max(100);
 
 /**
- * O*NET Occupational Interest ratings (elements 1.B.1.a–f). Rule 3: only from
+ * O*NET Career Interest Type ratings (elements 1.B.1.a–f). Rule 3: only from
  * the O*NET database Interests file, never hand-authored.
  */
 export const CareerInterestVector = z.strictObject({
@@ -90,8 +91,9 @@ export const CareerInterestVector = z.strictObject({
   ),
   provenance: SourcedOnlyProvenance.refine(
     (p) =>
-      p.status === 'sourced' && /^https:\/\/([a-z0-9-]+\.)*onetcenter\.org\//.test(p.sourceUrl),
-    'Interest vectors must come from onetcenter.org',
+      p.status === 'sourced' &&
+      /^https:\/\/([a-z0-9-]+\.)*(onetcenter|onetonline)\.org\//.test(p.sourceUrl),
+    'Interest vectors must come from O*NET (onetcenter.org or onetonline.org)',
   ),
 });
 export type CareerInterestVector = z.infer<typeof CareerInterestVector>;

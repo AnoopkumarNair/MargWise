@@ -261,6 +261,12 @@ select pg_temp.expect_violation($$insert into content.subjects (key, area, board
   values ('psychology', 'humanities-social', 'CBSE', '037', 'Psychology', 'elective', '10000000-0000-4000-8000-000000000002')$$, '*');
 insert into content.subjects (key, area, board, board_code, name, kind, provenance_id)
   values ('psychology', 'humanities-social', 'CBSE', '037', 'Psychology', 'elective', '10000000-0000-4000-8000-000000000001');
+-- O*NET interest ratings use the published 0–100 scale.
+select pg_temp.expect_violation($$insert into content.career_onet_map (career_id, onet_soc, onet_release, oi_r, oi_i, oi_a, oi_s, oi_e, oi_c, provenance_id)
+  values ('psy-1', '19-3033.00', '31.0', 101, 76, 34, 93, 28, 42, '10000000-0000-4000-8000-000000000001')$$, 'career_onet_map_oi_r_range');
+insert into content.career_onet_map (career_id, onet_soc, onet_release, oi_r, oi_i, oi_a, oi_s, oi_e, oi_c, provenance_id)
+  values ('psy-1', '19-3033.00', '31.0', 1, 76, 34, 93, 28, 42, '10000000-0000-4000-8000-000000000001');
+delete from content.career_onet_map;
 -- Rule 3: an O*NET vector cannot rest on an assumption.
 select pg_temp.expect_violation($$insert into content.career_onet_map (career_id, onet_soc, onet_release, oi_r, oi_i, oi_a, oi_s, oi_e, oi_c, provenance_id)
   values ('psy-1', '19-3033.00', '30.0', 1, 6, 3, 7, 2, 3, '10000000-0000-4000-8000-000000000002')$$, '*');

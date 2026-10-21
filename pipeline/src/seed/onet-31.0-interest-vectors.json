@@ -1,0 +1,178 @@
+{
+  "onetRelease": "31.0",
+  "retrievedOn": "2026-10-21",
+  "scale": "O*NET OnLine \"Occupational Interest\", 0-100 display scale (database OI 0-6 x 100/6)",
+  "source": "https://www.onetonline.org/",
+  "occupations": [
+    {
+      "onetSoc": "19-3033.00",
+      "title": "Clinical and Counseling Psychologists",
+      "values": {
+        "R": 1,
+        "I": 76,
+        "A": 34,
+        "S": 93,
+        "E": 28,
+        "C": 42
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/19-3033.00"
+    },
+    {
+      "onetSoc": "21-1012.00",
+      "title": "Educational, Guidance, and Career Counselors and Advisors",
+      "values": {
+        "R": 0,
+        "I": 38,
+        "A": 36,
+        "S": 100,
+        "E": 49,
+        "C": 52
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/21-1012.00"
+    },
+    {
+      "onetSoc": "19-3032.00",
+      "title": "Industrial-Organizational Psychologists",
+      "values": {
+        "R": 1,
+        "I": 72,
+        "A": 36,
+        "S": 50,
+        "E": 62,
+        "C": 55
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/19-3032.00"
+    },
+    {
+      "onetSoc": "17-2112.01",
+      "title": "Human Factors Engineers and Ergonomists",
+      "values": {
+        "R": 59,
+        "I": 87,
+        "A": 28,
+        "S": 19,
+        "E": 27,
+        "C": 57
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/17-2112.01",
+      "note": "Closest O*NET occupation the spec offers for UX Researcher; confirm with the Design reviewer (01 \u00a79)."
+    },
+    {
+      "onetSoc": "15-1252.00",
+      "title": "Software Developers",
+      "values": {
+        "R": 44,
+        "I": 84,
+        "A": 23,
+        "S": 14,
+        "E": 15,
+        "C": 77
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/15-1252.00"
+    },
+    {
+      "onetSoc": "15-2051.00",
+      "title": "Data Scientists",
+      "values": {
+        "R": 20,
+        "I": 100,
+        "A": 27,
+        "S": 11,
+        "E": 12,
+        "C": 73
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/15-2051.00"
+    },
+    {
+      "onetSoc": "17-2072.00",
+      "title": "Electronics Engineers, Except Computer",
+      "values": {
+        "R": 87,
+        "I": 80,
+        "A": 17,
+        "S": 10,
+        "E": 10,
+        "C": 61
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/17-2072.00"
+    },
+    {
+      "onetSoc": "13-2011.00",
+      "title": "Accountants and Auditors",
+      "values": {
+        "R": 2,
+        "I": 43,
+        "A": 1,
+        "S": 19,
+        "E": 48,
+        "C": 100
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/13-2011.00"
+    },
+    {
+      "onetSoc": "11-1021.00",
+      "title": "General and Operations Managers",
+      "values": {
+        "R": 20,
+        "I": 23,
+        "A": 5,
+        "S": 40,
+        "E": 100,
+        "C": 72
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/11-1021.00"
+    },
+    {
+      "onetSoc": "15-1255.00",
+      "title": "Web and Digital Interface Designers",
+      "values": {
+        "R": 27,
+        "I": 65,
+        "A": 58,
+        "S": 20,
+        "E": 36,
+        "C": 57
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/15-1255.00"
+    },
+    {
+      "onetSoc": "17-1011.00",
+      "title": "Architects, Except Landscape and Naval",
+      "values": {
+        "R": 65,
+        "I": 48,
+        "A": 52,
+        "S": 26,
+        "E": 44,
+        "C": 57
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/17-1011.00"
+    },
+    {
+      "onetSoc": "23-1011.00",
+      "title": "Lawyers",
+      "values": {
+        "R": 2,
+        "I": 56,
+        "A": 23,
+        "S": 41,
+        "E": 75,
+        "C": 60
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/23-1011.00"
+    },
+    {
+      "onetSoc": "23-1023.00",
+      "title": "Judges, Magistrate Judges, and Magistrates",
+      "values": {
+        "R": 22,
+        "I": 47,
+        "A": 20,
+        "S": 49,
+        "E": 71,
+        "C": 52
+      },
+      "sourceUrl": "https://www.onetonline.org/link/details/23-1023.00"
+    }
+  ]
+}

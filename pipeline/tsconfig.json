@@ -5,6 +5,6 @@
     "outDir": "dist",
     "types": ["node"]
   },
-  "include": ["src", "tests"],
+  "include": ["src", "src/**/*.json", "tests"],
   "references": [{ "path": "../packages/contracts" }]
 }
