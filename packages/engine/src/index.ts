@@ -9,3 +9,4 @@ export * from './money/projection.ts';
 export * from './money/simulate.ts';
 export * from './money/tax.ts';
 export * from './shared/random.ts';
+export * from './journey/index.ts';

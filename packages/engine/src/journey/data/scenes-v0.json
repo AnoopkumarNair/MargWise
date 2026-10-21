@@ -1,0 +1,590 @@
+{
+  "version": "journey-v0-draft",
+  "scenes": [
+    {
+      "id": "s01",
+      "place": "Salt Harbour",
+      "setup": "The ferry is stuck at the quay and the crowd is growing.",
+      "options": [
+        {
+          "id": "s01-R",
+          "text": "Take the engine apart and find the fault",
+          "loads": {
+            "R": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s01-I",
+          "text": "Measure the tides and work out what is wrong",
+          "loads": {
+            "I": 1.0,
+            "R": 0.5
+          }
+        },
+        {
+          "id": "s01-A",
+          "text": "Paint a bright sign to cheer up the waiting crowd",
+          "loads": {
+            "A": 1.0,
+            "S": 0.5
+          }
+        },
+        {
+          "id": "s01-S",
+          "text": "Sing with the waiting children to keep them calm",
+          "loads": {
+            "S": 1.0,
+            "A": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "place": "Lantern Bridge",
+      "setup": "The old bridge must be mended before the festival.",
+      "options": [
+        {
+          "id": "s02-R",
+          "text": "Fit the planks exactly as the plan shows",
+          "loads": {
+            "R": 1.0,
+            "C": 0.5
+          }
+        },
+        {
+          "id": "s02-I",
+          "text": "Study how old arches stand, then sketch a better one",
+          "loads": {
+            "I": 1.0,
+            "A": 0.5
+          }
+        },
+        {
+          "id": "s02-A",
+          "text": "Design a striking new bridge shape and test that it stands",
+          "loads": {
+            "A": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s02-E",
+          "text": "Take charge of the schedule and the money for the repair",
+          "loads": {
+            "E": 1.0,
+            "C": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "place": "Clockmaker's Lane",
+      "setup": "The tower clock has stopped and nobody knows why.",
+      "options": [
+        {
+          "id": "s03-R",
+          "text": "Climb up and trace the broken gear by hand",
+          "loads": {
+            "R": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s03-I",
+          "text": "Work out from the pattern of missed chimes what went wrong",
+          "loads": {
+            "I": 1.0,
+            "R": 0.5
+          }
+        },
+        {
+          "id": "s03-A",
+          "text": "Decorate the clock face to welcome visitors",
+          "loads": {
+            "A": 1.0,
+            "S": 0.5
+          }
+        },
+        {
+          "id": "s03-C",
+          "text": "Start a repair log and organise who does each job",
+          "loads": {
+            "C": 1.0,
+            "E": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "place": "Orchard Village",
+      "setup": "The harvest has come early and the crates are piling up.",
+      "options": [
+        {
+          "id": "s04-R",
+          "text": "Run the press and keep every crate stacked right",
+          "loads": {
+            "R": 1.0,
+            "C": 0.5
+          }
+        },
+        {
+          "id": "s04-I",
+          "text": "Try blends of apples to invent a new juice flavour",
+          "loads": {
+            "I": 1.0,
+            "A": 0.5
+          }
+        },
+        {
+          "id": "s04-S",
+          "text": "Teach visiting children to make juice, with games",
+          "loads": {
+            "S": 1.0,
+            "A": 0.5
+          }
+        },
+        {
+          "id": "s04-E",
+          "text": "Sell the juice and keep the accounts tidy",
+          "loads": {
+            "E": 1.0,
+            "C": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "place": "Fog Pass",
+      "setup": "Thick fog has settled and travellers cannot see the road.",
+      "options": [
+        {
+          "id": "s05-R",
+          "text": "Fix the broken signal lamp so people can see it",
+          "loads": {
+            "R": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s05-I",
+          "text": "Map where the fog thickens, and find out why",
+          "loads": {
+            "I": 1.0,
+            "R": 0.5
+          }
+        },
+        {
+          "id": "s05-S",
+          "text": "Welcome the lost travellers and rally them to move together",
+          "loads": {
+            "S": 1.0,
+            "E": 0.5
+          }
+        },
+        {
+          "id": "s05-C",
+          "text": "Count everyone through and keep the group in order",
+          "loads": {
+            "C": 1.0,
+            "E": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "place": "Night Bazaar",
+      "setup": "The bazaar is opening and your stall is empty.",
+      "options": [
+        {
+          "id": "s06-R",
+          "text": "Build a sturdy stall and set it up to the plan",
+          "loads": {
+            "R": 1.0,
+            "C": 0.5
+          }
+        },
+        {
+          "id": "s06-I",
+          "text": "Examine a strange old machine and imagine what it did",
+          "loads": {
+            "I": 1.0,
+            "A": 0.5
+          }
+        },
+        {
+          "id": "s06-E",
+          "text": "Call to the crowd and make every visitor feel at home",
+          "loads": {
+            "E": 1.0,
+            "S": 0.5
+          }
+        },
+        {
+          "id": "s06-C",
+          "text": "Sort the stock by size and label every shelf",
+          "loads": {
+            "C": 1.0,
+            "R": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s07",
+      "place": "River Camp",
+      "setup": "A river blocks the way and the group is tired.",
+      "options": [
+        {
+          "id": "s07-R",
+          "text": "Build a raft and work out which wood floats best",
+          "loads": {
+            "R": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s07-A",
+          "text": "Sketch a boat nobody has imagined, then try it",
+          "loads": {
+            "A": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s07-S",
+          "text": "Look after tired travellers and gently get them going again",
+          "loads": {
+            "S": 1.0,
+            "E": 0.5
+          }
+        },
+        {
+          "id": "s07-E",
+          "text": "Lead the camp meeting and make sure everyone is heard",
+          "loads": {
+            "E": 1.0,
+            "S": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s08",
+      "place": "Weavers' Town",
+      "setup": "The great loom is jammed before the market day.",
+      "options": [
+        {
+          "id": "s08-R",
+          "text": "Repair the loom and keep it working to the pattern",
+          "loads": {
+            "R": 1.0,
+            "C": 0.5
+          }
+        },
+        {
+          "id": "s08-A",
+          "text": "Design a pattern that tells the town's story",
+          "loads": {
+            "A": 1.0,
+            "S": 0.5
+          }
+        },
+        {
+          "id": "s08-S",
+          "text": "Coach a shy weaver to show their work with pride",
+          "loads": {
+            "S": 1.0,
+            "A": 0.5
+          }
+        },
+        {
+          "id": "s08-C",
+          "text": "Check every bolt of cloth and store it just so",
+          "loads": {
+            "C": 1.0,
+            "R": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s09",
+      "place": "Glass Cliffs",
+      "setup": "A group wants to reach the cliff top by evening.",
+      "options": [
+        {
+          "id": "s09-R",
+          "text": "Rope down the cliff and test the rock as you go",
+          "loads": {
+            "R": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s09-A",
+          "text": "Watch the cliff light change and work out why it glows",
+          "loads": {
+            "A": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s09-E",
+          "text": "Organise the climbers into teams with a clear timetable",
+          "loads": {
+            "E": 1.0,
+            "C": 0.5
+          }
+        },
+        {
+          "id": "s09-C",
+          "text": "Check the safety gear, then brief the group on the plan",
+          "loads": {
+            "C": 1.0,
+            "E": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "place": "Salt Market",
+      "setup": "Two traders are arguing over a spilled load.",
+      "options": [
+        {
+          "id": "s10-R",
+          "text": "Haul and stack the barrels so they stay put",
+          "loads": {
+            "R": 1.0,
+            "C": 0.5
+          }
+        },
+        {
+          "id": "s10-S",
+          "text": "Help a lost trader find family and rally others to help",
+          "loads": {
+            "S": 1.0,
+            "E": 0.5
+          }
+        },
+        {
+          "id": "s10-E",
+          "text": "Negotiate a fair deal between the two arguing traders",
+          "loads": {
+            "E": 1.0,
+            "S": 0.5
+          }
+        },
+        {
+          "id": "s10-C",
+          "text": "Weigh and record every sack, then pack the cart",
+          "loads": {
+            "C": 1.0,
+            "R": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s11",
+      "place": "Observatory Hill",
+      "setup": "A clear night is coming and visitors are arriving.",
+      "options": [
+        {
+          "id": "s11-I",
+          "text": "Chart the stars and wonder what they mean",
+          "loads": {
+            "I": 1.0,
+            "A": 0.5
+          }
+        },
+        {
+          "id": "s11-A",
+          "text": "Paint the night sky and notice how it changes",
+          "loads": {
+            "A": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s11-S",
+          "text": "Show visitors around and gently persuade them to join the club",
+          "loads": {
+            "S": 1.0,
+            "E": 0.5
+          }
+        },
+        {
+          "id": "s11-E",
+          "text": "Run the club night and make everyone feel included",
+          "loads": {
+            "E": 1.0,
+            "S": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s12",
+      "place": "Herbalists' Garden",
+      "setup": "The garden is overgrown and the season is turning.",
+      "options": [
+        {
+          "id": "s12-I",
+          "text": "Experiment with soil and seed to grow healthier plants",
+          "loads": {
+            "I": 1.0,
+            "R": 0.5
+          }
+        },
+        {
+          "id": "s12-A",
+          "text": "Shape a garden that makes people feel peaceful",
+          "loads": {
+            "A": 1.0,
+            "S": 0.5
+          }
+        },
+        {
+          "id": "s12-S",
+          "text": "Teach children to care for the plants, with stories",
+          "loads": {
+            "S": 1.0,
+            "A": 0.5
+          }
+        },
+        {
+          "id": "s12-C",
+          "text": "Label every herb and keep the beds in neat rows",
+          "loads": {
+            "C": 1.0,
+            "R": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s13",
+      "place": "Printers' Quarter",
+      "setup": "The old press has been found in a cellar.",
+      "options": [
+        {
+          "id": "s13-I",
+          "text": "Investigate how the old press makes its mark",
+          "loads": {
+            "I": 1.0,
+            "A": 0.5
+          }
+        },
+        {
+          "id": "s13-A",
+          "text": "Design a new letter style and test how readable it is",
+          "loads": {
+            "A": 1.0,
+            "I": 0.5
+          }
+        },
+        {
+          "id": "s13-E",
+          "text": "Pitch a new newspaper and set the plan and prices",
+          "loads": {
+            "E": 1.0,
+            "C": 0.5
+          }
+        },
+        {
+          "id": "s13-C",
+          "text": "Proofread every page and keep the print run on schedule",
+          "loads": {
+            "C": 1.0,
+            "E": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s14",
+      "place": "Healing House",
+      "setup": "Many travellers are ill and the house is full.",
+      "options": [
+        {
+          "id": "s14-I",
+          "text": "Test the water supply to find what is making people ill",
+          "loads": {
+            "I": 1.0,
+            "R": 0.5
+          }
+        },
+        {
+          "id": "s14-S",
+          "text": "Comfort the patients and organise helpers for the night",
+          "loads": {
+            "S": 1.0,
+            "E": 0.5
+          }
+        },
+        {
+          "id": "s14-E",
+          "text": "Run the clinic and make sure everyone is seen kindly",
+          "loads": {
+            "E": 1.0,
+            "S": 0.5
+          }
+        },
+        {
+          "id": "s14-C",
+          "text": "Keep the medicine store counted and in perfect order",
+          "loads": {
+            "C": 1.0,
+            "R": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "s15",
+      "place": "Festival Square",
+      "setup": "The festival begins at dusk and the square is bare.",
+      "options": [
+        {
+          "id": "s15-A",
+          "text": "Create the welcome arch with a story in its design",
+          "loads": {
+            "A": 1.0,
+            "S": 0.5
+          }
+        },
+        {
+          "id": "s15-S",
+          "text": "Perform with the visitors so they feel part of it",
+          "loads": {
+            "S": 1.0,
+            "A": 0.5
+          }
+        },
+        {
+          "id": "s15-E",
+          "text": "Run the festival: set the stalls, the prices and the plan",
+          "loads": {
+            "E": 1.0,
+            "C": 0.5
+          }
+        },
+        {
+          "id": "s15-C",
+          "text": "Keep permits and timings in order and keep stallholders informed",
+          "loads": {
+            "C": 1.0,
+            "E": 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
