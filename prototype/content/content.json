@@ -17,7 +17,7 @@
     "isc": "English, Physics, Chemistry, Biology.",
     "state": "Science stream with Biology (PCB)."
    },
-   "exams": "NEET-UG (run by NTA) is the entrance test for MBBS, BDS, BAMS, BHMS, BUMS and BVSc. Nursing, pharmacy and physiotherapy routes differ by state and institution, so check the current rules for each.",
+   "exams": "NEET-UG (run by NTA) is the entrance test for MBBS, BDS, BAMS, BHMS, BUMS and BVSc. B.Sc Nursing seats are counselled by MCC for some institutions, but most nursing, pharmacy and physiotherapy admissions run through state routes that differ. Check the current rules for each.",
    "degree": "MBBS takes 5.5 years including internship. BDS takes 5 years. B.Pharm and B.Sc Nursing take 4 years. Specialising means a postgraduate degree after that.",
    "early": "Shadow a doctor, volunteer at a clinic, or take a first-aid course.",
    "note": "Government medical seats are extremely competitive. Nursing, pharmacy, physiotherapy and other allied health courses are strong paths too.",
@@ -100,11 +100,13 @@
     "isc": "English, Physics, Chemistry, Mathematics, and Computer Science if you like.",
     "state": "Science stream with Maths (PCM)."
    },
-   "exams": "JEE Main for NITs, IIITs and many colleges, and JEE Advanced for the IITs. State entrance tests. Private tests such as BITSAT and VITEEE.",
+   "exams": "JEE Main for NITs, IIITs and many colleges, and JEE Advanced for the IITs. State entrance tests. Private tests such as BITSAT and VITEEE. For NITs and IIITs the NTA has asked for Physics and Maths plus one of Chemistry, Biology, Biotechnology or a technical vocational subject, with a minimum Class 12 mark or percentile.",
    "degree": "B.Tech or BE (4 years): mechanical, civil, electrical, chemical, aerospace and more.",
    "early": "Fix or build something. Join a robotics, design or EV club.",
    "note": "",
-   "verify": [],
+   "verify": [
+    "JEE Main subject and marks rules change by year. Read the current Information Bulletin on jeemain.nta.nic.in."
+   ],
    "sources": [
     {
      "id": "jee",
@@ -135,7 +137,7 @@
     "isc": "English, Physics, Chemistry, Mathematics, and Computer Science.",
     "state": "Science stream with Maths. Many states offer Computer Science as an option."
    },
-   "exams": "JEE Main and Advanced, state entrance tests, and private tests such as BITSAT and VITEEE. CUET-UG for BSc Computer Science.",
+   "exams": "JEE Main and Advanced, state entrance tests, and private tests such as BITSAT and VITEEE. CUET-UG for BSc Computer Science. JEE Main subject and marks rules change by year.",
    "degree": "B.Tech or BE (4 years) in computer science, AI and data science, or similar. Some online BS degrees accept students from other streams.",
    "early": "Build small projects, try coding contests, join a coding or robotics club.",
    "note": "",
@@ -216,18 +218,18 @@
     "A",
     "R"
    ],
-   "pick": "Any stream works for most design courses. Architecture needs Physics and Maths plus one more science or vocational subject.",
+   "pick": "Any stream works for most design courses. Architecture needs Physics and Maths plus one more subject from an approved list.",
    "subjects": {
-    "cbse": "Any stream works for most design courses. Fine Arts or Informatics Practices can help. For Architecture take Physics and Mathematics plus Chemistry, Biology, Computer Science or a vocational subject.",
-    "isc": "Any stream works for most design courses. Art or Computer Science can help. For Architecture take Physics and Mathematics plus Chemistry, Biology, Computer Science or a vocational subject.",
-    "state": "Any stream for design. For Architecture take Physics and Maths plus one more science or vocational subject."
+    "cbse": "Any stream works for most design courses. Fine Arts or Informatics Practices can help. For Architecture take Physics and Mathematics plus one more subject from the Council of Architecture list (such as Chemistry, Biology, Computer Science, Informatics Practices or a vocational subject).",
+    "isc": "Any stream works for most design courses. Art or Computer Science can help. For Architecture take Physics and Mathematics plus one more subject from the Council of Architecture list (such as Chemistry, Biology, Computer Science, Informatics Practices or a vocational subject).",
+    "state": "Any stream for design. For Architecture take Physics and Maths plus one more subject from the approved list."
    },
-   "exams": "UCEED (IITs and a few others), NID DAT, NIFT entrance, and university tests. Architecture: NATA or JEE Main Paper 2. The Council of Architecture changed the Class 12 subject rule, so check the current one.",
+   "exams": "UCEED (IITs and a few others), NID DAT, NIFT entrance, and university tests. Architecture: NATA or JEE Main Paper 2. The Council of Architecture rule for Class 12 is Physics and Maths plus one more subject from a list, with 45% aggregate marks.",
    "degree": "B.Des (4 years), B.Arch (5 years), BFA (3 to 4 years), or degrees in animation, film and fashion.",
    "early": "Keep a sketchbook, redesign an app you use, build a small portfolio.",
    "note": "A portfolio often matters as much as marks.",
    "verify": [
-    "The Council of Architecture changed its Class 12 subject requirement for B.Arch. Check the current rule."
+    "The Council of Architecture changed the B.Arch Class 12 subject rule from Physics, Chemistry and Maths. Read the current NATA brochure."
    ],
    "sources": [
     {
@@ -322,7 +324,7 @@
    "early": "Join debate or Model UN. Read a news story and argue both sides.",
    "note": "",
    "verify": [
-    "In 2025 the Supreme Court made a minimum period of legal practice a national condition for the judicial services exam (reported as 3 years, with a later change to 1 year from 2027). Check the current rule."
+    "In May 2025 the Supreme Court made 3 years of practice a condition for the Civil Judge exam. Law-news sites report it was reduced to 1 year in August 2026, with relief for notifications issued up to 31 March 2027. These are secondary reports. Read the judgment and your state notice."
    ],
    "sources": [
     {
@@ -407,12 +409,12 @@
     "isc": "Any stream. Political Science, History, Geography and Economics help for civil services.",
     "state": "Any stream."
    },
-   "exams": "UPSC Civil Services after any graduation degree. State public service exams. NDA (UPSC) right after Class 12, and CDS after graduation. State police and SSC exams.",
+   "exams": "UPSC Civil Services after any graduation degree. State public service exams. NDA (UPSC) right after Class 12: the Army wing accepts any stream, while the Air Force and Naval wings need Science with Maths (the 2026 UPSC notice lists Physics, Chemistry and Maths for the Naval Academy scheme). CDS after graduation. State police and SSC exams.",
    "degree": "Any degree for civil services. Policy and planning paths: BA in Political Science, Economics or Geography, then MA or MPP. Urban planning has its own degree.",
    "early": "Follow current affairs, join NCC or Model UN, or help with a local civic project.",
    "note": "",
    "verify": [
-    "NDA: sources disagreed on whether the Navy and Air Force wings need Chemistry as well as Physics and Maths. Read the UPSC notice."
+    "Check the current UPSC NDA notice for subjects, age and physical standards. Wings and schemes differ."
    ],
    "sources": [
     {
@@ -445,12 +447,12 @@
     "isc": "Any stream for hospitality and cabin crew. For pilot training, Physics and Mathematics in Class 12.",
     "state": "Any stream. For pilot training, Physics and Maths."
    },
-   "exams": "NCHM JEE for hospitality degrees at the Institutes of Hotel Management. Airlines and flying schools run their own selection. Pilot licence (DGCA): Class 12 with Physics and Maths and a Class 1 medical.",
+   "exams": "NCHM JEE for hospitality degrees at the Institutes of Hotel Management. Airlines and flying schools run their own selection. Pilot licence (DGCA): Class 12 with Physics and Maths from a recognised board, and a Class 1 medical.",
    "degree": "BSc Hospitality (3 years), culinary diplomas and degrees, or a commercial pilot licence through a flying school.",
    "early": "Cook for family events, plan a trip, or try a flying-club introductory session.",
    "note": "",
    "verify": [
-    "A 2025 report said DGCA proposed relaxing the Physics and Maths rule for pilots. Check the current rule before deciding."
+    "DGCA asks for Physics and Maths. A 2025 proposal to relax this was reported but not confirmed. Whether NIOS certificates count was not confirmed. Check the current DGCA rule."
    ],
    "sources": [
     {
@@ -496,6 +498,166 @@
     "Course names and entrance tests vary widely between institutions. Confirm with the college."
    ],
    "sources": [
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "agr",
+   "name": "Agriculture and environment",
+   "icon": "🌱",
+   "group": "Science",
+   "stream": "Science (PCB or PCM)",
+   "blurb": "Growing food, caring for land, water, forests and animals.",
+   "areas": [
+    "I",
+    "R"
+   ],
+   "pick": "Science, with Biology or Maths. Agriculture is also an elective in some boards.",
+   "subjects": {
+    "cbse": "English, plus three of Physics, Chemistry, Mathematics, Biology, Agriculture (where offered).",
+    "isc": "English, plus three of Physics, Chemistry, Mathematics, Biology.",
+    "state": "Science stream, or Agriculture where your state board offers it."
+   },
+   "exams": "CUET (ICAR-UG), run by NTA for ICAR, is the route into agriculture and allied degrees. Your CUET subjects must match your Class 12 subjects. State agricultural universities may run their own tests too.",
+   "degree": "BSc (Hons) in Agriculture, Horticulture, Forestry or Fisheries (4 years), or B.Tech in Agricultural Engineering or Food Technology. Veterinary: BVSc and AH through NEET-UG.",
+   "early": "Grow plants, join an eco club, or visit a farm or nursery.",
+   "note": "",
+   "verify": [
+    "ICAR eligibility (subjects, marks, age) changes by year and by university. Read the current CUET (ICAR-UG) bulletin."
+   ],
+   "sources": [
+    {
+     "id": "icar",
+     "name": "ICAR (CUET ICAR-UG)",
+     "url": "https://icar.org.in"
+    },
+    {
+     "id": "nta-neet",
+     "name": "NEET-UG (NTA)",
+     "url": "https://neet.nta.nic.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "voc",
+   "name": "Skilled trades and technical diplomas",
+   "icon": "🔧",
+   "group": "Open to any stream",
+   "stream": "Starts after Class 10",
+   "blurb": "Hands-on technical careers through ITI and polytechnic routes.",
+   "areas": [
+    "R",
+    "C"
+   ],
+   "pick": "This route can start after Class 10, so you do not have to pick a Class 11 stream first.",
+   "subjects": {
+    "cbse": "Optional on this route. Many students take Science or Commerce and move to an ITI or diploma later.",
+    "isc": "Optional on this route. Many students take Science or Commerce and move to an ITI or diploma later.",
+    "state": "Optional on this route. State boards often have vocational streams in Class 11 and 12."
+   },
+   "exams": "ITI (NCVT trades) usually asks for Class 10, and a few trades Class 8 or Class 10 with Science and Maths. Polytechnic diplomas take students after Class 10 through state entrance tests or merit. Entry rules differ by state and institute.",
+   "degree": "ITI certificate (6 months to 2 years) or a 3-year diploma. Diploma holders can often join the second year of a B.Tech through lateral entry. Skilled trades lead to steady work or your own workshop.",
+   "early": "Fix a bicycle or a fan, try a school workshop, or visit an ITI open day.",
+   "note": "These careers are well paid and in demand, and they are often overlooked.",
+   "verify": [
+    "ITI and polytechnic entry rules differ by state and institute.",
+    "Lateral entry to B.Tech was not checked on an official source here."
+   ],
+   "sources": [
+    {
+     "id": "dgt",
+     "name": "DGT / NCVT (ITI)",
+     "url": "https://dgt.gov.in"
+    },
+    {
+     "id": "aicte",
+     "name": "AICTE (polytechnic diplomas)",
+     "url": "https://www.aicte-india.org"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "arts",
+   "name": "Performing arts and music",
+   "icon": "🎭",
+   "group": "Open to any stream",
+   "stream": "Any stream",
+   "blurb": "Music, dance, acting, film and photography.",
+   "areas": [
+    "A",
+    "E"
+   ],
+   "pick": "Any stream works. Keep training alongside your studies.",
+   "subjects": {
+    "cbse": "Any stream. Music, Dance or Fine Arts if your school offers them.",
+    "isc": "Any stream. Music, Art or Drama if your school offers them.",
+    "state": "Any stream. Arts electives if offered."
+   },
+   "exams": "Colleges and universities hold auditions and entrance tests. CUET-UG includes performing arts subjects for some universities. Film and TV institutes run their own tests.",
+   "degree": "BA or BPA in music, dance or theatre (3 years), BFA, or film and media diplomas. Many performers earn alongside another skill, so a second skill helps.",
+   "early": "Perform at school events, learn an instrument, record a short reel.",
+   "note": "Only a few earn a full living from performing. Teaching, production and media jobs are more common.",
+   "verify": [
+    "Course names and entrance tests vary a lot. Confirm with the college."
+   ],
+   "sources": [
+    {
+     "id": "cuet",
+     "name": "CUET-UG (NTA)",
+     "url": "https://cuet.nta.nic.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "mar",
+   "name": "Maritime and logistics",
+   "icon": "🚢",
+   "group": "Science",
+   "stream": "Science with Maths (PCM)",
+   "blurb": "Ships, ports and moving goods around the world.",
+   "areas": [
+    "R",
+    "E",
+    "C"
+   ],
+   "pick": "Science with Maths (PCM) is the usual choice for sea careers.",
+   "subjects": {
+    "cbse": "English, Physics, Chemistry, Mathematics.",
+    "isc": "English, Physics, Chemistry, Mathematics.",
+    "state": "Science stream with Maths (PCM)."
+   },
+   "exams": "IMU CET for Indian Maritime University degrees in nautical science and marine engineering. A medical fitness certificate from a doctor approved by DG Shipping is required.",
+   "degree": "B.Sc Nautical Science or B.Tech Marine Engineering (3 to 4 years), then sea service for licences. Shore jobs in shipping and logistics follow, and BBA or BCom in logistics is another route.",
+   "early": "Visit a port, learn to swim and sail, or build a ship model or navigation project.",
+   "note": "",
+   "verify": [
+    "IMU rules (PCM marks, English marks, age, marital status) varied across pages and programmes. Read the current IMU notice."
+   ],
+   "sources": [
+    {
+     "id": "imu",
+     "name": "Indian Maritime University",
+     "url": "https://www.imu.edu.in"
+    },
     {
      "id": "onet",
      "name": "O*NET OnLine (interest profiles)",
@@ -894,6 +1056,36 @@
     "R": 1
    },
    "line": "Hires, trains and looks after the people in a company."
+  },
+  {
+   "id": "com-7",
+   "title": "Bank Loan Officer",
+   "field": "com",
+   "soc": "13-2072.00",
+   "values": {
+    "C": 85,
+    "E": 66,
+    "S": 44,
+    "I": 22,
+    "R": 7,
+    "A": 0
+   },
+   "line": "Helps people and businesses borrow money, and checks the risk."
+  },
+  {
+   "id": "com-8",
+   "title": "Insurance Underwriter",
+   "field": "com",
+   "soc": "13-2053.00",
+   "values": {
+    "C": 86,
+    "E": 58,
+    "I": 44,
+    "S": 31,
+    "R": 12,
+    "A": 0
+   },
+   "line": "Decides what risks an insurer will take and at what price."
   },
   {
    "id": "des-1",
@@ -1299,6 +1491,306 @@
     "A": 5
    },
    "line": "Keeps passengers safe and comfortable in the air."
+  },
+  {
+   "id": "agr-1",
+   "title": "Soil and Plant Scientist",
+   "field": "agr",
+   "soc": "19-1013.00",
+   "values": {
+    "I": 95,
+    "R": 91,
+    "C": 40,
+    "A": 19,
+    "E": 12,
+    "S": 11
+   },
+   "line": "Studies soil and crops to grow more food sustainably."
+  },
+  {
+   "id": "agr-2",
+   "title": "Animal Scientist",
+   "field": "agr",
+   "soc": "19-1011.00",
+   "values": {
+    "I": 99,
+    "R": 71,
+    "C": 39,
+    "E": 23,
+    "A": 16,
+    "S": 16
+   },
+   "line": "Studies farm animals to improve health and yield."
+  },
+  {
+   "id": "agr-3",
+   "title": "Forester",
+   "field": "agr",
+   "soc": "19-1032.00",
+   "values": {
+    "R": 72,
+    "I": 58,
+    "C": 57,
+    "E": 46,
+    "S": 22,
+    "A": 4
+   },
+   "line": "Looks after forests, and plans how to use and protect them."
+  },
+  {
+   "id": "agr-4",
+   "title": "Conservation Scientist",
+   "field": "agr",
+   "soc": "19-1031.00",
+   "values": {
+    "I": 78,
+    "R": 69,
+    "C": 50,
+    "E": 36,
+    "S": 31,
+    "A": 16
+   },
+   "line": "Protects soil, water and wild land."
+  },
+  {
+   "id": "agr-5",
+   "title": "Farm or Agribusiness Manager",
+   "field": "agr",
+   "soc": "11-9013.00",
+   "values": {
+    "E": 75,
+    "R": 69,
+    "C": 59,
+    "I": 29,
+    "S": 27,
+    "A": 1
+   },
+   "line": "Runs a farm or an agri business: crops, people and money."
+  },
+  {
+   "id": "voc-1",
+   "title": "Electrician",
+   "field": "voc",
+   "soc": "47-2111.00",
+   "values": {
+    "R": 100,
+    "C": 52,
+    "I": 28,
+    "E": 14,
+    "S": 5,
+    "A": 4
+   },
+   "line": "Installs and repairs electrical wiring and equipment."
+  },
+  {
+   "id": "voc-2",
+   "title": "Automobile Technician",
+   "field": "voc",
+   "soc": "49-3023.00",
+   "values": {
+    "R": 100,
+    "C": 55,
+    "I": 43,
+    "E": 10,
+    "S": 8,
+    "A": 0
+   },
+   "line": "Diagnoses and repairs cars and bikes."
+  },
+  {
+   "id": "voc-3",
+   "title": "Welder",
+   "field": "voc",
+   "soc": "51-4121.00",
+   "values": {
+    "R": 100,
+    "C": 44,
+    "I": 18,
+    "E": 9,
+    "A": 7,
+    "S": 1
+   },
+   "line": "Joins metal parts for buildings, vehicles and machines."
+  },
+  {
+   "id": "voc-4",
+   "title": "Electronics Technician",
+   "field": "voc",
+   "soc": "17-3023.00",
+   "values": {
+    "R": 88,
+    "I": 70,
+    "C": 67,
+    "A": 13,
+    "S": 13,
+    "E": 5
+   },
+   "line": "Tests and repairs electronic devices and systems."
+  },
+  {
+   "id": "voc-5",
+   "title": "Machinist",
+   "field": "voc",
+   "soc": "51-4041.00",
+   "values": {
+    "R": 100,
+    "C": 57,
+    "I": 45,
+    "A": 16,
+    "E": 4,
+    "S": 3
+   },
+   "line": "Cuts and shapes metal parts on precision machines."
+  },
+  {
+   "id": "voc-6",
+   "title": "Civil Engineering Technician",
+   "field": "voc",
+   "soc": "17-3022.00",
+   "values": {
+    "R": 79,
+    "I": 73,
+    "C": 71,
+    "A": 31,
+    "E": 17,
+    "S": 9
+   },
+   "line": "Supports engineers with surveys, drawings and site checks."
+  },
+  {
+   "id": "art-1",
+   "title": "Musician or Singer",
+   "field": "arts",
+   "soc": "27-2042.00",
+   "values": {
+    "A": 94,
+    "E": 40,
+    "S": 40,
+    "R": 31,
+    "C": 20,
+    "I": 9
+   },
+   "line": "Performs and records music."
+  },
+  {
+   "id": "art-2",
+   "title": "Actor",
+   "field": "arts",
+   "soc": "27-2011.00",
+   "values": {
+    "A": 100,
+    "S": 51,
+    "E": 50,
+    "R": 22,
+    "I": 19,
+    "C": 14
+   },
+   "line": "Plays roles on stage, screen and online."
+  },
+  {
+   "id": "art-3",
+   "title": "Dancer",
+   "field": "arts",
+   "soc": "27-2031.00",
+   "values": {
+    "A": 90,
+    "R": 64,
+    "S": 44,
+    "E": 36,
+    "C": 10,
+    "I": 7
+   },
+   "line": "Performs and teaches dance."
+  },
+  {
+   "id": "art-4",
+   "title": "Producer or Director",
+   "field": "arts",
+   "soc": "27-2012.00",
+   "values": {
+    "A": 86,
+    "E": 80,
+    "C": 43,
+    "S": 35,
+    "I": 21,
+    "R": 19
+   },
+   "line": "Leads the making of films, shows and productions."
+  },
+  {
+   "id": "art-5",
+   "title": "Photographer",
+   "field": "arts",
+   "soc": "27-4021.00",
+   "values": {
+    "R": 76,
+    "A": 71,
+    "C": 39,
+    "E": 21,
+    "I": 20,
+    "S": 16
+   },
+   "line": "Captures images for people, news and brands."
+  },
+  {
+   "id": "mar-1",
+   "title": "Ship Captain or Navigator",
+   "field": "mar",
+   "soc": "53-5021.00",
+   "values": {
+    "R": 77,
+    "C": 59,
+    "E": 54,
+    "I": 27,
+    "S": 15,
+    "A": 0
+   },
+   "line": "Navigates and commands ships at sea."
+  },
+  {
+   "id": "mar-2",
+   "title": "Marine Engineer",
+   "field": "mar",
+   "soc": "17-2121.00",
+   "values": {
+    "I": 79,
+    "R": 79,
+    "C": 55,
+    "E": 38,
+    "A": 27,
+    "S": 5
+   },
+   "line": "Designs and keeps ship engines and systems running."
+  },
+  {
+   "id": "mar-3",
+   "title": "Logistics Manager",
+   "field": "mar",
+   "soc": "13-1081.00",
+   "values": {
+    "C": 74,
+    "E": 67,
+    "I": 47,
+    "R": 23,
+    "S": 22,
+    "A": 2
+   },
+   "line": "Plans how goods move from maker to buyer."
+  },
+  {
+   "id": "mar-4",
+   "title": "Supply Chain Manager",
+   "field": "mar",
+   "soc": "11-3071.00",
+   "values": {
+    "E": 83,
+    "C": 79,
+    "R": 43,
+    "I": 27,
+    "S": 23,
+    "A": 0
+   },
+   "line": "Manages the full chain of storage, transport and delivery."
   },
   {
    "id": "spo-1",

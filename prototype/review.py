@@ -96,6 +96,6 @@ h.append('''<section style="display:grid;gap:12px"><h2>4. Decisions and next ste
 <li><b>Art.</b> When the image quota resets or a paid plan is added: four test images, then lock a style, then Jyo in five or six poses, layered backdrops and one consistent icon set for the options.</li>
 <li><b>Question variety.</b> Build one or two new interaction types over the same scoring, and playtest them.</li>
 <li><b>Playtest.</b> Five to eight students on a mid-range Android phone, watching for confusion and boredom, not asking.</li>
-<li><b>Real app.</b> Accounts with parent consent for under-18s (India's DPDP Act), a backend (Supabase or Cloudflare), asset hosting on a CDN, a parent view, and Hindi and other languages.</li></ol></div></section>
+<li><b>Real app.</b> Accounts with parent consent for under-18s (India's DPDP Act), a backend (Supabase or Cloudflare), asset hosting on a CDN and a parent view. The product stays English only for now.</li></ol></div></section>
 </div>''')
 open('review.html','w',encoding='utf8').write('\n'.join(h)); print(len('\n'.join(h))//1000,'KB')

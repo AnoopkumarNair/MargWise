@@ -56,6 +56,26 @@
    "careers": []
   },
   {
+   "id": "agr",
+   "name": "Agriculture and environment",
+   "careers": []
+  },
+  {
+   "id": "voc",
+   "name": "Skilled trades and technical diplomas",
+   "careers": []
+  },
+  {
+   "id": "arts",
+   "name": "Performing arts and music",
+   "careers": []
+  },
+  {
+   "id": "mar",
+   "name": "Maritime and logistics",
+   "careers": []
+  },
+  {
    "id": "spo",
    "name": "Sports and fitness",
    "careers": []
@@ -425,6 +445,34 @@
     "R": 1
    },
    "onetTitle": "13-1071.00 - Human Resources Specialists"
+  },
+  "com-7": {
+   "field": "com",
+   "title": "Bank Loan Officer",
+   "soc": "13-2072.00",
+   "values": {
+    "C": 85,
+    "E": 66,
+    "S": 44,
+    "I": 22,
+    "R": 7,
+    "A": 0
+   },
+   "onetTitle": "13-2072.00 - Loan Officers"
+  },
+  "com-8": {
+   "field": "com",
+   "title": "Insurance Underwriter",
+   "soc": "13-2053.00",
+   "values": {
+    "C": 86,
+    "E": 58,
+    "I": 44,
+    "S": 31,
+    "R": 12,
+    "A": 0
+   },
+   "onetTitle": "13-2053.00 - Insurance Underwriters"
   },
   "des-1": {
    "field": "des",
@@ -817,6 +865,286 @@
     "A": 5
    },
    "onetTitle": "53-2031.00 - Flight Attendants"
+  },
+  "agr-1": {
+   "field": "agr",
+   "title": "Soil and Plant Scientist",
+   "soc": "19-1013.00",
+   "values": {
+    "I": 95,
+    "R": 91,
+    "C": 40,
+    "A": 19,
+    "E": 12,
+    "S": 11
+   },
+   "onetTitle": "19-1013.00 - Soil and Plant Scientists"
+  },
+  "agr-2": {
+   "field": "agr",
+   "title": "Animal Scientist",
+   "soc": "19-1011.00",
+   "values": {
+    "I": 99,
+    "R": 71,
+    "C": 39,
+    "E": 23,
+    "A": 16,
+    "S": 16
+   },
+   "onetTitle": "19-1011.00 - Animal Scientists"
+  },
+  "agr-3": {
+   "field": "agr",
+   "title": "Forester",
+   "soc": "19-1032.00",
+   "values": {
+    "R": 72,
+    "I": 58,
+    "C": 57,
+    "E": 46,
+    "S": 22,
+    "A": 4
+   },
+   "onetTitle": "19-1032.00 - Foresters"
+  },
+  "agr-4": {
+   "field": "agr",
+   "title": "Conservation Scientist",
+   "soc": "19-1031.00",
+   "values": {
+    "I": 78,
+    "R": 69,
+    "C": 50,
+    "E": 36,
+    "S": 31,
+    "A": 16
+   },
+   "onetTitle": "19-1031.00 - Conservation Scientists"
+  },
+  "agr-5": {
+   "field": "agr",
+   "title": "Farm or Agribusiness Manager",
+   "soc": "11-9013.00",
+   "values": {
+    "E": 75,
+    "R": 69,
+    "C": 59,
+    "I": 29,
+    "S": 27,
+    "A": 1
+   },
+   "onetTitle": "11-9013.00 - Farmers, Ranchers, and Other Agricultural Managers"
+  },
+  "voc-1": {
+   "field": "voc",
+   "title": "Electrician",
+   "soc": "47-2111.00",
+   "values": {
+    "R": 100,
+    "C": 52,
+    "I": 28,
+    "E": 14,
+    "S": 5,
+    "A": 4
+   },
+   "onetTitle": "47-2111.00 - Electricians"
+  },
+  "voc-2": {
+   "field": "voc",
+   "title": "Automobile Technician",
+   "soc": "49-3023.00",
+   "values": {
+    "R": 100,
+    "C": 55,
+    "I": 43,
+    "E": 10,
+    "S": 8,
+    "A": 0
+   },
+   "onetTitle": "49-3023.00 - Automotive Service Technicians and Mechanics"
+  },
+  "voc-3": {
+   "field": "voc",
+   "title": "Welder",
+   "soc": "51-4121.00",
+   "values": {
+    "R": 100,
+    "C": 44,
+    "I": 18,
+    "E": 9,
+    "A": 7,
+    "S": 1
+   },
+   "onetTitle": "51-4121.00 - Welders, Cutters, Solderers, and Brazers"
+  },
+  "voc-4": {
+   "field": "voc",
+   "title": "Electronics Technician",
+   "soc": "17-3023.00",
+   "values": {
+    "R": 88,
+    "I": 70,
+    "C": 67,
+    "A": 13,
+    "S": 13,
+    "E": 5
+   },
+   "onetTitle": "17-3023.00 - Electrical and Electronic Engineering Technologists and Technicians"
+  },
+  "voc-5": {
+   "field": "voc",
+   "title": "Machinist",
+   "soc": "51-4041.00",
+   "values": {
+    "R": 100,
+    "C": 57,
+    "I": 45,
+    "A": 16,
+    "E": 4,
+    "S": 3
+   },
+   "onetTitle": "51-4041.00 - Machinists"
+  },
+  "voc-6": {
+   "field": "voc",
+   "title": "Civil Engineering Technician",
+   "soc": "17-3022.00",
+   "values": {
+    "R": 79,
+    "I": 73,
+    "C": 71,
+    "A": 31,
+    "E": 17,
+    "S": 9
+   },
+   "onetTitle": "17-3022.00 - Civil Engineering Technologists and Technicians"
+  },
+  "art-1": {
+   "field": "arts",
+   "title": "Musician or Singer",
+   "soc": "27-2042.00",
+   "values": {
+    "A": 94,
+    "E": 40,
+    "S": 40,
+    "R": 31,
+    "C": 20,
+    "I": 9
+   },
+   "onetTitle": "27-2042.00 - Musicians and Singers"
+  },
+  "art-2": {
+   "field": "arts",
+   "title": "Actor",
+   "soc": "27-2011.00",
+   "values": {
+    "A": 100,
+    "S": 51,
+    "E": 50,
+    "R": 22,
+    "I": 19,
+    "C": 14
+   },
+   "onetTitle": "27-2011.00 - Actors"
+  },
+  "art-3": {
+   "field": "arts",
+   "title": "Dancer",
+   "soc": "27-2031.00",
+   "values": {
+    "A": 90,
+    "R": 64,
+    "S": 44,
+    "E": 36,
+    "C": 10,
+    "I": 7
+   },
+   "onetTitle": "27-2031.00 - Dancers"
+  },
+  "art-4": {
+   "field": "arts",
+   "title": "Producer or Director",
+   "soc": "27-2012.00",
+   "values": {
+    "A": 86,
+    "E": 80,
+    "C": 43,
+    "S": 35,
+    "I": 21,
+    "R": 19
+   },
+   "onetTitle": "27-2012.00 - Producers and Directors"
+  },
+  "art-5": {
+   "field": "arts",
+   "title": "Photographer",
+   "soc": "27-4021.00",
+   "values": {
+    "R": 76,
+    "A": 71,
+    "C": 39,
+    "E": 21,
+    "I": 20,
+    "S": 16
+   },
+   "onetTitle": "27-4021.00 - Photographers"
+  },
+  "mar-1": {
+   "field": "mar",
+   "title": "Ship Captain or Navigator",
+   "soc": "53-5021.00",
+   "values": {
+    "R": 77,
+    "C": 59,
+    "E": 54,
+    "I": 27,
+    "S": 15,
+    "A": 0
+   },
+   "onetTitle": "53-5021.00 - Captains, Mates, and Pilots of Water Vessels"
+  },
+  "mar-2": {
+   "field": "mar",
+   "title": "Marine Engineer",
+   "soc": "17-2121.00",
+   "values": {
+    "I": 79,
+    "R": 79,
+    "C": 55,
+    "E": 38,
+    "A": 27,
+    "S": 5
+   },
+   "onetTitle": "17-2121.00 - Marine Engineers and Naval Architects"
+  },
+  "mar-3": {
+   "field": "mar",
+   "title": "Logistics Manager",
+   "soc": "13-1081.00",
+   "values": {
+    "C": 74,
+    "E": 67,
+    "I": 47,
+    "R": 23,
+    "S": 22,
+    "A": 2
+   },
+   "onetTitle": "13-1081.00 - Logisticians"
+  },
+  "mar-4": {
+   "field": "mar",
+   "title": "Supply Chain Manager",
+   "soc": "11-3071.00",
+   "values": {
+    "E": 83,
+    "C": 79,
+    "R": 43,
+    "I": 27,
+    "S": 23,
+    "A": 0
+   },
+   "onetTitle": "11-3071.00 - Transportation, Storage, and Distribution Managers"
   },
   "spo-1": {
    "field": "spo",

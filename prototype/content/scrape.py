@@ -30,6 +30,8 @@ com-3|Financial Analyst|13-2051.00
 com-4|Economist|19-3011.00
 com-5|Marketing Manager|11-2021.00
 com-6|HR Specialist|13-1071.00
+com-7|Bank Loan Officer|13-2072.00
+com-8|Insurance Underwriter|13-2053.00
 des|Design and creative arts
 des-1|UX and Product Designer|15-1255.00
 des-2|Architect|17-1011.00
@@ -64,6 +66,30 @@ hos-1|Airline Pilot|53-2011.00
 hos-2|Chef|35-1011.00
 hos-3|Hotel Manager|11-9081.00
 hos-4|Cabin Crew|53-2031.00
+agr|Agriculture and environment
+agr-1|Soil and Plant Scientist|19-1013.00
+agr-2|Animal Scientist|19-1011.00
+agr-3|Forester|19-1032.00
+agr-4|Conservation Scientist|19-1031.00
+agr-5|Farm or Agribusiness Manager|11-9013.00
+voc|Skilled trades and technical diplomas
+voc-1|Electrician|47-2111.00
+voc-2|Automobile Technician|49-3023.00
+voc-3|Welder|51-4121.00
+voc-4|Electronics Technician|17-3023.00
+voc-5|Machinist|51-4041.00
+voc-6|Civil Engineering Technician|17-3022.00
+arts|Performing arts and music
+art-1|Musician or Singer|27-2042.00
+art-2|Actor|27-2011.00
+art-3|Dancer|27-2031.00
+art-4|Producer or Director|27-2012.00
+art-5|Photographer|27-4021.00
+mar|Maritime and logistics
+mar-1|Ship Captain or Navigator|53-5021.00
+mar-2|Marine Engineer|17-2121.00
+mar-3|Logistics Manager|13-1081.00
+mar-4|Supply Chain Manager|11-3071.00
 spo|Sports and fitness
 spo-1|Professional Athlete|27-2021.00
 spo-2|Coach or Sports Trainer|27-2022.00

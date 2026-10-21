@@ -4,6 +4,8 @@ export async function onRequestPost({ request, env }) {
   const raw = await request.text(); if (raw.length > 120000) return json({ error: 'Too large.' }, 413);
   let b; try { b = JSON.parse(raw); } catch { return json({ error: 'Bad request.' }, 400); }
   const id = String(b.testerId || ''); if (!safeEq(String(b.token || ''), await sign(id, env.SIGN_KEY))) return json({ error: 'Not allowed.' }, 403);
+  const day = await env.DB.prepare('SELECT COUNT(*) AS n FROM events WHERE tester_id = ? AND ts > ?').bind(id, Date.now() - 86400000).first();
+  if (day && day.n > 4000) return json({ error: 'Daily limit reached.' }, 429);
   const evs = Array.isArray(b.events) ? b.events.slice(0, 40) : []; const session = String(b.session || '').slice(0, 16);
   const stmts = [];
   for (const e of evs) {
