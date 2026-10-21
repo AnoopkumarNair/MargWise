@@ -88,36 +88,55 @@ describe('stop bank design (docs/journey/design.md)', () => {
         expect(text, text).not.toMatch(leak);
   });
 
-  it('tells one story: a frame, a reason and a closing line per stop, with no area or source named', () => {
+  it('tells one story that holds in any visiting order, favours no option, and names no area or source', () => {
     const story = bank.story;
     if (!story) throw new Error('bank has no story');
     const leak =
       /realistic|investigative|artistic|social|enterprising|conventional|riasec|holland|o\*net|interest|assess|test of|score|career/i;
-    const frame = [
+    // stops arrive in an adaptive order, so no line may say where in the walk it belongs
+    const order = /\b(first|last|final|next|again|nearly|almost done|begin|end of)\b/i;
+    const lines = [
       story.title,
       story.premise,
       story.mission,
       story.outro,
-      ...Object.values(story.threads),
+      ...Object.values(story.threads).flat(),
     ];
-    for (const text of frame) {
+    for (const text of lines) {
       expect(text.length, text).toBeGreaterThan(10);
       expect(text, text).not.toMatch(leak);
     }
+    for (const [phase, arr] of Object.entries(story.threads)) {
+      expect(arr.length, phase).toBeGreaterThan(0);
+      if (phase !== 'first' && phase !== 'return')
+        for (const t of arr) expect(t.length).toBeLessThan(110);
+    }
+    const stop = new Set([
+      'their',
+      'every',
+      'there',
+      'about',
+      'which',
+      'while',
+      'would',
+      'could',
+      'again',
+      'other',
+    ]);
+    const words = (s: string) =>
+      (s.toLowerCase().match(/[a-z]{5,}/g) ?? []).filter((w) => !stop.has(w));
     for (const s of bank.scenes) {
       expect(s.lit?.length ?? 0, s.id).toBeGreaterThan(10);
-      expect(s.lit, s.id).not.toMatch(leak);
-      // the stakes tie each stop to the festival, so stops read as one mission
-      expect(`${s.setup} ${s.lit}`, s.id).toMatch(/lamp|festival|light|lantern/i);
+      for (const text of [s.setup, s.lit ?? '']) {
+        expect(text, text).not.toMatch(leak);
+        expect(text, `${s.id}: order word in "${text}"`).not.toMatch(order);
+      }
+      expect(s.setup, s.id).toMatch(/lamp|festival|lantern/i);
+      // the closing line describes the town, never an option: it must not reuse an option's own words
+      const optionWords = new Set(s.options.flatMap((o) => words(o.text)));
+      for (const w of words(s.lit ?? ''))
+        expect(optionWords.has(w), `${s.id}: lit line echoes option word "${w}"`).toBe(false);
     }
-    // thread and lit lines must not depend on what was chosen: they are plain strings, one per stop or position
-    expect(Object.keys(story.threads).sort()).toEqual([
-      'early',
-      'first',
-      'late',
-      'middle',
-      'return',
-    ]);
   });
 
   it('keeps option lengths within a stop comparable so length is not a hint', () => {

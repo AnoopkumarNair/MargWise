@@ -62,7 +62,7 @@
 
   /* ----- HUD ----- */
   .hud { position: absolute; z-index: 6; left: 0; right: 0; top: 0; padding: calc(var(--safe-top) + 8px) 12px 6px; display: grid; grid-template-columns: 44px 1fr auto 44px; align-items: center; gap: 8px; min-height: 52px; }
-  .iconbtn { width: 44px; height: 40px; border-radius: 14px; border: 2px solid rgba(255,243,214,.4); background: rgba(14,16,40,.55); backdrop-filter: blur(4px); display: grid; place-items: center; }
+  .iconbtn { width: 44px; height: 44px; border-radius: 14px; border: 2px solid rgba(255,243,214,.4); background: rgba(14,16,40,.55); backdrop-filter: blur(4px); display: grid; place-items: center; }
   .iconbtn[aria-pressed="true"] { background: rgba(255,207,107,.3); border-color: var(--glow); }
   .iconbtn svg { width: 20px; height: 20px; }
   .lamps { display: flex; gap: 4px; align-items: center; justify-content: center; flex-wrap: nowrap; }
@@ -84,6 +84,7 @@
   .bubblebar .iconbtn { height: 44px; align-self: flex-start; }
   .bubble { position: relative; background: rgba(255,243,214,.96); color: var(--ink); border-radius: 18px; padding: 8px 12px 9px 44px; font-weight: 700; font-size: 15px; line-height: 1.3; min-height: 50px; display: grid; gap: 2px; align-content: center; box-shadow: 0 6px 18px rgba(0,0,0,.3); animation: pop .35s cubic-bezier(.2,1.4,.4,1) both; }
   .bubble::before { content: ''; position: absolute; left: 13px; top: 50%; width: 20px; height: 20px; margin-top: -10px; border-radius: 50%; background: radial-gradient(circle, #fff7c0 0 30%, var(--glow) 31% 60%, rgba(255,207,107,0) 70%); animation: tw 1.6s ease-in-out infinite; }
+  .bubble.hinting .thread { display: block !important; }
   .bubble .thread { font-family: var(--hand); font-weight: 600; font-size: 18px; line-height: 1.05; color: var(--ink-soft); }
   .bubble b { font-family: var(--hand); font-size: 19px; margin-right: 5px; color: var(--ink-soft); }
   @keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -115,7 +116,8 @@
   .busy .obj, .busy .go { pointer-events: none; }
 
   /* ----- welcome ----- */
-  #welcome { padding: calc(var(--safe-top) + 14px) 16px calc(var(--safe-bot) + 12px); gap: 10px; justify-content: flex-end; }
+  #welcome { padding: calc(var(--safe-top) + 14px) 16px calc(var(--safe-bot) + 12px); gap: 10px; overflow-y: auto; }
+  #welcome > * { flex-shrink: 0; } #welcome .hero { margin-top: auto; }
   #welcome .hero { position: relative; z-index: 2; }
   #welcome .hero .kicker { font-family: var(--hand); font-size: 24px; color: var(--glow); }
   #welcome .hero h1 { font-size: clamp(34px, 10vw, 46px); font-weight: 800; margin: 2px 0 8px; }
@@ -124,7 +126,7 @@
   .jyo-sprite { position: absolute; z-index: 2; right: 28px; top: 22%; width: 74px; height: 74px; animation: ffly 7s ease-in-out infinite; }
   .jyo-sprite img { width: 100%; height: 100%; object-fit: contain; }
   .foot { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: rgba(255,243,214,.75); gap: 10px; }
-  .foot button { background: none; border: 0; text-decoration: underline; padding: 6px 2px; color: inherit; font-weight: 700; }
+  .foot button { background: none; border: 0; text-decoration: underline; padding: 12px 6px; min-height: 44px; color: inherit; font-weight: 700; }
 
   /* ----- dreams ----- */
   .head h2 { font-size: clamp(24px, 7vw, 30px); }
@@ -175,6 +177,12 @@
   @media (max-height: 700px) {
     .bubble { font-size: 14px; min-height: 44px; padding-block: 6px; } .bubble .thread { font-size: 16px; }
     .obj .tag { font-size: 13px; padding: 5px 7px 6px; } .place-tag { font-size: 19px; }
+    #welcome .hero p { font-size: 14.5px; } #welcome .hero h1 { font-size: 32px; }
+  }
+  @media (max-height: 640px) {
+    #stop { gap: 6px; } .bubble .thread { display: none; } .bubble { font-size: 13.5px; line-height: 1.25; }
+    .obj .tag { font-size: 12.5px; margin-top: -8px; min-height: 0; } .objs { gap: 8px 10px; }
+    .go { min-height: 46px; padding-block: 10px; font-size: 16.5px; }
   }
   @media (prefers-reduced-motion: reduce) { * { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; } .obj { animation: none !important; opacity: 1; } }
 </style>
@@ -182,8 +190,8 @@
 <div id="app">
   <div class="hud" id="hud" hidden>
     <button class="iconbtn" id="back" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7l7 7"/></svg></button>
-    <div class="lamps" id="lampRow" aria-label="Lamps lit on the road"></div>
-    <div class="oil" id="oil" aria-label="Lamp oil flasks left"></div>
+    <div class="lamps" id="lampRow" role="img" aria-label="Lamps lit on the road"></div>
+    <div class="oil" id="oil" role="img" aria-label="Lamp oil flasks"></div>
     <button class="iconbtn" id="snd" aria-label="Sound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path id="sndwave" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
   </div>
 
@@ -204,7 +212,7 @@
     <div class="bg" id="stopBg"><div class="layer" id="artA"></div><div class="layer" id="artB"></div><div class="shade"></div></div>
     <div class="top">
       <span class="place-tag" id="placeTag"></span>
-      <div class="bubblebar"><div class="bubble" id="bubble"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
+      <div class="bubblebar"><div class="bubble" id="bubble" aria-live="polite"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
     </div>
     <div class="objs" id="options"></div>
     <div class="actions"><button class="go" id="light">Light the lamp</button></div>
@@ -234,7 +242,7 @@
   </section>
 </div>
 
-<div class="sheet" id="about" hidden><div role="dialog" aria-label="About">
+<div class="sheet" id="about" hidden><div role="dialog" aria-modal="true" aria-label="About">
   <h3>About this prototype</h3>
   <p>The story and places are drafts for review. Career names and how closely a path fits use information from the O*NET 31.0 Database by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA), used under a CC BY 4.0 licence. Margwise has modified this information. USDOL/ETA has not approved, endorsed, or tested these modifications. O*NET® is a trademark of USDOL/ETA. Values are whole-number display values from O*NET OnLine and will be replaced by exact database values.</p>
   <h3 style="font-size:18px">Reviewer tools</h3>
@@ -345,13 +353,16 @@
 
   // ---------- HUD
   function buildHud() {
-    $('lampRow').innerHTML = bank.scenes.map(function () { return '<i></i>'; }).join('');
+    $('lampRow').innerHTML = '';
     var o = ''; for (var i = 0; i < FLASKS; i++) o += '<svg class="f" viewBox="0 0 22 28"><path d="M8 2h6v5l5 8v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-9l5-8z" fill="rgba(255,255,255,.1)" stroke="#fff3d6" stroke-width="1.8" stroke-linejoin="round"/><path class="liquid" d="M5 17h12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" fill="#ffcf6b"/></svg>';
     $('oil').innerHTML = o;
   }
   function litCount() { return state.choices.filter(function (c) { return !c.echoOf; }).length; }
   function paintHud() {
-    var done = litCount();
+    var done = litCount(), want = Math.max(1, done + (state.view === 'stop' ? 1 : 0)), row = $('lampRow');
+    while (row.children.length < want) row.appendChild(document.createElement('i'));
+    while (row.children.length > want) row.removeChild(row.lastChild);
+    row.setAttribute('aria-label', done + (done === 1 ? ' lamp lit' : ' lamps lit'));
     Array.prototype.forEach.call($('lampRow').children, function (el, i) { el.classList.toggle('on', i < done); });
     var used = totalSpent();
     Array.prototype.forEach.call($('oil').children, function (el, i) { el.classList.toggle('spent', i >= FLASKS - used); });
@@ -360,10 +371,19 @@
 
   // ---------- Jyo's voice. Thread lines depend only on how many lamps are lit, never on what was chosen (rule 4).
   function say(html) { var b = $('bubble'); b.style.animation = 'none'; void b.offsetWidth; b.style.animation = ''; b.innerHTML = html; }
+  // A hint replaces only the small top line for a moment; the stop's own question stays on screen.
+  var hintTimer = null;
+  function hint(msg) {
+    var th = $('bubble').querySelector('.thread'); if (!th) return;
+    if (th.dataset.base === undefined) th.dataset.base = th.textContent;
+    var b = $('bubble'); b.classList.add('hinting'); th.textContent = msg; clearTimeout(hintTimer);
+    hintTimer = setTimeout(function () { th.textContent = th.dataset.base; delete th.dataset.base; b.classList.remove('hinting'); }, 3500);
+  }
   function threadFor() {
     var n = litCount(), T = STORY.threads;
-    if (state.echo) return T['return'];
-    return n === 0 ? T.first : n < 3 ? T.early : n < 7 ? T.middle : T.late;
+    var pick = function (a) { return a[n % a.length]; };
+    if (state.echo) return pick(T['return']);
+    return n === 0 ? pick(T.first) : n < 3 ? pick(T.early) : n < 7 ? pick(T.middle) : pick(T.late);
   }
   function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
@@ -393,7 +413,7 @@
   function renderStop() {
     var scene = state.scene;
     $('placeTag').textContent = scene.place;
-    say('<span class="thread">' + esc(threadFor()) + '</span><span><b>Jyo</b>' + esc(scene.setup) + '</span>');
+    say('<span class="thread" aria-hidden="false">' + esc(threadFor()) + '</span><span><b>Jyo</b>' + esc(state.echo ? 'The lamp at ' + scene.place + ' is flickering, as if it wants a second look.' : scene.setup) + '</span>');
     var shown = M.displayOptions(scene, SEED + (state.echo ? 97 : 0));
     var box = $('options'); box.innerHTML = '';
     shown.forEach(function (o, i) {
@@ -406,7 +426,17 @@
       box.appendChild(b);
     });
     refreshCards(); paintHud();
+    equalise();
   }
+  function equalise() {
+    var tags = Array.prototype.slice.call($('options').querySelectorAll('.tag'));
+    tags.forEach(function (g) { g.style.minHeight = ''; });
+    requestAnimationFrame(function () {
+      var h = Math.max.apply(null, tags.map(function (g) { return g.scrollHeight; }));
+      tags.forEach(function (g) { g.style.minHeight = h + 'px'; });
+    });
+  }
+  window.addEventListener('resize', function () { if (state.view === 'stop') equalise(); });
 
   var FLAME = '<svg viewBox="0 0 24 30"><path d="M12 2c1 5 8 8 8 16a8 8 0 0 1-16 0c0-4 3-6 4-9c2 2 3 3 4 2c1-3 0-6 0-9z" fill="#f2a03d" stroke="#a8661d" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 15c1 3 4 4 4 8a4 4 0 0 1-8 0c0-3 3-4 4-8z" fill="#ffe08a"/></svg>';
   function refreshCards() {
@@ -435,8 +465,8 @@
     if (state.busy) return;
     var n = state.spent[id] || 0, used = totalSpent();
     if (used < FLASKS && n < FLASKS) { state.spent[id] = n + 1; sparks(btn); Snd.spend(); }
-    else if (n > 0) { delete state.spent[id]; Snd.refund(); say('<span><b>Jyo</b>Oil back in the flask. Spend it where you like.</span>'); }
-    else { var o = $('oil'); o.classList.remove('shake'); void o.offsetWidth; o.classList.add('shake'); Snd.deny(); say('<span><b>Jyo</b>Both flasks are in use. Tap a glowing one to take its oil back, or just light the lamp.</span>'); return; }
+    else if (n > 0) { delete state.spent[id]; Snd.refund(); hint('Oil back in the flask. Spend it where you like.'); }
+    else { var o = $('oil'); o.classList.remove('shake'); void o.offsetWidth; o.classList.add('shake'); Snd.deny(); hint('Both flasks are in use. Tap a glowing one to take its oil back, or just light the lamp.'); return; }
     refreshCards();
   }
 
@@ -447,16 +477,19 @@
     var choice = state.echo ? { sceneId: scene.id + '~echo', echoOf: scene.id, spent: spent } : { sceneId: scene.id, spent: spent };
     state.choices.push(choice);
     state.busy = true; document.body.classList.add('busy');
-    $('stopBg').classList.add('lit'); paintHud();
+    if (!state.echo) $('stopBg').classList.add('lit'); paintHud();
     var n = litCount();
     Voice.stop(); Snd.lamp(n);
     // The same line whatever was chosen: it describes the town, not the choice.
-    say('<span class="thread">' + (n === 1 ? 'One lamp is burning.' : n + ' lamps are burning.') + '</span><span><b>Jyo</b>' + esc(scene.lit || 'The lamp is lit.') + '</span>');
-    setTimeout(function () { advance(false); }, state.reduce ? 0 : 2300);
+    var echoing = state.echo;
+    say('<span class="thread">' + (echoing ? 'Steady again.' : n === 1 ? 'One lamp is burning.' : n + ' lamps are burning.') + '</span><span><b>Jyo</b>' + esc(echoing ? 'The flame holds. Thank you for looking again.' : scene.lit || 'The lamp is lit.') + '</span>');
+    // Reduced motion removes movement, not reading time.
+    setTimeout(function () { advance(false); }, state.reduce ? 3200 : 2300);
   });
 
   $('back').addEventListener('click', function () {
     if (state.busy && state.view === 'stop') return;
+    Voice.stop();
     if (state.view === 'stop') {
       if (!state.choices.length) { show('welcome'); return; }
       var last = state.choices[state.choices.length - 1];
@@ -587,7 +620,7 @@
   $('about').addEventListener('click', function (e) { if (e.target === $('about')) $('about').hidden = true; });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') $('about').hidden = true;
-    if (state.view === 'stop' && !state.busy) { var n = parseInt(e.key, 10); if (n >= 1 && n <= 4) { var b = $('options').querySelectorAll('.obj')[n - 1]; if (b) b.click(); } }
+    if (state.view === 'stop' && !state.busy && $('about').hidden) { var n = parseInt(e.key, 10); if (n >= 1 && n <= 4) { var b = $('options').querySelectorAll('.obj')[n - 1]; if (b) b.click(); } }
   });
 
   // ---------- sound: synthesised in the browser, so there are no audio files to license.
@@ -606,7 +639,7 @@
     // The whole instrument is built on any context (real or offline) so the same graph can be rendered and measured.
     function build(c) {
       var master = c.createGain(); master.gain.value = 0;
-      var lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200; lp.Q.value = .5;       // nothing bright survives
+      var lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 5000; lp.Q.value = .5;       // keeps the warmth, removes anything hissy
       var comp = c.createDynamicsCompressor(); comp.threshold.value = -24; comp.ratio.value = 3; comp.attack.value = .02; comp.release.value = .4;
       master.connect(lp); lp.connect(comp); comp.connect(c.destination);
       var bus = c.createGain(); bus.gain.value = 1; bus.connect(master);
@@ -620,7 +653,7 @@
     }
     function env(c, t, g, peak, a, hold, r) { g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + a); g.gain.setValueAtTime(peak, t + a + hold); g.gain.exponentialRampToValueAtTime(.0001, t + a + hold + r); }
     function padVoice(L, t, f, dur, level) {
-      var c = L.c, g = c.createGain(), lpf = c.createBiquadFilter(); lpf.type = 'lowpass'; lpf.frequency.value = 780;
+      var c = L.c, g = c.createGain(), lpf = c.createBiquadFilter(); lpf.type = 'lowpass'; lpf.frequency.value = 1500;
       env(c, t, g, level, 1.8, Math.max(0, dur - 3.6), 2.2);
       [[ 'sine', 0 ], [ 'triangle', 5 ], [ 'sine', -5 ]].forEach(function (v, i) { var o = c.createOscillator(); o.type = v[0]; o.frequency.value = f; o.detune.value = v[1]; var og = c.createGain(); og.gain.value = i === 1 ? .3 : 1; o.connect(og); og.connect(lpf); o.start(t); o.stop(t + dur + .2); });
       lpf.connect(g); g.connect(L.bus);
@@ -636,16 +669,19 @@
     }
     // One beat of music. The chord changes every CHORD_BEATS; melody notes are chosen from chord-friendly pentatonic notes.
     function scheduleBeat(L, t, b, lampCount) {
-      var chord = CHORDS[Math.floor(b / CHORD_BEATS) % CHORDS.length], within = b % CHORD_BEATS;
+      var ci = Math.floor(b / CHORD_BEATS) % CHORDS.length, chord = CHORDS[ci], within = b % CHORD_BEATS;
       if (within === 0) {
-        chord.forEach(function (s, i) { padVoice(L, t + i * .05, hz(s), CHORD_BEATS * BEAT + 1, i < 2 ? .02 : .014); });
-        kalimba(L, t, hz(chord[0]), .05);
+        // one quiet low root, the rest of the pad an octave up where phone speakers can play it
+        chord.forEach(function (s, i) { padVoice(L, t + i * .05, hz(i === 0 ? s : s + 12), CHORD_BEATS * BEAT + 1, i === 0 ? .012 : .05); });
+        kalimba(L, t, hz(chord[0] + 12), .1);
       }
-      var p = .26 + Math.min(lampCount, 12) * .025;
+      var p = .3 + Math.min(lampCount, 12) * .025;
+      // melody notes that fit the chord now sounding: the pentatonic set, minus C over G6 (it would rub against B)
+      var pool = ci === 3 ? [2, 4, 7, 9] : PENT;
       [0, .5].forEach(function (off) {
         if (rnd() < p * (off ? .6 : 1)) {
-          var oct = rnd() < .55 ? 0 : 12, semi = PENT[Math.floor(rnd() * PENT.length)] + oct;
-          kalimba(L, t + off * BEAT, hz(semi), .05 + rnd() * .03);
+          var r = rnd(), oct = r < .25 ? 0 : r < .8 ? 12 : 24, semi = pool[Math.floor(rnd() * pool.length)] + oct;
+          kalimba(L, t + off * BEAT, hz(semi), .1 + rnd() * .05);
         }
       });
     }
@@ -656,20 +692,22 @@
     function init() {
       if (ctx) return true;
       var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false;
-      ctx = new AC(); live = build(ctx); return true;
+      ctx = new AC(); return true;
     }
-    function quick(fn) { if (!on) return; fn(live, ctx.currentTime + .01); }
+    function quick(fn) { if (!on || !live) return; fn(live, ctx.currentTime + .01); }
     return {
       available: function () { return !!(window.AudioContext || window.webkitAudioContext); },
       isOn: function () { return on; },
       set: function (v) {
         if (v) {
-          if (!init()) return false; ctx.resume(); on = true;
-          live.master.gain.cancelScheduledValues(ctx.currentTime); live.master.gain.setValueAtTime(live.master.gain.value, ctx.currentTime); live.master.gain.linearRampToValueAtTime(.9, ctx.currentTime + 1.2);
+          if (!init()) return false; ctx.resume(); on = true; if (!live) live = build(ctx);
+          live.master.gain.cancelScheduledValues(ctx.currentTime); live.master.gain.setValueAtTime(live.master.gain.value, ctx.currentTime); live.master.gain.linearRampToValueAtTime(.75, ctx.currentTime + 1.2);
           nextBeat = ctx.currentTime + .15; beatNo = 0; if (!timer) timer = setInterval(tick, 150); tick();
-        } else if (ctx) {
+        } else if (ctx && live) {
           on = false; live.master.gain.cancelScheduledValues(ctx.currentTime); live.master.gain.setValueAtTime(live.master.gain.value, ctx.currentTime); live.master.gain.linearRampToValueAtTime(0, ctx.currentTime + .5);
           clearInterval(timer); timer = null;
+          var old = live; live = null;   // scheduled notes die with the old graph, so a quick off/on never stacks two chords
+          setTimeout(function () { try { old.master.disconnect(); } catch (e) { /* already gone */ } }, 700);
         }
         return true;
       },
@@ -683,7 +721,7 @@
       // For measurement only: renders n seconds of the music (no interaction cues) on an offline context.
       render: function (seconds, lampCount, sampleRate) {
         var oc = new OfflineAudioContext(1, Math.floor(seconds * sampleRate), sampleRate), L = build(oc);
-        L.master.gain.value = .9; rngState = 7;
+        L.master.gain.value = .75; rngState = 7;
         for (var b = 0, t = 0; t < seconds; b++, t += BEAT) scheduleBeat(L, t, b, lampCount);
         return oc.startRendering().then(function (buf) { return Array.prototype.slice.call(buf.getChannelData(0)); });
       }

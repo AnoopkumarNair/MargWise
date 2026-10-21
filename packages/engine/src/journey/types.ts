@@ -23,8 +23,8 @@ export interface Story {
   title: string;
   premise: string;
   mission: string;
-  /** Guide lines chosen by how many lamps are lit, never by what was chosen. */
-  threads: { first: string; early: string; middle: string; late: string; return: string };
+  /** Guide lines chosen by how many lamps are lit (several per phase), never by what was chosen. */
+  threads: Record<'first' | 'early' | 'middle' | 'late' | 'return', string[]>;
   outro: string;
 }
 

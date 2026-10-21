@@ -4,7 +4,7 @@
     {
       "id": "s01",
       "place": "Salt Harbour",
-      "setup": "The ferry carrying the festival's lamp oil is stuck at the quay, and the crowd waiting for it keeps growing.",
+      "setup": "The ferry has docked late with the festival's lamp oil, and a big crowd is waiting on the dock.",
       "options": [
         {
           "id": "s01-R",
@@ -39,12 +39,12 @@
           }
         }
       ],
-      "lit": "The oil is ashore. The harbour lamp catches, and the sea answers with a glint."
+      "lit": "The oil is ashore, and the harbour lamp catches. The water shines back."
     },
     {
       "id": "s02",
       "place": "Lantern Bridge",
-      "setup": "The old bridge to the next lamp has cracked. Nobody carrying lanterns can cross until it is mended.",
+      "setup": "The old bridge by the lamp post is worn, and the festival crowd will need to cross it soon.",
       "options": [
         {
           "id": "s02-R",
@@ -79,12 +79,12 @@
           }
         }
       ],
-      "lit": "The bridge holds. Lantern-bearers stream across and the first arch glows."
+      "lit": "Lantern-bearers stream across, and the old arch glows."
     },
     {
       "id": "s03",
       "place": "Clockmaker's Lane",
-      "setup": "The tower clock that tells the town when to light its lamps has stopped, and nobody knows why.",
+      "setup": "The tower clock that tells the lane when to light its lamps is running wrong, and visitors are arriving for the festival.",
       "options": [
         {
           "id": "s03-R",
@@ -119,7 +119,7 @@
           }
         }
       ],
-      "lit": "The clock strikes dusk. Every window in the lane lights at once."
+      "lit": "The tower strikes dusk. Every window in the lane lights at once."
     },
     {
       "id": "s04",
@@ -159,12 +159,12 @@
           }
         }
       ],
-      "lit": "The last crate is handled. The orchard lamp swings among the apple boughs."
+      "lit": "The orchard is calm. Its lamp swings among the apple trees."
     },
     {
       "id": "s05",
       "place": "Fog Pass",
-      "setup": "Fog has swallowed the pass, and travellers heading for the festival cannot see the road.",
+      "setup": "Fog has settled on the pass, the signal lamp is dim, and festival travellers are feeling their way through.",
       "options": [
         {
           "id": "s05-R",
@@ -184,7 +184,7 @@
         },
         {
           "id": "s05-S",
-          "text": "Welcome the lost travellers and rally them to move together",
+          "text": "Welcome the lost travellers and get them moving together",
           "loads": {
             "S": 1.0,
             "E": 0.5
@@ -199,12 +199,12 @@
           }
         }
       ],
-      "lit": "A thin gold line cuts the fog. The pass has a lamp, and a way through."
+      "lit": "A thin gold line cuts the fog. The pass has its light, and the way is clear."
     },
     {
       "id": "s06",
       "place": "Night Bazaar",
-      "setup": "The bazaar opens at dusk, the one place the whole road meets, and the stall lent to you is still empty.",
+      "setup": "The bazaar opens at dusk for the festival, the one place the whole road meets, and the stall lent to you is empty apart from a strange old machine in the corner.",
       "options": [
         {
           "id": "s06-R",
@@ -239,12 +239,12 @@
           }
         }
       ],
-      "lit": "The stall is open and the bazaar lamp hangs above it, warm as a cup of tea."
+      "lit": "The bazaar glows, and a lamp hangs overhead, warm as a cup of tea."
     },
     {
       "id": "s07",
       "place": "River Camp",
-      "setup": "A river blocks the way to the lighthouse, and a tired group of lamp-bearers has stopped to rest at the bank.",
+      "setup": "A wide river lies across the road, and a tired group of lamp-bearers has stopped to rest on the bank.",
       "options": [
         {
           "id": "s07-R",
@@ -279,12 +279,12 @@
           }
         }
       ],
-      "lit": "The camp is ready for the crossing. The river carries the lamp's reflection away downstream."
+      "lit": "The group is rested and ready for the crossing. The lamp's reflection drifts downstream."
     },
     {
       "id": "s08",
       "place": "Weavers' Town",
-      "setup": "The great loom that weaves the festival banners has jammed, and market day is almost here.",
+      "setup": "The great loom that weaves the festival banners is creaking, and market day is almost here.",
       "options": [
         {
           "id": "s08-R",
@@ -312,19 +312,19 @@
         },
         {
           "id": "s08-C",
-          "text": "Check every bolt of cloth and store it just so",
+          "text": "Check every roll of cloth and store it neatly",
           "loads": {
             "C": 1.0,
             "R": 0.5
           }
         }
       ],
-      "lit": "The loom clacks again. Banners hang above the street and the lamp lights behind them."
+      "lit": "Banners hang above the street, and a lamp lights behind them."
     },
     {
       "id": "s09",
       "place": "Glass Cliffs",
-      "setup": "A group wants to reach the top of the cliffs by evening, to light the highest lamp on the road.",
+      "setup": "A group wants to reach the cliff top by evening to light the highest lamp, and the glassy cliffs are glowing strangely.",
       "options": [
         {
           "id": "s09-R",
@@ -359,12 +359,12 @@
           }
         }
       ],
-      "lit": "The highest lamp is lit. The cliffs glitter like glass for miles."
+      "lit": "The highest lamp is lit. The cliffs shine like glass for miles."
     },
     {
       "id": "s10",
       "place": "Salt Market",
-      "setup": "A load of lamp oil has spilled, two traders are arguing over it, and the market's lamp cannot be lit until they settle.",
+      "setup": "A load of lamp oil has spilled at the market, two traders are arguing, and a crowd is gathering.",
       "options": [
         {
           "id": "s10-R",
@@ -376,7 +376,7 @@
         },
         {
           "id": "s10-S",
-          "text": "Help a lost trader find family and rally others to help",
+          "text": "Help a lost trader find family and get others to help",
           "loads": {
             "S": 1.0,
             "E": 0.5
@@ -399,12 +399,12 @@
           }
         }
       ],
-      "lit": "The market grows quiet. The lamp is lit, and the traders share a nod."
+      "lit": "The market hums, and its lamp is lit above the stalls."
     },
     {
       "id": "s11",
       "place": "Observatory Hill",
-      "setup": "A clear night is coming, and visitors are climbing the hill to see the festival's first stars.",
+      "setup": "A clear night is coming for the festival, visitors are climbing the hill to watch the stars come out, and the hill's stargazing club hopes to welcome them.",
       "options": [
         {
           "id": "s11-I",
@@ -439,7 +439,7 @@
           }
         }
       ],
-      "lit": "The visitors gather. The hill lamp lifts its light to meet the stars."
+      "lit": "The hill lamp lifts its light into the dark, and the sky answers."
     },
     {
       "id": "s12",
@@ -479,12 +479,12 @@
           }
         }
       ],
-      "lit": "The garden breathes again. The lamp among the herbs smells of rain and mint."
+      "lit": "The beds breathe, and the lamp smells of rain and mint."
     },
     {
       "id": "s13",
       "place": "Printers' Quarter",
-      "setup": "An old press has been found in a cellar, and the town wants it running to print the festival programme in time.",
+      "setup": "An old printing press has been found in a cellar, and the quarter wants to use it for the festival.",
       "options": [
         {
           "id": "s13-I",
@@ -519,12 +519,12 @@
           }
         }
       ],
-      "lit": "The press hums. Fresh pages flutter out, and the lamp lights above the door."
+      "lit": "Ink and paper fill the quarter, and a lamp lights above the cellar door."
     },
     {
       "id": "s14",
       "place": "Healing House",
-      "setup": "Many travellers are ill and the house is full. Its lamp is the one the whole road looks to for comfort.",
+      "setup": "Many travellers have come to the healing house to rest before the festival, and some are unwell tonight.",
       "options": [
         {
           "id": "s14-I",
@@ -559,12 +559,12 @@
           }
         }
       ],
-      "lit": "The house settles into calm. The lamp in the window burns steady."
+      "lit": "The house settles into calm. A steady lamp burns in the window."
     },
     {
       "id": "s15",
       "place": "Festival Square",
-      "setup": "The Night of Lamps begins at dusk, and the square where all the lamps will gather is still bare.",
+      "setup": "The square where the lamps will gather is still bare, and the festival begins at dusk.",
       "options": [
         {
           "id": "s15-A",
@@ -599,7 +599,7 @@
           }
         }
       ],
-      "lit": "The square is ready. Its lamp is the last bright piece of the road."
+      "lit": "The square is ready, and its lamp glows over the cobbles."
     }
   ],
   "story": {
@@ -607,11 +607,28 @@
     "premise": "Once a year, every lamp on the old road is lit and the lighthouse at its end shines out to sea, so that anyone far from home can find the way back. This year the lamplighter has gone. The towns have been waiting. Jyo, a firefly who remembers every lamp, has found you.",
     "mission": "Walk the road, help each town in the way you would most gladly spend an evening, and light its lamp. When enough lamps burn, the lighthouse will shine and show you the doors that open for you.",
     "threads": {
-      "first": "This is the first dark lamp. I have waited a long time for someone to carry the lantern.",
-      "early": "Another town, another lamp. The road is starting to remember itself.",
-      "middle": "Look back. The lamps behind us make a line of light.",
-      "late": "We are close. I can smell the sea, and the lighthouse is waiting.",
-      "return": "This lamp flickered again, as if it wanted another look. What would you do this time?"
+      "first": [
+        "This is the first dark lamp. I have waited a long time for someone to carry the lantern."
+      ],
+      "early": [
+        "Another town, another lamp. The road is starting to remember itself.",
+        "The lamps ahead are watching us. Let us not keep them waiting."
+      ],
+      "middle": [
+        "Look back. The lamps behind us make a line of light.",
+        "The hills are glowing now. Keep going.",
+        "Can you feel it? The road is warmer than it was.",
+        "Every lamp you light makes the next one easier to find."
+      ],
+      "late": [
+        "The air smells of salt. The lighthouse is somewhere ahead.",
+        "The road is almost bright. A few dark corners left.",
+        "We have come a long way together, you and I.",
+        "Nearly there. The sea is listening."
+      ],
+      "return": [
+        "This lamp has flickered, as if it wanted another look. What would you do this time?"
+      ]
     },
     "outro": "The lighthouse is lit. The old lamplighter left a note by its lamp: 'A lamp burns best for hands that like the work.' Whatever you chose along the way, every lamp caught. This is the light you carry."
   }

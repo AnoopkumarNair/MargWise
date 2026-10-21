@@ -23,10 +23,11 @@ matters.
 
 ## How it stays honest to the measurement
 
-- Stops are visited in an adaptive order, so every setup stands alone: it names its problem and its stake in
-  the festival ("the ferry carrying the festival's lamp oil is stuck").
-- Jyo's connecting lines (`threads`) are chosen only by how many lamps are lit: first, early, middle, late,
-  or a return visit. They never react to what was chosen (rule 4). The line after lighting (`lit`) describes
+- Stops are visited in an adaptive order, so every setup stands alone: it names an occasion and its stake in the
+  festival ("the ferry has docked late with the festival's lamp oil"), never a fault that only one option fixes,
+  and never where in the walk it sits (no "first", "last", "next": tested).
+- Jyo's connecting lines (`threads`, several per phase) are chosen only by how many lamps are lit: first, early,
+  middle, late, or a return visit (which also gets its own setup and closing line in the page). They never react to what was chosen (rule 4). The line after lighting (`lit`) describes
   the town, not the choice, and is the same for every option.
 - Options and loadings are unchanged from journey-v0, so the 15-stop design (every 4-subset of the six areas)
   and all simulation tests hold. No text names an area, the source instrument or "assessment" (tested).

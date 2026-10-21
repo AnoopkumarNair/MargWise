@@ -7,15 +7,15 @@ sessions that start after it was changed.
 
 - PR #1 (Phase 0+1) is on branch `ccr-5552f257-slyh18`, CI green on its last head. Commit
   authorship was rewritten to Anu's identity and the description footer removed (D-046).
-- Phase 2 and the journey work are on branch `phase-2-journey` (no PR; Anu said hold). Its LFS
+- Phase 2 and the journey work were on branch `phase-2-journey` (no PR; Anu said hold). The newest work (story rewrite, rebuilt prototype) is on `claude/margwise-phase-2-journey-akgt4w`, which contains all of `phase-2-journey`; continue from that branch. Its LFS
   file `docs/golden/golden-cases.xlsx` is NOT on the remote because the LFS host is blocked from
   these sessions. Regenerate with `scripts/golden/build_golden.py` and recalc (it may differ in
   bytes; the JSON export records the workbook hash). The pushed history omits that file.
 - Engine: `packages/engine/src/journey/` (two-flask allocation model, adaptive stop, return-visit
-  consistency check, confidence labels, stated-path comparison). 651 tests, coverage floors met.
+  consistency check, confidence labels, stated-path comparison). engine tests pass (208 in packages/engine on 2026-10-21); coverage floors last checked before the journey work.
   Design: `docs/journey/design.md`. Decisions D-047 to D-053.
-- Prototype: private artifact "Lamplighter's Road" (source in `prototypes/lamplighter/`). Vector
-  placeholder art; sound and read-aloud are in.
+- Prototype: private artifact (same link as before, now titled "The Night of Lamps"; source in
+  `prototypes/lamplighter/`). Placeholder painted art; sound and read-aloud are in.
 
 ## Decisions Anu has made
 
@@ -57,11 +57,11 @@ rounded seed.
 
 ## Prompt to paste into the new session
 
-"Continue Margwise from docs/handoff/next-session.md on branch phase-2-journey. Start with step 1
-(check the network), then generate the style reference scene and the two characters and show me
-before generating the rest."
+"Continue Margwise from docs/handoff/next-session.md on branch claude/margwise-phase-2-journey-akgt4w.
+Check the Canva download host, then resume the art generation from docs/art/canva-ids.csv and finish the
+export and placement."
 
 ## How to start a new session
 
 Open the Claude app or claude.ai/code, start a new session on the repository
-AnoopkumarNair/MargWise, choose the branch `phase-2-journey`, and paste the prompt above.
+AnoopkumarNair/MargWise, choose the branch `claude/margwise-phase-2-journey-akgt4w`, and paste the prompt above.

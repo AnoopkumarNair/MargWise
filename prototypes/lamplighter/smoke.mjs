@@ -7,19 +7,23 @@ const html = path.resolve(process.argv[2]), out = path.resolve(process.argv[3] ?
 fs.mkdirSync(out, { recursive: true });
 const b = await chromium.launch({ executablePath: process.env.CHROMIUM ?? '/opt/pw-browsers/chromium' });
 let bad = 0;
-for (const [w, h] of [[393, 780], [360, 640], [412, 915]]) {
+for (const [w, h] of [[393, 780], [360, 640], [412, 915], [320, 568], [320, 640], [375, 667]]) {
   const ctx = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
   const p = await ctx.newPage();
   const errs = []; p.on('pageerror', (e) => errs.push(String(e))); p.on('console', (m) => { if (m.type() === 'error' && !/fonts\.g|net::ERR/.test(m.text())) errs.push(m.text()); });
   await p.goto('file://' + html); await p.waitForTimeout(700);
   await p.screenshot({ path: `${out}/${w}-welcome.png` });
+  const wt = await p.evaluate(() => { const r = document.querySelector('#welcome h1').getBoundingClientRect(); const k = document.querySelector('#welcome .kicker').getBoundingClientRect(); return { h1: r.top, kicker: k.top, begin: document.querySelector('#begin').getBoundingClientRect().bottom, ih: innerHeight }; });
+  const wfail = wt.kicker < 0 || wt.h1 < 0;
+  process.stdout.write([w + 'x' + h, 'welcome', JSON.stringify(wt), wfail ? 'FAIL' : 'ok'].join(' ') + '\n'); if (wfail) bad++;
   await p.click('#begin'); await p.waitForTimeout(1600);
   const geo = async (tag) => {
     const g = await p.evaluate(() => {
       const r = (e) => { const x = e.getBoundingClientRect(); return { l: x.left, t: x.top, r: x.right, b: x.bottom }; };
       const objs = [...document.querySelectorAll('.obj')].map((o) => ({ box: r(o), tag: [...o.querySelectorAll('.tag')].map((t) => ({ clip: t.scrollHeight > t.clientHeight + 1, h: t.clientHeight, art: o.querySelector('.art').clientHeight }))[0] }));
       const btn = r(document.querySelector('#light')), top = r(document.querySelector('.top'));
-      const overlap = (a, c) => a.l < c.r && c.l < a.r && a.t < c.b && c.t < a.b;
+      // objects sway by a few degrees, so their bounding boxes are shrunk before testing
+      const overlap = (a, c) => a.l < c.r - 6 && c.l < a.r - 6 && a.t < c.b - 6 && c.t < a.b - 6;
       let ov = 0; for (let i = 0; i < objs.length; i++) { for (let j = i + 1; j < objs.length; j++) if (overlap(objs[i].box, objs[j].box)) ov++; if (overlap(objs[i].box, btn) || overlap(objs[i].box, top)) ov++; }
       return { sh: document.documentElement.scrollHeight, ih: innerHeight, n: objs.length, ov, clipped: objs.some((o) => o.tag.clip), minArt: Math.min(...objs.map((o) => o.tag.art)), tagH: objs.map((o) => o.tag.h) };
     });
