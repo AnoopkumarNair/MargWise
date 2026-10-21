@@ -98,7 +98,7 @@
 
   /* the four options are objects standing in the scene */
   .objs { position: relative; z-index: 2; flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px 12px; align-items: stretch; margin-top: auto; padding-top: 4px; }
-  .obj { position: relative; min-width: 0; min-height: 0; background: none; border: 0; padding: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; transform-origin: 50% 0; animation: sway var(--dur, 5.4s) ease-in-out var(--del, 0s) infinite, objin .6s cubic-bezier(.2,1.2,.4,1) both; animation-delay: var(--del, 0s), calc(var(--i) * 90ms + 150ms); }
+  .obj { position: relative; min-width: 0; min-height: 0; background: none; border: 0; padding: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; transform-origin: 50% 0; animation: objin .6s cubic-bezier(.2,1.2,.4,1) both; animation-delay: var(--del, 0s), calc(var(--i) * 90ms + 150ms); }
   @keyframes sway { 0%,100% { transform: rotate(-1.4deg) translateY(0); } 50% { transform: rotate(1.4deg) translateY(-3px); } }
   @keyframes objin { from { opacity: 0; translate: 0 22px; scale: .92; } to { opacity: 1; translate: 0 0; scale: 1; } }
   .obj::before { content: ''; position: absolute; left: 50%; top: -10px; width: 2px; height: 12px; background: rgba(255,243,214,.45); transform: translateX(-50%); }
@@ -160,7 +160,7 @@
   .fineprint { font-size: 13px; color: rgba(255,243,214,.7); }
   /* ----- Jyo the firefly, and the lamp-lighting sequence ----- */
   .ff { width: 100%; height: 100%; overflow: visible; display: block; }
-  .ff .wing { transform-box: fill-box; transform-origin: 50% 100%; animation: flapL .09s ease-in-out infinite alternate; }
+  .ff .wing { transform-box: fill-box; transform-origin: 50% 100%; animation: flapL .2s ease-in-out infinite alternate; }
   .ff .wing.r { transform-origin: 50% 100%; animation-name: flapR; }
   @keyframes flapL { from { transform: rotate(-8deg) scaleY(1); } to { transform: rotate(22deg) scaleY(.7); } }
   @keyframes flapR { from { transform: rotate(8deg) scaleY(1); } to { transform: rotate(-22deg) scaleY(.7); } }
@@ -200,9 +200,9 @@
   .ld-in .go { min-height: 46px; font-size: 16px; padding: 10px 18px; }
   /* ----- world: the night warms as lamps are lit ----- */
   .dusk { position: absolute; inset: 0; pointer-events: none; background: rgba(8,10,34,var(--dark, .36)); transition: background .9s; }
-  .warmglow { position: absolute; inset: 0; pointer-events: none; opacity: var(--warm, 0); transition: opacity 1.2s; background: radial-gradient(120% 60% at 50% 100%, rgba(255,170,70,.45), rgba(255,170,70,0) 70%); mix-blend-mode: screen; }
+  .warmglow { position: absolute; inset: 0; pointer-events: none; opacity: var(--warm, 0); transition: opacity 1.2s; background: radial-gradient(120% 60% at 50% 100%, rgba(255,170,70,.45), rgba(255,170,70,0) 70%); }
   .embers { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-  .embers i { position: absolute; bottom: -10px; width: 4px; height: 4px; border-radius: 50%; background: #ffd978; box-shadow: 0 0 8px 2px rgba(255,200,90,.7); opacity: 0; animation: rise var(--d, 9s) linear var(--w, 0s) infinite; will-change: transform, opacity; }
+  .embers i { position: absolute; bottom: -10px; width: 4px; height: 4px; border-radius: 50%; background: radial-gradient(circle, #fff3b0 0 35%, rgba(255,200,90,.55) 60%, rgba(255,200,90,0) 72%); opacity: 0; animation: rise var(--d, 9s) linear var(--w, 0s) infinite; will-change: transform, opacity; }
   @keyframes rise { 0% { transform: translate(0,0); opacity: 0; } 12% { opacity: .9; } 100% { transform: translate(var(--x, 20px), -75vh); opacity: 0; } }
   #arrive { position: absolute; inset: 0; z-index: 4; pointer-events: none; display: grid; place-content: center; text-align: center; opacity: 0; gap: 4px; text-shadow: 0 2px 18px rgba(0,0,0,.8); }
   #arrive small { font-weight: 800; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--glow); }
@@ -349,7 +349,7 @@
       <div class="bubblebar"><div class="bubble" id="bubble" aria-live="polite"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
     </div>
     <div class="objs" id="options"></div>
-    <div class="actions"><button class="go" id="light" aria-label="Light the lamp. Hold the button, or press Enter"><span class="charge"></span><span class="lbl">Hold to light the lamp</span></button></div>
+    <div class="actions"><button class="go" id="light" aria-label="Light the lamp"><span class="lbl">Light the lamp</span></button></div>
   </section>
 
   <section class="screen pad res" id="dreams">
@@ -641,7 +641,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     el.style.transform = 'translate(' + x + 'px,' + y + 'px)'; jyo = { x: x, y: y };
     if (state.reduce || !dur) return;
     jyoAnim = el.animate([{ transform: 'translate(' + from.x + 'px,' + from.y + 'px)' }, { transform: 'translate(' + x + 'px,' + y + 'px)' }], { duration: dur, easing: ease || 'cubic-bezier(.3,.7,.3,1)' });
-    var steps = Math.min(7, Math.max(3, Math.round(dur / 55))), st = $('stop');
+    var steps = Math.min(4, Math.max(2, Math.round(dur / 100))), st = $('stop');
     for (var k = 1; k <= steps; k++) (function (k) {
       setTimeout(function () {
         var t = k / steps, e = 1 - Math.pow(1 - t, 2), d = document.createElement('i'); d.className = 'trail';
@@ -781,7 +781,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     shown.forEach(function (o, i) {
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'obj'; b.dataset.id = o.id; b.dataset.n = '0';
-      b.style.setProperty('--i', i); b.style.animationDelay = (-i * 1.1).toFixed(1) + 's, ' + ((base || 0) + i * 90 + 150) + 'ms'; b.style.setProperty('--dur', (4.8 + i * .7).toFixed(1) + 's'); b.style.setProperty('--del', (-i * 1.1).toFixed(1) + 's');
+      b.style.setProperty('--i', i); b.style.animationDelay = ((base || 0) + i * 90 + 150) + 'ms'; b.style.setProperty('--dur', (4.8 + i * .7).toFixed(1) + 's'); b.style.setProperty('--del', (-i * 1.1).toFixed(1) + 's');
       b.innerHTML = '<span class="art">' + (ART.obj[o.id] ? '<img alt="" src="' + ART.obj[o.id] + '">' : FALLBACK) + '<span class="fl" aria-hidden="true"></span></span><span class="tag"></span>';
       b.querySelector('.tag').textContent = o.text;
       b.addEventListener('click', function () { tapOption(o.id, b); });
@@ -803,7 +803,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
       }
       b.setAttribute('aria-label', b.querySelector('.tag').textContent + ', ' + n + (n === 1 ? ' flask' : ' flasks') + ' of oil');
     });
-    $('light').querySelector('.lbl').textContent = totalSpent() === 0 ? 'Hold to light · keep my oil' : 'Hold to light the lamp';
+    $('light').querySelector('.lbl').textContent = totalSpent() === 0 ? 'Light the lamp · keep my oil' : 'Light the lamp';
     paintHud();
   }
   function sparks(btn) {
@@ -818,15 +818,15 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   function tapOption(id, btn) {
     if (state.busy) return;
     var n = state.spent[id] || 0, used = totalSpent();
-    if (used < FLASKS && n < FLASKS) { state.spent[id] = n + 1; sparks(btn); oilDrop(btn, false); jyoVisit(btn); buzz(10); Snd.spend(); }
-    else if (n > 0) { delete state.spent[id]; oilDrop(btn, true); jyoVisit(btn); buzz(6); Snd.refund(); hint('Oil back in the flask. Spend it where you like.'); }
-    else { var o = $('oil'); o.classList.remove('shake'); void o.offsetWidth; o.classList.add('shake'); $('jyoLive').classList.add('droop'); setTimeout(function () { $('jyoLive').classList.remove('droop'); }, 900); buzz([8, 30, 8]); Snd.deny(); hint('Both flasks are in use. Tap a glowing one to take its oil back, or just light the lamp.'); return; }
+    if (used < FLASKS && n < FLASKS) { state.spent[id] = n + 1; sparks(btn); oilDrop(btn, false); jyoVisit(btn); Snd.spend(); }
+    else if (n > 0) { delete state.spent[id]; oilDrop(btn, true); jyoVisit(btn); Snd.refund(); hint('Oil back in the flask. Spend it where you like.'); }
+    else { var o = $('oil'); o.classList.remove('shake'); void o.offsetWidth; o.classList.add('shake'); $('jyoLive').classList.add('droop'); setTimeout(function () { $('jyoLive').classList.remove('droop'); }, 900); Snd.deny(); hint('Both flasks are in use. Tap a glowing one to take its oil back, or just light the lamp.'); return; }
     refreshCards();
   }
 
   // The lamp-lighting moment: one GSAP timeline, with a plain fallback if the library did not load.
   function litSequence(n, echoing) {
-    buzz([18, 40, 26]);
+    buzz(12);
     var lr = $('stop').getBoundingClientRect();
     jyoGo(lr.width / 2 - 29, lr.height * .3, 420);
     $('jyoLive').classList.add('happy');
@@ -837,14 +837,13 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
       return;
     }
     var g = window.gsap, tl = g.timeline({ defaults: { ease: 'power2.out' } }), cx = lr.width / 2, cy = lr.height * .58;
-    tl.fromTo('#bloom', { opacity: 0, scale: .5 }, { opacity: .85, scale: 1, duration: .32 }, 0)
-      .to('#bloom', { opacity: 0, scale: 1.5, duration: .8, ease: 'power1.in' }, .32)
+    tl.fromTo('#bloom', { opacity: 0 }, { opacity: .7, duration: .3 }, 0)
+      .to('#bloom', { opacity: 0, duration: .8, ease: 'power1.in' }, .3)
       .fromTo('#ring', { opacity: .9, scale: .1 }, { opacity: 0, scale: 3.2, duration: .95, ease: 'power3.out' }, .1)
-      .fromTo('#stopBg', { scale: 1 }, { scale: 1.035, duration: .22, yoyo: true, repeat: 1, ease: 'sine.inOut', transformOrigin: '50% 60%' }, .05)
-      .fromTo('#jyoIn', { rotation: 0, scale: 1 }, { rotation: 720, scale: 1.55, duration: .6, ease: 'back.inOut(1.4)', yoyo: true, repeat: 1, repeatDelay: 0 }, .35);
+            .fromTo('#jyoIn', { rotation: 0, scale: 1 }, { rotation: 720, scale: 1.55, duration: .6, ease: 'back.inOut(1.4)', yoyo: true, repeat: 1, repeatDelay: 0 }, .35);
     var dot = $('lampRow').children[n - 1];
     if (dot && !echoing) tl.fromTo(dot, { scale: 2.4 }, { scale: 1.2, duration: .7, ease: 'elastic.out(1,.45)', clearProps: 'transform' }, .15);
-    for (var i = 0; i < 18; i++) (function (i) {
+    for (var i = 0; i < 10; i++) (function (i) {
       var p = document.createElement('i'); p.className = 'spark'; p.style.left = cx + 'px'; p.style.top = cy + 'px'; $('stop').appendChild(p);
       var a = Math.random() * Math.PI * 2, d = 50 + Math.random() * 110;
       g.fromTo(p, { x: 0, y: 0, opacity: 1, scale: 1 }, { x: Math.cos(a) * d, y: Math.sin(a) * d - 30, opacity: 0, scale: .2, duration: .8 + Math.random() * .5, ease: 'power2.out', delay: .25, onComplete: function () { p.remove(); } });
@@ -877,25 +876,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     else advTimer = setTimeout(function () { advance(false); }, state.reduce ? 3600 : 2300);
     if (!echoing && (n === 4 || n === 8 || n === 12)) setTimeout(beamSweep, 500);
   }
-  // Hold the button to light the lamp: a small ritual. Keyboard and screen readers light it at once.
-  (function () {
-    var btn = $('light'), ch = btn.querySelector('.charge'), anim = null, timer = null, pulses = [];
-    function stop() { clearTimeout(timer); pulses.forEach(clearTimeout); pulses = []; if (anim) { anim.cancel(); anim = null; } ch.style.width = '0'; }
-    btn.addEventListener('pointerdown', function (e) {
-      if (state.busy || e.button > 0) return;
-      stop(); Snd.charge(); buzz(8);
-      pulses = [180, 360].map(function (t) { return setTimeout(function () { buzz(t === 180 ? 12 : 18); }, t); });
-      if (state.reduce) { timer = setTimeout(function () { stop(); doLight(); }, 150); return; }
-      anim = ch.animate([{ width: '0%' }, { width: '100%' }], { duration: 560, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
-      timer = setTimeout(function () { stop(); doLight(); }, 560);
-    });
-    ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) {
-      btn.addEventListener(ev, function () { if (timer) { stop(); if (ev === 'pointerup' && !state.busy) hint('Keep holding until the lamp catches.'); } });
-    });
-    btn.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-    btn.addEventListener('click', function (e) { if (e.detail === 0) doLight(); });
-  })();
-
+  $('light').addEventListener('click', function () { doLight(); });
   $('back').addEventListener('click', function () {
     if (state.busy && state.view === 'stop') return;
     clearTimeout(advTimer);
@@ -1180,9 +1161,9 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
       walk: function () { quick(function (L, t) { kalimba(L, t, hz(-12), .05); kalimba(L, t + .26, hz(-9), .05); kalimba(L, t + .52, hz(-12), .04); kalimba(L, t + .78, hz(-7), .04); }); },
       charge: function () { quick(function (L, t) { kalimba(L, t, hz(7), .05); kalimba(L, t + .17, hz(12), .06); kalimba(L, t + .34, hz(16), .07); }); },
       place: function () { quick(function (L, t) { kalimba(L, t, hz(14), .045); }); },
-      spend: function () { quick(function (L, t) { kalimba(L, t, hz(16), .09); kalimba(L, t + .07, hz(23), .05); }); if (on && navigator.vibrate) navigator.vibrate(10); },
+      spend: function () { quick(function (L, t) { kalimba(L, t, hz(16), .09); kalimba(L, t + .07, hz(23), .05); }); },
       refund: function () { quick(function (L, t) { kalimba(L, t, hz(7), .06); }); },
-      deny: function () { quick(function (L, t) { kalimba(L, t, hz(-5), .08); }); if (on && navigator.vibrate) navigator.vibrate([8, 40, 8]); },
+      deny: function () { quick(function (L, t) { kalimba(L, t, hz(-5), .08); }); },
       lamp: function (n) { lamps = n; quick(function (L, t) { [0, 4, 7, 12].forEach(function (s, i) { kalimba(L, t + i * .11, hz(s + 12), .09); }); }); },
       reveal: function () { quick(function (L, t) { [0, 2, 4, 7, 9, 12, 16].forEach(function (s, i) { kalimba(L, t + i * .18, hz(s + 12), .09); }); padVoice(L, t, hz(0), 7, .03); padVoice(L, t, hz(7), 7, .02); padVoice(L, t, hz(16), 7, .015); }); },
       door: function () { quick(function (L, t) { kalimba(L, t, hz(19), .08); }); },
@@ -1224,7 +1205,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   buildHud(); paintHud(); paintSound();
   $('premise').textContent = STORY.premise; $('mission').textContent = STORY.mission;
   $('welcomeArt').innerHTML = artFor('welcome');
-  $('jyoSprite').innerHTML = sprite('jyo'); $('jyoIn').innerHTML = sprite('jyo'); buildEmbers('embers', 16); buildEmbers('embersW', 12); paintWelcomeBack(); bootLoad();
+  $('jyoSprite').innerHTML = sprite('jyo'); $('jyoIn').innerHTML = sprite('jyo'); buildEmbers('embers', 8); buildEmbers('embersW', 6); paintWelcomeBack(); bootLoad();
 })();
 </script>
 
