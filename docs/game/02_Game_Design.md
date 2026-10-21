@@ -35,7 +35,7 @@ The six guilds map to the six interest types (RIASEC). Guild names are friendly 
 
 All characters are original, diverse Indian characters (regions, genders, ages, skin tones, body types, abilities). No real people, no existing IP, no caste or religious markers used as shorthand. Each has a character sheet (02 §8.3).
 
-- **Jugnu** — the explorer's companion: a small firefly spirit with a lantern tail. Warm, curious, slightly cheeky. Speaks in short lines. Never comments on the teen's answers.
+- **Jyo** — the explorer's companion: a small firefly spirit with a lantern tail. Warm, curious, slightly cheeky. Speaks in short lines. Never comments on the teen's answers.
 - **Six Guild Keepers** — one per guild; each appears at the market and later hosts their island.
 - **Fourteen Mentors** — one per career hall (e.g. the Clinical Psychologist at the Healing House on the Helpers' island; the Architect in the Builders' shipyard tower). Each is a working professional character with a short "day in my life".
 - **The Harbourmaster** — runs the voyage planner (money and destinations) in the Patron chapter.
@@ -45,10 +45,10 @@ All characters are original, diverse Indian characters (regions, genders, ages, 
 
 | Beat | Scene | Length | Purpose |
 |---|---|---|---|
-| Prologue | Storm cinematic: parallax panels, lighthouses go dark, Jugnu finds the newcomer on the beach | 30–45 s, skippable | Hook, tone |
+| Prologue | Storm cinematic: parallax panels, lighthouses go dark, Jyo finds the newcomer on the beach | 30–45 s, skippable | Hook, tone |
 | Arrival | Choose an explorer look (preset diverse avatars, no photos) and a generated handle (no real names) | 30 s | Ownership |
 | Days 1–6 | Market Day at the harbour: guild members offer tasks (the 60 activities, 10 a day) | 45–60 s per day | Measurement |
-| Evenings 1–5 | Campfire vignette: Jugnu tells a short story about the isles; one lighthouse relights (fixed order for everyone) | 10 s each, skippable | Pacing and reward without feedback on answers |
+| Evenings 1–5 | Campfire vignette: Jyo tells a short story about the isles; one lighthouse relights (fixed order for everyone) | 10 s each, skippable | Pacing and reward without feedback on answers |
 | Day 7 | The Lantern Council: all six lighthouses glow at their own brightness; three join into your crest | 45 s | Reveal (interest code) |
 | Exploration | The Isles map opens: visit halls, meet mentors, read dossiers, accept quests | Open-ended | Career exploration |
 | The Patron arrives | Hand-off: "Your Patron has arrived at the harbour" | 10 s | Parent's turn |
@@ -64,7 +64,7 @@ All characters are original, diverse Indian characters (regions, genders, ages, 
 
 ### 3.1 Market-day loop (measurement)
 
-1. Jugnu: "Day 2. Let's see who needs help today."
+1. Jyo: "Day 2. Let's see who needs help today."
 2. The camera pans along the harbour market. A guild member steps forward with an **offer card**: an illustration of the activity, the activity text **exactly as in the O\*NET item**, and the character's name and guild hidden (shown only as "a villager") so the guild doesn't hint at the area.
 3. The teen sets the **eagerness dial** to one of five positions, labelled with the official anchors: Strongly dislike · Dislike · Unsure · Like · Strongly like (0–4). Playful icons sit beside the labels, never replacing them. Swipe shortcuts exist (right = Like, left = Dislike, up = Strongly like, down = Strongly dislike); the dial always works by tap.
 4. The villager reacts with a neutral nod (the same animation for any answer) and walks off; the next one steps up.
@@ -99,7 +99,7 @@ Quest cards with steps, "what to notice about yourself", and a reflection prompt
 | Scene | Rendered with | Notes |
 |---|---|---|
 | Title / Welcome & consent | DOM (React) over an animated PixiJS background | Consent is DOM for accessibility |
-| Prologue | PixiJS parallax panels + Rive Jugnu | Skippable; reduced-motion version is still panels |
+| Prologue | PixiJS parallax panels + Rive Jyo | Skippable; reduced-motion version is still panels |
 | Avatar & handle | DOM + Rive avatar preview | Preset avatars only |
 | Market day | PixiJS harbour (parallax, villagers) + DOM offer card and dial | The dial and card text are DOM for screen readers |
 | Evening campfire | PixiJS vignette + Rive | 10 s, skippable |
@@ -144,7 +144,7 @@ Quest cards with steps, "what to notice about yourself", and a reflection prompt
 ### 8.3 Consistency workflow
 
 1. Write the style bible and generate 3–5 style keyframes; Anu approves one.
-2. Character sheets for Jugnu, 6 Keepers, 14 Mentors, 8 avatars: front, three-quarter, side, 4 expressions; approved before scenes.
+2. Character sheets for Jyo, 6 Keepers, 14 Mentors, 8 avatars: front, three-quarter, side, 4 expressions; approved before scenes.
 3. Generate scenes and props using the approved sheets and keyframes as references.
 4. Clean up and separate layers (for parallax and rigging).
 5. Rig characters in Rive (idle, talk, react) or use simple sprite tweens for minor characters.
@@ -154,7 +154,7 @@ Quest cards with steps, "what to notice about yourself", and a reflection prompt
 
 | Group | Count |
 |---|---|
-| Characters (Jugnu, 6 Keepers, 14 Mentors, 8 avatars, villagers set) | ~35 rigs or sprite sets |
+| Characters (Jyo, 6 Keepers, 14 Mentors, 8 avatars, villagers set) | ~35 rigs or sprite sets |
 | Activity illustrations (one per item) | 60 |
 | Scenes (prologue panels, harbour, campfire, council, map, 6 islands, 14 hall interiors, sea chart, harbour ledger) | ~30 |
 | Ports (7 Indian cities + 6 countries + custom) | 14 badges/scenes |

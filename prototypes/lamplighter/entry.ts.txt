@@ -1,0 +1,6 @@
+import vectors from '/home/user/margwise-phase2/pipeline/src/seed/onet-31.0-interest-vectors.json' with { type: 'json' };
+export {
+  JOURNEY_BANK, FLASKS, step, undo, journeyResult, displayOptions, careerPaths, compareDreams, teenView,
+} from '/home/user/margwise-phase2/packages/engine/src/index.ts';
+export { playJourney, levelsForCode } from '/home/user/margwise-phase2/packages/engine/src/journey/fixtures/personas.ts';
+export { vectors };

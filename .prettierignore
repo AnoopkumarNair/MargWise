@@ -9,3 +9,4 @@ docs/architecture/04_Architecture_and_Design.md
 docs/pipeline/05_Data_Pipeline.md
 packages/contracts/openapi/
 services/supabase/migrations/
+prototypes/

@@ -13,7 +13,7 @@ object.
 
 Painterly storybook illustration at dusk. Deep indigo and warm amber palette, soft rim light,
 textured brushwork, real depth (foreground, middle, far). Characters are gender-neutral young
-teens and adults in plain, regionally neutral clothing. One consistent firefly guide (Jugnu) and
+teens and adults in plain, regionally neutral clothing. One consistent firefly guide (Jyo) and
 one apprentice traveller, shown in three poses each.
 
 ## Rules (RULES.md 4, 5, 9, 11)
@@ -29,7 +29,7 @@ one apprentice traveller, shown in three poses each.
 
 ## Pipeline
 
-1. Generate 15 backgrounds and 60 object vignettes from `asset-list.csv` (plus Jugnu and the
+1. Generate 15 backgrounds and 60 object vignettes from `asset-list.csv` (plus Jyo and the
    traveller), reusing the first approved background and character images as references so the
    style stays consistent.
 2. Remove backgrounds from object vignettes (transparent PNG/WebP), downscale to phone sizes,

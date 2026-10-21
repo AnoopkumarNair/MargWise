@@ -1,0 +1,697 @@
+<title>Lamplighter's Road</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Nunito:wght@600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  /* One deliberate look: a dusk road you light lamp by lamp. Every colour is explicit. */
+  :root {
+    color-scheme: dark;
+    --sky-top: #141a3a;
+    --sky-mid: #2b2f63;
+    --sky-low: #8a4b6b;
+    --glow: #ffcf6b;
+    --glow-deep: #f2a03d;
+    --cream: #fff3d6;
+    --cream-2: #f6e3b8;
+    --ink: #2a2038;
+    --ink-soft: #5d4d6e;
+    --land: #1f2b52;
+    --land-2: #2a3a68;
+    --road: #c9a36a;
+    --teal: #46b3b0;
+    --rose: #e8708a;
+    --display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+    --hand: 'Caveat', 'Bradley Hand', cursive;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; color: var(--cream); font: 700 16px/1.35 var(--body);
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, #3b2f66 100%);
+    background-color: var(--sky-top);
+    padding-left: max(14px, env(safe-area-inset-left, 0px));
+    padding-right: max(14px, env(safe-area-inset-right, 0px));
+    overflow: hidden; -webkit-tap-highlight-color: transparent; overscroll-behavior: none;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--glow); outline-offset: 2px; }
+  [hidden] { display: none !important; }
+  h1, h2, h3 { font-family: var(--display); margin: 0; line-height: 1.1; text-wrap: balance; }
+  p { margin: 0; text-wrap: pretty; }
+
+  #app { height: 100dvh; max-width: 520px; margin: 0 auto; display: grid; grid-template-rows: auto 1fr; padding-block: 8px 10px; gap: 8px; }
+  .screen { min-height: 0; min-width: 0; display: none; }
+  .screen.on { display: flex; flex-direction: column; gap: 10px; animation: slidein .45s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes slidein { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* ----- HUD ----- */
+  .hud { display: grid; grid-template-columns: 44px 1fr auto 44px; align-items: center; gap: 8px; min-height: 40px; }
+  .iconbtn[aria-pressed="true"] { background: rgba(255,207,107,.22); border-color: var(--glow); }
+  .bubblebar { display: flex; gap: 8px; align-items: stretch; }
+  .bubblebar .bubble { flex: 1; }
+  .bubblebar .iconbtn { height: auto; min-height: 44px; }
+  .iconbtn { width: 44px; height: 40px; border-radius: 14px; border: 2px solid rgba(255,243,214,.35); background: rgba(255,255,255,.07); display: grid; place-items: center; }
+  .iconbtn svg { width: 20px; height: 20px; }
+  .lamps { display: flex; gap: 4px; align-items: center; justify-content: center; flex-wrap: nowrap; }
+  .lamps i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,243,214,.2); transition: background .5s, box-shadow .5s, transform .5s; }
+  .lamps i.on { background: var(--glow); box-shadow: 0 0 8px 2px rgba(255,207,107,.8); transform: scale(1.2); }
+  .oil { display: flex; gap: 4px; align-items: center; }
+  .oil svg { width: 22px; height: 28px; transition: transform .3s; }
+  .oil .liquid { transition: transform .45s cubic-bezier(.3,.8,.2,1); transform-origin: 50% 100%; }
+  .oil .f.spent .liquid { transform: scaleY(0); }
+  .oil.shake { animation: shake .4s; }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
+
+  /* ----- stop screen ----- */
+  #stop .mapbox { flex: 0 0 41dvh; min-height: 150px; }
+  #welcome .mapbox { flex: 0 0 33dvh; min-height: 130px; }
+  .mapbox { border-radius: 20px; overflow: hidden; border: 2px solid rgba(255,243,214,.3); position: relative; background: var(--sky-top); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+  .mapbox svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  #world { transform-origin: 0 0; transition: transform 1.2s cubic-bezier(.45,.05,.25,1); }
+  .trav { transition: transform 1.2s cubic-bezier(.45,.05,.25,1); }
+  .glow { fill: url(#lampglow); opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.2); transition: opacity .7s, transform .9s cubic-bezier(.2,.9,.3,1.2); }
+  .lamp.lit .glow { opacity: 1; transform: scale(1); animation: flick 2.6s ease-in-out .9s infinite; }
+  .lamp .bulb { fill: #6b5f7c; transition: fill .4s; }
+  .lamp.lit .bulb { fill: var(--glow); }
+  .lamp.flicker .glow { opacity: 1; transform: scale(1); animation: flick .5s ease-in-out infinite; }
+  @keyframes flick { 0%,100% { opacity: 1; } 50% { opacity: .62; } }
+  .river { stroke-dasharray: 6 9; animation: flow 3s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -30; } }
+  .cloud { animation: drift 38s linear infinite; }
+  .cloud.b { animation-duration: 52s; animation-delay: -20s; }
+  @keyframes drift { from { transform: translateX(-80px); } to { transform: translateX(440px); } }
+  .star { animation: tw 3.2s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .9; } 50% { opacity: .3; } }
+  .jug { animation: jug 2.2s ease-in-out infinite; }
+  @keyframes jug { 0%,100% { transform: translate(7px,-7px); } 50% { transform: translate(11px,-12px); } }
+  .bob { animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+  .trail { fill: none; stroke: rgba(255,207,107,.7); stroke-width: 2; stroke-dasharray: 2 6; stroke-linecap: round; }
+  .place-tag { position: absolute; left: 10px; bottom: 8px; background: rgba(20,26,58,.78); border: 1.5px solid rgba(255,243,214,.35); border-radius: 999px; padding: 3px 12px; font-family: var(--hand); font-size: 21px; line-height: 1.1; }
+
+  .bubble { position: relative; background: var(--cream); color: var(--ink); border-radius: 18px; padding: 9px 12px 9px 46px; font-weight: 700; font-size: 15px; min-height: 52px; display: flex; align-items: center; animation: pop .35s cubic-bezier(.2,1.4,.4,1) both; }
+  .bubble::before { content: ''; position: absolute; left: 14px; top: 50%; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%; background: radial-gradient(circle, #fff7c0 0 30%, var(--glow) 31% 60%, rgba(255,207,107,0) 70%); animation: tw 1.6s ease-in-out infinite; }
+  .bubble b { font-family: var(--hand); font-size: 20px; margin-right: 6px; color: var(--ink-soft); }
+  @keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  .options { display: grid; gap: 8px; grid-template-rows: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; min-height: 0; flex: 1; }
+  .opt {
+    position: relative; width: 100%; text-align: left; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px;
+    background: var(--cream); color: var(--ink); border: 0; border-radius: 16px; padding: 10px 14px; min-height: 66px; max-height: 112px; height: 100%;
+    box-shadow: 0 4px 0 #b9955a; font-weight: 800; font-size: 16.5px; line-height: 1.25;
+    opacity: 0; animation: cardin .45s cubic-bezier(.2,1.2,.4,1) forwards; animation-delay: calc(var(--i) * 70ms + 120ms);
+    transition: transform .1s, box-shadow .1s, background .25s;
+  }
+  @keyframes cardin { from { opacity: 0; transform: translateX(26px) scale(.96); } to { opacity: 1; transform: none; } }
+  .opt:active { transform: translateY(3px); box-shadow: 0 1px 0 #b9955a; }
+  .opt[data-n="1"], .opt[data-n="2"] { background: #ffe9a8; box-shadow: 0 4px 0 #d89a2b, 0 0 0 2px var(--glow-deep) inset; }
+  .opt .fl { display: flex; gap: 2px; min-width: 30px; justify-content: flex-end; }
+  .opt .fl svg { width: 24px; height: 30px; animation: ignite .45s cubic-bezier(.2,1.6,.4,1) both; transform-origin: 50% 90%; }
+  .opt .fl svg.f { animation: ignite .45s cubic-bezier(.2,1.6,.4,1) both, wave 1.1s ease-in-out .5s infinite; }
+  @keyframes ignite { from { transform: scale(0) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes wave { 0%,100% { transform: skewX(0) scaleY(1); } 50% { transform: skewX(-6deg) scaleY(1.07); } }
+  .spark { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--glow-deep); pointer-events: none; }
+
+  .actions { display: grid; gap: 6px; margin-top: auto; }
+  .go { width: 100%; border: 0; border-radius: 999px; background: linear-gradient(180deg, #ffd978, var(--glow-deep)); color: var(--ink); font-weight: 800; font-size: 18px; padding: 13px 20px; min-height: 52px; box-shadow: 0 5px 0 #a8661d, 0 10px 22px rgba(242,160,61,.35); transition: transform .1s, box-shadow .1s; font-family: var(--body); }
+  .go:active { transform: translateY(4px); box-shadow: 0 1px 0 #a8661d; }
+  .go.quiet { background: rgba(255,255,255,.1); color: var(--cream); box-shadow: 0 4px 0 rgba(0,0,0,.25); }
+  .go[disabled] { opacity: .55; }
+  .tiny { text-align: center; font-size: 13px; color: rgba(255,243,214,.7); }
+  .busy .opt, .busy .go { pointer-events: none; }
+
+  /* ----- welcome ----- */
+  #welcome .hero h1 { font-size: clamp(30px, 9vw, 42px); font-weight: 800; }
+  #welcome .hero h1 em { font-style: normal; color: var(--glow); }
+  #welcome .hero p { color: rgba(255,243,214,.88); font-size: 16.5px; margin-top: 6px; }
+  .steps { display: grid; gap: 8px; align-content: start; margin: 0; padding: 0; list-style: none; }
+  .steps li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; background: rgba(255,255,255,.08); border-radius: 14px; padding: 8px 10px; font-size: 15px; }
+  .steps li b { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--glow); color: var(--ink); font-family: var(--display); font-size: 17px; }
+
+  /* ----- dreams ----- */
+  .head h2 { font-size: clamp(24px, 7vw, 30px); }
+  .head p { color: rgba(255,243,214,.85); margin-top: 4px; font-size: 15.5px; }
+  .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-content: start; min-height: 0; flex: 1; }
+  .chip { border: 2px solid rgba(255,243,214,.3); background: rgba(255,255,255,.07); border-radius: 14px; padding: 8px 10px; text-align: left; font-size: 14.5px; min-height: 48px; font-weight: 800; transition: background .2s, border-color .2s, transform .15s; }
+  .chip small { display: block; font-family: var(--hand); font-size: 16px; color: var(--glow); line-height: 1; margin-bottom: 1px; font-weight: 600; }
+  .chip[aria-pressed="true"] { background: #ffe9a8; color: var(--ink); border-color: var(--glow-deep); transform: scale(1.02); }
+  .chip[aria-pressed="true"] small { color: #a8661d; }
+
+  /* ----- reveal ----- */
+  #reveal .stage { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+  .compass-wrap { position: relative; height: 34dvh; min-height: 190px; display: grid; place-items: center; }
+  .compass-wrap svg { height: 100%; width: auto; max-width: 100%; }
+  .beam { transform-origin: 160px 150px; animation: sweep 6s linear infinite; }
+  @keyframes sweep { to { transform: rotate(360deg); } }
+  .legend { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .legend li { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: center; font-size: 15px; background: rgba(255,255,255,.08); border-radius: 12px; padding: 6px 10px; opacity: 0; animation: cardin .5s ease forwards; }
+  .legend .rank { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--glow); color: var(--ink); font-family: var(--display); font-weight: 800; }
+  .legend span span { color: rgba(255,243,214,.75); font-weight: 600; }
+  .note { background: rgba(255,207,107,.14); border: 1.5px dashed var(--glow-deep); border-radius: 14px; padding: 8px 12px; font-size: 14.5px; }
+
+  /* ----- doors ----- */
+  .compare { display: grid; gap: 6px; font-size: 14px; }
+  .compare p { background: rgba(255,255,255,.08); border-radius: 12px; padding: 7px 10px; }
+  .compare b { color: var(--glow); }
+  .deck { min-width: 0; max-width: 100%; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 12px; align-items: stretch; flex: 0 1 340px; -webkit-overflow-scrolling: touch; }
+  .door { flex: 0 0 78%; min-height: 190px; scroll-snap-align: center; background: var(--cream); color: var(--ink); border-radius: 20px; padding: 14px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 6px; box-shadow: 0 6px 0 #b9955a; position: relative; }
+  .door .tag { font-family: var(--hand); font-size: 20px; color: #a8661d; line-height: 1; }
+  .door h3 { font-size: 26px; font-weight: 800; }
+  .door p { color: var(--ink-soft); font-size: 16px; font-weight: 600; }
+  .badge { justify-self: start; font-size: 12px; letter-spacing: .07em; text-transform: uppercase; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: var(--cream-2); border: 2px solid var(--ink); }
+  .badge.strong { background: var(--glow); } .badge.mixed { background: #bfe5e2; } .badge.weak { background: #e9dfe8; } .badge.unclear { background: #fff; border-style: dashed; }
+  .named { position: absolute; right: 12px; top: 12px; font-size: 12px; font-weight: 800; background: var(--rose); color: #fff; border-radius: 999px; padding: 3px 9px; }
+  .dots { display: flex; gap: 5px; justify-content: center; }
+  .dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,243,214,.3); transition: background .2s, transform .2s; }
+  .dots i.on { background: var(--glow); transform: scale(1.3); }
+
+  .foot { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: rgba(255,243,214,.65); gap: 10px; }
+  .foot button { background: none; border: 0; text-decoration: underline; padding: 6px 2px; color: inherit; font-weight: 700; }
+  .sheet { position: fixed; inset: 0; background: rgba(10,12,30,.7); display: grid; place-items: end center; z-index: 30; padding: 12px; }
+  .sheet > div { background: var(--cream); color: var(--ink); border-radius: 22px; padding: 18px; max-width: 520px; width: 100%; display: grid; gap: 10px; max-height: 88dvh; overflow: auto; font-size: 14px; font-weight: 600; }
+  .sheet h3 { font-size: 22px; }
+  .sheet .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sheet .row button { background: #fff; border: 2px solid var(--ink-soft); border-radius: 999px; padding: 8px 12px; font-weight: 800; min-height: 40px; color: var(--ink); }
+  .sheet .go { color: var(--ink); }
+
+  @media (max-height: 700px) { .bubble { font-size: 14px; min-height: 44px; padding-block: 6px; } .opt { min-height: 48px; font-size: 14.5px; padding-block: 6px; } #stop { grid-template-rows: minmax(90px, 21dvh) auto 1fr auto; } }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; } }
+</style>
+
+<div id="app">
+  <div class="hud" id="hud" hidden>
+    <button class="iconbtn" id="back" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7l7 7"/></svg></button>
+    <div class="lamps" id="lampRow" aria-label="Lamps lit on the road"></div>
+    <div class="oil" id="oil" aria-label="Lamp oil flasks left"></div>
+    <button class="iconbtn" id="snd" aria-label="Sound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path id="sndwave" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
+  </div>
+
+  <main style="min-height:0; min-width:0; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows: 1fr auto; gap:6px">
+    <section class="screen on" id="welcome">
+      <div class="mapbox" aria-hidden="true"><svg viewBox="0 0 360 250" preserveAspectRatio="xMidYMid slice" id="welcomeMap"></svg></div>
+      <div class="hero"><h1>The road has gone dark. <em>Light it.</em></h1><p>Jyo the firefly needs a lamplighter. You carry two flasks of lamp-oil. At each place, spend them on what you would gladly do. Or keep them. The lamp lights either way.</p></div>
+      <ul class="steps"><li><b>1</b><span>Walk the road, one little place at a time.</span></li><li><b>2</b><span>Spend your oil however you like. No right answers.</span></li><li><b>3</b><span>The lighthouse shows which doors open for you.</span></li></ul>
+      <div class="actions"><button class="go quiet" id="soundChoice" aria-pressed="false">Sound is off. Tap to turn it on</button><button class="go" id="begin">Take the lantern</button><p class="tiny">About three minutes. Nothing is marked.</p></div>
+    </section>
+
+    <section class="screen" id="stop">
+      <div class="mapbox" id="mapbox"><svg viewBox="0 0 360 250" preserveAspectRatio="xMidYMid slice" id="map" role="img" aria-label="Map of the road with lamps"></svg><span class="place-tag" id="placeTag"></span></div>
+      <div class="bubblebar"><div class="bubble" id="bubble"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
+      <ul class="options" id="options"></ul>
+      <div class="actions"><button class="go" id="light">Light the lamp</button></div>
+    </section>
+
+    <section class="screen" id="dreams">
+      <div class="head"><h2>Before the lighthouse shines</h2><p>Which doors were you already thinking about? Pick up to three, or none. We will compare after.</p></div>
+      <div class="chips" id="chips"></div>
+      <div class="actions"><button class="go" id="dreamGo">Show me the lighthouse</button></div>
+    </section>
+
+    <section class="screen" id="reveal">
+      <div class="head"><h2>Your lighthouse</h2><p id="revealLine"></p></div>
+      <div class="stage"><div class="compass-wrap"><svg id="compass" viewBox="-30 0 380 300" role="img" aria-label="A compass with your three brightest directions lit"></svg></div><ul class="legend" id="legend"></ul></div>
+      <p class="note" id="notes" hidden></p><div class="actions"><button class="go" id="openDoors">Open the doors</button></div>
+    </section>
+
+    <section class="screen" id="doors">
+      <div class="head"><h2>Doors on your road</h2></div>
+      <div style="display:flex; flex-direction:column; gap:8px; min-height:0; min-width:0; max-width:100%">
+        <div class="compare" id="compare"></div>
+        <div class="deck" id="deck"></div>
+        <div class="dots" id="deckDots"></div>
+      </div>
+      <div class="actions"><button class="go quiet" id="again">Walk the road again</button></div>
+    </section>
+    <div class="foot"><span>Prototype. Places and words are drafts.</span><button id="aboutBtn">About</button></div>
+  </main>
+</div>
+
+<div class="sheet" id="about" hidden><div role="dialog" aria-label="About">
+  <h3>About this prototype</h3>
+  <p>The places on the road are drafts for review. Career names and how closely a path fits use information from the O*NET 31.0 Database by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA), used under a CC BY 4.0 licence. Margwise has modified this information. USDOL/ETA has not approved, endorsed, or tested these modifications. O*NET® is a trademark of USDOL/ETA. Values are whole-number display values from O*NET OnLine and will be replaced by exact database values.</p>
+  <h3 style="font-size:18px">Reviewer tools</h3>
+  <p>Fill the road in as a made-up explorer. Each runs the real adaptive journey with simulated taps, including the return visit.</p>
+  <div class="row" id="personas"></div>
+  <button class="go" id="aboutClose">Close</button>
+</div></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <radialGradient id="lampglow"><stop offset="0" stop-color="#fff2b0" stop-opacity=".95"/><stop offset=".35" stop-color="#ffcf6b" stop-opacity=".5"/><stop offset="1" stop-color="#ffcf6b" stop-opacity="0"/></radialGradient>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141a3a"/><stop offset=".7" stop-color="#2b2f63"/><stop offset="1" stop-color="#8a4b6b"/></linearGradient>
+  <radialGradient id="beamg" cx="0" cy="0" r="1"><stop offset="0" stop-color="#fff2b0" stop-opacity=".7"/><stop offset="1" stop-color="#ffcf6b" stop-opacity="0"/></radialGradient>
+</defs></svg>
+<script>/*ENGINE*/</script>
+<script>
+(function () {
+  var M = Margwise;
+  var bank = M.JOURNEY_BANK;
+  var SEED = 11, FLASKS = M.FLASKS;
+  var AREAS = ['R', 'I', 'A', 'S', 'E', 'C'];
+  var NAME = { R: 'Builder', I: 'Thinker', A: 'Creator', S: 'Helper', E: 'Persuader', C: 'Organiser' };
+  var BLURB = { R: 'making and fixing things', I: 'working things out', A: 'imagining new things', S: 'helping and teaching', E: 'leading and persuading', C: 'keeping things in order' };
+  var CAREERS = [
+    ['psy-1', 'Clinical Psychologist', 'Psychology', '19-3033.00'], ['psy-2', 'Counselling Psychologist', 'Psychology', '19-3033.00'],
+    ['psy-3', 'School Counsellor', 'Psychology', '21-1012.00'], ['psy-4', 'Organisational Psychologist', 'Psychology', '19-3032.00'],
+    ['psy-5', 'UX Researcher', 'Psychology', '17-2112.01'], ['tec-1', 'AI and Software Engineer', 'Tech and AI', '15-1252.00'],
+    ['tec-2', 'Data Scientist', 'Tech and AI', '15-2051.00'], ['tec-3', 'Electronics and EV Engineer', 'Tech and AI', '17-2072.00'],
+    ['com-1', 'Chartered Accountant', 'Commerce', '13-2011.00'], ['com-2', 'Business Manager or Founder', 'Commerce', '11-1021.00'],
+    ['des-1', 'UX and Product Designer', 'Design', '15-1255.00'], ['des-2', 'Architect', 'Design', '17-1011.00'],
+    ['law-1', 'Corporate Lawyer', 'Law', '23-1011.00'], ['law-2', 'Judge (Judicial Services)', 'Law', '23-1023.00']
+  ].map(function (c) { return { id: c[0], title: c[1], cluster: c[2], soc: c[3] }; });
+  var BYID = {}; CAREERS.forEach(function (c) { BYID[c.id] = c; });
+  var VEC = {}; M.vectors.occupations.forEach(function (o) { VEC[o.onetSoc] = o.values; });
+
+  // World and window are both 360 x 250; the camera zooms and pans inside it.
+  var POS = {
+    s01: [48, 214], s02: [112, 170], s03: [170, 226], s04: [228, 182], s05: [300, 222],
+    s06: [316, 146], s07: [262, 112], s08: [196, 144], s09: [138, 104], s10: [70, 136],
+    s11: [58, 62], s12: [128, 48], s13: [198, 74], s14: [270, 52], s15: [326, 82]
+  };
+  var KIND = { s01: 'boat', s02: 'bridge', s03: 'clock', s04: 'tree', s05: 'lamp', s06: 'stall', s07: 'tent', s08: 'loom', s09: 'cliff', s10: 'barrel', s11: 'star', s12: 'leaf', s13: 'page', s14: 'house', s15: 'arch' };
+  var C = '#fff3d6', DIM = '#8f87b0';
+  function glyph(kind, lit) {
+    var f = lit ? '#fff3d6' : '#3b4480', s = 'fill="' + f + '" stroke="' + (lit ? '#2a2038' : DIM) + '" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"';
+    var g = {
+      boat: '<path ' + s + ' d="M-9 3h18l-4 6h-10z"/><path ' + s + ' d="M0 3V-10l7 9z"/>',
+      bridge: '<path ' + s + ' d="M-11 5h22M-9 5a9 8 0 0 1 18 0"/>',
+      clock: '<circle ' + s + ' r="9"/><path d="M0 -5V0l4 3" fill="none" stroke="#2a2038" stroke-width="1.6" stroke-linecap="round"/>',
+      tree: '<path ' + s + ' d="M0 10V3"/><circle ' + s + ' cy="-3" r="8"/>',
+      lamp: '<path ' + s + ' d="M-5 9h10l-1.5 -12h-7z"/><path ' + s + ' d="M-6 -3l6 -7l6 7z"/>',
+      stall: '<path ' + s + ' d="M-10 -2l3 -7h14l3 7z"/><path ' + s + ' d="M-8 -2v11h16v-11"/>',
+      tent: '<path ' + s + ' d="M-11 9L0 -9l11 18z"/>',
+      loom: '<rect ' + s + ' x="-9" y="-9" width="18" height="18" rx="2"/><path d="M-4 -9v18M0 -9v18M4 -9v18" stroke="#2a2038" stroke-width="1"/>',
+      cliff: '<path ' + s + ' d="M-12 9l8 -17l5 8l4 -6l7 15z"/>',
+      barrel: '<path ' + s + ' d="M-7 -9h14c3 6 3 12 0 18h-14c-3 -6 -3 -12 0 -18z"/>',
+      star: '<path ' + s + ' d="M0 -10l3 7l8 .6l-6 5l2 8l-7 -4l-7 4l2 -8l-6 -5l8 -.6z"/>',
+      leaf: '<path ' + s + ' d="M-9 8C-9 -4 0 -10 9 -9C10 0 4 9 -9 8z"/>',
+      page: '<rect ' + s + ' x="-8" y="-10" width="16" height="20" rx="2"/><path d="M-4 -5h8M-4 -1h8" stroke="#2a2038" stroke-width="1.2"/>',
+      house: '<path ' + s + ' d="M-9 9V-1l9 -8l9 8v10z"/>',
+      arch: '<path ' + s + ' d="M-9 9V-1a9 9 0 0 1 18 0v10"/>'
+    };
+    return g[kind] || g.star;
+  }
+  var NS = 'http://www.w3.org/2000/svg';
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { choices: [], scene: null, echo: false, spent: {}, view: 'welcome', busy: false, dreams: [], result: null, lit: {}, reduce: matchMedia('(prefers-reduced-motion: reduce)').matches };
+
+  // ---------- terrain (shared by welcome and road)
+  function terrain() {
+    var stars = '';
+    [[20,14],[64,26],[110,10],[160,22],[212,8],[258,24],[310,12],[340,30],[90,44],[190,40],[280,50],[40,60]].forEach(function (p, i) { stars += '<circle class="star" style="animation-delay:' + (i * .3) + 's" cx="' + p[0] + '" cy="' + p[1] + '" r="1.4" fill="#fff3d6"/>'; });
+    return '<rect width="360" height="250" fill="url(#sky)"/>' + stars +
+      '<g class="cloud" opacity=".35"><ellipse cx="40" cy="32" rx="26" ry="6" fill="#8f87b0"/><ellipse cx="58" cy="28" rx="16" ry="5" fill="#8f87b0"/></g>' +
+      '<g class="cloud b" opacity=".28"><ellipse cx="20" cy="64" rx="22" ry="5" fill="#8f87b0"/></g>' +
+      '<path d="M-5 70 C 40 40, 80 80, 130 60 S 230 40, 290 70 S 350 60, 370 70 L370 260 L-5 260Z" fill="#1f2b52"/>' +
+      '<path d="M-5 130 C 50 108, 100 150, 170 128 S 290 100, 370 126 L370 260 L-5 260Z" fill="#2a3a68"/>' +
+      '<path d="M-5 190 C 70 170, 120 214, 200 196 S 310 168, 370 190 L370 260 L-5 260Z" fill="#33477c"/>' +
+      '<path class="river" d="M-5 172 C 70 152, 110 196, 190 178 S 300 150, 370 172" fill="none" stroke="#46b3b0" stroke-width="2.2" opacity=".55"/>' +
+      '<path d="M250 84 l12 -22 l12 22z M270 88 l10 -18 l10 18z" fill="#3b4480" stroke="#8f87b0" stroke-width="1.2" stroke-linejoin="round"/>' +
+      '<g fill="#2e5a66" stroke="#46b3b0" stroke-width="1"><circle cx="30" cy="100" r="7"/><circle cx="44" cy="108" r="6"/><circle cx="22" cy="112" r="5"/></g>';
+  }
+  function firefly() { return '<g class="jug"><circle r="5.5" fill="url(#lampglow)"/><circle r="1.9" fill="#fff7c0"/><ellipse cx="-3.5" cy="-2" rx="3" ry="1.5" fill="#fff3d6" opacity=".6"/><ellipse cx="3.5" cy="-2" rx="3" ry="1.5" fill="#fff3d6" opacity=".6"/></g>'; }
+  function traveller() { return '<g class="bob"><circle r="4.6" fill="#e8708a" stroke="#2a2038" stroke-width="1.5"/><path d="M0 4.6v8" stroke="#2a2038" stroke-width="2" stroke-linecap="round"/><path d="M-4.6 -5.6l4.6 -6l4.6 6z" fill="#ffcf6b" stroke="#2a2038" stroke-width="1.3" stroke-linejoin="round"/></g>'; }
+
+  function buildRoad() {
+    var map = $('map');
+    var h = '<g id="world">' + terrain();
+    h += '<polyline id="trail" class="trail" points=""/>';
+    Object.keys(POS).forEach(function (id) {
+      var p = POS[id];
+      h += '<g class="place" id="pl-' + id + '" transform="translate(' + p[0] + ' ' + p[1] + ')"><g id="gl-' + id + '" transform="scale(.85)">' + glyph(KIND[id], false) + '</g>' +
+        '<g class="lamp" id="lp-' + id + '" transform="translate(15 4)"><circle class="glow" r="22"/><path d="M0 8V-4" stroke="#8f87b0" stroke-width="2" stroke-linecap="round"/><circle class="bulb" cy="-6" r="3.6" stroke="#2a2038" stroke-width="1.2"/></g></g>';
+    });
+    h += '<g class="trav" id="trav" transform="translate(48 170)"><g transform="translate(0 -14)">' + traveller() + '</g>' + '<g transform="translate(0 -14)">' + firefly() + '</g></g></g>';
+    map.innerHTML = h;
+  }
+  function camera(id, instant) {
+    var w = $('world'), p = POS[id], s = 1.22;
+    var tx = Math.max(360 - 360 * s, Math.min(0, 180 - p[0] * s));
+    var ty = Math.max(250 - 250 * s, Math.min(0, 125 - p[1] * s));
+    if (instant) w.style.transition = 'none';
+    w.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
+    if (instant) { void w.getBoundingClientRect(); w.style.transition = ''; }
+  }
+  function moveTrav(id, instant) {
+    var t = $('trav'), p = POS[id];
+    if (instant) t.style.transition = 'none';
+    t.setAttribute('transform', 'translate(' + p[0] + ' ' + (p[1] - 4) + ')');
+    t.style.transform = '';
+    if (instant) { void t.getBoundingClientRect(); t.style.transition = ''; }
+  }
+  function setLit(id, on) {
+    var l = $('lp-' + id); if (!l) return;
+    l.classList.toggle('lit', !!on); $('gl-' + id).innerHTML = glyph(KIND[id], !!on);
+  }
+  function refreshTrail() {
+    var ids = state.choices.filter(function (c) { return !c.echoOf; }).map(function (c) { return c.sceneId; });
+    if (state.scene && !state.echo && ids.indexOf(state.scene.id) < 0) ids.push(state.scene.id);
+    $('trail').setAttribute('points', ids.map(function (id) { return POS[id].join(','); }).join(' '));
+  }
+
+  // ---------- HUD
+  function buildHud() {
+    $('lampRow').innerHTML = bank.scenes.map(function () { return '<i></i>'; }).join('');
+    var o = ''; for (var i = 0; i < FLASKS; i++) o += '<svg class="f" viewBox="0 0 22 28"><path d="M8 2h6v5l5 8v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-9l5-8z" fill="rgba(255,255,255,.1)" stroke="#fff3d6" stroke-width="1.8" stroke-linejoin="round"/><path class="liquid" d="M5 17h12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" fill="#ffcf6b"/></svg>';
+    $('oil').innerHTML = o;
+  }
+  function paintHud() {
+    var done = state.choices.filter(function (c) { return !c.echoOf; }).length;
+    Array.prototype.forEach.call($('lampRow').children, function (el, i) { el.classList.toggle('on', i < done); });
+    var used = totalSpent();
+    Array.prototype.forEach.call($('oil').children, function (el, i) { el.classList.toggle('spent', i >= FLASKS - used); });
+  }
+  function totalSpent() { return Object.keys(state.spent).reduce(function (a, k) { return a + state.spent[k]; }, 0); }
+
+  // ---------- jugnu
+  function say(html) { var b = $('bubble'); b.style.animation = 'none'; void b.offsetWidth; b.style.animation = ''; b.innerHTML = html; }
+  var BEATS = { 1: 'First lamp! Can you feel the road waking up?', 3: 'Three lamps. The hills are starting to glow.', 5: 'Halfway to the lighthouse. Keep going.', 7: 'Seven lamps. The sea can see us now.' };
+
+  // ---------- views
+  function show(view) {
+    state.view = view;
+    ['welcome', 'stop', 'dreams', 'reveal', 'doors'].forEach(function (v) { $(v).classList.toggle('on', v === view); });
+    $('hud').hidden = view === 'welcome';
+    document.body.classList.remove('busy');
+  }
+
+  function startWalk() {
+    state.choices = []; state.dreams = []; state.lit = {};
+    Object.keys(POS).forEach(function (id) { setLit(id, false); });
+    advance(true);
+  }
+
+  function advance(first) {
+    var s = M.step(bank, state.choices);
+    if (s.done) return toDreams();
+    state.scene = s.scene; state.echo = s.echo; state.spent = {};
+    var id = s.scene.id;
+    show('stop'); paintHud(); refreshTrail();
+    if (first) { camera('s01', true); moveTrav('s01', true); }
+    if (s.echo) { var l = $('lp-' + id); if (l) l.classList.add('flicker'); }
+    Voice.stop(); Snd.place(id);
+    renderStop();
+    state.busy = true; document.body.classList.add('busy');
+    camera(id); moveTrav(id);
+    setTimeout(function () { state.busy = false; document.body.classList.remove('busy'); }, state.reduce ? 0 : 900);
+  }
+
+  function renderStop() {
+    var scene = state.scene;
+    $('placeTag').textContent = scene.place;
+    say(state.echo ? '<b>Jyo</b> That lamp flickered again! Same trouble. What would you do now? ' + scene.setup : '<b>Jyo</b> ' + scene.setup);
+    var shown = M.displayOptions(scene, SEED + (state.echo ? 97 : 0));
+    var ul = $('options'); ul.innerHTML = '';
+    shown.forEach(function (o, i) {
+      var li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.className = 'opt'; b.dataset.id = o.id; b.dataset.n = '0'; b.style.setProperty('--i', i);
+      b.innerHTML = '<span class="t"></span><span class="fl" aria-hidden="true"></span>';
+      b.querySelector('.t').textContent = o.text;
+      b.addEventListener('click', function () { tapOption(o.id, b); });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    refreshCards(); paintHud();
+    $('light').textContent = 'Keep my oil and light the lamp';
+    document.querySelector('#stop .actions').scrollTop = 0;
+  }
+
+  var FLAME = '<svg viewBox="0 0 24 30"><path d="M12 2c1 5 8 8 8 16a8 8 0 0 1-16 0c0-4 3-6 4-9c2 2 3 3 4 2c1-3 0-6 0-9z" fill="#f2a03d" stroke="#a8661d" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 15c1 3 4 4 4 8a4 4 0 0 1-8 0c0-3 3-4 4-8z" fill="#ffe08a"/></svg>';
+  function refreshCards() {
+    Array.prototype.forEach.call($('options').querySelectorAll('.opt'), function (b) {
+      var n = state.spent[b.dataset.id] || 0, prev = +b.dataset.n;
+      b.dataset.n = String(n);
+      if (n !== prev) {
+        var fl = b.querySelector('.fl'); fl.innerHTML = '';
+        for (var i = 0; i < n; i++) { fl.insertAdjacentHTML('beforeend', FLAME); if (i < prev) fl.lastChild.style.animation = 'wave 1.1s ease-in-out infinite'; }
+      }
+      b.setAttribute('aria-label', b.querySelector('.t').textContent + ', ' + n + (n === 1 ? ' flask' : ' flasks') + ' of oil');
+    });
+    var spent = totalSpent();
+    $('light').textContent = spent === 0 ? 'Keep my oil and light the lamp' : 'Light the lamp';
+    paintHud();
+  }
+  function sparks(btn) {
+    if (state.reduce) return;
+    var r = btn.getBoundingClientRect(), x = r.width - 28, y = r.height / 2;
+    for (var i = 0; i < 8; i++) {
+      var s = document.createElement('span'); s.className = 'spark'; s.style.left = x + 'px'; s.style.top = y + 'px'; btn.appendChild(s);
+      var a = (Math.PI * 2 * i) / 8, d = 22 + (i % 3) * 8;
+      s.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: 'translate(' + Math.cos(a) * d + 'px,' + Math.sin(a) * d + 'px) scale(.2)', opacity: 0 }], { duration: 520, easing: 'ease-out' }).onfinish = (function (el) { return function () { el.remove(); }; })(s);
+    }
+  }
+  function tapOption(id, btn) {
+    if (state.busy) return;
+    var n = state.spent[id] || 0, used = totalSpent();
+    if (used < FLASKS && n < FLASKS) { state.spent[id] = n + 1; sparks(btn); Snd.spend(); }
+    else if (n > 0) { delete state.spent[id]; Snd.refund(); say('<b>Jyo</b> Oil back in the flask. Spend it where you like.'); }
+    else { var o = $('oil'); o.classList.remove('shake'); void o.offsetWidth; o.classList.add('shake'); Snd.deny(); say('<b>Jyo</b> Both flasks are in use. Tap a lit card to take its oil back, or just light the lamp.'); return; }
+    refreshCards();
+  }
+
+  $('light').addEventListener('click', function () {
+    if (state.busy) return;
+    var scene = state.scene, spent = {};
+    Object.keys(state.spent).forEach(function (k) { if (state.spent[k] > 0) spent[k] = state.spent[k]; });
+    var choice = state.echo ? { sceneId: scene.id + '~echo', echoOf: scene.id, spent: spent } : { sceneId: scene.id, spent: spent };
+    state.choices.push(choice);
+    state.busy = true; document.body.classList.add('busy');
+    var l = $('lp-' + scene.id); if (l) l.classList.remove('flicker');
+    setLit(scene.id, true); paintHud();
+    var n = state.choices.filter(function (c) { return !c.echoOf; }).length;
+    Voice.stop(); Snd.lamp(n);
+    if (!state.echo && BEATS[n]) say('<b>Jyo</b> ' + BEATS[n]); else say('<b>Jyo</b> The lamp is lit. Let us see what else the road holds.');
+    setTimeout(function () { advance(false); }, state.reduce ? 0 : 1100);
+  });
+
+  $('back').addEventListener('click', function () {
+    if (state.busy && state.view === 'stop') return;
+    if (state.view === 'stop') {
+      if (!state.choices.length) { show('welcome'); return; }
+      var last = state.choices[state.choices.length - 1];
+      state.choices = M.undo(state.choices);
+      setLit(last.echoOf || last.sceneId, !!last.echoOf);
+      var again = M.step(bank, state.choices);
+      state.scene = again.scene || bank.scenes.filter(function (s) { return s.id === (last.echoOf || last.sceneId); })[0];
+      state.echo = !!last.echoOf; state.spent = {};
+      Object.keys(last.spent).forEach(function (k) { state.spent[k] = last.spent[k]; });
+      setLit(state.scene.id, false);
+      renderStop(); refreshCards(); camera(state.scene.id); moveTrav(state.scene.id); refreshTrail();
+      if (state.echo) $('lp-' + state.scene.id).classList.add('flicker');
+    } else if (state.view === 'dreams') {
+      var l2 = state.choices[state.choices.length - 1];
+      state.choices = M.undo(state.choices);
+      setLit(l2.echoOf || l2.sceneId, false);
+      state.scene = bank.scenes.filter(function (s) { return s.id === (l2.echoOf || l2.sceneId); })[0]; state.echo = !!l2.echoOf; state.spent = {};
+      Object.keys(l2.spent).forEach(function (k) { state.spent[k] = l2.spent[k]; });
+      show('stop'); renderStop(); refreshCards(); camera(state.scene.id, true); moveTrav(state.scene.id, true); refreshTrail();
+    } else if (state.view === 'reveal') { show('dreams'); }
+    else if (state.view === 'doors') { show('reveal'); }
+  });
+
+  // ---------- dreams
+  function toDreams() {
+    show('dreams'); paintHud();
+    var h = '';
+    CAREERS.forEach(function (c) { h += '<button type="button" class="chip" aria-pressed="' + (state.dreams.indexOf(c.id) >= 0) + '" data-id="' + c.id + '"><small>' + c.cluster + '</small>' + c.title + '</button>'; });
+    $('chips').innerHTML = h;
+  }
+  $('chips').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip'); if (!b) return;
+    var id = b.dataset.id, i = state.dreams.indexOf(id);
+    if (i >= 0) state.dreams.splice(i, 1); else if (state.dreams.length < 3) state.dreams.push(id); else return;
+    b.setAttribute('aria-pressed', String(state.dreams.indexOf(id) >= 0));
+  });
+  $('dreamGo').addEventListener('click', function () { toReveal(); });
+
+  // ---------- reveal
+  function compass(code, confident) {
+    var cx = 160, cy = 150, R = 104;
+    var h = '';
+    h += '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="#1b2150" stroke="#fff3d6" stroke-width="2.4"/>';
+    h += '<g class="beam"><path d="M' + cx + ' ' + cy + 'L' + (cx + R) + ' ' + (cy - 30) + 'A' + R + ' ' + R + ' 0 0 1 ' + (cx + R) + ' ' + (cy + 30) + 'Z" fill="url(#beamg)" transform="translate(0 0)"/></g>';
+    h += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (R - 14) + '" fill="none" stroke="#8f87b0" stroke-width="1.2" stroke-dasharray="2 5"/>';
+    var rank = {}; code.forEach(function (a, i) { rank[a] = i + 1; });
+    AREAS.forEach(function (a, i) {
+      var ang = -Math.PI / 2 + i * Math.PI / 3, lit = rank[a];
+      var len = lit ? R - 8 : R - 44;
+      var x = cx + Math.cos(ang) * len, y = cy + Math.sin(ang) * len;
+      var px = Math.cos(ang + Math.PI / 2) * 9, py = Math.sin(ang + Math.PI / 2) * 9;
+      var fill = lit ? (rank[a] === 1 ? '#ffcf6b' : rank[a] === 2 ? '#46b3b0' : '#e8708a') : '#3b4480';
+      h += '<path d="M' + (cx + px) + ' ' + (cy + py) + 'L' + x + ' ' + y + 'L' + (cx - px) + ' ' + (cy - py) + 'Z" fill="' + fill + '" stroke="#fff3d6" stroke-width="' + (lit ? 2 : 1) + '" stroke-linejoin="round" opacity="' + (lit ? 1 : .8) + '"/>';
+      var lx = cx + Math.cos(ang) * (R + 22), ly = cy + Math.sin(ang) * (R + 14) + 5;
+      h += '<text x="' + lx + '" y="' + ly + '" text-anchor="middle" style="font-family:var(--display);font-weight:800;font-size:15px;fill:' + (lit ? '#fff3d6' : '#8f87b0') + '">' + NAME[a] + '</text>';
+    });
+    h += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="#fff3d6"/><circle cx="' + cx + '" cy="' + cy + '" r="3" fill="#2a2038"/>';
+    return h;
+  }
+  function list(arr) { return arr.map(function (a) { return NAME[a]; }).join(' and '); }
+  function titles(ids) { return ids.map(function (i) { return BYID[i].title; }).join(', '); }
+
+  function toReveal() {
+    var r = state.result = M.journeyResult(bank, state.choices);
+    var code = r.code.code;
+    show('reveal'); Snd.reveal(); Snd.hush();
+    $('compass').innerHTML = compass(code, r.confidence !== 'broad');
+    var tied = r.code.alternatives.length > 1;
+    $('revealLine').textContent = r.confidence === 'clear' ? 'The beam found a clear direction.' : r.confidence === 'close' ? 'The beam found three directions. Some were close.' : 'The beam found a wide spread. That is a real result.';
+    $('legend').innerHTML = code.map(function (a, i) {
+      return '<li style="animation-delay:' + (i * 220 + 200) + 'ms"><span class="rank">' + (i + 1) + '</span><span><b>' + NAME[a] + '</b> <span>' + BLURB[a] + '</span></span></li>';
+    }).join('');
+    var notes = [];
+    if (r.confidence === 'broad') notes.push('You liked many kinds of things, so these are close calls. Nothing is wrong, and another walk on another day will sharpen it.');
+    else if (tied || r.confidence === 'close') notes.push('Some of these were very close, so the order could swap on another day.');
+    if (r.consistency.mixed) notes.push('When a lamp flickered back, your choice changed. People change their minds. Treat this as a first draft.');
+    if (r.lowEngagement) notes.push('Not much caught your eye on this walk. Try again when you feel like it.');
+    $('notes').hidden = !notes.length; $('notes').textContent = notes.join(' ');
+  }
+  $('openDoors').addEventListener('click', function () { toDoors(); });
+
+  // ---------- doors
+  var BAND_BADGE = { strong: 'Lights up', mixed: 'Worth a look', weak: 'Pulls elsewhere', unclear: 'Unclear' };
+  function toDoors() {
+    var r = state.result, code = r.code.code;
+    show('doors'); Snd.door();
+    var matches = M.careerPaths(r.profile, CAREERS.map(function (c) { return { careerId: c.id, values: VEC[c.soc] }; }));
+    var cmp = M.compareDreams(state.dreams, matches);
+    var parts = '';
+    if (state.dreams.length) {
+      if (cmp.lined.length) parts += '<p><b>You guessed right:</b> ' + titles(cmp.lined) + ' light up on your road too.</p>';
+      if (cmp.pulls.length) parts += '<p><b>Your road pulls another way from:</b> ' + titles(cmp.pulls) + '. Worth asking what you love about ' + (cmp.pulls.length > 1 ? 'them' : 'it') + '.</p>';
+    } else parts += '<p>You did not name a door first. Here is what the road lit up.</p>';
+    if (cmp.newDoors.length) parts += '<p><b>New doors you did not name:</b> ' + titles(cmp.newDoors) + '.</p>';
+    $('compare').innerHTML = parts;
+    var h = '';
+    matches.forEach(function (m) {
+      var v = M.teenView(m), c = BYID[v.careerId];
+      var sh = v.shared.filter(function (a) { return code.indexOf(a) >= 0; });
+      var why = sh.length ? 'You and this door both lean toward ' + list(sh) + '.' : 'Not a strong overlap with your top three.';
+      var may = v.mismatch ? ' It may ask for more of the ' + NAME[v.mismatch] + ' in you.' : '';
+      h += '<article class="door"><span class="tag">' + c.cluster + '</span><h3>' + c.title + '</h3><p>' + why + may + '</p><span class="badge ' + v.band + '">' + BAND_BADGE[v.band] + '</span>' + (state.dreams.indexOf(c.id) >= 0 ? '<span class="named">You named it</span>' : '') + '</article>';
+    });
+    $('deck').innerHTML = h; $('deck').scrollLeft = 0;
+    $('deckDots').innerHTML = matches.map(function (_, i) { return '<i class="' + (i === 0 ? 'on' : '') + '"></i>'; }).join('');
+  }
+  $('deck').addEventListener('scroll', function () {
+    var d = $('deck'), cards = d.querySelectorAll('.door'); if (!cards.length) return;
+    var i = Math.round(d.scrollLeft / (cards[0].offsetWidth + 10));
+    Array.prototype.forEach.call($('deckDots').children, function (el, k) { el.classList.toggle('on', k === i); });
+  });
+  $('again').addEventListener('click', function () { show('welcome'); });
+
+  // ---------- reviewer shortcuts
+  var PERSONAS = [['Helper, Thinker, Creator', ['S', 'I', 'A']], ['Builder, Thinker, Organiser', ['R', 'I', 'C']], ['Persuader, Organiser, Helper', ['E', 'C', 'S']], ['Creator, Thinker, Builder', ['A', 'I', 'R']], ['Likes everything equally', null], ['Changes mind on return visit', 'flip']];
+  $('personas').innerHTML = PERSONAS.map(function (p, i) { return '<button type="button" data-i="' + i + '">' + p[0] + '</button>'; }).join('');
+  $('personas').addEventListener('click', function (e) {
+    var i = e.target.getAttribute('data-i'); if (i === null) return;
+    var p = PERSONAS[+i], lv, echoLv;
+    if (p[1] === 'flip') { lv = M.levelsForCode(['R', 'I', 'C']); echoLv = M.levelsForCode(['A', 'S', 'E']); }
+    else lv = p[1] ? M.levelsForCode(p[1]) : { R: .5, I: .5, A: .5, S: .5, E: .5, C: .5 };
+    state.choices = M.playJourney(lv, 1000 + (+i) * 7, bank, 0.8, echoLv || lv);
+    state.dreams = ['psy-1', 'tec-1'];
+    Object.keys(POS).forEach(function (id) { setLit(id, false); });
+    state.choices.forEach(function (c) { if (!c.echoOf) setLit(c.sceneId, true); });
+    $('about').hidden = true;
+    toDreams();
+  });
+
+  $('begin').addEventListener('click', startWalk);
+  $('aboutBtn').addEventListener('click', function () { $('about').hidden = false; $('aboutClose').focus(); });
+  $('aboutClose').addEventListener('click', function () { $('about').hidden = true; });
+  $('about').addEventListener('click', function (e) { if (e.target === $('about')) $('about').hidden = true; });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') $('about').hidden = true;
+    if (state.view === 'stop' && !state.busy) { var n = parseInt(e.key, 10); if (n >= 1 && n <= 4) { var b = $('options').querySelectorAll('.opt')[n - 1]; if (b) b.click(); } }
+  });
+
+
+  // ---------- sound: synthesised in the browser, so there are no audio files to license.
+  // Identity: warm, glowing, unhurried. A five-note scale (C D E G A) over a soft low drone, bell-like plucks,
+  // quiet place ambience. Every cue is identical whichever option is chosen; only progress (lamp count) shapes the music.
+  var Snd = (function () {
+    var ctx, master, bus, on = false, amb = null, drone = null, SCALE = [261.63, 293.66, 329.63, 392.0, 440.0];
+    var PHRASE = [0, 2, 4, 3, 2, 1, 0, 2, 4, 5, 7, 6, 4, 3, 2];
+    var AMB = { s01: 'water', s02: 'water', s03: 'night', s04: 'wind', s05: 'wind', s06: 'murmur', s07: 'water', s08: 'murmur', s09: 'wind', s10: 'murmur', s11: 'night', s12: 'night', s13: 'murmur', s14: 'murmur', s15: 'murmur' };
+    function freq(i) { return SCALE[i % 5] * Math.pow(2, Math.floor(i / 5)); }
+    function init() {
+      if (ctx) return true;
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false;
+      ctx = new AC(); master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+      bus = ctx.createGain(); var dry = ctx.createGain(); dry.gain.value = .8; bus.connect(dry); dry.connect(master);
+      var len = Math.floor(ctx.sampleRate * 1.8), ir = ctx.createBuffer(2, len, ctx.sampleRate);
+      for (var c = 0; c < 2; c++) { var d = ir.getChannelData(c); for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+      var verb = ctx.createConvolver(); verb.buffer = ir; var wet = ctx.createGain(); wet.gain.value = .32; bus.connect(verb); verb.connect(wet); wet.connect(master);
+      return true;
+    }
+    function noise() { var b = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate), d = b.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; var s = ctx.createBufferSource(); s.buffer = b; s.loop = true; return s; }
+    function pluck(f, vel, delay) {
+      var t = ctx.currentTime + (delay || 0), o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain();
+      o1.type = 'sine'; o2.type = 'triangle'; o1.frequency.value = f; o2.frequency.value = f * 2.003;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vel, t + .006); g.gain.exponentialRampToValueAtTime(.0008, t + 1.4);
+      var g2 = ctx.createGain(); g2.gain.value = .25; o1.connect(g); o2.connect(g2); g2.connect(g); g.connect(bus);
+      o1.start(t); o2.start(t); o1.stop(t + 1.5); o2.stop(t + 1.5);
+    }
+    function bell(f, vel, delay) { [1, 2.76, 5.4].forEach(function (r, i) { var t = ctx.currentTime + (delay || 0), o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = f * r; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vel / (i + 1), t + .01); g.gain.exponentialRampToValueAtTime(.0005, t + 2.2 / (i + 1)); o.connect(g); g.connect(bus); o.start(t); o.stop(t + 2.4); }); }
+    function startDrone() {
+      if (drone) return; var g = ctx.createGain(); g.gain.value = 0; var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 520;
+      [130.81, 196.0, 261.63].forEach(function (f, i) { var o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f; o.detune.value = i * 3; var og = ctx.createGain(); og.gain.value = i === 2 ? .35 : 1; o.connect(og); og.connect(lp); o.start(); });
+      var lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = .09; lg.gain.value = .008; lfo.connect(lg); lg.connect(g.gain); lfo.start();
+      lp.connect(g); g.connect(master); g.gain.linearRampToValueAtTime(.035, ctx.currentTime + 3); drone = { g: g };
+    }
+    function ambience(kind) {
+      if (!on) return; if (amb && amb.kind === kind) return;
+      if (amb) { var old = amb; old.g.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2); setTimeout(function () { try { old.src.stop(); } catch (e) {} }, 1400); }
+      var src, f = ctx.createBiquadFilter(), g = ctx.createGain(); g.gain.value = 0;
+      if (kind === 'night') { src = ctx.createOscillator(); src.type = 'sine'; src.frequency.value = 4300; var am = ctx.createOscillator(), ag = ctx.createGain(); am.type = 'square'; am.frequency.value = 7; ag.gain.value = .5; am.connect(ag); var gate = ctx.createGain(); gate.gain.value = .5; ag.connect(gate.gain); src.connect(gate); gate.connect(g); am.start(); g.gain.linearRampToValueAtTime(.006, ctx.currentTime + 1.5); }
+      else { src = noise(); f.type = kind === 'water' ? 'lowpass' : 'bandpass'; f.frequency.value = kind === 'water' ? 520 : kind === 'wind' ? 650 : 380; f.Q.value = kind === 'murmur' ? 1.4 : .6; var l = ctx.createOscillator(), lg = ctx.createGain(); l.frequency.value = kind === 'water' ? .22 : kind === 'wind' ? .13 : .6; lg.gain.value = kind === 'water' ? .014 : .01; l.connect(lg); lg.connect(g.gain); l.start(); src.connect(f); f.connect(g); g.gain.linearRampToValueAtTime(kind === 'murmur' ? .03 : .045, ctx.currentTime + 1.5); }
+      g.connect(master); src.start(); amb = { kind: kind, src: src, g: g };
+    }
+    return {
+      available: function () { return !!(window.AudioContext || window.webkitAudioContext); },
+      isOn: function () { return on; },
+      set: function (v) {
+        if (v) { if (!init()) return false; ctx.resume(); on = true; master.gain.cancelScheduledValues(ctx.currentTime); master.gain.linearRampToValueAtTime(.9, ctx.currentTime + .6); startDrone(); }
+        else if (ctx) { on = false; master.gain.cancelScheduledValues(ctx.currentTime); master.gain.linearRampToValueAtTime(0, ctx.currentTime + .4); }
+        return true;
+      },
+      place: function (id) { ambience(AMB[id] || 'night'); },
+      spend: function () { if (!on) return; pluck(659.25, .13); pluck(1318.5, .04, .05); if (navigator.vibrate) navigator.vibrate(10); },
+      refund: function () { if (!on) return; pluck(392, .08); },
+      deny: function () { if (!on) return; pluck(196, .12); if (navigator.vibrate) navigator.vibrate([8, 40, 8]); },
+      lamp: function (n) { if (!on) return; var i = PHRASE[(n - 1) % PHRASE.length]; pluck(freq(i), .2); bell(freq(i) * 2, .05, .08); if (drone) drone.g.gain.linearRampToValueAtTime(.035 + Math.min(n, 15) * .0018, ctx.currentTime + 1.2); },
+      reveal: function () { if (!on) return; [0, 2, 4, 3, 5, 7].forEach(function (k, j) { pluck(freq(k + 5), .14, j * .16); }); bell(523.25, .12, .9); bell(783.99, .08, 1.0); },
+      door: function () { if (!on) return; pluck(587.33, .1); pluck(880, .06, .07); },
+      hush: function () { if (amb) { try { amb.g.gain.value = 0; } catch (e) {} } }
+    };
+  })();
+  var Voice = {
+    ok: 'speechSynthesis' in window,
+    say: function (parts) {
+      if (!this.ok) return; speechSynthesis.cancel();
+      parts.forEach(function (p) { var u = new SpeechSynthesisUtterance(p); u.lang = 'en-IN'; u.rate = .95; speechSynthesis.speak(u); });
+    },
+    stop: function () { if (this.ok) speechSynthesis.cancel(); }
+  };
+  function paintSound() {
+    var on = Snd.isOn();
+    $('snd').setAttribute('aria-pressed', String(on)); $('sndwave').style.opacity = on ? 1 : .2;
+    $('soundChoice').setAttribute('aria-pressed', String(on)); $('soundChoice').textContent = on ? 'Sound is on. Tap to turn it off' : 'Sound is off. Tap to turn it on';
+  }
+  function toggleSound() { Snd.set(!Snd.isOn()); paintSound(); if (Snd.isOn() && state.scene && state.view === 'stop') Snd.place(state.scene.id); }
+  $('snd').addEventListener('click', toggleSound);
+  $('soundChoice').addEventListener('click', toggleSound);
+  $('listen').addEventListener('click', function () {
+    if (!state.scene) return;
+    var shown = M.displayOptions(state.scene, SEED + (state.echo ? 97 : 0));
+    Voice.say([state.scene.place + '. ' + state.scene.setup].concat(shown.map(function (o, i) { return 'Choice ' + (i + 1) + '. ' + o.text + '.'; })));
+  });
+  if (!Snd.available()) { $('snd').hidden = true; $('soundChoice').hidden = true; }
+  if (!Voice.ok) $('listen').hidden = true;
+
+  // ---------- boot
+  buildHud(); buildRoad(); paintHud(); paintSound();
+  $('welcomeMap').innerHTML = terrain() + '<polyline class="trail" points="40,196 110,160 190,186 260,126 320,160"/>' +
+    [[40, 196, 'boat'], [110, 160, 'bridge'], [190, 186, 'clock'], [260, 126, 'tent'], [320, 160, 'arch']].map(function (p, i) { return '<g transform="translate(' + p[0] + ' ' + p[1] + ')">' + glyph(p[2], i < 2) + '<g transform="translate(15 4)"><circle class="glow" r="22" style="opacity:' + (i < 2 ? 1 : 0) + ';transform:scale(' + (i < 2 ? 1 : .2) + ')"/><circle cy="-6" r="3.4" fill="' + (i < 2 ? '#ffcf6b' : '#6b5f7c') + '"/></g></g>'; }).join('') +
+    '<g transform="translate(110 144)">' + traveller() + '</g><g transform="translate(120 136)">' + firefly() + '</g>';
+})();
+</script>
