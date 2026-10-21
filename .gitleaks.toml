@@ -1,0 +1,8 @@
+title = "margwise gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Test fixtures use obviously fake hashes and UUIDs"
+paths = ['''packages/contracts/openapi/openapi.json''']

@@ -1,0 +1,66 @@
+# Supabase CLI local config. Run `supabase start` from services/supabase.
+project_id = "margwise"
+
+[api]
+enabled = true
+port = 54321
+# Exposed so Edge Functions (service role) and the Studio (authenticated) can
+# use them through the Data API. Exposure grants nothing by itself: anon and
+# authenticated have no table grants on telemetry, and RLS denies by default
+# (see docs/decisions.md D-014). `private` is never exposed.
+schemas = ["public", "content", "pipeline", "telemetry"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed/seed.sql"]
+
+[studio]
+enabled = true
+port = 54323
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:5174"
+additional_redirect_urls = ["http://localhost:5174"]
+enable_signup = false
+
+[auth.email]
+enable_signup = false
+enable_confirmations = true
+otp_length = 6
+otp_expiry = 600
+
+[auth.mfa]
+max_enrolled_factors = 10
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+# Telemetry endpoints are called by anonymous family devices without a
+# Supabase session. JWT verification at the gateway would reject every call
+# (review #1); the handlers validate, rate-limit and consent-gate instead.
+# Deploy with: supabase functions deploy <name> --no-verify-jwt (D-033).
+[functions.telemetry-ingest]
+verify_jwt = false
+
+[functions.deletion-request]
+verify_jwt = false
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+
+[analytics]
+enabled = false

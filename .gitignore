@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-types/
+build/
+coverage/
+.turbo/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+playwright-report/
+test-results/
+services/supabase/.branches/
+services/supabase/.temp/
+.DS_Store
+lighthouse-report/
