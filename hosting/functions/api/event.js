@@ -1,5 +1,5 @@
 import { json, safeEq, sign } from './_util.js';
-const TYPES = new Set(['join', 'walk_start', 'place_done', 'beat', 'context', 'result', 'fields', 'field_open', 'self', 'areas', 'feedback', 'error', 'walk_end']);
+const TYPES = new Set(['join', 'walk_start', 'place_done', 'beat', 'context', 'result', 'fields', 'field_open', 'abroad', 'self', 'areas', 'feedback', 'error', 'walk_end']);
 export async function onRequestPost({ request, env }) {
   const raw = await request.text(); if (raw.length > 120000) return json({ error: 'Too large.' }, 413);
   let b; try { b = JSON.parse(raw); } catch { return json({ error: 'Bad request.' }, 400); }

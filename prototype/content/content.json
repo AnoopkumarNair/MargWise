@@ -680,7 +680,14 @@
     "E": 22,
     "A": 8
    },
-   "line": "Diagnoses and treats illness, from everyday problems to emergencies."
+   "line": "Diagnoses and treats illness, from everyday problems to emergencies.",
+   "us": {
+    "annual": 244180,
+    "hourly": 117.39,
+    "growth": "Average",
+    "openings": 2900,
+    "wageYear": 2025
+   }
   },
   {
    "id": "doc-2",
@@ -695,7 +702,14 @@
     "E": 17,
     "A": 3
    },
-   "line": "Looks after teeth and gums, and fixes problems early."
+   "line": "Looks after teeth and gums, and fixes problems early.",
+   "us": {
+    "annual": 170950,
+    "hourly": 82.19,
+    "growth": "Faster than average",
+    "openings": 4200,
+    "wageYear": 2025
+   }
   },
   {
    "id": "doc-3",
@@ -710,7 +724,14 @@
     "E": 23,
     "A": 6
    },
-   "line": "Cares for patients day to day, alongside doctors."
+   "line": "Cares for patients day to day, alongside doctors.",
+   "us": {
+    "annual": 97550,
+    "hourly": 46.9,
+    "growth": "Faster than average",
+    "openings": 180800,
+    "wageYear": 2025
+   }
   },
   {
    "id": "doc-4",
@@ -725,7 +746,14 @@
     "E": 27,
     "A": 8
    },
-   "line": "Makes sure medicines are right and safe, and advises patients."
+   "line": "Makes sure medicines are right and safe, and advises patients.",
+   "us": {
+    "annual": 140910,
+    "hourly": 67.75,
+    "growth": "Faster than average",
+    "openings": 12500,
+    "wageYear": 2025
+   }
   },
   {
    "id": "doc-5",
@@ -740,7 +768,14 @@
     "E": 25,
     "A": 20
    },
-   "line": "Helps people recover movement after injury or illness."
+   "line": "Helps people recover movement after injury or illness.",
+   "us": {
+    "annual": 102760,
+    "hourly": 49.4,
+    "growth": "Much faster than average",
+    "openings": 13400,
+    "wageYear": 2025
+   }
   },
   {
    "id": "doc-6",
@@ -755,7 +790,14 @@
     "E": 12,
     "A": 0
    },
-   "line": "Treats animals, from pets to farm animals."
+   "line": "Treats animals, from pets to farm animals.",
+   "us": {
+    "annual": 130100,
+    "hourly": 62.55,
+    "growth": "Much faster than average",
+    "openings": 3100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "sci-1",
@@ -770,7 +812,14 @@
     "S": 19,
     "E": 13
    },
-   "line": "Studies how matter, energy and the universe work."
+   "line": "Studies how matter, energy and the universe work.",
+   "us": {
+    "annual": 172250,
+    "hourly": 82.81,
+    "growth": "Much faster than average",
+    "openings": 1300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "sci-2",
@@ -785,7 +834,14 @@
     "S": 27,
     "A": 23
    },
-   "line": "Studies living things, from cells to ecosystems."
+   "line": "Studies living things, from cells to ecosystems.",
+   "us": {
+    "annual": 98920,
+    "hourly": 47.56,
+    "growth": "Faster than average",
+    "openings": 4300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "sci-3",
@@ -800,7 +856,14 @@
     "A": 9,
     "S": 2
    },
-   "line": "Studies substances and what they do, to make new materials and medicines."
+   "line": "Studies substances and what they do, to make new materials and medicines.",
+   "us": {
+    "annual": 91240,
+    "hourly": 43.87,
+    "growth": "Faster than average",
+    "openings": 5900,
+    "wageYear": 2025
+   }
   },
   {
    "id": "sci-4",
@@ -815,7 +878,14 @@
     "E": 26,
     "A": 15
    },
-   "line": "Works out how to protect air, water and land."
+   "line": "Works out how to protect air, water and land.",
+   "us": {
+    "annual": 82220,
+    "hourly": 39.53,
+    "growth": "Faster than average",
+    "openings": 7300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "sci-5",
@@ -830,7 +900,14 @@
     "A": 13,
     "S": 12
    },
-   "line": "Uses numbers to find the truth in messy data."
+   "line": "Uses numbers to find the truth in messy data.",
+   "us": {
+    "annual": 105650,
+    "hourly": 50.79,
+    "growth": "Much faster than average",
+    "openings": 1900,
+    "wageYear": 2025
+   }
   },
   {
    "id": "sci-6",
@@ -845,7 +922,14 @@
     "A": 24,
     "S": 19
    },
-   "line": "Makes food safer, tastier and longer lasting."
+   "line": "Makes food safer, tastier and longer lasting.",
+   "us": {
+    "annual": 88720,
+    "hourly": 42.65,
+    "growth": "Faster than average",
+    "openings": 1000,
+    "wageYear": 2025
+   }
   },
   {
    "id": "eng-1",
@@ -860,7 +944,14 @@
     "E": 16,
     "S": 4
    },
-   "line": "Designs machines and engines."
+   "line": "Designs machines and engines.",
+   "us": {
+    "annual": 104110,
+    "hourly": 50.05,
+    "growth": "Much faster than average",
+    "openings": 17800,
+    "wageYear": 2025
+   }
   },
   {
    "id": "eng-2",
@@ -875,7 +966,14 @@
     "A": 20,
     "S": 12
    },
-   "line": "Plans and builds roads, bridges and buildings."
+   "line": "Plans and builds roads, bridges and buildings.",
+   "us": {
+    "annual": 100840,
+    "hourly": 48.48,
+    "growth": "Faster than average",
+    "openings": 22700,
+    "wageYear": 2025
+   }
   },
   {
    "id": "tec-3",
@@ -890,7 +988,14 @@
     "E": 10,
     "S": 10
    },
-   "line": "Designs circuits, batteries and controls inside devices and electric vehicles."
+   "line": "Designs circuits, batteries and controls inside devices and electric vehicles.",
+   "us": {
+    "annual": 130220,
+    "hourly": 62.6,
+    "growth": "Average",
+    "openings": 4900,
+    "wageYear": 2025
+   }
   },
   {
    "id": "eng-4",
@@ -905,7 +1010,14 @@
     "A": 23,
     "S": 4
    },
-   "line": "Designs aircraft, rockets and satellites."
+   "line": "Designs aircraft, rockets and satellites.",
+   "us": {
+    "annual": 134960,
+    "hourly": 64.89,
+    "growth": "Much faster than average",
+    "openings": 3800,
+    "wageYear": 2025
+   }
   },
   {
    "id": "eng-5",
@@ -920,7 +1032,14 @@
     "A": 13,
     "S": 0
    },
-   "line": "Designs how to make fuels, medicines and materials at large scale."
+   "line": "Designs how to make fuels, medicines and materials at large scale.",
+   "us": {
+    "annual": 125040,
+    "hourly": 60.12,
+    "growth": "Faster than average",
+    "openings": 1100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "tec-1",
@@ -935,7 +1054,14 @@
     "E": 15,
     "S": 14
    },
-   "line": "Builds the software and AI tools that apps and companies run on."
+   "line": "Builds the software and AI tools that apps and companies run on.",
+   "us": {
+    "annual": 135980,
+    "hourly": 65.38,
+    "growth": "Much faster than average",
+    "openings": 95300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "tec-2",
@@ -950,7 +1076,14 @@
     "E": 12,
     "S": 11
    },
-   "line": "Finds patterns in large amounts of data to answer questions and predict what comes next."
+   "line": "Finds patterns in large amounts of data to answer questions and predict what comes next.",
+   "us": {
+    "annual": 120230,
+    "hourly": 57.8,
+    "growth": "Much faster than average",
+    "openings": 24800,
+    "wageYear": 2025
+   }
   },
   {
    "id": "tec-4",
@@ -965,7 +1098,14 @@
     "S": 19,
     "A": 6
    },
-   "line": "Finds weaknesses in systems and protects them from attacks."
+   "line": "Finds weaknesses in systems and protects them from attacks.",
+   "us": {
+    "annual": 129180,
+    "hourly": 62.11,
+    "growth": "Much faster than average",
+    "openings": 14100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "com-1",
@@ -980,7 +1120,14 @@
     "R": 2,
     "A": 1
    },
-   "line": "Keeps accounts honest: audit, tax and financial advice for businesses."
+   "line": "Keeps accounts honest: audit, tax and financial advice for businesses.",
+   "us": {
+    "annual": 83680,
+    "hourly": 40.23,
+    "growth": "Faster than average",
+    "openings": 115300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "com-2",
@@ -995,7 +1142,14 @@
     "R": 20,
     "A": 5
    },
-   "line": "Runs a team or starts a business: plans, people and money."
+   "line": "Runs a team or starts a business: plans, people and money.",
+   "us": {
+    "annual": 105770,
+    "hourly": 50.85,
+    "growth": "Faster than average",
+    "openings": 285000,
+    "wageYear": 2025
+   }
   },
   {
    "id": "com-3",
@@ -1010,7 +1164,14 @@
     "A": 13,
     "R": 0
    },
-   "line": "Studies companies and markets to guide money decisions."
+   "line": "Studies companies and markets to guide money decisions.",
+   "us": {
+    "annual": 102740,
+    "hourly": 49.4,
+    "growth": "Much faster than average",
+    "openings": 24700,
+    "wageYear": 2025
+   }
   },
   {
    "id": "com-4",
@@ -1025,7 +1186,14 @@
     "S": 23,
     "R": 6
    },
-   "line": "Studies how money, jobs and prices work, and advises on policy."
+   "line": "Studies how money, jobs and prices work, and advises on policy.",
+   "us": {
+    "annual": 124720,
+    "hourly": 59.96,
+    "growth": "Faster than average",
+    "openings": 1100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "com-5",
@@ -1040,7 +1208,14 @@
     "A": 24,
     "R": 0
    },
-   "line": "Decides how a product reaches people and what to say to them."
+   "line": "Decides how a product reaches people and what to say to them.",
+   "us": {
+    "annual": 166790,
+    "hourly": 80.19,
+    "growth": "Much faster than average",
+    "openings": 34000,
+    "wageYear": 2025
+   }
   },
   {
    "id": "com-6",
@@ -1055,7 +1230,14 @@
     "A": 6,
     "R": 1
    },
-   "line": "Hires, trains and looks after the people in a company."
+   "line": "Hires, trains and looks after the people in a company.",
+   "us": {
+    "annual": 75940,
+    "hourly": 36.51,
+    "growth": "Faster than average",
+    "openings": 73700,
+    "wageYear": 2025
+   }
   },
   {
    "id": "com-7",
@@ -1070,7 +1252,14 @@
     "R": 7,
     "A": 0
    },
-   "line": "Helps people and businesses borrow money, and checks the risk."
+   "line": "Helps people and businesses borrow money, and checks the risk.",
+   "us": {
+    "annual": 76690,
+    "hourly": 36.87,
+    "growth": "Slower than average",
+    "openings": 17100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "com-8",
@@ -1085,7 +1274,14 @@
     "R": 12,
     "A": 0
    },
-   "line": "Decides what risks an insurer will take and at what price."
+   "line": "Decides what risks an insurer will take and at what price.",
+   "us": {
+    "annual": 81370,
+    "hourly": 39.12,
+    "growth": "Decline",
+    "openings": 6800,
+    "wageYear": 2025
+   }
   },
   {
    "id": "des-1",
@@ -1100,7 +1296,14 @@
     "R": 27,
     "S": 20
    },
-   "line": "Shapes how apps and products look and feel to use."
+   "line": "Shapes how apps and products look and feel to use.",
+   "us": {
+    "annual": 104000,
+    "hourly": 50.0,
+    "growth": "Faster than average",
+    "openings": 8300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "des-2",
@@ -1115,7 +1318,14 @@
     "E": 44,
     "S": 26
    },
-   "line": "Designs buildings and spaces that are safe, useful and beautiful."
+   "line": "Designs buildings and spaces that are safe, useful and beautiful.",
+   "us": {
+    "annual": 99280,
+    "hourly": 47.73,
+    "growth": "Average",
+    "openings": 6900,
+    "wageYear": 2025
+   }
   },
   {
    "id": "des-3",
@@ -1130,7 +1340,14 @@
     "I": 31,
     "S": 19
    },
-   "line": "Makes visuals that communicate: logos, posters, packaging."
+   "line": "Makes visuals that communicate: logos, posters, packaging.",
+   "us": {
+    "annual": 62960,
+    "hourly": 30.27,
+    "growth": "Decline",
+    "openings": 16000,
+    "wageYear": 2025
+   }
   },
   {
    "id": "des-4",
@@ -1145,7 +1362,14 @@
     "S": 23,
     "I": 20
    },
-   "line": "Designs clothes and accessories."
+   "line": "Designs clothes and accessories.",
+   "us": {
+    "annual": 80960,
+    "hourly": 38.92,
+    "growth": "Little or no change",
+    "openings": 2500,
+    "wageYear": 2025
+   }
   },
   {
    "id": "des-5",
@@ -1160,7 +1384,14 @@
     "E": 27,
     "S": 20
    },
-   "line": "Makes characters and worlds move, for films and games."
+   "line": "Makes characters and worlds move, for films and games.",
+   "us": {
+    "annual": 102030,
+    "hourly": 49.06,
+    "growth": "Little or no change",
+    "openings": 4200,
+    "wageYear": 2025
+   }
   },
   {
    "id": "des-6",
@@ -1175,7 +1406,14 @@
     "S": 16,
     "I": 15
    },
-   "line": "Cuts footage into stories that people watch."
+   "line": "Cuts footage into stories that people watch.",
+   "us": {
+    "annual": 75420,
+    "hourly": 36.26,
+    "growth": "Average",
+    "openings": 3100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "des-7",
@@ -1190,7 +1428,14 @@
     "I": 35,
     "S": 28
    },
-   "line": "Plans rooms and interiors that feel right to live in."
+   "line": "Plans rooms and interiors that feel right to live in.",
+   "us": {
+    "annual": 67190,
+    "hourly": 32.31,
+    "growth": "Average",
+    "openings": 7700,
+    "wageYear": 2025
+   }
   },
   {
    "id": "psy-1",
@@ -1205,7 +1450,14 @@
     "E": 28,
     "R": 1
    },
-   "line": "Helps people with serious mental-health conditions, through assessment and therapy."
+   "line": "Helps people with serious mental-health conditions, through assessment and therapy.",
+   "us": {
+    "annual": 100580,
+    "hourly": 48.36,
+    "growth": "Much faster than average",
+    "openings": 4100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "psy-3",
@@ -1220,7 +1472,14 @@
     "A": 36,
     "R": 0
    },
-   "line": "Supports students with studies, feelings and career choices."
+   "line": "Supports students with studies, feelings and career choices.",
+   "us": {
+    "annual": 64330,
+    "hourly": 30.93,
+    "growth": "Average",
+    "openings": 27800,
+    "wageYear": 2025
+   }
   },
   {
    "id": "psy-4",
@@ -1235,7 +1494,14 @@
     "A": 36,
     "R": 1
    },
-   "line": "Makes workplaces fairer, healthier and more effective."
+   "line": "Makes workplaces fairer, healthier and more effective.",
+   "us": {
+    "annual": 193950,
+    "hourly": 93.24,
+    "growth": "Much faster than average",
+    "openings": 300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "psy-5",
@@ -1250,7 +1516,14 @@
     "E": 27,
     "S": 19
    },
-   "line": "Finds out how people use apps and products so designers can fix what frustrates them."
+   "line": "Finds out how people use apps and products so designers can fix what frustrates them.",
+   "us": {
+    "annual": 102440,
+    "hourly": 49.25,
+    "growth": "Much faster than average",
+    "openings": 23100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "law-1",
@@ -1265,7 +1538,14 @@
     "A": 23,
     "R": 2
    },
-   "line": "Advises companies on contracts, deals and rules."
+   "line": "Advises companies on contracts, deals and rules.",
+   "us": {
+    "annual": 159670,
+    "hourly": 76.76,
+    "growth": "Faster than average",
+    "openings": 28700,
+    "wageYear": 2025
+   }
   },
   {
    "id": "law-2",
@@ -1280,7 +1560,14 @@
     "R": 22,
     "A": 20
    },
-   "line": "Hears cases and decides them fairly, after the state judicial exams."
+   "line": "Hears cases and decides them fairly, after the state judicial exams.",
+   "us": {
+    "annual": 153990,
+    "hourly": 74.03,
+    "growth": "Average",
+    "openings": 800,
+    "wageYear": 2025
+   }
   },
   {
    "id": "med-1",
@@ -1295,7 +1582,14 @@
     "S": 30,
     "R": 8
    },
-   "line": "Finds out what is happening and reports it clearly."
+   "line": "Finds out what is happening and reports it clearly.",
+   "us": {
+    "annual": 62200,
+    "hourly": 29.91,
+    "growth": "Decline",
+    "openings": 3400,
+    "wageYear": 2025
+   }
   },
   {
    "id": "med-2",
@@ -1310,7 +1604,14 @@
     "S": 31,
     "R": 0
    },
-   "line": "Writes books, articles and scripts."
+   "line": "Writes books, articles and scripts.",
+   "us": {
+    "annual": 76910,
+    "hourly": 36.98,
+    "growth": "Little or no change",
+    "openings": 11900,
+    "wageYear": 2025
+   }
   },
   {
    "id": "med-3",
@@ -1325,7 +1626,14 @@
     "I": 29,
     "R": 0
    },
-   "line": "Shapes how organisations talk to the public."
+   "line": "Shapes how organisations talk to the public.",
+   "us": {
+    "annual": 74750,
+    "hourly": 35.94,
+    "growth": "Slower than average",
+    "openings": 23000,
+    "wageYear": 2025
+   }
   },
   {
    "id": "med-4",
@@ -1340,7 +1648,13 @@
     "E": 32,
     "R": 29
    },
-   "line": "Helps students learn, in school or college."
+   "line": "Helps students learn, in school or college.",
+   "us": {
+    "annual": 72040,
+    "growth": "Little or no change",
+    "openings": 63500,
+    "wageYear": 2025
+   }
   },
   {
    "id": "med-5",
@@ -1355,7 +1669,14 @@
     "E": 32,
     "R": 12
    },
-   "line": "Supports families and communities through hard times."
+   "line": "Supports families and communities through hard times.",
+   "us": {
+    "annual": 59550,
+    "hourly": 28.63,
+    "growth": "Average",
+    "openings": 33900,
+    "wageYear": 2025
+   }
   },
   {
    "id": "med-6",
@@ -1370,7 +1691,14 @@
     "E": 15,
     "R": 15
    },
-   "line": "Moves meaning between languages, in speech and in writing."
+   "line": "Moves meaning between languages, in speech and in writing.",
+   "us": {
+    "annual": 60170,
+    "hourly": 28.93,
+    "growth": "Slower than average",
+    "openings": 6000,
+    "wageYear": 2025
+   }
   },
   {
    "id": "pub-1",
@@ -1385,7 +1713,14 @@
     "S": 40,
     "R": 0
    },
-   "line": "Studies how government decisions work and advises on better ones."
+   "line": "Studies how government decisions work and advises on better ones.",
+   "us": {
+    "annual": 142080,
+    "hourly": 68.31,
+    "growth": "Decline",
+    "openings": 400,
+    "wageYear": 2025
+   }
   },
   {
    "id": "pub-2",
@@ -1400,7 +1735,14 @@
     "A": 34,
     "S": 34
    },
-   "line": "Plans how towns and cities grow."
+   "line": "Plans how towns and cities grow.",
+   "us": {
+    "annual": 89320,
+    "hourly": 42.94,
+    "growth": "Average",
+    "openings": 3200,
+    "wageYear": 2025
+   }
   },
   {
    "id": "pub-3",
@@ -1415,7 +1757,14 @@
     "I": 29,
     "A": 1
    },
-   "line": "Keeps people safe and enforces the law."
+   "line": "Keeps people safe and enforces the law.",
+   "us": {
+    "annual": 76210,
+    "hourly": 36.64,
+    "growth": "Average",
+    "openings": 51500,
+    "wageYear": 2025
+   }
   },
   {
    "id": "pub-4",
@@ -1430,7 +1779,14 @@
     "R": 42,
     "A": 14
    },
-   "line": "Plans for and leads the response to floods, fires and other emergencies."
+   "line": "Plans for and leads the response to floods, fires and other emergencies.",
+   "us": {
+    "annual": 93330,
+    "hourly": 44.87,
+    "growth": "Average",
+    "openings": 1100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "hos-1",
@@ -1445,7 +1801,13 @@
     "S": 25,
     "A": 7
    },
-   "line": "Flies passenger and cargo aircraft."
+   "line": "Flies passenger and cargo aircraft.",
+   "us": {
+    "annual": 232140,
+    "growth": "Much faster than average",
+    "openings": 11200,
+    "wageYear": 2025
+   }
   },
   {
    "id": "hos-2",
@@ -1460,7 +1822,14 @@
     "A": 29,
     "I": 11
    },
-   "line": "Creates food, leads a kitchen team."
+   "line": "Creates food, leads a kitchen team.",
+   "us": {
+    "annual": 62470,
+    "hourly": 30.03,
+    "growth": "Much faster than average",
+    "openings": 25200,
+    "wageYear": 2025
+   }
   },
   {
    "id": "hos-3",
@@ -1475,7 +1844,14 @@
     "A": 7,
     "I": 2
    },
-   "line": "Runs a hotel: guests, staff and money."
+   "line": "Runs a hotel: guests, staff and money.",
+   "us": {
+    "annual": 69250,
+    "hourly": 33.29,
+    "growth": "Average",
+    "openings": 5500,
+    "wageYear": 2025
+   }
   },
   {
    "id": "hos-4",
@@ -1490,7 +1866,13 @@
     "I": 17,
     "A": 5
    },
-   "line": "Keeps passengers safe and comfortable in the air."
+   "line": "Keeps passengers safe and comfortable in the air.",
+   "us": {
+    "annual": 63580,
+    "growth": "Much faster than average",
+    "openings": 18500,
+    "wageYear": 2025
+   }
   },
   {
    "id": "agr-1",
@@ -1505,7 +1887,14 @@
     "E": 12,
     "S": 11
    },
-   "line": "Studies soil and crops to grow more food sustainably."
+   "line": "Studies soil and crops to grow more food sustainably.",
+   "us": {
+    "annual": 78850,
+    "hourly": 37.91,
+    "growth": "Much faster than average",
+    "openings": 1400,
+    "wageYear": 2025
+   }
   },
   {
    "id": "agr-2",
@@ -1520,7 +1909,14 @@
     "A": 16,
     "S": 16
    },
-   "line": "Studies farm animals to improve health and yield."
+   "line": "Studies farm animals to improve health and yield.",
+   "us": {
+    "annual": 68940,
+    "hourly": 33.14,
+    "growth": "Faster than average",
+    "openings": 200,
+    "wageYear": 2025
+   }
   },
   {
    "id": "agr-3",
@@ -1535,7 +1931,14 @@
     "S": 22,
     "A": 4
    },
-   "line": "Looks after forests, and plans how to use and protect them."
+   "line": "Looks after forests, and plans how to use and protect them.",
+   "us": {
+    "annual": 76400,
+    "hourly": 36.73,
+    "growth": "Slower than average",
+    "openings": 900,
+    "wageYear": 2025
+   }
   },
   {
    "id": "agr-4",
@@ -1550,7 +1953,14 @@
     "S": 31,
     "A": 16
    },
-   "line": "Protects soil, water and wild land."
+   "line": "Protects soil, water and wild land.",
+   "us": {
+    "annual": 73010,
+    "hourly": 35.1,
+    "growth": "Faster than average",
+    "openings": 2100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "agr-5",
@@ -1565,7 +1975,14 @@
     "S": 27,
     "A": 1
    },
-   "line": "Runs a farm or an agri business: crops, people and money."
+   "line": "Runs a farm or an agri business: crops, people and money.",
+   "us": {
+    "annual": 89900,
+    "hourly": 43.22,
+    "growth": "Decline",
+    "openings": 70800,
+    "wageYear": 2025
+   }
   },
   {
    "id": "voc-1",
@@ -1580,7 +1997,14 @@
     "S": 5,
     "A": 4
    },
-   "line": "Installs and repairs electrical wiring and equipment."
+   "line": "Installs and repairs electrical wiring and equipment.",
+   "us": {
+    "annual": 63190,
+    "hourly": 30.38,
+    "growth": "Much faster than average",
+    "openings": 72700,
+    "wageYear": 2025
+   }
   },
   {
    "id": "voc-2",
@@ -1595,7 +2019,14 @@
     "S": 8,
     "A": 0
    },
-   "line": "Diagnoses and repairs cars and bikes."
+   "line": "Diagnoses and repairs cars and bikes.",
+   "us": {
+    "annual": 50620,
+    "hourly": 24.34,
+    "growth": "Faster than average",
+    "openings": 66200,
+    "wageYear": 2025
+   }
   },
   {
    "id": "voc-3",
@@ -1610,7 +2041,14 @@
     "A": 7,
     "S": 1
    },
-   "line": "Joins metal parts for buildings, vehicles and machines."
+   "line": "Joins metal parts for buildings, vehicles and machines.",
+   "us": {
+    "annual": 53750,
+    "hourly": 25.84,
+    "growth": "Slower than average",
+    "openings": 40300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "voc-4",
@@ -1625,7 +2063,14 @@
     "S": 13,
     "E": 5
    },
-   "line": "Tests and repairs electronic devices and systems."
+   "line": "Tests and repairs electronic devices and systems.",
+   "us": {
+    "annual": 78190,
+    "hourly": 37.59,
+    "growth": "Slower than average",
+    "openings": 8100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "voc-5",
@@ -1640,7 +2085,14 @@
     "E": 4,
     "S": 3
    },
-   "line": "Cuts and shapes metal parts on precision machines."
+   "line": "Cuts and shapes metal parts on precision machines.",
+   "us": {
+    "annual": 58750,
+    "hourly": 28.24,
+    "growth": "Slower than average",
+    "openings": 26100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "voc-6",
@@ -1655,7 +2107,14 @@
     "E": 17,
     "S": 9
    },
-   "line": "Supports engineers with surveys, drawings and site checks."
+   "line": "Supports engineers with surveys, drawings and site checks.",
+   "us": {
+    "annual": 64950,
+    "hourly": 31.23,
+    "growth": "Average",
+    "openings": 6100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "art-1",
@@ -1670,7 +2129,13 @@
     "C": 20,
     "I": 9
    },
-   "line": "Performs and records music."
+   "line": "Performs and records music.",
+   "us": {
+    "hourly": 47.8,
+    "growth": "Little or no change",
+    "openings": 17400,
+    "wageYear": 2025
+   }
   },
   {
    "id": "art-2",
@@ -1685,7 +2150,13 @@
     "I": 19,
     "C": 14
    },
-   "line": "Plays roles on stage, screen and online."
+   "line": "Plays roles on stage, screen and online.",
+   "us": {
+    "hourly": 29.05,
+    "growth": "Little or no change",
+    "openings": 6300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "art-3",
@@ -1700,7 +2171,13 @@
     "C": 10,
     "I": 7
    },
-   "line": "Performs and teaches dance."
+   "line": "Performs and teaches dance.",
+   "us": {
+    "hourly": 24.8,
+    "growth": "Slower than average",
+    "openings": 1600,
+    "wageYear": 2025
+   }
   },
   {
    "id": "art-4",
@@ -1715,7 +2192,14 @@
     "I": 21,
     "R": 19
    },
-   "line": "Leads the making of films, shows and productions."
+   "line": "Leads the making of films, shows and productions.",
+   "us": {
+    "annual": 90360,
+    "hourly": 43.44,
+    "growth": "Average",
+    "openings": 12100,
+    "wageYear": 2025
+   }
   },
   {
    "id": "art-5",
@@ -1730,7 +2214,14 @@
     "I": 20,
     "S": 16
    },
-   "line": "Captures images for people, news and brands."
+   "line": "Captures images for people, news and brands.",
+   "us": {
+    "annual": 44660,
+    "hourly": 21.47,
+    "growth": "Decline",
+    "openings": 10700,
+    "wageYear": 2025
+   }
   },
   {
    "id": "mar-1",
@@ -1745,7 +2236,14 @@
     "S": 15,
     "A": 0
    },
-   "line": "Navigates and commands ships at sea."
+   "line": "Navigates and commands ships at sea.",
+   "us": {
+    "annual": 92460,
+    "hourly": 44.45,
+    "growth": "Average",
+    "openings": 3800,
+    "wageYear": 2025
+   }
   },
   {
    "id": "mar-2",
@@ -1760,7 +2258,14 @@
     "A": 27,
     "S": 5
    },
-   "line": "Designs and keeps ship engines and systems running."
+   "line": "Designs and keeps ship engines and systems running.",
+   "us": {
+    "annual": 112230,
+    "hourly": 53.96,
+    "growth": "Much faster than average",
+    "openings": 500,
+    "wageYear": 2025
+   }
   },
   {
    "id": "mar-3",
@@ -1775,7 +2280,14 @@
     "S": 22,
     "A": 2
    },
-   "line": "Plans how goods move from maker to buyer."
+   "line": "Plans how goods move from maker to buyer.",
+   "us": {
+    "annual": 82320,
+    "hourly": 39.58,
+    "growth": "Much faster than average",
+    "openings": 26600,
+    "wageYear": 2025
+   }
   },
   {
    "id": "mar-4",
@@ -1790,7 +2302,14 @@
     "S": 23,
     "A": 0
    },
-   "line": "Manages the full chain of storage, transport and delivery."
+   "line": "Manages the full chain of storage, transport and delivery.",
+   "us": {
+    "annual": 107230,
+    "hourly": 51.55,
+    "growth": "Faster than average",
+    "openings": 18300,
+    "wageYear": 2025
+   }
   },
   {
    "id": "spo-1",
@@ -1805,7 +2324,13 @@
     "A": 19,
     "I": 7
    },
-   "line": "Trains and competes at the highest level."
+   "line": "Trains and competes at the highest level.",
+   "us": {
+    "annual": 66710,
+    "growth": "Faster than average",
+    "openings": 2200,
+    "wageYear": 2025
+   }
   },
   {
    "id": "spo-2",
@@ -1820,7 +2345,13 @@
     "A": 24,
     "I": 19
    },
-   "line": "Trains athletes and teams, and builds their skills."
+   "line": "Trains athletes and teams, and builds their skills.",
+   "us": {
+    "annual": 47320,
+    "growth": "Faster than average",
+    "openings": 36400,
+    "wageYear": 2025
+   }
   },
   {
    "id": "spo-3",
@@ -1835,7 +2366,14 @@
     "I": 29,
     "A": 23
    },
-   "line": "Helps people get fitter and healthier."
+   "line": "Helps people get fitter and healthier.",
+   "us": {
+    "annual": 47160,
+    "hourly": 22.67,
+    "growth": "Much faster than average",
+    "openings": 68000,
+    "wageYear": 2025
+   }
   }
  ],
  "checked": "2026-10-21",
