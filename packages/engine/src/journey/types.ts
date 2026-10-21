@@ -13,11 +13,24 @@ export interface Scene {
   id: string;
   place: string;
   setup: string;
+  /** Said once the lamp is lit; identical in meaning whatever was chosen (rule 4). */
+  lit?: string;
   options: SceneOption[];
+}
+
+/** Narrative frame that joins the stops into one mission (docs/journey/story.md). */
+export interface Story {
+  title: string;
+  premise: string;
+  mission: string;
+  /** Guide lines chosen by how many lamps are lit, never by what was chosen. */
+  threads: { first: string; early: string; middle: string; late: string; return: string };
+  outro: string;
 }
 
 export interface SceneBank {
   version: string;
+  story?: Story;
   scenes: Scene[];
 }
 

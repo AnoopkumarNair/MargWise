@@ -24,24 +24,28 @@ rules; game-native instrument with the 60 verbatim items kept as optional deep c
 calibration yardstick; journey as a lamp road; guide named Jyo; audio in scope (must match the
 app); art via connectors (Canva or Hugging Face) once the hosts are reachable.
 
+## Session 2026-10-21 (second) result
+
+- Story rewritten (D-054, `docs/journey/story.md`): one mission, "The Night of Lamps". Bank is journey-v1-draft.
+- Prototype rebuilt: full-screen scene, options as swaying objects in a 2x2 grid, story threaded through, new
+  audio with no noise source (measured, D-055). Build and check scripts are in `prototypes/lamplighter/`.
+- Art is NOT done. Style scene, Jyo and traveller approved by Anu to proceed; Canva then stopped at its credit
+  quota after 7 of 83 assets (ids in `docs/art/canva-ids.csv`). Full-size export still needs
+  `export-download.canva.com` (allowed by Anu, but only takes effect in a session started after the change;
+  this session was started before it took effect). Hugging Face generation is disabled for that connector.
+
 ## Do first in the new session
 
-1. Check the download works: `curl -I https://export-download.canva.com/` (and
-   `https://www.onetcenter.org`). If refused, ask Anu to add the hosts under Network, Allowed
-   domains, then start another session.
-2. Art: read `docs/art/art-direction.md` and `docs/art/asset-list.csv` (77 assets). Generate with
-   Canva `generate-image` (pass earlier images as references for consistency), export via a
-   design (`generate-design` with `asset_ids`, `create-design-from-candidate`, `export-design`),
-   download, remove backgrounds for the objects. Start with ONE style-reference scene and the two
-   characters (Jyo, the traveller) and show Anu before doing the rest. Record every asset in
-   `assets/PROVENANCE.csv`. Delete test designs left in Canva ("Illuminated Harbour at Dusk").
-3. Rebuild the game screen: full-screen scene, the four options as tappable objects inside the
-   scene, each with an idle motion and the same "lights up" reaction, option text as a tag on the
-   object. Keep one screen, no scrolling, no per-option feedback.
-4. Keep the sound identity (D-051). Add Hindi and other-language voice and names later, with
-   native review; every translation of an option needs its own measurement check.
-5. Then: grow the stop bank (about 30), plan the calibration study, expert review of all 60
-   activities.
+1. `curl -I https://export-download.canva.com/` should now answer. If Canva credits are back, resume
+   generation of the rows missing from `docs/art/canva-ids.csv`, one or two calls at a time (bursts get
+   refused). Use `docs/art/asset-list.csv` (83 rows, built from the bank).
+2. Export through a design (`generate-design` with `asset_ids`, `create-design-from-candidate`,
+   `export-design`), download, remove backgrounds for the objects, downscale, write
+   `prototypes/lamplighter/art.json`, rebuild, run `smoke.mjs`, republish the artifact.
+3. Record every asset in `assets/PROVENANCE.csv` after the licence check (D-052). Delete test designs in Canva.
+4. Add Hindi and other-language voice and names later, with native review; each translated option needs its
+   own measurement check.
+5. Then: grow the stop bank (about 30), plan the calibration study, expert review of all 60 activities.
 
 ## Still waiting on Anu
 

@@ -88,6 +88,38 @@ describe('stop bank design (docs/journey/design.md)', () => {
         expect(text, text).not.toMatch(leak);
   });
 
+  it('tells one story: a frame, a reason and a closing line per stop, with no area or source named', () => {
+    const story = bank.story;
+    if (!story) throw new Error('bank has no story');
+    const leak =
+      /realistic|investigative|artistic|social|enterprising|conventional|riasec|holland|o\*net|interest|assess|test of|score|career/i;
+    const frame = [
+      story.title,
+      story.premise,
+      story.mission,
+      story.outro,
+      ...Object.values(story.threads),
+    ];
+    for (const text of frame) {
+      expect(text.length, text).toBeGreaterThan(10);
+      expect(text, text).not.toMatch(leak);
+    }
+    for (const s of bank.scenes) {
+      expect(s.lit?.length ?? 0, s.id).toBeGreaterThan(10);
+      expect(s.lit, s.id).not.toMatch(leak);
+      // the stakes tie each stop to the festival, so stops read as one mission
+      expect(`${s.setup} ${s.lit}`, s.id).toMatch(/lamp|festival|light|lantern/i);
+    }
+    // thread and lit lines must not depend on what was chosen: they are plain strings, one per stop or position
+    expect(Object.keys(story.threads).sort()).toEqual([
+      'early',
+      'first',
+      'late',
+      'middle',
+      'return',
+    ]);
+  });
+
   it('keeps option lengths within a stop comparable so length is not a hint', () => {
     for (const s of bank.scenes) {
       const lens = s.options.map((o) => o.text.length);
