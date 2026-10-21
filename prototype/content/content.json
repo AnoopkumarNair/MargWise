@@ -1,0 +1,1364 @@
+{
+ "fields": [
+  {
+   "id": "health",
+   "name": "Health and medicine",
+   "icon": "🩺",
+   "group": "Science",
+   "stream": "Science with Biology (PCB)",
+   "blurb": "Caring for bodies and minds, from doctors to nurses to pharmacists.",
+   "areas": [
+    "S",
+    "I"
+   ],
+   "pick": "Science with Biology (PCB) is the usual choice. Chemistry and Physics matter too.",
+   "subjects": {
+    "cbse": "English, Physics, Chemistry, Biology.",
+    "isc": "English, Physics, Chemistry, Biology.",
+    "state": "Science stream with Biology (PCB)."
+   },
+   "exams": "NEET-UG (run by NTA) is the entrance test for MBBS, BDS, BAMS, BHMS, BUMS and BVSc. Nursing, pharmacy and physiotherapy routes differ by state and institution, so check the current rules for each.",
+   "degree": "MBBS takes 5.5 years including internship. BDS takes 5 years. B.Pharm and B.Sc Nursing take 4 years. Specialising means a postgraduate degree after that.",
+   "early": "Shadow a doctor, volunteer at a clinic, or take a first-aid course.",
+   "note": "Government medical seats are extremely competitive. Nursing, pharmacy, physiotherapy and other allied health courses are strong paths too.",
+   "verify": [
+    "Nursing and physiotherapy admission routes vary and have been changing. Confirm with the state authority and the council."
+   ],
+   "sources": [
+    {
+     "id": "nta-neet",
+     "name": "NEET-UG (NTA)",
+     "url": "https://neet.nta.nic.in"
+    },
+    {
+     "id": "nmc",
+     "name": "National Medical Commission",
+     "url": "https://www.nmc.org.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "sci",
+   "name": "Science and research",
+   "icon": "🔬",
+   "group": "Science",
+   "stream": "Science (PCM or PCB)",
+   "blurb": "Finding out how nature and numbers work.",
+   "areas": [
+    "I"
+   ],
+   "pick": "Science, with Maths or Biology depending on your subject.",
+   "subjects": {
+    "cbse": "English, then three of Physics, Chemistry, Mathematics, Biology.",
+    "isc": "English, then three of Physics, Chemistry, Mathematics, Biology.",
+    "state": "Science stream. Pick the mix that matches your favourite subject."
+   },
+   "exams": "CUET-UG for BSc at central universities. IISER Aptitude Test (IAT) for IISERs. NEST for NISER and UM-DAE CEBS. Many universities run their own tests.",
+   "degree": "BSc (3 years) then MSc, or a 4-year BS, or a 5-year BS-MS. Research careers usually continue to a PhD.",
+   "early": "Join a science club or Olympiad, or try a small project of your own.",
+   "note": "",
+   "verify": [
+    "Eligibility marks and years for IAT and NEST change every cycle. Read the current brochure."
+   ],
+   "sources": [
+    {
+     "id": "cuet",
+     "name": "CUET-UG (NTA)",
+     "url": "https://cuet.nta.nic.in"
+    },
+    {
+     "id": "iiser",
+     "name": "IISER admissions",
+     "url": "https://www.iiseradmission.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "eng",
+   "name": "Engineering",
+   "icon": "⚙️",
+   "group": "Science",
+   "stream": "Science with Maths (PCM)",
+   "blurb": "Designing and building machines, structures and systems.",
+   "areas": [
+    "R",
+    "I"
+   ],
+   "pick": "Science with Maths (PCM) is the usual choice.",
+   "subjects": {
+    "cbse": "English, Physics, Chemistry, Mathematics, and one more (Computer Science, Informatics Practices or Physical Education).",
+    "isc": "English, Physics, Chemistry, Mathematics, and Computer Science if you like.",
+    "state": "Science stream with Maths (PCM)."
+   },
+   "exams": "JEE Main for NITs, IIITs and many colleges, and JEE Advanced for the IITs. State entrance tests. Private tests such as BITSAT and VITEEE.",
+   "degree": "B.Tech or BE (4 years): mechanical, civil, electrical, chemical, aerospace and more.",
+   "early": "Fix or build something. Join a robotics, design or EV club.",
+   "note": "",
+   "verify": [],
+   "sources": [
+    {
+     "id": "jee",
+     "name": "JEE Main (NTA)",
+     "url": "https://jeemain.nta.nic.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "tec",
+   "name": "Technology and data",
+   "icon": "💻",
+   "group": "Science",
+   "stream": "Science with Maths (PCM) plus Computer Science",
+   "blurb": "Writing software, finding patterns in data, keeping systems safe.",
+   "areas": [
+    "I",
+    "C"
+   ],
+   "pick": "Science with Maths (PCM) plus Computer Science is the usual choice.",
+   "subjects": {
+    "cbse": "English, Physics, Chemistry, Mathematics, and Computer Science or Informatics Practices.",
+    "isc": "English, Physics, Chemistry, Mathematics, and Computer Science.",
+    "state": "Science stream with Maths. Many states offer Computer Science as an option."
+   },
+   "exams": "JEE Main and Advanced, state entrance tests, and private tests such as BITSAT and VITEEE. CUET-UG for BSc Computer Science.",
+   "degree": "B.Tech or BE (4 years) in computer science, AI and data science, or similar. Some online BS degrees accept students from other streams.",
+   "early": "Build small projects, try coding contests, join a coding or robotics club.",
+   "note": "",
+   "verify": [],
+   "sources": [
+    {
+     "id": "jee",
+     "name": "JEE Main (NTA)",
+     "url": "https://jeemain.nta.nic.in"
+    },
+    {
+     "id": "cuet",
+     "name": "CUET-UG (NTA)",
+     "url": "https://cuet.nta.nic.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "com",
+   "name": "Business and finance",
+   "icon": "📊",
+   "group": "Commerce",
+   "stream": "Commerce (add Maths for finance and economics)",
+   "blurb": "Money, markets, people and running businesses.",
+   "areas": [
+    "E",
+    "C"
+   ],
+   "pick": "Commerce is the usual choice. Add Maths if you like finance, economics or data.",
+   "subjects": {
+    "cbse": "English, Accountancy, Business Studies, Economics, and Mathematics if you want finance or economics later.",
+    "isc": "English, Accounts, Commerce or Business Studies, Economics. Mathematics is a strong add-on.",
+    "state": "Commerce stream. Take Maths if your board offers it."
+   },
+   "exams": "CUET-UG for BCom and BBA at central universities. IPMAT for the 5-year IPM at some IIMs. NPAT, SET and other private tests. CA Foundation from ICAI: provisional registration is possible after Class 10, and the exam is taken after Class 12.",
+   "degree": "BCom, BBA or BSc Economics (3 to 4 years). CA runs alongside: Foundation, Intermediate, Final and practical training. CFA, CMA and CS are other routes. An MBA often comes later.",
+   "early": "Run the budget for a school fest or a small stall.",
+   "note": "",
+   "verify": [
+    "ICAI rules on registration timing and marks were reported differently by different sources. Check the ICAI portal."
+   ],
+   "sources": [
+    {
+     "id": "cuet",
+     "name": "CUET-UG (NTA)",
+     "url": "https://cuet.nta.nic.in"
+    },
+    {
+     "id": "icai",
+     "name": "ICAI (Chartered Accountants)",
+     "url": "https://www.icai.org"
+    },
+    {
+     "id": "ipm",
+     "name": "IIM Indore IPM",
+     "url": "https://www.iimidr.ac.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "des",
+   "name": "Design and creative arts",
+   "icon": "🎨",
+   "group": "Open to any stream",
+   "stream": "Any stream (Science with PCM for Architecture)",
+   "blurb": "Shaping how things look, feel and work.",
+   "areas": [
+    "A",
+    "R"
+   ],
+   "pick": "Any stream works for most design courses. Architecture needs Science with PCM.",
+   "subjects": {
+    "cbse": "Any stream works for most design courses. Fine Arts or Informatics Practices can help. For Architecture take Physics, Chemistry and Mathematics.",
+    "isc": "Any stream works for most design courses. Art or Computer Science can help. For Architecture take Physics, Chemistry and Mathematics.",
+    "state": "Any stream for design. For Architecture take PCM."
+   },
+   "exams": "UCEED (IITs and a few others), NID DAT, NIFT entrance, and university tests. Architecture: NATA or JEE Main Paper 2.",
+   "degree": "B.Des (4 years), B.Arch (5 years), BFA (3 to 4 years), or degrees in animation, film and fashion.",
+   "early": "Keep a sketchbook, redesign an app you use, build a small portfolio.",
+   "note": "A portfolio often matters as much as marks.",
+   "verify": [],
+   "sources": [
+    {
+     "id": "uceed",
+     "name": "UCEED (IIT Bombay)",
+     "url": "https://www.uceed.iitb.ac.in"
+    },
+    {
+     "id": "nid",
+     "name": "NID admissions",
+     "url": "https://admissions.nid.edu"
+    },
+    {
+     "id": "nift",
+     "name": "NIFT admissions",
+     "url": "https://www.nift.ac.in"
+    },
+    {
+     "id": "nata",
+     "name": "NATA / Council of Architecture",
+     "url": "https://www.nata.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "psy",
+   "name": "Understanding people",
+   "icon": "🧠",
+   "group": "Humanities",
+   "stream": "Any stream (Humanities with Psychology is common)",
+   "blurb": "Helping people think, feel and grow.",
+   "areas": [
+    "S",
+    "I"
+   ],
+   "pick": "Any stream works here. Humanities with Psychology is the most common choice.",
+   "subjects": {
+    "cbse": "English, Psychology, and two or three of Biology, Sociology, Political Science, Economics.",
+    "isc": "English, Psychology, and two or three of Biology, Sociology, Political Science, Economics, Computer Science.",
+    "state": "Humanities or Science (Biology). Psychology is offered in many state boards."
+   },
+   "exams": "CUET-UG (Psychology) for central universities. Many private universities run their own tests.",
+   "degree": "BA or BSc Psychology (3 years), then MA or MSc (2 years). Clinical psychologists then need an RCI-recognised M.Phil. School counsellors often add a B.Ed.",
+   "early": "Volunteer with a school counsellor, a clinic or an NGO.",
+   "note": "",
+   "verify": [
+    "Check current RCI rules for becoming a licensed clinical psychologist."
+   ],
+   "sources": [
+    {
+     "id": "cuet",
+     "name": "CUET-UG (NTA)",
+     "url": "https://cuet.nta.nic.in"
+    },
+    {
+     "id": "rci",
+     "name": "Rehabilitation Council of India",
+     "url": "https://rehabcouncil.nic.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "law",
+   "name": "Law and justice",
+   "icon": "⚖️",
+   "group": "Humanities",
+   "stream": "Any stream (Humanities is common)",
+   "blurb": "Arguing, advising and deciding fairly.",
+   "areas": [
+    "E",
+    "I",
+    "S"
+   ],
+   "pick": "Any stream works. Humanities is the most common choice.",
+   "subjects": {
+    "cbse": "English plus subjects that build reading and argument: Political Science, History, Legal Studies, Economics.",
+    "isc": "English plus Political Science, History, Legal Studies, Economics or Psychology.",
+    "state": "Any stream. Humanities is common."
+   },
+   "exams": "CLAT for National Law Universities, AILET for NLU Delhi, and CUET and university tests for other law schools.",
+   "degree": "5-year integrated BA LLB, BBA LLB or BCom LLB, or a 3-year LLB after any degree. Judicial services: the state judicial services exam after LLB.",
+   "early": "Join debate or Model UN. Read a news story and argue both sides.",
+   "note": "",
+   "verify": [
+    "Some states ask for years of practice before the judicial services exam. Check your state."
+   ],
+   "sources": [
+    {
+     "id": "clat",
+     "name": "CLAT (Consortium of NLUs)",
+     "url": "https://consortiumofnlus.ac.in"
+    },
+    {
+     "id": "ailet",
+     "name": "AILET (NLU Delhi)",
+     "url": "https://nludelhi.ac.in"
+    },
+    {
+     "id": "bci",
+     "name": "Bar Council of India",
+     "url": "https://www.barcouncilofindia.org"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "media",
+   "name": "Media, writing and teaching",
+   "icon": "✍️",
+   "group": "Humanities",
+   "stream": "Humanities (any stream is possible)",
+   "blurb": "Telling stories, explaining ideas and teaching others.",
+   "areas": [
+    "A",
+    "S"
+   ],
+   "pick": "Humanities is the usual choice, but any stream can lead here.",
+   "subjects": {
+    "cbse": "English, plus subjects you enjoy reading and writing about: English Literature, History, Political Science, Psychology, or a language.",
+    "isc": "English Literature, plus History, Political Science, Psychology, Sociology or a language.",
+    "state": "Humanities. Choose languages and social science subjects you enjoy."
+   },
+   "exams": "CUET-UG for BA and journalism courses at central universities. Media schools such as IIMC run their own tests, mostly at postgraduate level. NCET for the 4-year ITEP teacher degree after Class 12. Teachers also pass TET or CTET.",
+   "degree": "BA or BJMC (3 years), then MA. B.Ed (2 years after a degree) or the 4-year ITEP.",
+   "early": "Write for the school magazine, start a small blog or podcast, or tutor younger students.",
+   "note": "",
+   "verify": [
+    "Teacher-training rules have been changing. Check the current NCTE notice."
+   ],
+   "sources": [
+    {
+     "id": "cuet",
+     "name": "CUET-UG (NTA)",
+     "url": "https://cuet.nta.nic.in"
+    },
+    {
+     "id": "ncet",
+     "name": "NCET / ITEP (NTA)",
+     "url": "https://exams.nta.nic.in/ncet"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "pub",
+   "name": "Public service and defence",
+   "icon": "🏛️",
+   "group": "Humanities",
+   "stream": "Any stream",
+   "blurb": "Running public systems and keeping people safe.",
+   "areas": [
+    "E",
+    "C",
+    "R"
+   ],
+   "pick": "Any stream works. NDA after Class 12 has its own subject rules.",
+   "subjects": {
+    "cbse": "Any stream. Political Science, History, Geography and Economics help for civil services.",
+    "isc": "Any stream. Political Science, History, Geography and Economics help for civil services.",
+    "state": "Any stream."
+   },
+   "exams": "UPSC Civil Services after any graduation degree. State public service exams. NDA (UPSC) right after Class 12, and CDS after graduation. State police and SSC exams.",
+   "degree": "Any degree for civil services. Policy and planning paths: BA in Political Science, Economics or Geography, then MA or MPP. Urban planning has its own degree.",
+   "early": "Follow current affairs, join NCC or Model UN, or help with a local civic project.",
+   "note": "",
+   "verify": [
+    "NDA: sources disagreed on whether the Navy and Air Force wings need Chemistry as well as Physics and Maths. Read the UPSC notice."
+   ],
+   "sources": [
+    {
+     "id": "upsc",
+     "name": "UPSC",
+     "url": "https://upsc.gov.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "hos",
+   "name": "Travel, hospitality and aviation",
+   "icon": "✈️",
+   "group": "Open to any stream",
+   "stream": "Any stream (Physics and Maths for pilot training)",
+   "blurb": "Flying, cooking, hosting and moving people around the world.",
+   "areas": [
+    "R",
+    "E",
+    "C"
+   ],
+   "pick": "Most routes accept any stream. Pilot training currently asks for Physics and Maths.",
+   "subjects": {
+    "cbse": "Any stream for hospitality and cabin crew. For pilot training, Physics and Mathematics in Class 12.",
+    "isc": "Any stream for hospitality and cabin crew. For pilot training, Physics and Mathematics in Class 12.",
+    "state": "Any stream. For pilot training, Physics and Maths."
+   },
+   "exams": "NCHM JEE for hospitality degrees at the Institutes of Hotel Management. Airlines and flying schools run their own selection. Pilot licence (DGCA): Class 12 with Physics and Maths and a Class 1 medical.",
+   "degree": "BSc Hospitality (3 years), culinary diplomas and degrees, or a commercial pilot licence through a flying school.",
+   "early": "Cook for family events, plan a trip, or try a flying-club introductory session.",
+   "note": "",
+   "verify": [
+    "A 2025 report said DGCA proposed relaxing the Physics and Maths rule for pilots. Check the current rule before deciding."
+   ],
+   "sources": [
+    {
+     "id": "nchm",
+     "name": "NCHM JEE (hospitality)",
+     "url": "https://nchm.nic.in"
+    },
+    {
+     "id": "dgca",
+     "name": "DGCA",
+     "url": "https://dgca.gov.in"
+    },
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  },
+  {
+   "id": "spo",
+   "name": "Sports and fitness",
+   "icon": "🏅",
+   "group": "Open to any stream",
+   "stream": "Any stream",
+   "blurb": "Competing, coaching and keeping others fit.",
+   "areas": [
+    "R",
+    "E",
+    "S"
+   ],
+   "pick": "Any stream works. Keep your studies going alongside training.",
+   "subjects": {
+    "cbse": "Any stream. Physical Education is offered as an elective.",
+    "isc": "Any stream. Physical Education is offered as an elective.",
+    "state": "Any stream. Physical Education if offered."
+   },
+   "exams": "Trials and sports-quota admissions. Entrance tests at sports universities and colleges. Coaching certificates from national sports institutes.",
+   "degree": "BSc Sports Science or BPEd (3 to 4 years), then coaching certificates. Many athletes study alongside training.",
+   "early": "Compete at school and district level, and train a younger team.",
+   "note": "Only a few become full-time athletes. Coaching, sports science and fitness careers are much more common.",
+   "verify": [
+    "Course names and entrance tests vary widely between institutions. Confirm with the college."
+   ],
+   "sources": [
+    {
+     "id": "onet",
+     "name": "O*NET OnLine (interest profiles)",
+     "url": "https://www.onetonline.org"
+    }
+   ]
+  }
+ ],
+ "careers": [
+  {
+   "id": "doc-1",
+   "title": "Doctor (Physician)",
+   "field": "health",
+   "soc": "29-1215.00",
+   "values": {
+    "S": 87,
+    "I": 85,
+    "C": 49,
+    "R": 46,
+    "E": 22,
+    "A": 8
+   },
+   "line": "Diagnoses and treats illness, from everyday problems to emergencies."
+  },
+  {
+   "id": "doc-2",
+   "title": "Dentist",
+   "field": "health",
+   "soc": "29-1021.00",
+   "values": {
+    "I": 75,
+    "R": 71,
+    "S": 57,
+    "C": 45,
+    "E": 17,
+    "A": 3
+   },
+   "line": "Looks after teeth and gums, and fixes problems early."
+  },
+  {
+   "id": "doc-3",
+   "title": "Nurse",
+   "field": "health",
+   "soc": "29-1141.00",
+   "values": {
+    "S": 76,
+    "C": 63,
+    "I": 62,
+    "R": 41,
+    "E": 23,
+    "A": 6
+   },
+   "line": "Cares for patients day to day, alongside doctors."
+  },
+  {
+   "id": "doc-4",
+   "title": "Pharmacist",
+   "field": "health",
+   "soc": "29-1051.00",
+   "values": {
+    "I": 78,
+    "S": 65,
+    "C": 59,
+    "R": 30,
+    "E": 27,
+    "A": 8
+   },
+   "line": "Makes sure medicines are right and safe, and advises patients."
+  },
+  {
+   "id": "doc-5",
+   "title": "Physiotherapist",
+   "field": "health",
+   "soc": "29-1123.00",
+   "values": {
+    "S": 82,
+    "I": 65,
+    "R": 56,
+    "C": 35,
+    "E": 25,
+    "A": 20
+   },
+   "line": "Helps people recover movement after injury or illness."
+  },
+  {
+   "id": "doc-6",
+   "title": "Veterinarian",
+   "field": "health",
+   "soc": "29-1131.00",
+   "values": {
+    "I": 83,
+    "R": 83,
+    "C": 41,
+    "S": 41,
+    "E": 12,
+    "A": 0
+   },
+   "line": "Treats animals, from pets to farm animals."
+  },
+  {
+   "id": "sci-1",
+   "title": "Physicist",
+   "field": "sci",
+   "soc": "19-2012.00",
+   "values": {
+    "I": 100,
+    "R": 66,
+    "C": 63,
+    "A": 29,
+    "S": 19,
+    "E": 13
+   },
+   "line": "Studies how matter, energy and the universe work."
+  },
+  {
+   "id": "sci-2",
+   "title": "Biologist",
+   "field": "sci",
+   "soc": "19-1020.01",
+   "values": {
+    "I": 100,
+    "C": 58,
+    "R": 52,
+    "E": 29,
+    "S": 27,
+    "A": 23
+   },
+   "line": "Studies living things, from cells to ecosystems."
+  },
+  {
+   "id": "sci-3",
+   "title": "Chemist",
+   "field": "sci",
+   "soc": "19-2031.00",
+   "values": {
+    "I": 95,
+    "R": 78,
+    "C": 64,
+    "E": 10,
+    "A": 9,
+    "S": 2
+   },
+   "line": "Studies substances and what they do, to make new materials and medicines."
+  },
+  {
+   "id": "sci-4",
+   "title": "Environmental Scientist",
+   "field": "sci",
+   "soc": "19-2041.00",
+   "values": {
+    "I": 100,
+    "R": 63,
+    "C": 55,
+    "S": 29,
+    "E": 26,
+    "A": 15
+   },
+   "line": "Works out how to protect air, water and land."
+  },
+  {
+   "id": "sci-5",
+   "title": "Statistician",
+   "field": "sci",
+   "soc": "15-2041.00",
+   "values": {
+    "I": 93,
+    "C": 84,
+    "R": 19,
+    "E": 14,
+    "A": 13,
+    "S": 12
+   },
+   "line": "Uses numbers to find the truth in messy data."
+  },
+  {
+   "id": "sci-6",
+   "title": "Food Scientist",
+   "field": "sci",
+   "soc": "19-1012.00",
+   "values": {
+    "I": 79,
+    "R": 68,
+    "C": 49,
+    "E": 26,
+    "A": 24,
+    "S": 19
+   },
+   "line": "Makes food safer, tastier and longer lasting."
+  },
+  {
+   "id": "eng-1",
+   "title": "Mechanical Engineer",
+   "field": "eng",
+   "soc": "17-2141.00",
+   "values": {
+    "R": 90,
+    "I": 69,
+    "C": 64,
+    "A": 17,
+    "E": 16,
+    "S": 4
+   },
+   "line": "Designs machines and engines."
+  },
+  {
+   "id": "eng-2",
+   "title": "Civil Engineer",
+   "field": "eng",
+   "soc": "17-2051.00",
+   "values": {
+    "R": 91,
+    "I": 69,
+    "C": 60,
+    "E": 28,
+    "A": 20,
+    "S": 12
+   },
+   "line": "Plans and builds roads, bridges and buildings."
+  },
+  {
+   "id": "tec-3",
+   "title": "Electronics and EV Engineer",
+   "field": "eng",
+   "soc": "17-2072.00",
+   "values": {
+    "R": 87,
+    "I": 80,
+    "C": 61,
+    "A": 17,
+    "E": 10,
+    "S": 10
+   },
+   "line": "Designs circuits, batteries and controls inside devices and electric vehicles."
+  },
+  {
+   "id": "eng-4",
+   "title": "Aerospace Engineer",
+   "field": "eng",
+   "soc": "17-2011.00",
+   "values": {
+    "I": 84,
+    "R": 78,
+    "C": 57,
+    "E": 25,
+    "A": 23,
+    "S": 4
+   },
+   "line": "Designs aircraft, rockets and satellites."
+  },
+  {
+   "id": "eng-5",
+   "title": "Chemical Engineer",
+   "field": "eng",
+   "soc": "17-2041.00",
+   "values": {
+    "R": 88,
+    "I": 79,
+    "C": 59,
+    "E": 14,
+    "A": 13,
+    "S": 0
+   },
+   "line": "Designs how to make fuels, medicines and materials at large scale."
+  },
+  {
+   "id": "tec-1",
+   "title": "AI and Software Engineer",
+   "field": "tec",
+   "soc": "15-1252.00",
+   "values": {
+    "I": 84,
+    "C": 77,
+    "R": 44,
+    "A": 23,
+    "E": 15,
+    "S": 14
+   },
+   "line": "Builds the software and AI tools that apps and companies run on."
+  },
+  {
+   "id": "tec-2",
+   "title": "Data Scientist",
+   "field": "tec",
+   "soc": "15-2051.00",
+   "values": {
+    "I": 100,
+    "C": 73,
+    "A": 27,
+    "R": 20,
+    "E": 12,
+    "S": 11
+   },
+   "line": "Finds patterns in large amounts of data to answer questions and predict what comes next."
+  },
+  {
+   "id": "tec-4",
+   "title": "Cybersecurity Analyst",
+   "field": "tec",
+   "soc": "15-1212.00",
+   "values": {
+    "C": 85,
+    "I": 73,
+    "R": 43,
+    "E": 31,
+    "S": 19,
+    "A": 6
+   },
+   "line": "Finds weaknesses in systems and protects them from attacks."
+  },
+  {
+   "id": "com-1",
+   "title": "Chartered Accountant",
+   "field": "com",
+   "soc": "13-2011.00",
+   "values": {
+    "C": 100,
+    "E": 48,
+    "I": 43,
+    "S": 19,
+    "R": 2,
+    "A": 1
+   },
+   "line": "Keeps accounts honest: audit, tax and financial advice for businesses."
+  },
+  {
+   "id": "com-2",
+   "title": "Business Manager or Founder",
+   "field": "com",
+   "soc": "11-1021.00",
+   "values": {
+    "E": 100,
+    "C": 72,
+    "S": 40,
+    "I": 23,
+    "R": 20,
+    "A": 5
+   },
+   "line": "Runs a team or starts a business: plans, people and money."
+  },
+  {
+   "id": "com-3",
+   "title": "Financial Analyst",
+   "field": "com",
+   "soc": "13-2051.00",
+   "values": {
+    "C": 76,
+    "E": 68,
+    "I": 68,
+    "S": 21,
+    "A": 13,
+    "R": 0
+   },
+   "line": "Studies companies and markets to guide money decisions."
+  },
+  {
+   "id": "com-4",
+   "title": "Economist",
+   "field": "com",
+   "soc": "19-3011.00",
+   "values": {
+    "I": 100,
+    "C": 59,
+    "E": 49,
+    "A": 24,
+    "S": 23,
+    "R": 6
+   },
+   "line": "Studies how money, jobs and prices work, and advises on policy."
+  },
+  {
+   "id": "com-5",
+   "title": "Marketing Manager",
+   "field": "com",
+   "soc": "11-2021.00",
+   "values": {
+    "E": 100,
+    "C": 62,
+    "I": 32,
+    "S": 30,
+    "A": 24,
+    "R": 0
+   },
+   "line": "Decides how a product reaches people and what to say to them."
+  },
+  {
+   "id": "com-6",
+   "title": "HR Specialist",
+   "field": "com",
+   "soc": "13-1071.00",
+   "values": {
+    "E": 78,
+    "C": 75,
+    "S": 46,
+    "I": 25,
+    "A": 6,
+    "R": 1
+   },
+   "line": "Hires, trains and looks after the people in a company."
+  },
+  {
+   "id": "des-1",
+   "title": "UX and Product Designer",
+   "field": "des",
+   "soc": "15-1255.00",
+   "values": {
+    "I": 65,
+    "A": 58,
+    "C": 57,
+    "E": 36,
+    "R": 27,
+    "S": 20
+   },
+   "line": "Shapes how apps and products look and feel to use."
+  },
+  {
+   "id": "des-2",
+   "title": "Architect",
+   "field": "des",
+   "soc": "17-1011.00",
+   "values": {
+    "R": 65,
+    "C": 57,
+    "A": 52,
+    "I": 48,
+    "E": 44,
+    "S": 26
+   },
+   "line": "Designs buildings and spaces that are safe, useful and beautiful."
+  },
+  {
+   "id": "des-3",
+   "title": "Graphic Designer",
+   "field": "des",
+   "soc": "27-1024.00",
+   "values": {
+    "A": 100,
+    "C": 49,
+    "E": 41,
+    "R": 40,
+    "I": 31,
+    "S": 19
+   },
+   "line": "Makes visuals that communicate: logos, posters, packaging."
+  },
+  {
+   "id": "des-4",
+   "title": "Fashion Designer",
+   "field": "des",
+   "soc": "27-1022.00",
+   "values": {
+    "A": 100,
+    "R": 56,
+    "E": 49,
+    "C": 32,
+    "S": 23,
+    "I": 20
+   },
+   "line": "Designs clothes and accessories."
+  },
+  {
+   "id": "des-5",
+   "title": "Animator and VFX Artist",
+   "field": "des",
+   "soc": "27-1014.00",
+   "values": {
+    "A": 100,
+    "R": 45,
+    "C": 36,
+    "I": 30,
+    "E": 27,
+    "S": 20
+   },
+   "line": "Makes characters and worlds move, for films and games."
+  },
+  {
+   "id": "des-6",
+   "title": "Film and Video Editor",
+   "field": "des",
+   "soc": "27-4032.00",
+   "values": {
+    "A": 77,
+    "C": 46,
+    "R": 36,
+    "E": 35,
+    "S": 16,
+    "I": 15
+   },
+   "line": "Cuts footage into stories that people watch."
+  },
+  {
+   "id": "des-7",
+   "title": "Interior Designer",
+   "field": "des",
+   "soc": "27-1025.00",
+   "values": {
+    "A": 76,
+    "R": 52,
+    "C": 47,
+    "E": 45,
+    "I": 35,
+    "S": 28
+   },
+   "line": "Plans rooms and interiors that feel right to live in."
+  },
+  {
+   "id": "psy-1",
+   "title": "Clinical Psychologist",
+   "field": "psy",
+   "soc": "19-3033.00",
+   "values": {
+    "S": 93,
+    "I": 76,
+    "C": 42,
+    "A": 34,
+    "E": 28,
+    "R": 1
+   },
+   "line": "Helps people with serious mental-health conditions, through assessment and therapy."
+  },
+  {
+   "id": "psy-2",
+   "title": "Counselling Psychologist",
+   "field": "psy",
+   "soc": "19-3033.00",
+   "values": {
+    "S": 93,
+    "I": 76,
+    "C": 42,
+    "A": 34,
+    "E": 28,
+    "R": 1
+   },
+   "line": "Talks with people about stress, relationships and life choices."
+  },
+  {
+   "id": "psy-3",
+   "title": "School Counsellor",
+   "field": "psy",
+   "soc": "21-1012.00",
+   "values": {
+    "S": 100,
+    "C": 52,
+    "E": 49,
+    "I": 38,
+    "A": 36,
+    "R": 0
+   },
+   "line": "Supports students with studies, feelings and career choices."
+  },
+  {
+   "id": "psy-4",
+   "title": "Organisational Psychologist",
+   "field": "psy",
+   "soc": "19-3032.00",
+   "values": {
+    "I": 72,
+    "E": 62,
+    "C": 55,
+    "S": 50,
+    "A": 36,
+    "R": 1
+   },
+   "line": "Makes workplaces fairer, healthier and more effective."
+  },
+  {
+   "id": "psy-5",
+   "title": "UX Researcher",
+   "field": "psy",
+   "soc": "17-2112.01",
+   "values": {
+    "I": 87,
+    "R": 59,
+    "C": 57,
+    "A": 28,
+    "E": 27,
+    "S": 19
+   },
+   "line": "Finds out how people use apps and products so designers can fix what frustrates them."
+  },
+  {
+   "id": "law-1",
+   "title": "Corporate Lawyer",
+   "field": "law",
+   "soc": "23-1011.00",
+   "values": {
+    "E": 75,
+    "C": 60,
+    "I": 56,
+    "S": 41,
+    "A": 23,
+    "R": 2
+   },
+   "line": "Advises companies on contracts, deals and rules."
+  },
+  {
+   "id": "law-2",
+   "title": "Judge (Judicial Services)",
+   "field": "law",
+   "soc": "23-1023.00",
+   "values": {
+    "E": 71,
+    "C": 52,
+    "S": 49,
+    "I": 47,
+    "R": 22,
+    "A": 20
+   },
+   "line": "Hears cases and decides them fairly, after the state judicial exams."
+  },
+  {
+   "id": "med-1",
+   "title": "Journalist",
+   "field": "media",
+   "soc": "27-3023.00",
+   "values": {
+    "A": 68,
+    "I": 53,
+    "E": 49,
+    "C": 44,
+    "S": 30,
+    "R": 8
+   },
+   "line": "Finds out what is happening and reports it clearly."
+  },
+  {
+   "id": "med-2",
+   "title": "Writer or Author",
+   "field": "media",
+   "soc": "27-3043.00",
+   "values": {
+    "A": 95,
+    "E": 63,
+    "C": 39,
+    "I": 38,
+    "S": 31,
+    "R": 0
+   },
+   "line": "Writes books, articles and scripts."
+  },
+  {
+   "id": "med-3",
+   "title": "PR and Communications Specialist",
+   "field": "media",
+   "soc": "27-3031.00",
+   "values": {
+    "E": 80,
+    "A": 61,
+    "S": 49,
+    "C": 41,
+    "I": 29,
+    "R": 0
+   },
+   "line": "Shapes how organisations talk to the public."
+  },
+  {
+   "id": "med-4",
+   "title": "School Teacher",
+   "field": "media",
+   "soc": "25-2031.00",
+   "values": {
+    "S": 100,
+    "A": 46,
+    "C": 44,
+    "I": 37,
+    "E": 32,
+    "R": 29
+   },
+   "line": "Helps students learn, in school or college."
+  },
+  {
+   "id": "med-5",
+   "title": "Social Worker",
+   "field": "media",
+   "soc": "21-1021.00",
+   "values": {
+    "S": 98,
+    "C": 43,
+    "I": 39,
+    "A": 32,
+    "E": 32,
+    "R": 12
+   },
+   "line": "Supports families and communities through hard times."
+  },
+  {
+   "id": "med-6",
+   "title": "Translator or Interpreter",
+   "field": "media",
+   "soc": "27-3091.00",
+   "values": {
+    "C": 63,
+    "A": 55,
+    "S": 41,
+    "I": 37,
+    "E": 15,
+    "R": 15
+   },
+   "line": "Moves meaning between languages, in speech and in writing."
+  },
+  {
+   "id": "pub-1",
+   "title": "Policy Analyst (Political Scientist)",
+   "field": "pub",
+   "soc": "19-3094.00",
+   "values": {
+    "I": 95,
+    "A": 48,
+    "E": 44,
+    "C": 42,
+    "S": 40,
+    "R": 0
+   },
+   "line": "Studies how government decisions work and advises on better ones."
+  },
+  {
+   "id": "pub-2",
+   "title": "Urban Planner",
+   "field": "pub",
+   "soc": "19-3051.00",
+   "values": {
+    "I": 72,
+    "E": 58,
+    "C": 49,
+    "R": 37,
+    "A": 34,
+    "S": 34
+   },
+   "line": "Plans how towns and cities grow."
+  },
+  {
+   "id": "pub-3",
+   "title": "Police Officer",
+   "field": "pub",
+   "soc": "33-3051.00",
+   "values": {
+    "R": 73,
+    "C": 56,
+    "E": 51,
+    "S": 41,
+    "I": 29,
+    "A": 1
+   },
+   "line": "Keeps people safe and enforces the law."
+  },
+  {
+   "id": "pub-4",
+   "title": "Disaster Management Officer",
+   "field": "pub",
+   "soc": "11-9161.00",
+   "values": {
+    "E": 68,
+    "C": 62,
+    "I": 58,
+    "S": 50,
+    "R": 42,
+    "A": 14
+   },
+   "line": "Plans for and leads the response to floods, fires and other emergencies."
+  },
+  {
+   "id": "hos-1",
+   "title": "Airline Pilot",
+   "field": "hos",
+   "soc": "53-2011.00",
+   "values": {
+    "C": 62,
+    "R": 62,
+    "E": 47,
+    "I": 36,
+    "S": 25,
+    "A": 7
+   },
+   "line": "Flies passenger and cargo aircraft."
+  },
+  {
+   "id": "hos-2",
+   "title": "Chef",
+   "field": "hos",
+   "soc": "35-1011.00",
+   "values": {
+    "E": 69,
+    "R": 64,
+    "C": 56,
+    "S": 33,
+    "A": 29,
+    "I": 11
+   },
+   "line": "Creates food, leads a kitchen team."
+  },
+  {
+   "id": "hos-3",
+   "title": "Hotel Manager",
+   "field": "hos",
+   "soc": "11-9081.00",
+   "values": {
+    "E": 87,
+    "C": 70,
+    "S": 55,
+    "R": 28,
+    "A": 7,
+    "I": 2
+   },
+   "line": "Runs a hotel: guests, staff and money."
+  },
+  {
+   "id": "hos-4",
+   "title": "Cabin Crew",
+   "field": "hos",
+   "soc": "53-2031.00",
+   "values": {
+    "C": 57,
+    "S": 53,
+    "R": 51,
+    "E": 44,
+    "I": 17,
+    "A": 5
+   },
+   "line": "Keeps passengers safe and comfortable in the air."
+  },
+  {
+   "id": "spo-1",
+   "title": "Professional Athlete",
+   "field": "spo",
+   "soc": "27-2021.00",
+   "values": {
+    "R": 70,
+    "E": 59,
+    "S": 55,
+    "C": 34,
+    "A": 19,
+    "I": 7
+   },
+   "line": "Trains and competes at the highest level."
+  },
+  {
+   "id": "spo-2",
+   "title": "Coach or Sports Trainer",
+   "field": "spo",
+   "soc": "27-2022.00",
+   "values": {
+    "S": 72,
+    "E": 69,
+    "R": 54,
+    "C": 41,
+    "A": 24,
+    "I": 19
+   },
+   "line": "Trains athletes and teams, and builds their skills."
+  },
+  {
+   "id": "spo-3",
+   "title": "Fitness Trainer",
+   "field": "spo",
+   "soc": "39-9031.00",
+   "values": {
+    "S": 77,
+    "R": 71,
+    "E": 42,
+    "C": 33,
+    "I": 29,
+    "A": 23
+   },
+   "line": "Helps people get fitter and healthier."
+  }
+ ],
+ "checked": "2026-10-21",
+ "status": "DRAFT for counsellor review. Exam and admission facts were gathered from secondary sources and need checking against the official sites."
+}
