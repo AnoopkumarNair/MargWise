@@ -42,8 +42,9 @@
 
   /* ----- full-screen scene layer (stop and welcome) ----- */
   .bg { position: absolute; inset: 0; overflow: hidden; background: var(--sky-top); }
-  .bg .layer { position: absolute; inset: -3%; opacity: 0; transition: opacity .9s ease; }
-  .bg .layer.on { opacity: 1; animation: drift 26s ease-in-out infinite alternate; }
+  .bg .layer { position: absolute; inset: -3%; opacity: 0; will-change: transform, opacity; }
+  .bg .layer.on { opacity: 1; }
+  .bg .layer > img, .bg .layer > svg { animation: drift 26s ease-in-out infinite alternate; }
   .bg .layer svg, .bg .layer img { width: 100%; height: 100%; display: block; object-fit: cover; }
   @keyframes drift { from { transform: scale(1.0) translate(0,0); } to { transform: scale(1.06) translate(-1.2%, -.8%); } }
   .bg .shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(10,12,30,.5) 0%, rgba(10,12,30,.05) 20%, rgba(10,12,30,0) 40%, rgba(10,12,30,.12) 62%, rgba(10,12,30,.6) 100%); }
@@ -61,7 +62,7 @@
 
   /* ----- HUD ----- */
   .hud { position: absolute; z-index: 6; left: 0; right: 0; top: 0; padding: calc(var(--safe-top) + 8px) 12px 6px; display: grid; grid-template-columns: 44px 1fr auto 44px; align-items: center; gap: 8px; min-height: 52px; }
-  .iconbtn { width: 44px; height: 44px; border-radius: 14px; border: 2px solid rgba(255,243,214,.4); background: rgba(14,16,40,.55); backdrop-filter: blur(4px); display: grid; place-items: center; }
+  .iconbtn { width: 44px; height: 44px; border-radius: 14px; border: 2px solid rgba(255,243,214,.4); background: rgba(14,16,40,.55); display: grid; place-items: center; }
   .iconbtn[aria-pressed="true"] { background: rgba(255,207,107,.3); border-color: var(--glow); }
   .iconbtn svg { width: 20px; height: 20px; }
   .iconbtn .slash { opacity: 0; } .iconbtn[aria-pressed="false"] .slash { opacity: 1; } .iconbtn[aria-pressed="false"] .wave { opacity: .35; }
@@ -99,10 +100,10 @@
   @keyframes sway { 0%,100% { transform: rotate(-1.4deg) translateY(0); } 50% { transform: rotate(1.4deg) translateY(-3px); } }
   @keyframes objin { from { opacity: 0; translate: 0 22px; scale: .92; } to { opacity: 1; translate: 0 0; scale: 1; } }
   .obj::before { content: ''; position: absolute; left: 50%; top: -10px; width: 2px; height: 12px; background: rgba(255,243,214,.45); transform: translateX(-50%); }
-  .obj .art { position: relative; flex: 1; min-height: 0; border-radius: 22px 22px 14px 14px; overflow: hidden; border: 2px solid rgba(255,243,214,.5); background: radial-gradient(circle at 50% 62%, rgba(255,214,120,.42), rgba(70,50,110,.22) 62%, rgba(24,22,60,.38)); backdrop-filter: blur(1.5px); box-shadow: 0 8px 20px rgba(0,0,0,.4), inset 0 0 22px rgba(255,200,100,.2); transition: box-shadow .35s, border-color .35s, transform .15s; display: grid; place-items: center; }
+  .obj .art { position: relative; flex: 1; min-height: 0; border-radius: 22px 22px 14px 14px; overflow: hidden; border: 2px solid rgba(255,243,214,.5); background: radial-gradient(circle at 50% 62%, rgba(255,214,120,.42), rgba(70,50,110,.22) 62%, rgba(24,22,60,.38)); box-shadow: 0 8px 20px rgba(0,0,0,.4), inset 0 0 22px rgba(255,200,100,.2); transition: box-shadow .35s, border-color .35s, transform .15s; display: grid; place-items: center; }
   .obj .art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .obj .art svg.fallback { width: 52%; max-width: 92px; height: auto; filter: drop-shadow(0 0 10px rgba(255,200,90,.7)); }
-  .obj .tag { position: relative; margin: -12px 6px 0; background: var(--cream); color: var(--ink); border-radius: 14px; padding: 7px 9px 8px; font-weight: 800; font-size: 14.5px; line-height: 1.22; text-align: center; box-shadow: 0 4px 0 #b9955a, 0 8px 14px rgba(0,0,0,.3); display: grid; place-items: center; min-height: 3.1em; }
+  .obj .tag { position: relative; margin: -12px 6px 0; background: var(--cream); color: var(--ink); border-radius: 14px; padding: 7px 9px 8px; font-weight: 800; font-size: 14.5px; line-height: 1.22; text-align: center; box-shadow: 0 4px 0 #b9955a, 0 8px 14px rgba(0,0,0,.3); display: grid; place-items: center; min-height: 3.75em; }
   .obj:active .art { transform: scale(.97); }
   .obj .fl { position: absolute; right: 8px; top: 8px; display: flex; gap: 1px; }
   .obj .fl svg { width: 22px; height: 28px; animation: ignite .45s cubic-bezier(.2,1.6,.4,1) both, wave 1.1s ease-in-out .5s infinite; transform-origin: 50% 90%; filter: drop-shadow(0 0 6px rgba(255,190,70,.9)); }
@@ -111,6 +112,18 @@
   /* the same "lights up" reaction for every object, whatever it is (rule 4) */
   .obj[data-n="1"] .art, .obj[data-n="2"] .art { border-color: var(--glow); box-shadow: 0 0 0 2px var(--glow-deep), 0 0 34px 6px rgba(255,200,90,.6), inset 0 0 38px rgba(255,210,110,.55); }
   .obj[data-n="1"] .tag, .obj[data-n="2"] .tag { background: #ffe9a8; box-shadow: 0 4px 0 #d89a2b, 0 0 14px rgba(255,200,90,.6); }
+  /* ----- choreography: a lantern walk between places ----- */
+  .fore { position: absolute; left: -20%; right: -20%; bottom: 0; height: 24%; pointer-events: none; z-index: 1; will-change: transform;
+    background: radial-gradient(60% 90% at 12% 100%, #070a1f 60%, transparent 61%), radial-gradient(50% 70% at 46% 100%, #0a0e28 60%, transparent 61%), radial-gradient(55% 85% at 82% 100%, #070a1f 60%, transparent 61%), linear-gradient(0deg, #070a1f 0 18%, transparent 100%); }
+  #bloom { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; background: radial-gradient(circle at 50% 58%, rgba(255,236,160,.95) 0%, rgba(255,196,90,.5) 28%, rgba(255,170,60,0) 62%); }
+  .objs.leaving .obj { animation: objout .26s ease-in both !important; animation-delay: calc(var(--i) * 35ms) !important; }
+  @keyframes objout { to { opacity: 0; translate: 0 18px; scale: .93; } }
+  #jyoLive { position: absolute; z-index: 5; left: 0; top: 0; width: 40px; height: 40px; pointer-events: none; will-change: transform; }
+  #jyoLive .in { width: 100%; height: 100%; animation: jbob 2.2s ease-in-out infinite; transform-origin: 50% 60%; }
+  #jyoLive .in svg, #jyoLive .in img { width: 100%; height: 100%; display: block; overflow: visible; }
+  #jyoLive.droop .in { animation: none; transform: translateY(5px) scale(.85); opacity: .7; transition: transform .3s, opacity .3s; }
+  @keyframes jbob { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-6px) rotate(4deg); } }
+  .drop { position: absolute; z-index: 7; left: 0; top: 0; width: 10px; height: 14px; margin: -7px 0 0 -5px; border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%; background: var(--glow); box-shadow: 0 0 10px 3px rgba(255,207,107,.8); pointer-events: none; }
   .spark { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--glow); box-shadow: 0 0 6px var(--glow-deep); pointer-events: none; z-index: 3; }
   .actions { position: relative; z-index: 2; display: grid; gap: 6px; }
   .go { width: 100%; border: 0; border-radius: 999px; background: linear-gradient(180deg, #ffd978, var(--glow-deep)); color: var(--ink); font-weight: 800; font-size: 18px; padding: 13px 20px; min-height: 52px; box-shadow: 0 5px 0 #a8661d, 0 10px 22px rgba(242,160,61,.35); transition: transform .1s, box-shadow .1s; font-family: var(--body); }
@@ -194,7 +207,7 @@
 <div id="app">
   <div class="hud" id="hud" hidden>
     <button class="iconbtn" id="back" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7l7 7"/></svg></button>
-    <div class="progwrap"><div class="lamps" id="lampRow" role="img" aria-label="Lamps lit on the road"></div><div class="prog" id="prog" aria-live="polite"></div></div>
+    <div class="progwrap"><div class="lamps" id="lampRow" role="img" aria-label="Lamps lit on the road"></div><div class="prog" id="prog"></div></div>
     <div class="oil" id="oil" role="img" aria-label="Lamp oil flasks"></div>
     <button class="iconbtn" id="snd" aria-label="Sound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="wave" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/><path class="slash" d="M3 3l18 18"/></svg></button>
   </div>
@@ -214,7 +227,8 @@
   </section>
 
   <section class="screen" id="stop">
-    <div class="bg" id="stopBg"><div class="layer" id="artA"></div><div class="layer" id="artB"></div><div class="shade"></div></div>
+    <div class="bg" id="stopBg"><div class="layer" id="artA"></div><div class="layer" id="artB"></div><div class="shade"></div><div class="fore" id="fore"></div></div>
+    <div id="bloom"></div><div id="jyoLive" aria-hidden="true"><div class="in" id="jyoIn"></div></div>
     <div class="top">
       <span class="place-tag" id="placeTag"></span>
       <div class="bubblebar"><div class="bubble" id="bubble" aria-live="polite"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
@@ -321,7 +335,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   var M = Margwise;
   var bank = M.JOURNEY_BANK, STORY = bank.story;
   var ART = window.LAMP_ART || { bg: {}, obj: {}, char: {} };
-  var SEED = 11, FLASKS = M.FLASKS;
+  var SEED = (function () { var m = /[?&]seed=(\d+)/.exec(location.search); return m ? +m[1] : Math.floor(Math.random() * 1e6); })(), FLASKS = M.FLASKS;
   var AREAS = ['R', 'I', 'A', 'S', 'E', 'C'];
   var NAME = { R: 'Builder', I: 'Thinker', A: 'Creator', S: 'Helper', E: 'Persuader', C: 'Organiser' };
   var BLURB = { R: 'making and fixing things', I: 'working things out', A: 'imagining new things', S: 'helping and teaching', E: 'leading and persuading', C: 'keeping things in order' };
@@ -395,16 +409,71 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     for (var k = 0; k < 6; k++) h += '<circle class="ffly" style="animation-delay:-' + k * 1.7 + 's" cx="' + (30 + k * 58) + '" cy="' + (380 + (k % 3) * 40) + '" r="2" fill="#ffe08a"/>';
     return h + '</svg>';
   }
-  function artFor(id) { return ART.bg[id] ? '<img alt="" src="' + ART.bg[id] + '">' : paint(id); }
-  var artSlot = 'artA';
-  function setScene(id, instant) {
-    var next = artSlot === 'artA' ? 'artB' : 'artA', cur = $(artSlot), n = $(next);
+  function artFor(id) { return ART.bg[id] ? '<img alt="" decoding="async" src="' + ART.bg[id] + '">' : paint(id); }
+  // Decode every backdrop once, off the critical moment, and keep the bitmaps warm.
+  var warm = [];
+  function warmArt() {
+    var ids = Object.keys(ART.bg), i = 0;
+    (function next() {
+      if (i >= ids.length) return;
+      var im = new Image(); im.decoding = 'async'; im.src = ART.bg[ids[i++]]; warm.push(im);
+      (im.decode ? im.decode() : Promise.resolve()).catch(function () {}).then(function () { if (window.requestIdleCallback) requestIdleCallback(next, { timeout: 300 }); else setTimeout(next, 60); });
+    })();
+  }
+  var artSlot = 'artA', sceneAnims = [];
+  // mode: 'cut' (no motion), 'fade' (quick crossfade), 'walk' (camera moves on to the next place)
+  function setScene(id, mode) {
+    if (mode === true) mode = 'cut'; if (!mode) mode = 'fade';
+    if (state.reduce) mode = 'cut';
+    sceneAnims.forEach(function (a) { try { a.cancel(); } catch (e) {} }); sceneAnims = [];
+    var next = artSlot === 'artA' ? 'artB' : 'artA', cur = $(artSlot), n = $(next), fore = $('fore');
     n.innerHTML = artFor(id);
-    if (instant) { n.style.transition = cur.style.transition = 'none'; }
-    n.classList.add('on'); cur.classList.remove('on'); artSlot = next;
-    if (instant) { void n.offsetWidth; n.style.transition = cur.style.transition = ''; }
+    var commit = function () { n.classList.add('on'); cur.classList.remove('on'); sceneAnims.forEach(function (a) { try { a.cancel(); } catch (e) {} }); sceneAnims = []; };
+    var go = function () {
+      if (mode === 'cut') { commit(); }
+      else if (mode === 'fade') {
+        n.style.opacity = 0; n.classList.add('on'); cur.style.zIndex = 0; n.style.zIndex = 1;
+        var a = n.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, easing: 'ease-out', fill: 'both' }); sceneAnims.push(a);
+        a.onfinish = function () { n.style.opacity = ''; cur.classList.remove('on'); a.cancel(); };
+      } else {
+        var out = 'cubic-bezier(.65,0,.35,1)';
+        n.classList.add('on'); n.style.zIndex = 1; cur.style.zIndex = 0;
+        var a1 = cur.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(1.16) translateY(-2.5%)' }], { duration: 760, easing: out, fill: 'both' });
+        var a2 = n.animate([{ opacity: 0, transform: 'translateX(9%) scale(1.06)' }, { opacity: 1, transform: 'none' }], { duration: 900, easing: 'cubic-bezier(.22,.8,.2,1)', delay: 120, fill: 'both' });
+        var a3 = fore.animate([{ transform: 'translateX(0)', offset: 0 }, { transform: 'translateX(-34%)', offset: .5 }, { transform: 'translateX(34%)', offset: .5001 }, { transform: 'translateX(0)', offset: 1 }], { duration: 1000, easing: 'cubic-bezier(.5,0,.3,1)' });
+        sceneAnims.push(a1, a2, a3);
+        a2.onfinish = function () { cur.classList.remove('on'); cur.style.zIndex = n.style.zIndex = ''; a1.cancel(); a2.cancel(); sceneAnims = []; };
+      }
+    };
+    var img = n.querySelector('img');
+    if (img && img.decode) img.decode().catch(function () {}).then(go); else go();
+    if (mode === 'cut') { cur.style.zIndex = n.style.zIndex = ''; }
     $('stopBg').classList.remove('lit');
   }
+  // Jyo, the firefly, lives in the scene. Every tap sends her to that object, the same way for all of them.
+  var jyo = { x: 0, y: 0 }, jyoTimer = null, jyoAnim = null;
+  function jyoHome() { var r = $('stop').getBoundingClientRect(); return { x: r.width - 62, y: Math.round(r.height * .2) }; }
+  function jyoGo(x, y, dur, ease) {
+    var el = $('jyoLive'), from = { x: jyo.x, y: jyo.y };
+    if (jyoAnim) { try { jyoAnim.cancel(); } catch (e) {} }
+    el.style.transform = 'translate(' + x + 'px,' + y + 'px)'; jyo = { x: x, y: y };
+    if (state.reduce || !dur) return;
+    jyoAnim = el.animate([{ transform: 'translate(' + from.x + 'px,' + from.y + 'px)' }, { transform: 'translate(' + x + 'px,' + y + 'px)' }], { duration: dur, easing: ease || 'cubic-bezier(.3,.7,.3,1)' });
+  }
+  function jyoToHome(delay) { clearTimeout(jyoTimer); jyoTimer = setTimeout(function () { var h = jyoHome(); jyoGo(h.x, h.y, 520); }, delay || 0); }
+  function jyoVisit(btn) {
+    var r = btn.querySelector('.art').getBoundingClientRect(), s = $('stop').getBoundingClientRect();
+    jyoGo(r.left - s.left + r.width / 2 - 20, r.top - s.top + 6, 300); jyoToHome(900);
+  }
+  function oilDrop(btn, back) {
+    if (state.reduce) return;
+    var app = $('app').getBoundingClientRect(), f = $('oil').getBoundingClientRect(), a = btn.querySelector('.art').getBoundingClientRect();
+    var fx = f.left - app.left + f.width / 2, fy = f.top - app.top + f.height / 2, ax = a.left - app.left + a.width / 2, ay = a.top - app.top + a.height / 2;
+    var p = back ? [ax, ay, fx, fy] : [fx, fy, ax, ay], d = document.createElement('span'); d.className = 'drop'; $('app').appendChild(d);
+    var mx = (p[0] + p[2]) / 2, my = Math.min(p[1], p[3]) - 40;
+    d.animate([{ transform: 'translate(' + p[0] + 'px,' + p[1] + 'px) scale(.6)', opacity: 1 }, { transform: 'translate(' + mx + 'px,' + my + 'px) scale(1)', opacity: 1, offset: .5 }, { transform: 'translate(' + p[2] + 'px,' + p[3] + 'px) scale(.5)', opacity: .2 }], { duration: 380, easing: 'cubic-bezier(.3,.7,.4,1)' }).onfinish = function () { d.remove(); };
+  }
+  function buzz(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
   function sprite(kind) {
     if (ART.char[kind]) return '<img alt="" src="' + ART.char[kind] + '">';
     return '<svg viewBox="-12 -12 24 24"><g class="jug"><circle r="10" fill="url(#lampglow)"/><circle r="3" fill="#fff7c0"/><ellipse cx="-5" cy="-3" rx="4.5" ry="2" fill="#fff3d6" opacity=".6"/><ellipse cx="5" cy="-3" rx="4.5" ry="2" fill="#fff3d6" opacity=".6"/></g></svg>';
@@ -462,25 +531,30 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     state.view = view;
     ['welcome', 'stop', 'dreams', 'reveal', 'doors'].forEach(function (v) { $(v).classList.toggle('on', v === view); });
     $('hud').hidden = view === 'welcome';
-    document.body.classList.remove('busy');
+    document.body.classList.remove('busy'); state.busy = false;
   }
 
   function startWalk() { state.choices = []; state.dreams = []; advance(true); }
 
+  var advTimer = null;
   function advance(first) {
-    var s = M.step(bank, state.choices);
+    clearTimeout(advTimer);
+    var s;
+    try { s = M.step(bank, state.choices); } catch (e) { console.error(e); state.busy = false; document.body.classList.remove('busy'); return; }
     if (s.done) return toDreams();
     state.scene = s.scene; state.echo = s.echo; state.spent = {};
-    show('stop'); paintHud();
-    setScene(s.scene.id, !!first);
+    show('stop');
+    setScene(s.scene.id, first ? 'cut' : 'walk');
     Voice.stop(); Snd.place();
-    renderStop();
+    renderStop(first ? 0 : 420);
+    $('jyoLive').classList.remove('droop');
+    var h = jyoHome(); if (first) jyoGo(h.x, h.y, 0); else { jyoGo(h.x, h.y - 30, 600); jyoToHome(650); }
     state.busy = true; document.body.classList.add('busy');
-    setTimeout(function () { state.busy = false; document.body.classList.remove('busy'); }, state.reduce ? 0 : 700);
+    advTimer = setTimeout(function () { state.busy = false; document.body.classList.remove('busy'); }, state.reduce ? 0 : (first ? 700 : 1000));
   }
 
   var FALLBACK = '<svg class="fallback" viewBox="0 0 60 80" aria-hidden="true"><path d="M22 8h16" stroke="#fff3d6" stroke-width="3" stroke-linecap="round"/><path d="M20 14h20l6 12v32a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26z" fill="rgba(255,243,214,.18)" stroke="#fff3d6" stroke-width="2.4" stroke-linejoin="round"/><path d="M30 28c2 8 10 10 10 20a10 10 0 0 1-20 0c0-6 4-8 5-14c2 2 4 3 5 -6z" fill="#f2a03d"/><path d="M30 42c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#ffe08a"/></svg>';
-  function renderStop() {
+  function renderStop(base) {
     var scene = state.scene;
     $('placeTag').textContent = scene.place;
     say('<span class="thread" aria-hidden="false">' + esc(threadFor()) + '</span><span><b>Jyo</b>' + esc(state.echo ? 'The lamp at ' + scene.place + ' is flickering, as if it wants a second look.' : scene.setup) + '</span>');
@@ -489,24 +563,16 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     shown.forEach(function (o, i) {
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'obj'; b.dataset.id = o.id; b.dataset.n = '0';
-      b.style.setProperty('--i', i); b.style.setProperty('--dur', (4.8 + i * .7).toFixed(1) + 's'); b.style.setProperty('--del', (-i * 1.1).toFixed(1) + 's');
+      b.style.setProperty('--i', i); b.style.animationDelay = (-i * 1.1).toFixed(1) + 's, ' + ((base || 0) + i * 90 + 150) + 'ms'; b.style.setProperty('--dur', (4.8 + i * .7).toFixed(1) + 's'); b.style.setProperty('--del', (-i * 1.1).toFixed(1) + 's');
       b.innerHTML = '<span class="art">' + (ART.obj[o.id] ? '<img alt="" src="' + ART.obj[o.id] + '">' : FALLBACK) + '<span class="fl" aria-hidden="true"></span></span><span class="tag"></span>';
       b.querySelector('.tag').textContent = o.text;
       b.addEventListener('click', function () { tapOption(o.id, b); });
       box.appendChild(b);
     });
-    refreshCards(); paintHud();
-    equalise();
+    $('options').classList.remove('leaving');
+    refreshCards();
   }
-  function equalise() {
-    var tags = Array.prototype.slice.call($('options').querySelectorAll('.tag'));
-    tags.forEach(function (g) { g.style.minHeight = ''; });
-    requestAnimationFrame(function () {
-      var h = Math.max.apply(null, tags.map(function (g) { return g.scrollHeight; }));
-      tags.forEach(function (g) { g.style.minHeight = h + 'px'; });
-    });
-  }
-  window.addEventListener('resize', function () { if (state.view === 'stop') equalise(); });
+
 
   var FLAME = '<svg viewBox="0 0 24 30"><path d="M12 2c1 5 8 8 8 16a8 8 0 0 1-16 0c0-4 3-6 4-9c2 2 3 3 4 2c1-3 0-6 0-9z" fill="#f2a03d" stroke="#a8661d" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 15c1 3 4 4 4 8a4 4 0 0 1-8 0c0-3 3-4 4-8z" fill="#ffe08a"/></svg>';
   function refreshCards() {
@@ -534,9 +600,9 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   function tapOption(id, btn) {
     if (state.busy) return;
     var n = state.spent[id] || 0, used = totalSpent();
-    if (used < FLASKS && n < FLASKS) { state.spent[id] = n + 1; sparks(btn); Snd.spend(); }
-    else if (n > 0) { delete state.spent[id]; Snd.refund(); hint('Oil back in the flask. Spend it where you like.'); }
-    else { var o = $('oil'); o.classList.remove('shake'); void o.offsetWidth; o.classList.add('shake'); Snd.deny(); hint('Both flasks are in use. Tap a glowing one to take its oil back, or just light the lamp.'); return; }
+    if (used < FLASKS && n < FLASKS) { state.spent[id] = n + 1; sparks(btn); oilDrop(btn, false); jyoVisit(btn); buzz(10); Snd.spend(); }
+    else if (n > 0) { delete state.spent[id]; oilDrop(btn, true); jyoVisit(btn); buzz(6); Snd.refund(); hint('Oil back in the flask. Spend it where you like.'); }
+    else { var o = $('oil'); o.classList.remove('shake'); void o.offsetWidth; o.classList.add('shake'); $('jyoLive').classList.add('droop'); setTimeout(function () { $('jyoLive').classList.remove('droop'); }, 900); buzz([8, 30, 8]); Snd.deny(); hint('Both flasks are in use. Tap a glowing one to take its oil back, or just light the lamp.'); return; }
     refreshCards();
   }
 
@@ -554,11 +620,20 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     var echoing = state.echo;
     say('<span class="thread">' + (echoing ? 'Steady again.' : n === 1 ? 'One lamp is burning.' : n + ' lamps are burning.') + '</span><span><b>Jyo</b>' + esc(echoing ? 'The flame holds. Thank you for looking again.' : scene.lit || 'The lamp is lit.') + '</span>');
     // Reduced motion removes movement, not reading time.
-    setTimeout(function () { advance(false); }, state.reduce ? 3200 : 2300);
+    if (!state.reduce) {
+      buzz([18, 40, 26]);
+      $('bloom').animate([{ opacity: 0, transform: 'scale(.5)' }, { opacity: .85, transform: 'scale(1)', offset: .35 }, { opacity: 0, transform: 'scale(1.5)' }], { duration: 1100, easing: 'ease-out' });
+      var lr = $('stop').getBoundingClientRect(); jyoGo(lr.width / 2 - 20, lr.height * .3, 420);
+      jyoAnim && jyoAnim.finished.then(function () { $('jyoIn').animate([{ transform: 'rotate(0) scale(1)' }, { transform: 'rotate(360deg) scale(1.5)' }, { transform: 'rotate(720deg) scale(1)' }], { duration: 700, easing: 'ease-in-out' }); }, function () {});
+      setTimeout(function () { $('options').classList.add('leaving'); }, 1050);
+    }
+    clearTimeout(advTimer);
+    advTimer = setTimeout(function () { advance(false); }, state.reduce ? 3200 : 1350);
   });
 
   $('back').addEventListener('click', function () {
     if (state.busy && state.view === 'stop') return;
+    clearTimeout(advTimer);
     Voice.stop();
     if (state.view === 'stop') {
       if (!state.choices.length) { show('welcome'); return; }
@@ -826,7 +901,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   buildHud(); paintHud(); paintSound();
   $('premise').textContent = STORY.premise; $('mission').textContent = STORY.mission;
   $('welcomeArt').innerHTML = artFor('welcome');
-  $('jyoSprite').innerHTML = sprite('jyo');
+  $('jyoSprite').innerHTML = sprite('jyo'); $('jyoIn').innerHTML = sprite('jyo'); warmArt();
 })();
 </script>
 
