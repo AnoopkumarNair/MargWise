@@ -439,7 +439,7 @@
     <div class="gscene" id="gScene" aria-hidden="true"></div>
     <div class="gwrap">
       <header class="ghead">
-        <div class="gbrand"><svg viewBox="0 0 60 80" aria-hidden="true"><path d="M22 8h16" stroke="#fff3d6" stroke-width="3.5" stroke-linecap="round"/><path d="M20 14h20l6 12v32a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26z" fill="rgba(255,243,214,.14)" stroke="#fff3d6" stroke-width="3" stroke-linejoin="round"/><path d="M30 28c2 8 10 10 10 20a10 10 0 0 1-20 0c0-6 4-8 5-14c2 2 4 3 5-6z" fill="#f2a03d"/><path d="M30 42c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#ffe08a"/></svg><span class="gword">Margwise</span><span class="gmean">marg means path</span></div>
+        <div class="gbrand"><svg viewBox="0 0 60 80" aria-hidden="true"><path d="M22 8h16" stroke="#fff3d6" stroke-width="3.5" stroke-linecap="round"/><path d="M20 14h20l6 12v32a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26z" fill="rgba(255,243,214,.14)" stroke="#fff3d6" stroke-width="3" stroke-linejoin="round"/><path d="M30 28c2 8 10 10 10 20a10 10 0 0 1-20 0c0-6 4-8 5-14c2 2 4 3 5-6z" fill="#f2a03d"/><path d="M30 42c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#ffe08a"/></svg><span class="gword">Margwise</span><span class="gmean">Light your way</span></div>
         <h1 id="gateT">What kind of work would suit you?</h1>
         <p class="glead">Margwise is a story game for students in Class 9 to 12. You walk a road at night, light lamps and make small choices. At the end you see which interests stand out and which careers are worth a closer look.</p>
         <p class="gfacts">About 15 minutes. No marks and no wrong answers. Best with a parent beside you.</p>
@@ -586,6 +586,7 @@
   <h3>What did you think?</h3>
   <div class="fld" style="display:grid;gap:4px"><b>How did it look and feel?</b><div class="rate" data-k="look"></div><div class="rl"><span>Poor</span><span>Great</span></div></div>
   <div class="fld" style="display:grid;gap:4px"><b>Was it clear what to do?</b><div class="rate" data-k="clear"></div><div class="rl"><span>Confusing</span><span>Very clear</span></div></div>
+  <div class="fld" style="display:grid;gap:4px"><b>How did the puzzle locks feel?</b><div class="rate" data-k="puz"></div><div class="rl"><span>Stressful</span><span>Enjoyable</span></div></div>
   <div class="fld" style="display:grid;gap:4px"><b>Did you enjoy the walk?</b><div class="rate" data-k="fun"></div><div class="rl"><span>Not at all</span><span>A lot</span></div></div>
   <label class="fld">Anything else? What was confusing, boring or good?<textarea id="fbText" maxlength="1500"></textarea></label>
   <p class="err" id="fbMsg" aria-live="polite"></p>
@@ -1751,7 +1752,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   $('fbClose').addEventListener('click', function () { $('fbSheet').hidden = true; });
   $('fbSend').addEventListener('click', function () {
     var out = { text: $('fbText').value.trim().slice(0, 1500) }; $('fbSheet').querySelectorAll('.rate').forEach(function (r) { var p = r.querySelector('[aria-pressed="true"]'); if (p) out[r.dataset.k] = +p.dataset.v; });
-    if (!out.look && !out.clear && !out.fun && !out.text) { $('fbMsg').textContent = 'Add a rating or a few words first.'; return; }
+    if (!out.look && !out.clear && !out.fun && !out.puz && !out.text) { $('fbMsg').textContent = 'Add a rating or a few words first.'; return; }
     track('feedback', out); $('fbMsg').textContent = 'Thank you. This helps a lot.'; $('fbText').value = ''; setTimeout(function () { $('fbSheet').hidden = true; }, 1100);
   });
   $('jyoSprite').innerHTML = sprite('jyo'); $('jyoIn').innerHTML = sprite('jyo'); buildEmbers('embers', 8); buildEmbers('embersW', 6); paintWelcomeBack(); bootLoad();

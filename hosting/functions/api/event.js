@@ -22,7 +22,7 @@ const V = {
   apt: d => { const s = {}; if (d.s && typeof d.s === 'object') for (const k of ['N', 'V', 'S', 'P']) { const n = int(d.s[k], 0, 3); if (n !== null) s[k] = n; } const items = {}; if (d.items && typeof d.items === 'object') for (const k of ['N', 'V', 'S', 'P']) items[k] = arr(d.items[k], 2, x => (Array.isArray(x) ? x.slice(0, 4).map(v => int(v, 0, 600000)).filter(v => v !== null) : null)); return { s, items }; },
   self: d => ({ v: rate(d.v) }),
   areas: d => obj6(d, rate),
-  feedback: d => ({ look: rate(d.look), clear: rate(d.clear), fun: rate(d.fun), text: str(d.text, 1500) }),
+  feedback: d => ({ look: rate(d.look), clear: rate(d.clear), fun: rate(d.fun), puz: rate(d.puz), text: str(d.text, 1500) }),
   error: d => ({ msg: str(d.msg, 200), at: str(d.at, 80) })
 };
 export async function onRequestPost({ request, env }) {
