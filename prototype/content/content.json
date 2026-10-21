@@ -22,7 +22,8 @@
    "early": "Shadow a doctor, volunteer at a clinic, or take a first-aid course.",
    "note": "Government medical seats are extremely competitive. Nursing, pharmacy, physiotherapy and other allied health courses are strong paths too.",
    "verify": [
-    "Nursing and physiotherapy admission routes vary and have been changing. Confirm with the state authority and the council."
+    "Nursing and physiotherapy admission routes vary and have been changing. Confirm with the state authority and the council.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -40,7 +41,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If the NEET result does not go your way: allied health degrees (B.Sc Nursing, physiotherapy, pharmacy, medical laboratory or radiography technology), BAMS or BHMS through NEET, or a B.Sc in a life science with a later master's in public health or biotechnology.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "sci",
@@ -63,7 +66,8 @@
    "early": "Join a science club or Olympiad, or try a small project of your own.",
    "note": "",
    "verify": [
-    "Eligibility marks and years for IAT and NEST change every cycle. Read the current brochure."
+    "Eligibility marks and years for IAT and NEST change every cycle. Read the current brochure.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -81,7 +85,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If IISER or NISER is not possible: a B.Sc at a central or state university (often through CUET), then an M.Sc and NET or GATE for research.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "eng",
@@ -105,7 +111,8 @@
    "early": "Fix or build something. Join a robotics, design or EV club.",
    "note": "",
    "verify": [
-    "JEE Main subject and marks rules change by year. Read the current Information Bulletin on jeemain.nta.nic.in."
+    "JEE Main subject and marks rules change by year. Read the current Information Bulletin on jeemain.nta.nic.in.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -118,7 +125,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If the JEE rank falls short: state engineering entrance tests, private universities through BITSAT, VITEEE or their own tests, or a 3-year diploma followed by lateral entry into the second year of B.Tech.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "tec",
@@ -141,7 +150,9 @@
    "degree": "B.Tech or BE (4 years) in computer science, AI and data science, or similar. Some online BS degrees accept students from other streams.",
    "early": "Build small projects, try coding contests, join a coding or robotics club.",
    "note": "",
-   "verify": [],
+   "verify": [
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
+   ],
    "sources": [
     {
      "id": "jee",
@@ -158,7 +169,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If a computer science seat at a top college is out of reach: BCA then MCA, a B.Sc in computer science or data science, or a diploma with lateral entry into B.Tech. Real projects and certificates count for a lot in this field.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "com",
@@ -182,7 +195,8 @@
    "early": "Run the budget for a school fest or a small stall.",
    "note": "",
    "verify": [
-    "ICAI rules on registration timing and marks were reported differently by different sources. Check the ICAI portal."
+    "ICAI rules on registration timing and marks were reported differently by different sources. Check the ICAI portal.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -205,7 +219,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If CA is not for you: B.Com with CMA, CS or CFA alongside, or BBA and an MBA later. Banking and other exams are open after any graduation.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "des",
@@ -229,7 +245,8 @@
    "early": "Keep a sketchbook, redesign an app you use, build a small portfolio.",
    "note": "A portfolio often matters as much as marks.",
    "verify": [
-    "The Council of Architecture changed the B.Arch Class 12 subject rule from Physics, Chemistry and Maths. Read the current NATA brochure."
+    "The Council of Architecture changed the B.Arch Class 12 subject rule from Physics, Chemistry and Maths. Read the current NATA brochure.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -257,7 +274,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If UCEED or NID is missed: other design schools with their own tests, a B.Des at a private university, or a degree in fine arts or architecture with a strong portfolio.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "psy",
@@ -281,7 +300,8 @@
    "early": "Volunteer with a school counsellor, a clinic or an NGO.",
    "note": "",
    "verify": [
-    "RCI changed its clinical psychology qualifications from 2024-25. Check the current RCI list before choosing a course."
+    "RCI changed its clinical psychology qualifications from 2024-25. Check the current RCI list before choosing a course.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -299,7 +319,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If a psychology honours seat is hard to get: a BA in Psychology at any good college, then an MA or M.Sc and approved training if you want to practise as a clinical psychologist.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "law",
@@ -324,7 +346,8 @@
    "early": "Join debate or Model UN. Read a news story and argue both sides.",
    "note": "",
    "verify": [
-    "In May 2025 the Supreme Court made 3 years of practice a condition for the Civil Judge exam. Law-news sites report a change in August 2026, with relief for notifications issued up to 31 March 2027. These are secondary reports. Read the judgment and your state High Court notice."
+    "In May 2025 the Supreme Court made 3 years of practice a condition for the Civil Judge exam. Law-news sites report a change in August 2026, with relief for notifications issued up to 31 March 2027. These are secondary reports. Read the judgment and your state High Court notice.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -347,7 +370,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If CLAT or AILET does not work out: other law school tests (such as SLAT or state tests) or a 3-year LLB after any degree.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "media",
@@ -371,7 +396,8 @@
    "early": "Write for the school magazine, start a small blog or podcast, or tutor younger students.",
    "note": "",
    "verify": [
-    "Teacher-training rules have been changing. Check the current NCTE notice."
+    "Teacher-training rules have been changing. Check the current NCTE notice.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -389,7 +415,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If IIMC is out of reach: a BA in journalism, English or mass communication at a university, plus a portfolio of writing, audio or video that you build yourself.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "pub",
@@ -414,7 +442,8 @@
    "early": "Follow current affairs, join NCC or Model UN, or help with a local civic project.",
    "note": "",
    "verify": [
-    "Check the current UPSC NDA notice for subjects, age and physical standards. Wings and schemes differ."
+    "Check the current UPSC NDA notice for subjects, age and physical standards. Wings and schemes differ.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -427,7 +456,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "Civil services and defence exams can be tried more than once, and a degree in any subject keeps that door open. State public service and SSC exams are other routes.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "hos",
@@ -452,7 +483,8 @@
    "early": "Cook for family events, plan a trip, or try a flying-club introductory session.",
    "note": "",
    "verify": [
-    "DGCA asks for Physics and Maths. A 2025 proposal to relax this was reported but not confirmed. Whether NIOS certificates count was not confirmed. Check the current DGCA rule."
+    "DGCA asks for Physics and Maths. A 2025 proposal to relax this was reported but not confirmed. Whether NIOS certificates count was not confirmed. Check the current DGCA rule.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -470,7 +502,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If the NCHM JEE is missed: private hotel management institutes or a BBA in hospitality. For airline roles, check each airline's rules and training.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "spo",
@@ -495,7 +529,8 @@
    "early": "Compete at school and district level, and train a younger team.",
    "note": "Only a few become full-time athletes. Coaching, sports science and fitness careers are much more common.",
    "verify": [
-    "Course names and entrance tests vary widely between institutions. Confirm with the college."
+    "Course names and entrance tests vary widely between institutions. Confirm with the college.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -503,7 +538,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If top sports institutes are out of reach: a B.P.Ed or a BA in physical education at a university, coaching certificates, or sports science courses.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "agr",
@@ -527,7 +564,8 @@
    "early": "Grow plants, join an eco club, or visit a farm or nursery.",
    "note": "",
    "verify": [
-    "ICAR eligibility (subjects, marks, age) changes by year and by university. Read the current CUET (ICAR-UG) bulletin."
+    "ICAR eligibility (subjects, marks, age) changes by year and by university. Read the current CUET (ICAR-UG) bulletin.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -545,7 +583,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If ICAR-linked seats are missed: a B.Sc in botany, zoology or environmental science, or the admissions run by state agricultural universities.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "voc",
@@ -570,7 +610,8 @@
    "note": "These careers are well paid and in demand, and they are often overlooked.",
    "verify": [
     "ITI and polytechnic entry rules differ by state and institute.",
-    "Lateral entry to B.Tech was not checked on an official source here."
+    "Lateral entry to B.Tech was not checked on an official source here.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -588,7 +629,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "ITI and polytechnic diplomas are the direct way in. A diploma can lead to lateral entry into B.Tech later, and apprenticeship schemes often pay a stipend.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "arts",
@@ -612,7 +655,8 @@
    "early": "Perform at school events, learn an instrument, record a short reel.",
    "note": "Only a few earn a full living from performing. Teaching, production and media jobs are more common.",
    "verify": [
-    "Course names and entrance tests vary a lot. Confirm with the college."
+    "Course names and entrance tests vary a lot. Confirm with the college.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -625,7 +669,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If a music, drama or film school place is missed: private institutes, a university BA in music or performing arts, and a performance or recording portfolio you build yourself.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   },
   {
    "id": "mar",
@@ -650,7 +696,8 @@
    "early": "Visit a port, learn to swim and sail, or build a ship model or navigation project.",
    "note": "",
    "verify": [
-    "IMU rules (PCM marks, English marks, age, marital status) varied across pages and programmes. Read the current IMU notice."
+    "IMU rules (PCM marks, English marks, age, marital status) varied across pages and programmes. Read the current IMU notice.",
+    "Plan B routes are suggestions, not rules. Check each admission process on the official site."
    ],
    "sources": [
     {
@@ -663,7 +710,9 @@
      "name": "O*NET OnLine (interest profiles)",
      "url": "https://www.onetonline.org"
     }
-   ]
+   ],
+   "backup": "If IMU CET is missed: other maritime institutes approved by the DG Shipping, or a nautical science degree at an approved college. Check the approval before you pay.",
+   "compare": "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
   }
  ],
  "careers": [
@@ -2842,5 +2891,72 @@
    "https://indialabourobservatory.com/data/plfs-2025/earnings/"
   ],
   "verify": "Headline figures (male 24,217 and female 18,353 a month) match the MoSPI press note. The occupation split is computed by the India Labour Observatory from MoSPI unit-level records."
- }
+ },
+ "fieldNull": {
+  "health": {
+   "m": 0.2009,
+   "sd": 0.437
+  },
+  "sci": {
+   "m": 0.1576,
+   "sd": 0.3908
+  },
+  "eng": {
+   "m": 0.1226,
+   "sd": 0.357
+  },
+  "tec": {
+   "m": 0.0662,
+   "sd": 0.4367
+  },
+  "com": {
+   "m": 0.1303,
+   "sd": 0.3864
+  },
+  "des": {
+   "m": 0.1767,
+   "sd": 0.422
+  },
+  "psy": {
+   "m": -0.0197,
+   "sd": 0.3498
+  },
+  "law": {
+   "m": -0.0139,
+   "sd": 0.3158
+  },
+  "media": {
+   "m": 0.1444,
+   "sd": 0.2797
+  },
+  "pub": {
+   "m": 0.0804,
+   "sd": 0.3135
+  },
+  "hos": {
+   "m": -0.0363,
+   "sd": 0.3101
+  },
+  "spo": {
+   "m": -0.0526,
+   "sd": 0.4072
+  },
+  "agr": {
+   "m": 0.1324,
+   "sd": 0.3313
+  },
+  "voc": {
+   "m": 0.1559,
+   "sd": 0.3478
+  },
+  "arts": {
+   "m": 0.0577,
+   "sd": 0.4201
+  },
+  "mar": {
+   "m": 0.0161,
+   "sd": 0.2899
+  }
+ },
+ "fieldK": 4
 }
