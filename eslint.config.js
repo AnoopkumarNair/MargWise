@@ -31,7 +31,7 @@ export default tseslint.config(
     },
   },
   {
-    // Rule 7 (CLAUDE.md): engines are pure. No I/O, no clocks, no randomness
+    // Rule 7 (RULES.md): engines are pure. No I/O, no clocks, no randomness
     // except an injected seeded PRNG.
     files: ['packages/engine/src/**/*.ts'],
     ignores: ['packages/engine/src/**/*.test.ts'],
@@ -52,7 +52,7 @@ export default tseslint.config(
     },
   },
   {
-    // Rule 1 (CLAUDE.md): no facts in code. The UI must not do engine maths.
+    // Rule 1 (RULES.md): no facts in code. The UI must not do engine maths.
     files: ['packages/ui/src/**/*.{ts,tsx}', 'packages/game-kit/src/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [

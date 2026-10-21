@@ -1,4 +1,4 @@
--- Baseline: deny by default (04 §6.4, §8; CLAUDE.md rule 10).
+-- Baseline: deny by default (04 §6.4, §8; RULES.md rule 10).
 -- Creates the three application schemas plus a private helper schema and
 -- revokes every default grant from the client roles. Tables added later get
 -- RLS enabled in the migration that creates them; nothing is readable by

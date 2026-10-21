@@ -2,7 +2,7 @@
 
 Registry of official sources lives in `pipeline/sources/*.yaml` (Phase 3).
 This page lists each source with its terms and attribution once it is added.
-Forbidden sources are listed in CLAUDE.md rule 2 and enforced in
+Forbidden sources are listed in RULES.md rule 2 and enforced in
 `packages/contracts/src/provenance.ts` and the `provenance` table.
 
 | Source id              | Owner | URL | Licence / terms | Attribution | Added |

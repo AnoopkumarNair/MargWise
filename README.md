@@ -6,7 +6,7 @@ interests with the O\*NET Interest Profiler; the family explores verified
 dossiers on careers, colleges and study-abroad countries; the parent models
 costs and returns to age 35; the family leaves with a roadmap and a report.
 
-**Read first:** [`CLAUDE.md`](CLAUDE.md) (rules) · [`docs/`](docs) (specs,
+**Read first:** [`RULES.md`](RULES.md) (rules) · [`docs/`](docs) (specs,
 ADRs, decisions, data model, test strategy, runbooks).
 
 ## Repository layout (04 §3)

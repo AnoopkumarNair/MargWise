@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { HttpsUrl, IsoDate, IsoDateTime, Uuid } from './primitives.ts';
 
 /**
- * Domains that may never be cited (CLAUDE.md rule 2, 05 §4). Matching is by
+ * Domains that may never be cited (RULES.md rule 2, 05 §4). Matching is by
  * exact host or subdomain. Coaching-institute marketing pages and cached AI
  * answers cannot be caught by domain; reviewers reject them in the Studio.
  */
