@@ -210,23 +210,25 @@
    "name": "Design and creative arts",
    "icon": "🎨",
    "group": "Open to any stream",
-   "stream": "Any stream (Science with PCM for Architecture)",
+   "stream": "Any stream (Science with Physics and Maths for Architecture)",
    "blurb": "Shaping how things look, feel and work.",
    "areas": [
     "A",
     "R"
    ],
-   "pick": "Any stream works for most design courses. Architecture needs Science with PCM.",
+   "pick": "Any stream works for most design courses. Architecture needs Physics and Maths plus one more science or vocational subject.",
    "subjects": {
-    "cbse": "Any stream works for most design courses. Fine Arts or Informatics Practices can help. For Architecture take Physics, Chemistry and Mathematics.",
-    "isc": "Any stream works for most design courses. Art or Computer Science can help. For Architecture take Physics, Chemistry and Mathematics.",
-    "state": "Any stream for design. For Architecture take PCM."
+    "cbse": "Any stream works for most design courses. Fine Arts or Informatics Practices can help. For Architecture take Physics and Mathematics plus Chemistry, Biology, Computer Science or a vocational subject.",
+    "isc": "Any stream works for most design courses. Art or Computer Science can help. For Architecture take Physics and Mathematics plus Chemistry, Biology, Computer Science or a vocational subject.",
+    "state": "Any stream for design. For Architecture take Physics and Maths plus one more science or vocational subject."
    },
-   "exams": "UCEED (IITs and a few others), NID DAT, NIFT entrance, and university tests. Architecture: NATA or JEE Main Paper 2.",
+   "exams": "UCEED (IITs and a few others), NID DAT, NIFT entrance, and university tests. Architecture: NATA or JEE Main Paper 2. The Council of Architecture changed the Class 12 subject rule, so check the current one.",
    "degree": "B.Des (4 years), B.Arch (5 years), BFA (3 to 4 years), or degrees in animation, film and fashion.",
    "early": "Keep a sketchbook, redesign an app you use, build a small portfolio.",
    "note": "A portfolio often matters as much as marks.",
-   "verify": [],
+   "verify": [
+    "The Council of Architecture changed its Class 12 subject requirement for B.Arch. Check the current rule."
+   ],
    "sources": [
     {
      "id": "uceed",
@@ -273,11 +275,11 @@
     "state": "Humanities or Science (Biology). Psychology is offered in many state boards."
    },
    "exams": "CUET-UG (Psychology) for central universities. Many private universities run their own tests.",
-   "degree": "BA or BSc Psychology (3 years), then MA or MSc (2 years). Clinical psychologists then need an RCI-recognised M.Phil. School counsellors often add a B.Ed.",
+   "degree": "BA or BSc Psychology (3 years), then MA or MSc (2 years). Clinical psychologists then need an RCI-recognised postgraduate clinical psychology qualification (RCI now lists the M.Clin.Psy and Psy.D, replacing the older M.Phil). School counsellors often add a B.Ed.",
    "early": "Volunteer with a school counsellor, a clinic or an NGO.",
    "note": "",
    "verify": [
-    "Check current RCI rules for becoming a licensed clinical psychologist."
+    "RCI changed its clinical psychology qualifications from 2024-25. Check the current RCI list before choosing a course."
    ],
    "sources": [
     {
@@ -316,11 +318,11 @@
     "state": "Any stream. Humanities is common."
    },
    "exams": "CLAT for National Law Universities, AILET for NLU Delhi, and CUET and university tests for other law schools.",
-   "degree": "5-year integrated BA LLB, BBA LLB or BCom LLB, or a 3-year LLB after any degree. Judicial services: the state judicial services exam after LLB.",
+   "degree": "5-year integrated BA LLB, BBA LLB or BCom LLB, or a 3-year LLB after any degree. Judicial services: the state judicial services exam after LLB, which now needs a minimum period of legal practice.",
    "early": "Join debate or Model UN. Read a news story and argue both sides.",
    "note": "",
    "verify": [
-    "Some states ask for years of practice before the judicial services exam. Check your state."
+    "In 2025 the Supreme Court made a minimum period of legal practice a national condition for the judicial services exam (reported as 3 years, with a later change to 1 year from 2027). Check the current rule."
    ],
    "sources": [
     {
@@ -454,7 +456,7 @@
     {
      "id": "nchm",
      "name": "NCHM JEE (hospitality)",
-     "url": "https://nchm.nic.in"
+     "url": "https://nchm.gov.in"
     },
     {
      "id": "dgca",
@@ -1012,21 +1014,6 @@
     "R": 1
    },
    "line": "Helps people with serious mental-health conditions, through assessment and therapy."
-  },
-  {
-   "id": "psy-2",
-   "title": "Counselling Psychologist",
-   "field": "psy",
-   "soc": "19-3033.00",
-   "values": {
-    "S": 93,
-    "I": 76,
-    "C": 42,
-    "A": 34,
-    "E": 28,
-    "R": 1
-   },
-   "line": "Talks with people about stress, relationships and life choices."
   },
   {
    "id": "psy-3",

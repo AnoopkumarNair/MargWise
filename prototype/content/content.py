@@ -5,7 +5,7 @@ SRC={
  'jee':['JEE Main (NTA)','https://jeemain.nta.nic.in'],'cuet':['CUET-UG (NTA)','https://cuet.nta.nic.in'],
  'clat':['CLAT (Consortium of NLUs)','https://consortiumofnlus.ac.in'],'ailet':['AILET (NLU Delhi)','https://nludelhi.ac.in'],
  'icai':['ICAI (Chartered Accountants)','https://www.icai.org'],'upsc':['UPSC','https://upsc.gov.in'],
- 'dgca':['DGCA','https://dgca.gov.in'],'nchm':['NCHM JEE (hospitality)','https://nchm.nic.in'],
+ 'dgca':['DGCA','https://dgca.gov.in'],'nchm':['NCHM JEE (hospitality)','https://nchm.gov.in'],
  'uceed':['UCEED (IIT Bombay)','https://www.uceed.iitb.ac.in'],'nid':['NID admissions','https://admissions.nid.edu'],
  'nift':['NIFT admissions','https://www.nift.ac.in'],'nata':['NATA / Council of Architecture','https://www.nata.in'],
  'iiser':['IISER admissions','https://www.iiseradmission.in'],'ncet':['NCET / ITEP (NTA)','https://exams.nta.nic.in/ncet'],
@@ -51,29 +51,29 @@ dict(id='com',name='Business and finance',icon='📊',group='Commerce',stream='C
  degree='BCom, BBA or BSc Economics (3 to 4 years). CA runs alongside: Foundation, Intermediate, Final and practical training. CFA, CMA and CS are other routes. An MBA often comes later.',
  early='Run the budget for a school fest or a small stall.',note='',
  verify=['ICAI rules on registration timing and marks were reported differently by different sources. Check the ICAI portal.'],src=['cuet','icai','ipm','onet']),
-dict(id='des',name='Design and creative arts',icon='🎨',group='Open to any stream',stream='Any stream (Science with PCM for Architecture)',
+dict(id='des',name='Design and creative arts',icon='🎨',group='Open to any stream',stream='Any stream (Science with Physics and Maths for Architecture)',
  blurb='Shaping how things look, feel and work.',areas=['A','R'],
- pick='Any stream works for most design courses. Architecture needs Science with PCM.',
- subjects=dict(cbse='Any stream works for most design courses. Fine Arts or Informatics Practices can help. For Architecture take Physics, Chemistry and Mathematics.',isc='Any stream works for most design courses. Art or Computer Science can help. For Architecture take Physics, Chemistry and Mathematics.',state='Any stream for design. For Architecture take PCM.'),
- exams='UCEED (IITs and a few others), NID DAT, NIFT entrance, and university tests. Architecture: NATA or JEE Main Paper 2.',
+ pick='Any stream works for most design courses. Architecture needs Physics and Maths plus one more science or vocational subject.',
+ subjects=dict(cbse='Any stream works for most design courses. Fine Arts or Informatics Practices can help. For Architecture take Physics and Mathematics plus Chemistry, Biology, Computer Science or a vocational subject.',isc='Any stream works for most design courses. Art or Computer Science can help. For Architecture take Physics and Mathematics plus Chemistry, Biology, Computer Science or a vocational subject.',state='Any stream for design. For Architecture take Physics and Maths plus one more science or vocational subject.'),
+ exams='UCEED (IITs and a few others), NID DAT, NIFT entrance, and university tests. Architecture: NATA or JEE Main Paper 2. The Council of Architecture changed the Class 12 subject rule, so check the current one.',
  degree='B.Des (4 years), B.Arch (5 years), BFA (3 to 4 years), or degrees in animation, film and fashion.',
- early='Keep a sketchbook, redesign an app you use, build a small portfolio.',note='A portfolio often matters as much as marks.',verify=[],src=['uceed','nid','nift','nata','onet']),
+ early='Keep a sketchbook, redesign an app you use, build a small portfolio.',note='A portfolio often matters as much as marks.',verify=['The Council of Architecture changed its Class 12 subject requirement for B.Arch. Check the current rule.'],src=['uceed','nid','nift','nata','onet']),
 dict(id='psy',name='Understanding people',icon='🧠',group='Humanities',stream='Any stream (Humanities with Psychology is common)',
  blurb='Helping people think, feel and grow.',areas=['S','I'],
  pick='Any stream works here. Humanities with Psychology is the most common choice.',
  subjects=dict(cbse='English, Psychology, and two or three of Biology, Sociology, Political Science, Economics.',isc='English, Psychology, and two or three of Biology, Sociology, Political Science, Economics, Computer Science.',state='Humanities or Science (Biology). Psychology is offered in many state boards.'),
  exams='CUET-UG (Psychology) for central universities. Many private universities run their own tests.',
- degree='BA or BSc Psychology (3 years), then MA or MSc (2 years). Clinical psychologists then need an RCI-recognised M.Phil. School counsellors often add a B.Ed.',
+ degree='BA or BSc Psychology (3 years), then MA or MSc (2 years). Clinical psychologists then need an RCI-recognised postgraduate clinical psychology qualification (RCI now lists the M.Clin.Psy and Psy.D, replacing the older M.Phil). School counsellors often add a B.Ed.',
  early='Volunteer with a school counsellor, a clinic or an NGO.',note='',
- verify=['Check current RCI rules for becoming a licensed clinical psychologist.'],src=['cuet','rci','onet']),
+ verify=['RCI changed its clinical psychology qualifications from 2024-25. Check the current RCI list before choosing a course.'],src=['cuet','rci','onet']),
 dict(id='law',name='Law and justice',icon='⚖️',group='Humanities',stream='Any stream (Humanities is common)',
  blurb='Arguing, advising and deciding fairly.',areas=['E','I','S'],
  pick='Any stream works. Humanities is the most common choice.',
  subjects=dict(cbse='English plus subjects that build reading and argument: Political Science, History, Legal Studies, Economics.',isc='English plus Political Science, History, Legal Studies, Economics or Psychology.',state='Any stream. Humanities is common.'),
  exams='CLAT for National Law Universities, AILET for NLU Delhi, and CUET and university tests for other law schools.',
- degree='5-year integrated BA LLB, BBA LLB or BCom LLB, or a 3-year LLB after any degree. Judicial services: the state judicial services exam after LLB.',
+ degree='5-year integrated BA LLB, BBA LLB or BCom LLB, or a 3-year LLB after any degree. Judicial services: the state judicial services exam after LLB, which now needs a minimum period of legal practice.',
  early='Join debate or Model UN. Read a news story and argue both sides.',note='',
- verify=['Some states ask for years of practice before the judicial services exam. Check your state.'],src=['clat','ailet','bci','onet']),
+ verify=['In 2025 the Supreme Court made a minimum period of legal practice a national condition for the judicial services exam (reported as 3 years, with a later change to 1 year from 2027). Check the current rule.'],src=['clat','ailet','bci','onet']),
 dict(id='media',name='Media, writing and teaching',icon='✍️',group='Humanities',stream='Humanities (any stream is possible)',
  blurb='Telling stories, explaining ideas and teaching others.',areas=['A','S'],
  pick='Humanities is the usual choice, but any stream can lead here.',
@@ -119,9 +119,13 @@ BL={'doc-1':'Diagnoses and treats illness, from everyday problems to emergencies
 'spo-1':'Trains and competes at the highest level.','spo-2':'Trains athletes and teams, and builds their skills.','spo-3':'Helps people get fitter and healthier.'}
 careers=[]
 for cid,c in car['careers'].items():
+    if cid=='psy-2': continue
     careers.append(dict(id=cid,title=c['title'],field=c['field'],soc=c['soc'],values=c['values'],line=BL.get(cid,'')))
 missing=[c['id'] for c in careers if not c['line']]; print('missing lines',missing)
 for f in F:
     f['sources']=[dict(id=s,name=SRC[s][0],url=SRC[s][1]) for s in f.pop('src')]
 json.dump(dict(fields=F,careers=careers,checked='2026-10-21',status='DRAFT for counsellor review. Exam and admission facts were gathered from secondary sources and need checking against the official sites.'),open('content.json','w'),indent=1,ensure_ascii=False)
+for x in careers:
+    if x['id']=='psy-1': x['title']='Clinical or Counselling Psychologist'; x['line']='Helps people with mental-health conditions, stress and life choices, through assessment and therapy.'
+    if x['id']=='pub-1': x['title']='Political Scientist or Policy Analyst'
 print(len(F),'fields',len(careers),'careers')

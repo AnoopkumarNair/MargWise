@@ -114,7 +114,7 @@
     "R": "Rope down the cliff and test the rock as you go",
     "A": "Sit and watch the cliff light shift, and capture it in a drawing",
     "E": "Split the climbers into teams and set the timetable",
-    "C": "Check every harness and rope, then brief everyone on the plan"
+    "C": "Check every harness and rope before anyone climbs"
    }
   },
   "s10": {
@@ -125,7 +125,7 @@
    "lit": "The market hums, and its lamp is lit above the stalls.",
    "o": {
     "R": "Haul the barrels and stack them so they stay put",
-    "S": "Help a lost trader find their family and rally others to help",
+    "S": "Help a lost trader find their family",
     "E": "Settle the argument with a deal both traders accept",
     "C": "Weigh and record every sack, then pack the cart"
    }
@@ -139,8 +139,8 @@
    "o": {
     "I": "Chart the stars and wonder what is out there",
     "A": "Paint the night sky and notice how it changes",
-    "S": "Show visitors around and invite them to join the stargazing club",
-    "E": "Run the club night and make sure everyone is included"
+    "S": "Welcome the visitors and help each one find a good spot to look",
+    "E": "Run the club night: make the plan, lead the group, win new members"
    }
   },
   "s12": {
@@ -177,8 +177,8 @@
    "lit": "The house settles into calm. A steady lamp burns in the window.",
    "o": {
     "I": "Test the water supply to find what is making people ill",
-    "S": "Comfort the patients and organise helpers for the night",
-    "E": "Run the front desk so everyone is seen kindly and in turn",
+    "S": "Sit with the patients and comfort them through the night",
+    "E": "Lead the clinic team and decide who is seen first",
     "C": "Count the medicine store and put it in perfect order"
    }
   },
