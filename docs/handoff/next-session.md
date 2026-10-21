@@ -36,6 +36,13 @@ app); art via connectors (Canva or Hugging Face) once the hosts are reachable.
 
 ## Do first in the new session
 
+0. Free art route (Anu has no budget for paid image APIs): Cloudflare Workers AI. Anu has added the account id and
+   token as environment variables; `api.cloudflare.com` must also be on Allowed domains. Check
+   `env | grep -i cloudflare | sed 's/=.*//'` and `curl -sI https://api.cloudflare.com/client/v4/`, then run
+   `node scripts/art/generate_workers_ai.mjs --only bg-s01,obj-s01-R` as a first test (script is untested), compare with
+   the Canva style scene and characters, check the model's licence before anything ships (D-052), then run it for all
+   rows. FLUX.1 schnell is text-only; FLUX.2 klein 4B accepts reference images for consistency (not wired in yet).
+
 1. `curl -I https://export-download.canva.com/` should now answer. If Canva credits are back, resume
    generation of the rows missing from `docs/art/canva-ids.csv`, one or two calls at a time (bursts get
    refused). Use `docs/art/asset-list.csv` (83 rows, built from the bank).
