@@ -4,7 +4,7 @@ import { scoreResponses, type Responses, type ResponseValue } from '../../assess
 import { createRng, type Rng } from '../../shared/random.ts';
 import { step } from '../session.ts';
 import { JOURNEY_BANK } from '../bank.ts';
-import type { Choice, SceneBank } from '../types.ts';
+import type { Choice, Scene, SceneBank } from '../types.ts';
 
 /**
  * Simulated explorers for tests. Arbitrary made-up numbers (rule 1): a persona
@@ -57,31 +57,60 @@ export function answerIpsf(levels: Levels, seed: number, noise = 0.8): Responses
 export const ipsfScores = (levels: Levels, seed: number) =>
   scoreResponses(ONET_IPSF, answerIpsf(levels, seed));
 
-/** Plays the adaptive journey: rate each option with noise, pick every one rated high enough. */
+/** Spends the flasks for one stop: rate each option with noise, then allocate. */
+export function spendFlasks(
+  scene: Scene,
+  levels: Levels,
+  rng: Rng,
+  noise = 0.8,
+  spendAtLeast = 2,
+  doubleAtLeast = 3.2,
+  doubleLead = 0.6,
+): Record<string, number> {
+  const rated = scene.options
+    .map((o) => {
+      const w = Object.entries(o.loads) as Array<[Riasec, number]>;
+      const total = w.reduce((a, [, x]) => a + x, 0);
+      const appeal = (4 * w.reduce((a, [k, x]) => a + x * levels[k], 0)) / total;
+      return { id: o.id, r: appeal + noise * gaussian(rng) };
+    })
+    .sort((a, b) => b.r - a.r);
+  const [best, second] = rated as [(typeof rated)[number], (typeof rated)[number]];
+  const spent: Record<string, number> = {};
+  if (best.r < spendAtLeast) return spent;
+  if (best.r >= doubleAtLeast && best.r - second.r >= doubleLead) {
+    spent[best.id] = 2;
+  } else {
+    spent[best.id] = 1;
+    if (second.r >= spendAtLeast) spent[second.id] = 1;
+  }
+  return spent;
+}
+
+/**
+ * Plays the adaptive journey, including the return visit. `echoLevels` lets a
+ * test make the explorer answer the return visit as a different person
+ * (a contradiction).
+ */
 export function playJourney(
   levels: Levels,
   seed: number,
   bank: SceneBank = JOURNEY_BANK,
   noise = 0.8,
-  pickAtLeast = 2,
-  loveAtLeast = 3.2,
+  echoLevels: Levels = levels,
 ): Choice[] {
   const rng = createRng(seed);
   const choices: Choice[] = [];
-  for (let guard = 0; guard < bank.scenes.length + 1; guard++) {
+  for (let guard = 0; guard < bank.scenes.length + 2; guard++) {
     const s = step(bank, choices);
     if (s.done || !s.scene) break;
-    const picked: string[] = [];
-    const loved: string[] = [];
-    for (const o of s.scene.options) {
-      const w = Object.entries(o.loads) as Array<[Riasec, number]>;
-      const total = w.reduce((a, [, x]) => a + x, 0);
-      const appeal = (4 * w.reduce((a, [k, x]) => a + x * levels[k], 0)) / total;
-      const r = appeal + noise * gaussian(rng);
-      if (r >= pickAtLeast) picked.push(o.id);
-      if (r >= loveAtLeast) loved.push(o.id);
-    }
-    choices.push({ sceneId: s.scene.id, picked, loved });
+    const who = s.echo ? echoLevels : levels;
+    const spent = spendFlasks(s.scene, who, rng, noise);
+    choices.push(
+      s.echo
+        ? { sceneId: `${s.scene.id}~echo`, echoOf: s.scene.id, spent }
+        : { sceneId: s.scene.id, spent },
+    );
   }
   return choices;
 }

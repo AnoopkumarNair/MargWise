@@ -1,6 +1,6 @@
 import { RIASEC_ORDER, type Riasec } from '@margwise/contracts';
 import { invert, solve } from './linalg.ts';
-import type { Choice, Scene, SceneBank, SceneOption } from './types.ts';
+import { FLASKS, type Choice, type Scene, type SceneBank, type SceneOption } from './types.ts';
 
 /**
  * Choice-model constants (UNCALIBRATED, like ASSESSMENT_CONFIG): they change
@@ -8,23 +8,27 @@ import type { Choice, Scene, SceneBank, SceneOption } from './types.ts';
  */
 export const JOURNEY_CONFIG = {
   status: 'uncalibrated',
-  /** Sharpness of the logistic pick model: P(pick) = σ(β·w·θ + bias). */
+  /** Sharpness of the choice model: each flask goes to option j with P ∝ exp(β·w_j·θ). */
   beta: 1.5,
-  /** Baseline log-odds of picking ("like") an option with no leaning; most stops yield 1–2 picks. */
-  bias: -0.5,
-  /** Baseline log-odds of "loving" an option (a second, stronger tap); rarer than a pick. */
-  loveBias: -2,
+  /** Utility of keeping a flask instead of spending it (a mild pull towards saving). */
+  keep: 0.5,
   /** Prior standard deviation of each area's latent interest. */
   priorSd: 1,
   /** Fewest stops before the journey may end early. */
   minStops: 8,
   /** The journey ends early when every in-code vs out-of-code gap is at least this many SEs. */
   stopZ: 1,
-  /** Range of θ (max − min) below which (simulations: real codes ≥ 1.75 at p10, uniform play ≤ 1.3 at p90) the profile counts as flat ("broad interests"). */
-  flatRange: 1.5,
-  /** ≥ this share of "none of these" → low-engagement note. */
+  /** Separation (SEs) at or above which the result reads "clear"; below it, "close". */
+  clearZ: 0.7,
+  /** θ range (max − min) below which interests read "broad" (simulations: real codes ≥ 1.54 at p10, uniform play ≤ 1.46 at p90). */
+  broadRange: 1.4,
+  /** An earlier stop is shown again once this many stops are done, to check consistency. */
+  echoAfter: 6,
+  /** Overlap of spending between a stop and its echo below which answers are called mixed. */
+  echoMinOverlap: 0.5,
+  /** Share of stops where nothing was spent at or above which the walk reads low-engagement. */
   noneShare: 0.5,
-  /** Position bias: this share of picks in one display slot (with ≥ 6 picks). */
+  /** Position bias: this share of spent flasks in one display slot (with ≥ 6 spent). */
   positionBiasShare: 0.8,
   /** θ → 0–40 pseudo-score used only to reuse the interest-code tie rule. */
   scoreCentre: 20,
@@ -45,17 +49,20 @@ export function sceneById(bank: SceneBank, id: string): Scene {
   return s;
 }
 
-const sigmoid = (x: number) => 1 / (1 + Math.exp(-x));
-
-/** P(pick) for each option of a stop; options are picked independently ("pick any"). */
-export function pickProbabilities(
+/**
+ * P(a flask goes to each option) with "keep" last. Each of the FLASKS flasks is
+ * an independent draw from this distribution (multinomial, with replacement).
+ */
+export function flaskProbabilities(
   scene: Scene,
   theta: readonly number[],
   config: Config,
-  level: 'pick' | 'love' = 'pick',
 ): number[] {
-  const bias = level === 'pick' ? config.bias : config.loveBias;
-  return scene.options.map((o) => sigmoid(config.beta * dot(vec(o.loads), theta) + bias));
+  const u = [...scene.options.map((o) => config.beta * dot(vec(o.loads), theta)), config.keep];
+  const max = Math.max(...u);
+  const e = u.map((x) => Math.exp(x - max));
+  const z = e.reduce((a, b) => a + b, 0);
+  return e.map((x) => x / z);
 }
 
 export interface Posterior {
@@ -67,26 +74,33 @@ export interface Posterior {
 const toTheta = (v: readonly number[]): Theta =>
   Object.fromEntries(AREAS.map((a, i) => [a, v[i] as number])) as Theta;
 
-/** Information matrix of one stop at θ: β² Σ p(1−p) w wᵀ, over the like and love taps. */
+/** Information of one stop at θ: FLASKS · β² (Σ p w wᵀ − m mᵀ). */
 function sceneInfo(scene: Scene, theta: readonly number[], config: Config): number[][] {
+  const p = flaskProbabilities(scene, theta, config);
   const ws = scene.options.map((o) => vec(o.loads));
-  const levels = (['pick', 'love'] as const).map((l) => pickProbabilities(scene, theta, config, l));
+  const m = AREAS.map((_, k) => ws.reduce((s, w, j) => s + (p[j] as number) * (w[k] as number), 0));
   return AREAS.map((_, r) =>
     AREAS.map(
       (_, c) =>
+        FLASKS *
         config.beta ** 2 *
-        levels.reduce(
-          (acc, p) =>
-            acc +
-            ws.reduce(
-              (s, w, j) =>
-                s + (p[j] as number) * (1 - (p[j] as number)) * (w[r] as number) * (w[c] as number),
-              0,
-            ),
-          0,
-        ),
+        (ws.reduce((s, w, j) => s + (p[j] as number) * (w[r] as number) * (w[c] as number), 0) -
+          (m[r] as number) * (m[c] as number)),
     ),
   );
+}
+
+/** Validates a choice against its stop; returns the flasks spent per option (aligned to the options). */
+function counts(scene: Scene, choice: Choice): number[] {
+  for (const id of Object.keys(choice.spent))
+    if (!scene.options.some((o) => o.id === id))
+      throw new Error(`Unknown option ${id} in ${scene.id}`);
+  const n = scene.options.map((o) => choice.spent[o.id] ?? 0);
+  if (n.some((x) => !Number.isInteger(x) || x < 0 || x > FLASKS))
+    throw new Error(`Flasks per option must be 0–${FLASKS} in ${scene.id}`);
+  if (n.reduce((a, b) => a + b, 0) > FLASKS)
+    throw new Error(`More than ${FLASKS} flasks spent in ${scene.id}`);
+  return n;
 }
 
 /** MAP estimate by damped Newton; the log-posterior is concave so this converges. */
@@ -96,11 +110,15 @@ export function estimate(
   config: Config = JOURNEY_CONFIG,
 ): Posterior {
   const prior = 1 / config.priorSd ** 2;
+  const obs = choices.map((c) => {
+    const scene = sceneById(bank, c.echoOf ?? c.sceneId);
+    return { scene, n: counts(scene, c) };
+  });
   let theta = new Array<number>(6).fill(0);
   const hessianAt = (t: number[]) => {
     const h = AREAS.map((_, r) => AREAS.map((_, c) => (r === c ? prior : 0)));
-    for (const ch of choices) {
-      const info = sceneInfo(sceneById(bank, ch.sceneId), t, config);
+    for (const { scene } of obs) {
+      const info = sceneInfo(scene, t, config);
       for (let r = 0; r < 6; r++)
         for (let c = 0; c < 6; c++) {
           const row = h[r] as number[];
@@ -111,25 +129,15 @@ export function estimate(
   };
   for (let iter = 0; iter < 50; iter++) {
     const grad = theta.map((t) => -prior * t);
-    for (const ch of choices) {
-      const scene = sceneById(bank, ch.sceneId);
-      for (const id of [...ch.picked, ...ch.loved])
-        if (!scene.options.some((o) => o.id === id))
-          throw new Error(`Unknown option ${id} in ${ch.sceneId}`);
-      if (ch.loved.some((id) => !ch.picked.includes(id)))
-        throw new Error(`A loved option must also be picked in ${ch.sceneId}`);
-      for (const [level, chosen] of [
-        ['pick', ch.picked],
-        ['love', ch.loved],
-      ] as const) {
-        const p = pickProbabilities(scene, theta, config, level);
-        scene.options.forEach((o, j) => {
-          const y = chosen.includes(o.id) ? 1 : 0;
-          const w = vec(o.loads);
-          for (let k = 0; k < 6; k++)
-            grad[k] = (grad[k] as number) + config.beta * (y - (p[j] as number)) * (w[k] as number);
-        });
-      }
+    for (const { scene, n } of obs) {
+      const p = flaskProbabilities(scene, theta, config);
+      scene.options.forEach((o, j) => {
+        const w = vec(o.loads);
+        for (let k = 0; k < 6; k++)
+          grad[k] =
+            (grad[k] as number) +
+            config.beta * ((n[j] as number) - FLASKS * (p[j] as number)) * (w[k] as number);
+      });
     }
     const step = solve(hessianAt(theta), grad);
     theta = theta.map((t, k) => t + (step[k] as number));
@@ -160,8 +168,7 @@ export function codeSeparation(post: Posterior): number {
 
 /**
  * Next stop: the unanswered one whose outcome is expected to tell us most,
- * tr(Σ·I) (posterior covariance times the stop's information). Ties go to the
- * earlier stop so the order is reproducible.
+ * tr(Σ·I). Ties go to the earlier stop so the order is reproducible.
  */
 export function nextScene(
   bank: SceneBank,
@@ -169,7 +176,7 @@ export function nextScene(
   config: Config = JOURNEY_CONFIG,
   posterior?: Posterior,
 ): Scene | null {
-  const answered = new Set(choices.map((c) => c.sceneId));
+  const answered = new Set(choices.map((c) => c.echoOf ?? c.sceneId));
   const left = bank.scenes.filter((s) => !answered.has(s.id));
   if (left.length === 0) return null;
   const post = posterior ?? estimate(bank, choices, config);
@@ -196,7 +203,8 @@ export function shouldStop(
   config: Config = JOURNEY_CONFIG,
   posterior?: Posterior,
 ): boolean {
-  if (choices.length >= bank.scenes.length) return true;
-  if (choices.length < config.minStops) return false;
+  const fresh = choices.filter((c) => c.echoOf === undefined).length;
+  if (fresh >= bank.scenes.length) return true;
+  if (fresh < config.minStops) return false;
   return codeSeparation(posterior ?? estimate(bank, choices, config)) >= config.stopZ;
 }

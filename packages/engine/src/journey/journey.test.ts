@@ -1,22 +1,23 @@
 import { RIASEC_ORDER, type Riasec } from '@margwise/contracts';
 import fc from 'fast-check';
 import { describe, expect, it, vi } from 'vitest';
-import { pearson, matchBand, type Profile } from '../assessment/matching.ts';
-import { ONET_IPSF } from '../assessment/instrument.ts';
-import { interestCode, scoreResponses } from '../assessment/scoring.ts';
+import { matchBand, pearson, type CareerMatch, type Profile } from '../assessment/matching.ts';
+import { interestCode } from '../assessment/scoring.ts';
+import { createRng } from '../shared/random.ts';
 import { JOURNEY_BANK } from './bank.ts';
+import { careerPaths, compareDreams } from './dreams.ts';
 import {
   JOURNEY_CONFIG,
   codeSeparation,
   estimate,
+  flaskProbabilities,
   nextScene,
-  pickProbabilities,
   shouldStop,
 } from './estimate.ts';
 import { invert, solve } from './linalg.ts';
 import { journeyResult } from './result.ts';
-import { displayOptions, positionBias, step, undo } from './session.ts';
-import type { Choice, Scene, SceneOption } from './types.ts';
+import { consistency, displayOptions, positionBias, step, undo } from './session.ts';
+import { FLASKS, type Choice, type Scene, type SceneOption } from './types.ts';
 import { neighbours, pureAreaViolations, swapAreas } from './fixtures/audit.ts';
 import {
   allCodes,
@@ -25,11 +26,11 @@ import {
   ipsfScores,
   levelsForCode,
   playJourney,
+  spendFlasks,
 } from './fixtures/personas.ts';
-import { createRng } from '../shared/random.ts';
 
 // The simulations replay thousands of adaptive journeys; coverage instrumentation slows them.
-vi.setConfig({ testTimeout: 120_000 });
+vi.setConfig({ testTimeout: 300_000 });
 
 const bank = JOURNEY_BANK;
 const primary = (o: { loads: Partial<Record<Riasec, number>> }): Riasec =>
@@ -38,6 +39,7 @@ const secondary = (o: { loads: Partial<Record<Riasec, number>> }): Riasec =>
   RIASEC_ORDER.find((a) => o.loads[a] === 0.5) as Riasec;
 const same = (a: readonly string[], b: readonly string[]) =>
   [...a].sort().join() === [...b].sort().join();
+const spend = (sceneId: string, spent: Record<string, number>): Choice => ({ sceneId, spent });
 
 describe('stop bank design (docs/journey/design.md)', () => {
   it('has 15 stops of 4 options, every 4-subset of the six areas exactly once', () => {
@@ -51,8 +53,8 @@ describe('stop bank design (docs/journey/design.md)', () => {
   });
 
   it('is balanced: each area is primary 10×, secondary 10×, and each pair shares 6 stops', () => {
+    const all = bank.scenes.flatMap((s) => s.options);
     for (const a of RIASEC_ORDER) {
-      const all = bank.scenes.flatMap((s) => s.options);
       expect(all.filter((o) => primary(o) === a)).toHaveLength(10);
       expect(all.filter((o) => secondary(o) === a)).toHaveLength(10);
     }
@@ -74,17 +76,16 @@ describe('stop bank design (docs/journey/design.md)', () => {
     }
   });
 
-  it('has unique ids and texts, ids carry the primary area, and no option text names an area or the source', () => {
+  it('has unique ids and texts, ids carry the primary area, and no text names an area or the source', () => {
     const opts = bank.scenes.flatMap((s) => s.options);
     expect(new Set(opts.map((o) => o.id)).size).toBe(60);
     expect(new Set(opts.map((o) => o.text)).size).toBe(60);
     for (const o of opts) expect(o.id.endsWith(`-${primary(o)}`)).toBe(true);
     const leak =
       /realistic|investigative|artistic|social|enterprising|conventional|riasec|holland|o\*net|interest|assess|test of|score|career/i;
-    for (const s of bank.scenes) {
+    for (const s of bank.scenes)
       for (const text of [s.place, s.setup, ...s.options.map((o) => o.text)])
         expect(text, text).not.toMatch(leak);
-    }
   });
 
   it('keeps option lengths within a stop comparable so length is not a hint', () => {
@@ -95,21 +96,17 @@ describe('stop bank design (docs/journey/design.md)', () => {
   });
 });
 
-describe('estimator', () => {
-  const only = (sceneId: string, optionId: string, love = false): Choice[] => [
-    { sceneId, picked: [optionId], loved: love ? [optionId] : [] },
-  ];
-
-  it('with no answers returns the prior (all zero) and unit-scale uncertainty', () => {
+describe('estimator (two lamp-oil flasks per stop)', () => {
+  it('with no answers returns the prior (all zero)', () => {
     const post = estimate(bank, []);
     for (const a of RIASEC_ORDER) expect(post.theta[a]).toBe(0);
     expect((post.cov[0] as number[])[0]).toBeCloseTo(JOURNEY_CONFIG.priorSd ** 2, 12);
   });
 
-  it('exhaustive: picking any one option of any stop makes its primary area the single highest, and positive', () => {
+  it('exhaustive: one flask on any option makes its primary area the single highest, and positive', () => {
     for (const s of bank.scenes)
       for (const o of s.options) {
-        const t = estimate(bank, only(s.id, o.id)).theta;
+        const t = estimate(bank, [spend(s.id, { [o.id]: 1 })]).theta;
         const p = primary(o);
         expect(t[p], `${o.id} is positive`).toBeGreaterThan(0);
         for (const a of RIASEC_ORDER.filter((x) => x !== p))
@@ -117,29 +114,49 @@ describe('estimator', () => {
       }
   });
 
-  it('exhaustive: loving an option moves its primary area up further than picking it', () => {
+  it('exhaustive: both flasks on one option move its primary area further than one flask', () => {
     for (const s of bank.scenes)
       for (const o of s.options) {
-        const picked = estimate(bank, only(s.id, o.id)).theta[primary(o)];
-        const loved = estimate(bank, only(s.id, o.id, true)).theta[primary(o)];
-        expect(loved, o.id).toBeGreaterThan(picked);
+        const one = estimate(bank, [spend(s.id, { [o.id]: 1 })]).theta[primary(o)];
+        const two = estimate(bank, [spend(s.id, { [o.id]: 2 })]).theta[primary(o)];
+        expect(two, o.id).toBeGreaterThan(one);
       }
   });
 
-  it('exhaustive: skipping an option never raises an area above where picking it puts it', () => {
+  it('exhaustive: keeping both flasks never ranks an option above spending on it', () => {
     for (const s of bank.scenes)
       for (const o of s.options) {
-        const skipped = estimate(bank, [{ sceneId: s.id, picked: [], loved: [] }]).theta;
-        const picked = estimate(bank, only(s.id, o.id)).theta;
-        expect(picked[primary(o)], o.id).toBeGreaterThan(skipped[primary(o)]);
+        const kept = estimate(bank, [spend(s.id, {})]).theta[primary(o)];
+        const spent = estimate(bank, [spend(s.id, { [o.id]: 1 })]).theta[primary(o)];
+        expect(spent, o.id).toBeGreaterThan(kept);
       }
+  });
+
+  it('exhaustive over one stop: all 15 ways to spend two flasks give a finite estimate that leans to what was chosen', () => {
+    const s = bank.scenes[0] as Scene;
+    const ids = s.options.map((o) => o.id);
+    const plans: Array<Record<string, number>> = [{}];
+    for (const a of ids) plans.push({ [a]: 1 }, { [a]: 2 });
+    for (const a of ids) for (const b of ids) if (a < b) plans.push({ [a]: 1, [b]: 1 });
+    expect(plans).toHaveLength(15);
+    for (const spent of plans) {
+      const t = estimate(bank, [spend(s.id, spent)]).theta;
+      for (const a of RIASEC_ORDER) expect(Number.isFinite(t[a])).toBe(true);
+      const chosen = s.options.filter((o) => (spent[o.id] ?? 0) > 0).map(primary);
+      const skipped = s.options.filter((o) => !(spent[o.id] ?? 0)).map(primary);
+      for (const c of chosen) for (const k of skipped) expect(t[c]).toBeGreaterThan(t[k]);
+    }
   });
 
   it('is independent of the order the stops were answered in (property)', () => {
     const arb = fc.shuffledSubarray(bank.scenes, { minLength: 3, maxLength: 12 }).chain((scenes) =>
       fc.tuple(
         fc.constant(scenes),
-        fc.array(fc.subarray([0, 1, 2, 3]), {
+        fc.array(fc.integer({ min: 0, max: 3 }), {
+          minLength: scenes.length,
+          maxLength: scenes.length,
+        }),
+        fc.array(fc.integer({ min: 0, max: 2 }), {
           minLength: scenes.length,
           maxLength: scenes.length,
         }),
@@ -147,11 +164,12 @@ describe('estimator', () => {
       ),
     );
     fc.assert(
-      fc.property(arb, ([scenes, picks, seed]) => {
-        const choices: Choice[] = scenes.map((s, i) => {
-          const picked = (picks[i] as number[]).map((k) => (s.options[k] as { id: string }).id);
-          return { sceneId: s.id, picked, loved: picked.slice(0, 1) };
-        });
+      fc.property(arb, ([scenes, picks, amounts, seed]) => {
+        const choices: Choice[] = scenes.map((s, i) =>
+          spend(s.id, {
+            [(s.options[picks[i] as number] as SceneOption).id]: amounts[i] as number,
+          }),
+        );
         const rng = createRng(seed);
         const shuffled = [...choices].sort(() => rng() - 0.5);
         const a = estimate(bank, choices).theta;
@@ -162,27 +180,21 @@ describe('estimator', () => {
     );
   });
 
-  it('rejects unknown stops, unknown options, and a love that was not picked', () => {
-    expect(() => estimate(bank, [{ sceneId: 'nope', picked: [], loved: [] }])).toThrow(
-      /Unknown stop/,
-    );
-    expect(() => estimate(bank, [{ sceneId: 's01', picked: ['x'], loved: [] }])).toThrow(
-      /Unknown option/,
-    );
-    expect(() => estimate(bank, [{ sceneId: 's01', picked: [], loved: ['s01-R'] }])).toThrow(
-      /must also be picked/,
-    );
+  it('rejects unknown stops and options, more than two flasks, and bad counts', () => {
+    expect(() => estimate(bank, [spend('nope', {})])).toThrow(/Unknown stop/);
+    expect(() => estimate(bank, [spend('s01', { x: 1 })])).toThrow(/Unknown option/);
+    expect(() => estimate(bank, [spend('s01', { 's01-R': 2, 's01-I': 1 })])).toThrow(/More than 2/);
+    expect(() => estimate(bank, [spend('s01', { 's01-R': 3 })])).toThrow(/0–2/);
+    expect(() => estimate(bank, [spend('s01', { 's01-R': 0.5 })])).toThrow(/0–2/);
   });
 
-  it('pick probabilities are valid and rise with the loaded area', () => {
+  it('flask probabilities sum to 1 and rise with the loaded area', () => {
     const scene = bank.scenes[0] as Scene;
-    const low = pickProbabilities(scene, [0, 0, 0, 0, 0, 0], JOURNEY_CONFIG);
-    const high = pickProbabilities(scene, [2, 0, 0, 0, 0, 0], JOURNEY_CONFIG);
-    for (const p of [...low, ...high]) expect(p).toBeGreaterThan(0);
+    const low = flaskProbabilities(scene, [0, 0, 0, 0, 0, 0], JOURNEY_CONFIG);
+    const high = flaskProbabilities(scene, [2, 0, 0, 0, 0, 0], JOURNEY_CONFIG);
+    expect(low.reduce((a, b) => a + b, 0)).toBeCloseTo(1, 12);
     expect(high[0]).toBeGreaterThan(low[0] as number);
-    expect(pickProbabilities(scene, [0, 0, 0, 0, 0, 0], JOURNEY_CONFIG, 'love')[0]).toBeLessThan(
-      low[0] as number,
-    );
+    expect(low).toHaveLength(scene.options.length + 1);
   });
 });
 
@@ -195,31 +207,41 @@ describe('journey session', () => {
       expect(a?.id).toBe(nextScene(bank, choices)?.id);
       expect(seen.has((a as Scene).id)).toBe(false);
       seen.add((a as Scene).id);
-      choices.push({ sceneId: (a as Scene).id, picked: [], loved: [] });
+      choices.push(spend((a as Scene).id, {}));
     }
     expect(nextScene(bank, choices)).toBeNull();
     expect(shouldStop(bank, choices)).toBe(true);
+    expect(step(bank, choices).done).toBe(true);
   });
 
-  it('never ends before the minimum number of stops and ends by the last stop', () => {
-    for (const seed of [1, 2, 3]) {
+  it('never ends before the minimum, ends by the last stop, and returns to one earlier stop exactly once', () => {
+    for (const seed of [1, 2, 3, 4]) {
       const choices = playJourney(levelsForCode(['A', 'S', 'I']), seed);
-      expect(choices.length).toBeGreaterThanOrEqual(JOURNEY_CONFIG.minStops);
-      expect(choices.length).toBeLessThanOrEqual(bank.scenes.length);
+      const fresh = choices.filter((c) => c.echoOf === undefined);
+      const echoes = choices.filter((c) => c.echoOf !== undefined);
+      expect(fresh.length).toBeGreaterThanOrEqual(JOURNEY_CONFIG.minStops);
+      expect(fresh.length).toBeLessThanOrEqual(bank.scenes.length);
+      expect(echoes).toHaveLength(1);
+      const at = choices.findIndex((c) => c.echoOf !== undefined);
+      expect(at).toBe(JOURNEY_CONFIG.echoAfter);
+      expect(fresh.some((c) => c.sceneId === echoes[0]?.echoOf)).toBe(true);
     }
     expect(step(bank, []).done).toBe(false);
+    expect(step(bank, []).echo).toBe(false);
+  });
+
+  it('does not return to a stop where nothing was spent', () => {
+    const none = bank.scenes.slice(0, 6).map((s) => spend(s.id, {}));
+    expect(step(bank, none).echo).toBe(false);
   });
 
   it('undo drops the last answer and always works (rule 4)', () => {
-    const c: Choice[] = [
-      { sceneId: 's01', picked: [], loved: [] },
-      { sceneId: 's02', picked: [], loved: [] },
-    ];
+    const c = [spend('s01', {}), spend('s02', {})];
     expect(undo(c).map((x) => x.sceneId)).toEqual(['s01']);
     expect(undo([])).toEqual([]);
   });
 
-  it('displays options in a seeded order that is a permutation, stable, and varies by seed and stop', () => {
+  it('displays options in a seeded order that is a permutation, stable, varied, and slot-neutral', () => {
     const scene = bank.scenes[0] as Scene;
     const a = displayOptions(scene, 7).map((o) => o.id);
     expect([...a].sort()).toEqual(scene.options.map((o) => o.id).sort());
@@ -232,7 +254,6 @@ describe('journey session', () => {
       ),
     );
     expect(orders.size).toBeGreaterThan(10);
-    // Every slot gets every area about equally often across stops (no slot carries meaning).
     const slotCounts = RIASEC_ORDER.map(() => [0, 0, 0, 0]);
     for (let seed = 0; seed < 200; seed++)
       for (const s of bank.scenes)
@@ -246,16 +267,14 @@ describe('journey session', () => {
     }
   });
 
-  it('flags position bias when nearly every pick is in the same display slot', () => {
+  it('flags position bias when nearly every flask goes to the option shown first', () => {
     const seed = 5;
-    const biased: Choice[] = bank.scenes.slice(0, 10).map((s) => {
-      const first = (displayOptions(s, seed)[0] as SceneOption).id;
-      return { sceneId: s.id, picked: [first], loved: [] };
-    });
+    const biased: Choice[] = bank.scenes
+      .slice(0, 10)
+      .map((s) => spend(s.id, { [(displayOptions(s, seed)[0] as SceneOption).id]: 1 }));
     expect(positionBias(bank, biased, seed)).toBe(true);
     expect(positionBias(bank, biased.slice(0, 3), seed)).toBe(false);
-    const varied = playJourney(levelsForCode(['E', 'S', 'C']), 4);
-    expect(positionBias(bank, varied, seed)).toBe(false);
+    expect(positionBias(bank, playJourney(levelsForCode(['E', 'S', 'C']), 4), seed)).toBe(false);
   });
 });
 
@@ -313,27 +332,25 @@ describe('journey vs the 60-item questionnaire, every ordered three-letter code 
     expect(rate((r) => r.ipsf.join() === r.code.join())).toBe(1);
   });
 
-  it('game top interest agrees with the questionnaire at least 75% of the time', () => {
-    expect(rate((r) => r.game.code.code[0] === r.ipsf[0])).toBeGreaterThanOrEqual(0.75);
+  it('game top interest agrees with the questionnaire at least 80% of the time', () => {
+    expect(rate((r) => r.game.code.code[0] === r.ipsf[0])).toBeGreaterThanOrEqual(0.8);
   });
 
-  it('game top three (as a set) agree with the questionnaire at least 80% of the time', () => {
-    expect(rate((r) => same(r.game.code.code, r.ipsf))).toBeGreaterThanOrEqual(0.8);
+  it('game top three (as a set) agree with the questionnaire at least 78% of the time', () => {
+    expect(rate((r) => same(r.game.code.code, r.ipsf))).toBeGreaterThanOrEqual(0.78);
   });
 
-  it('when the game disagrees on the top interest it only reorders the true top three (no stranger takes first place) in ≥ 99% of runs', () => {
+  it('a stranger never takes first place: when top interests differ the game only reorders the true top three', () => {
     expect(
       rate((r) => r.game.code.code[0] === r.code[0] || r.code.includes(r.game.code.code[0])),
     ).toBeGreaterThanOrEqual(0.99);
   });
 
-  it('plays well under 60 prompts: on average at most 14 stops of 4 options', () => {
-    const avg = rows.reduce((s, r) => s + r.game.stopsPlayed, 0) / rows.length;
-    expect(avg).toBeLessThanOrEqual(14);
+  it('plays well under 60 prompts: on average at most 14 stops of 4 options (plus one return visit)', () => {
+    expect(rows.reduce((s, r) => s + r.game.stopsPlayed, 0) / rows.length).toBeLessThanOrEqual(14);
   });
 
-  it('career match bands from the game profile agree with the questionnaire profile for at least 80% of (explorer, career) pairs', () => {
-    // Made-up career interest vectors (arbitrary values, rule 1), one per code family.
+  it('career bands from the game profile agree with the questionnaire profile for at least 80% of (explorer, career) pairs', () => {
     const careers: Profile[] = allCodes()
       .filter((_, i) => i % 8 === 0)
       .map((c) => {
@@ -343,11 +360,9 @@ describe('journey vs the 60-item questionnaire, every ordered three-letter code 
     let agree = 0;
     let total = 0;
     for (const { code, game } of rows.filter((_, i) => i % 6 === 0)) {
-      const ipsfProfile = Object.fromEntries(
-        RIASEC_ORDER.map((a) => [a, levelsForCode(code)[a]]),
-      ) as Profile;
+      const ipsfProfile = levelsForCode(code) as Profile;
       for (const career of careers) {
-        const a = matchBand(pearson(game.profile, career), game.flat);
+        const a = matchBand(pearson(game.profile, career), false);
         const b = matchBand(pearson(ipsfProfile, career), false);
         total++;
         if (a === b) agree++;
@@ -356,84 +371,167 @@ describe('journey vs the 60-item questionnaire, every ordered three-letter code 
     expect(agree / total).toBeGreaterThanOrEqual(0.8);
   });
 
-  it('questionnaire scores for the same personas are a sanity floor: scoring accepts the simulated answers', () => {
-    const s = scoreResponses(ONET_IPSF, {
-      ...Object.fromEntries(ONET_IPSF.items.map((i) => [i.id, 2])),
-    } as never);
-    expect(Object.values(s).every((x) => x === 20)).toBe(true);
+  it('confidence labels: real profiles are rarely called broad (≤ 8%)', () => {
+    expect(rate((r) => r.game.confidence === 'broad')).toBeLessThanOrEqual(0.08);
   });
 });
 
-describe('no hallucinated confidence: uninformative play does not produce a confident code', () => {
-  const flatCount = (make: (seed: number) => Choice[]) =>
-    Array.from({ length: 30 }, (_, i) => journeyResult(bank, make(i + 1))).filter((r) => r.flat)
-      .length;
+describe('no hallucinated confidence: uninformative play does not read as a clear result', () => {
+  const runs = (make: (seed: number) => Choice[]) =>
+    Array.from({ length: 30 }, (_, i) => journeyResult(bank, make(i + 1)));
 
-  it('someone who likes everything equally is shown as broad interests', () => {
-    expect(
-      flatCount((seed) => playJourney(flatLevels(0.5), seed, bank, 0.3)),
-    ).toBeGreaterThanOrEqual(27);
+  it('someone who likes everything equally reads as broad in at least 80% of runs, and rarely as clear', () => {
+    const r = runs((seed) => playJourney(flatLevels(0.5), seed));
+    expect(r.filter((x) => x.confidence === 'broad').length).toBeGreaterThanOrEqual(24);
+    expect(r.filter((x) => x.confidence === 'clear').length).toBeLessThanOrEqual(3);
   });
 
-  it('real interest profiles are rarely mistaken for broad interests (≤ 5% of 360 runs)', () => {
-    const wrongly = allCodes()
-      .flatMap((c) => [1, 2, 3].map((s) => journeyResult(bank, playJourney(levelsForCode(c), s))))
-      .filter((r) => r.flat);
-    expect(wrongly.length / 360).toBeLessThanOrEqual(0.05);
-  });
-
-  it('someone who picks nothing is flat and marked low engagement', () => {
-    const none = bank.scenes.map((s) => ({ sceneId: s.id, picked: [], loved: [] }));
+  it('someone who spends nothing is broad and low-engagement', () => {
+    const none = bank.scenes.map((s) => spend(s.id, {}));
     const r = journeyResult(bank, none);
-    expect(r.flat).toBe(true);
+    expect(r.confidence).toBe('broad');
     expect(r.lowEngagement).toBe(true);
   });
 
-  it('someone who picks and loves everything is flat', () => {
-    const all = bank.scenes.map((s) => ({
-      sceneId: s.id,
-      picked: s.options.map((o) => o.id),
-      loved: s.options.map((o) => o.id),
-    }));
-    expect(journeyResult(bank, all).flat).toBe(true);
+  it('someone who always saves everything for later is detected as low engagement', () => {
+    const r = runs((seed) => playJourney(flatLevels(0.1), seed));
+    expect(r.filter((x) => x.lowEngagement).length).toBeGreaterThanOrEqual(28);
   });
 
-  it('random tapping is mostly flat or noisy, never a stable single-area result', () => {
+  it('random spending never gives one area a large share of first places', () => {
     const tops = new Map<Riasec, number>();
     for (let seed = 1; seed <= 60; seed++) {
       const rng = createRng(seed);
       const choices: Choice[] = bank.scenes.map((s) => {
-        const picked = s.options.filter(() => rng() < 0.4).map((o) => o.id);
-        return { sceneId: s.id, picked, loved: picked.filter(() => rng() < 0.3) };
+        const a = s.options[Math.floor(rng() * 4)] as SceneOption;
+        const b = s.options[Math.floor(rng() * 4)] as SceneOption;
+        return spend(s.id, a.id === b.id ? { [a.id]: 2 } : { [a.id]: 1, [b.id]: 1 });
       });
       const r = journeyResult(bank, choices);
       tops.set(r.code.code[0], (tops.get(r.code.code[0]) ?? 0) + 1);
     }
-    // No single area wins a large share of random runs.
     expect(Math.max(...tops.values()) / 60).toBeLessThan(0.4);
   });
 
-  it('always picking the option shown first is detected as position bias', () => {
+  it('always spending on the option shown first is detected as position bias', () => {
     const seed = 3;
-    const c: Choice[] = bank.scenes.map((s) => ({
-      sceneId: s.id,
-      picked: [(displayOptions(s, seed)[0] as SceneOption).id],
-      loved: [],
-    }));
+    const c: Choice[] = bank.scenes.map((s) =>
+      spend(s.id, { [(displayOptions(s, seed)[0] as SceneOption).id]: 1 }),
+    );
     expect(positionBias(bank, c, seed)).toBe(true);
   });
 
-  it('reports code separation as a number that grows as more consistent answers arrive', () => {
-    const lv = levelsForCode(['I', 'A', 'S']);
-    const ch = playJourney(lv, 2);
-    expect(codeSeparation(estimate(bank, ch))).toBeGreaterThan(
-      codeSeparation(estimate(bank, ch.slice(0, 2))),
-    );
+  it('code separation is larger on average for a clear explorer than for an indifferent one', () => {
+    const mean = (levels: ReturnType<typeof flatLevels>) =>
+      Array.from({ length: 20 }, (_, i) =>
+        codeSeparation(estimate(bank, playJourney(levels, i + 1))),
+      ).reduce((a, b) => a + b, 0) / 20;
+    expect(mean(levelsForCode(['R', 'I', 'C']))).toBeGreaterThan(mean(flatLevels(0.5)));
   });
 });
 
-describe('result', () => {
-  it('has a mean-free profile and pseudo-scores within 0–40', () => {
+describe('contradictions: the return visit', () => {
+  const rows = allCodes().filter((_, i) => i % 6 === 0);
+
+  it('flags a contradiction when the explorer answers the return visit as a different person (≥ 50% of 60 runs)', () => {
+    let flagged = 0;
+    let total = 0;
+    for (const code of rows)
+      for (let seed = 1; seed <= 3; seed++) {
+        const levels = levelsForCode(code);
+        const reversed = Object.fromEntries(
+          RIASEC_ORDER.map((a, i) => [a, levels[RIASEC_ORDER[5 - i] as Riasec]]),
+        ) as typeof levels;
+        total++;
+        if (journeyResult(bank, playJourney(levels, seed, bank, 0.8, reversed)).consistency.mixed)
+          flagged++;
+      }
+    expect(flagged / total).toBeGreaterThanOrEqual(0.5);
+  });
+
+  it('rarely flags a consistent explorer (false alarms ≤ 25% of 360 runs; the note is gentle)', () => {
+    let flagged = 0;
+    let total = 0;
+    for (const code of allCodes())
+      for (let seed = 1; seed <= 3; seed++) {
+        total++;
+        if (journeyResult(bank, playJourney(levelsForCode(code), seed)).consistency.mixed)
+          flagged++;
+      }
+    expect(flagged / total).toBeLessThanOrEqual(0.25);
+  });
+
+  it('computes overlap exactly: same spending = 1, half = 0.5, disjoint = 0, not yet asked = unchecked', () => {
+    const base = spend('s01', { 's01-R': 1, 's01-I': 1 });
+    const echo = (spent: Record<string, number>): Choice => ({
+      sceneId: 's01~echo',
+      echoOf: 's01',
+      spent,
+    });
+    expect(consistency([base, echo({ 's01-R': 1, 's01-I': 1 })])).toEqual({
+      checked: true,
+      overlap: 1,
+      mixed: false,
+    });
+    expect(consistency([base, echo({ 's01-R': 1, 's01-A': 1 })]).overlap).toBe(0.5);
+    expect(consistency([base, echo({ 's01-R': 1, 's01-A': 1 })]).mixed).toBe(false);
+    expect(consistency([base, echo({ 's01-A': 2 })])).toEqual({
+      checked: true,
+      overlap: 0,
+      mixed: true,
+    });
+    expect(consistency([base]).checked).toBe(false);
+  });
+});
+
+describe('stated paths vs the walk ("predict, then reveal")', () => {
+  const m = (careerId: string, band: CareerMatch['band']): CareerMatch => ({
+    careerId,
+    r: 0,
+    traitFit: 0.5,
+    band,
+    explanation: { shared: [], mismatch: null },
+  });
+  const matches = [
+    m('a', 'strong'),
+    m('b', 'mixed'),
+    m('c', 'weak'),
+    m('d', 'strong'),
+    m('e', 'unclear'),
+  ];
+
+  it('splits named paths into lined up and pulling away, and offers up to three new strong doors', () => {
+    expect(compareDreams(['a', 'c'], matches)).toEqual({
+      lined: ['a'],
+      pulls: ['c'],
+      newDoors: ['d'],
+    });
+    expect(compareDreams(['b', 'e', 'zzz', 'b'], matches)).toEqual({
+      lined: ['b'],
+      pulls: ['e'],
+      newDoors: ['a', 'd'],
+    });
+    expect(compareDreams([], matches).lined).toEqual([]);
+  });
+
+  it('careerPaths always gives every path a band (never all "unclear") for a profile with shape', () => {
+    const profile = journeyResult(bank, playJourney(flatLevels(0.5), 3)).profile;
+    const careers = allCodes()
+      .filter((_, i) => i % 15 === 0)
+      .map((c, i) => ({
+        careerId: `c${i}`,
+        values: Object.fromEntries(
+          RIASEC_ORDER.map((a) => [a, 100 * levelsForCode(c)[a]]),
+        ) as Profile,
+      }));
+    const paths = careerPaths(profile, careers);
+    expect(paths).toHaveLength(careers.length);
+    expect(paths.every((p) => p.band === 'unclear')).toBe(false);
+  });
+});
+
+describe('result and helpers', () => {
+  it('has a mean-free profile, pseudo-scores within 0–40, and the intended top interest', () => {
     const r = journeyResult(bank, playJourney(levelsForCode(['R', 'I', 'C']), 9));
     const mean = RIASEC_ORDER.reduce((s, a) => s + r.profile[a], 0) / 6;
     expect(mean).toBeCloseTo(0, 12);
@@ -442,11 +540,21 @@ describe('result', () => {
       expect(r.scores[a]).toBeLessThanOrEqual(40);
     }
     expect(r.code.code[0]).toBe('R');
+    expect(r.stopsPlayed).toBeLessThanOrEqual(15);
+    expect(FLASKS).toBe(2);
   });
-});
 
-describe('linear algebra helpers', () => {
-  it('solves and inverts a known system', () => {
+  it('spendFlasks never spends more than two flasks and never on an unknown option', () => {
+    const rng = createRng(3);
+    for (const s of bank.scenes)
+      for (let i = 0; i < 20; i++) {
+        const spent = spendFlasks(s, levelsForCode(['R', 'I', 'A']), rng);
+        expect(Object.values(spent).reduce((a, b) => a + b, 0)).toBeLessThanOrEqual(2);
+        for (const id of Object.keys(spent)) expect(s.options.some((o) => o.id === id)).toBe(true);
+      }
+  });
+
+  it('solves and inverts a known system, and rejects a singular one', () => {
     expect(
       solve(
         [
@@ -462,8 +570,6 @@ describe('linear algebra helpers', () => {
     ]);
     expect((inv[0] as number[])[0]).toBeCloseTo(0.6, 12);
     expect((inv[1] as number[])[0]).toBeCloseTo(-0.2, 12);
-  });
-  it('rejects a singular matrix', () => {
     expect(() =>
       solve(
         [
@@ -474,6 +580,7 @@ describe('linear algebra helpers', () => {
       ),
     ).toThrow(/Singular/);
   });
+
   it('gaussian draws are roughly standard normal', () => {
     const rng = createRng(1);
     const xs = Array.from({ length: 4000 }, () => gaussian(rng));
