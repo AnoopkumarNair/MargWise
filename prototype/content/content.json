@@ -320,11 +320,11 @@
     "state": "Any stream. Humanities is common."
    },
    "exams": "CLAT for National Law Universities, AILET for NLU Delhi, and CUET and university tests for other law schools.",
-   "degree": "5-year integrated BA LLB, BBA LLB or BCom LLB, or a 3-year LLB after any degree. Judicial services: the state judicial services exam after LLB, which now needs a minimum period of legal practice.",
+   "degree": "5-year integrated BA LLB, BBA LLB or BCom LLB, or a 3-year LLB after any degree. Judicial services: the state judicial services exam after LLB, where the practice requirement has been changing. Check the notice for your state.",
    "early": "Join debate or Model UN. Read a news story and argue both sides.",
    "note": "",
    "verify": [
-    "In May 2025 the Supreme Court made 3 years of practice a condition for the Civil Judge exam. Law-news sites report it was reduced to 1 year in August 2026, with relief for notifications issued up to 31 March 2027. These are secondary reports. Read the judgment and your state notice."
+    "In May 2025 the Supreme Court made 3 years of practice a condition for the Civil Judge exam. Law-news sites report a change in August 2026, with relief for notifications issued up to 31 March 2027. These are secondary reports. Read the judgment and your state High Court notice."
    ],
    "sources": [
     {
@@ -409,7 +409,7 @@
     "isc": "Any stream. Political Science, History, Geography and Economics help for civil services.",
     "state": "Any stream."
    },
-   "exams": "UPSC Civil Services after any graduation degree. State public service exams. NDA (UPSC) right after Class 12: the Army wing accepts any stream, while the Air Force and Naval wings need Science with Maths (the 2026 UPSC notice lists Physics, Chemistry and Maths for the Naval Academy scheme). CDS after graduation. State police and SSC exams.",
+   "exams": "UPSC Civil Services after any graduation degree. State public service exams. NDA (UPSC) right after Class 12: the Army wing accepts any stream, while the Air Force and Naval wings need Physics, Chemistry and Maths in Class 12 (UPSC 2026 notice). CDS after graduation. State police and SSC exams.",
    "degree": "Any degree for civil services. Policy and planning paths: BA in Political Science, Economics or Geography, then MA or MPP. Urban planning has its own degree.",
    "early": "Follow current affairs, join NCC or Model UN, or help with a local civic project.",
    "note": "",
@@ -1439,7 +1439,7 @@
   },
   {
    "id": "psy-1",
-   "title": "Clinical Psychologist",
+   "title": "Clinical or Counselling Psychologist",
    "field": "psy",
    "soc": "19-3033.00",
    "values": {
@@ -1450,7 +1450,7 @@
     "E": 28,
     "R": 1
    },
-   "line": "Helps people with serious mental-health conditions, through assessment and therapy.",
+   "line": "Helps people with mental-health conditions, stress and life choices, through assessment and therapy.",
    "us": {
     "annual": 100580,
     "hourly": 48.36,
@@ -1517,6 +1517,7 @@
     "S": 19
    },
    "line": "Finds out how people use apps and products so designers can fix what frustrates them.",
+   "mapNote": "Mapped to Human Factors Engineers and Ergonomists (nearest match).",
    "us": {
     "annual": 102440,
     "hourly": 49.25,
@@ -1702,7 +1703,7 @@
   },
   {
    "id": "pub-1",
-   "title": "Policy Analyst (Political Scientist)",
+   "title": "Political Scientist or Policy Analyst",
    "field": "pub",
    "soc": "19-3094.00",
    "values": {
@@ -1714,6 +1715,7 @@
     "R": 0
    },
    "line": "Studies how government decisions work and advises on better ones.",
+   "mapNote": "Policy work is mapped to Political Scientists, an approximate match.",
    "us": {
     "annual": 142080,
     "hourly": 68.31,
@@ -2374,8 +2376,119 @@
     "openings": 68000,
     "wageYear": 2025
    }
+  },
+  {
+   "id": "pub-5",
+   "title": "Civil Services Officer (administration)",
+   "field": "pub",
+   "soc": "11-3012.00",
+   "values": {
+    "E": 91,
+    "C": 88,
+    "S": 46,
+    "I": 19,
+    "R": 7,
+    "A": 2
+   },
+   "line": "Runs government offices and programmes. The closest O*NET match for IAS and other civil-service administration roles; the job itself differs a lot.",
+   "mapNote": "Closest O*NET match, not an exact one.",
+   "us": {
+    "annual": 114130,
+    "hourly": 54.87,
+    "growth": "Faster than average",
+    "openings": 22000,
+    "wageYear": 2025
+   }
+  },
+  {
+   "id": "com-9",
+   "title": "Compliance or Company Secretary",
+   "field": "com",
+   "soc": "13-1041.00",
+   "values": {
+    "C": 89,
+    "E": 51,
+    "I": 35,
+    "S": 33,
+    "R": 25,
+    "A": 0
+   },
+   "line": "Makes sure a company follows laws and rules, and keeps its records in order.",
+   "us": {
+    "annual": 80730,
+    "hourly": 38.81,
+    "growth": "Average",
+    "openings": 32700,
+    "wageYear": 2025
+   }
+  },
+  {
+   "id": "doc-7",
+   "title": "Medical Laboratory Technologist",
+   "field": "health",
+   "soc": "29-2011.00",
+   "values": {
+    "I": 86,
+    "R": 80,
+    "C": 67,
+    "S": 30,
+    "E": 9,
+    "A": 2
+   },
+   "line": "Runs laboratory tests that help doctors find out what is wrong.",
+   "us": {
+    "annual": 62930,
+    "hourly": 30.26,
+    "growth": "Average",
+    "openings": 20800,
+    "wageYear": 2025
+   }
+  },
+  {
+   "id": "doc-8",
+   "title": "Radiologic Technologist",
+   "field": "health",
+   "soc": "29-2034.00",
+   "values": {
+    "R": 82,
+    "C": 68,
+    "I": 65,
+    "S": 40,
+    "A": 0,
+    "E": 0
+   },
+   "line": "Takes X-rays, CT scans and other medical images.",
+   "us": {
+    "annual": 80110,
+    "hourly": 38.52,
+    "growth": "Faster than average",
+    "openings": 13000,
+    "wageYear": 2025
+   }
+  },
+  {
+   "id": "law-3",
+   "title": "Forensic Science Technician",
+   "field": "law",
+   "soc": "19-4092.00",
+   "values": {
+    "I": 82,
+    "R": 70,
+    "C": 66,
+    "A": 13,
+    "E": 10,
+    "S": 8
+   },
+   "line": "Examines evidence from crime scenes in a laboratory, to help courts reach the truth.",
+   "us": {
+    "annual": 72060,
+    "hourly": 34.65,
+    "growth": "Much faster than average",
+    "openings": 2800,
+    "wageYear": 2025
+   }
   }
  ],
  "checked": "2026-10-21",
- "status": "DRAFT for counsellor review. Exam and admission facts were gathered from secondary sources and need checking against the official sites."
+ "status": "DRAFT for counsellor review. Career profiles and US pay are from O*NET (official). Some exam and admission facts were read from official notices; others come from news and education sites and are marked in each field. All need a counsellor check."
 }

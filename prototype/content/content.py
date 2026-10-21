@@ -71,9 +71,9 @@ dict(id='law',name='Law and justice',icon='⚖️',group='Humanities',stream='An
  pick='Any stream works. Humanities is the most common choice.',
  subjects=dict(cbse='English plus subjects that build reading and argument: Political Science, History, Legal Studies, Economics.',isc='English plus Political Science, History, Legal Studies, Economics or Psychology.',state='Any stream. Humanities is common.'),
  exams='CLAT for National Law Universities, AILET for NLU Delhi, and CUET and university tests for other law schools.',
- degree='5-year integrated BA LLB, BBA LLB or BCom LLB, or a 3-year LLB after any degree. Judicial services: the state judicial services exam after LLB, which now needs a minimum period of legal practice.',
+ degree='5-year integrated BA LLB, BBA LLB or BCom LLB, or a 3-year LLB after any degree. Judicial services: the state judicial services exam after LLB, where the practice requirement has been changing. Check the notice for your state.',
  early='Join debate or Model UN. Read a news story and argue both sides.',note='',
- verify=['In May 2025 the Supreme Court made 3 years of practice a condition for the Civil Judge exam. Law-news sites report it was reduced to 1 year in August 2026, with relief for notifications issued up to 31 March 2027. These are secondary reports. Read the judgment and your state notice.'],src=['clat','ailet','bci','onet']),
+ verify=['In May 2025 the Supreme Court made 3 years of practice a condition for the Civil Judge exam. Law-news sites report a change in August 2026, with relief for notifications issued up to 31 March 2027. These are secondary reports. Read the judgment and your state High Court notice.'],src=['clat','ailet','bci','onet']),
 dict(id='media',name='Media, writing and teaching',icon='✍️',group='Humanities',stream='Humanities (any stream is possible)',
  blurb='Telling stories, explaining ideas and teaching others.',areas=['A','S'],
  pick='Humanities is the usual choice, but any stream can lead here.',
@@ -86,7 +86,7 @@ dict(id='pub',name='Public service and defence',icon='🏛️',group='Humanities
  blurb='Running public systems and keeping people safe.',areas=['E','C','R'],
  pick='Any stream works. NDA after Class 12 has its own subject rules.',
  subjects=dict(cbse='Any stream. Political Science, History, Geography and Economics help for civil services.',isc='Any stream. Political Science, History, Geography and Economics help for civil services.',state='Any stream.'),
- exams='UPSC Civil Services after any graduation degree. State public service exams. NDA (UPSC) right after Class 12: the Army wing accepts any stream, while the Air Force and Naval wings need Science with Maths (the 2026 UPSC notice lists Physics, Chemistry and Maths for the Naval Academy scheme). CDS after graduation. State police and SSC exams.',
+ exams='UPSC Civil Services after any graduation degree. State public service exams. NDA (UPSC) right after Class 12: the Army wing accepts any stream, while the Air Force and Naval wings need Physics, Chemistry and Maths in Class 12 (UPSC 2026 notice). CDS after graduation. State police and SSC exams.',
  degree='Any degree for civil services. Policy and planning paths: BA in Political Science, Economics or Geography, then MA or MPP. Urban planning has its own degree.',
  early='Follow current affairs, join NCC or Model UN, or help with a local civic project.',note='',
  verify=['Check the current UPSC NDA notice for subjects, age and physical standards. Wings and schemes differ.'],src=['upsc','onet']),
@@ -145,9 +145,9 @@ BL={'doc-1':'Diagnoses and treats illness, from everyday problems to emergencies
 'com-1':'Keeps accounts honest: audit, tax and financial advice for businesses.','com-2':'Runs a team or starts a business: plans, people and money.','com-3':'Studies companies and markets to guide money decisions.','com-4':'Studies how money, jobs and prices work, and advises on policy.','com-5':'Decides how a product reaches people and what to say to them.','com-6':'Hires, trains and looks after the people in a company.',
 'des-1':'Shapes how apps and products look and feel to use.','des-2':'Designs buildings and spaces that are safe, useful and beautiful.','des-3':'Makes visuals that communicate: logos, posters, packaging.','des-4':'Designs clothes and accessories.','des-5':'Makes characters and worlds move, for films and games.','des-6':'Cuts footage into stories that people watch.','des-7':'Plans rooms and interiors that feel right to live in.',
 'psy-1':'Helps people with serious mental-health conditions, through assessment and therapy.','psy-2':'Talks with people about stress, relationships and life choices.','psy-3':'Supports students with studies, feelings and career choices.','psy-4':'Makes workplaces fairer, healthier and more effective.','psy-5':'Finds out how people use apps and products so designers can fix what frustrates them.',
-'law-1':'Advises companies on contracts, deals and rules.','law-2':'Hears cases and decides them fairly, after the state judicial exams.',
+'law-1':'Advises companies on contracts, deals and rules.','law-2':'Hears cases and decides them fairly, after the state judicial exams.','law-3':'Examines evidence from crime scenes in a laboratory, to help courts reach the truth.',
 'med-1':'Finds out what is happening and reports it clearly.','med-2':'Writes books, articles and scripts.','med-3':'Shapes how organisations talk to the public.','med-4':'Helps students learn, in school or college.','med-5':'Supports families and communities through hard times.','med-6':'Moves meaning between languages, in speech and in writing.',
-'pub-1':'Studies how government decisions work and advises on better ones.','pub-2':'Plans how towns and cities grow.','pub-3':'Keeps people safe and enforces the law.','pub-4':'Plans for and leads the response to floods, fires and other emergencies.',
+'pub-5':'Runs government offices and programmes. The closest O*NET match for IAS and other civil-service administration roles; the job itself differs a lot.','com-9':'Makes sure a company follows laws and rules, and keeps its records in order.','doc-7':'Runs laboratory tests that help doctors find out what is wrong.','doc-8':'Takes X-rays, CT scans and other medical images.','pub-1':'Studies how government decisions work and advises on better ones.','pub-2':'Plans how towns and cities grow.','pub-3':'Keeps people safe and enforces the law.','pub-4':'Plans for and leads the response to floods, fires and other emergencies.',
 'hos-1':'Flies passenger and cargo aircraft.','hos-2':'Creates food, leads a kitchen team.','hos-3':'Runs a hotel: guests, staff and money.','hos-4':'Keeps passengers safe and comfortable in the air.',
 'com-7':'Helps people and businesses borrow money, and checks the risk.','com-8':'Decides what risks an insurer will take and at what price.','agr-1':'Studies soil and crops to grow more food sustainably.','agr-2':'Studies farm animals to improve health and yield.','agr-3':'Looks after forests, and plans how to use and protect them.','agr-4':'Protects soil, water and wild land.','agr-5':'Runs a farm or an agri business: crops, people and money.','voc-1':'Installs and repairs electrical wiring and equipment.','voc-2':'Diagnoses and repairs cars and bikes.','voc-3':'Joins metal parts for buildings, vehicles and machines.','voc-4':'Tests and repairs electronic devices and systems.','voc-5':'Cuts and shapes metal parts on precision machines.','voc-6':'Supports engineers with surveys, drawings and site checks.','art-1':'Performs and records music.','art-2':'Plays roles on stage, screen and online.','art-3':'Performs and teaches dance.','art-4':'Leads the making of films, shows and productions.','art-5':'Captures images for people, news and brands.','mar-1':'Navigates and commands ships at sea.','mar-2':'Designs and keeps ship engines and systems running.','mar-3':'Plans how goods move from maker to buyer.','mar-4':'Manages the full chain of storage, transport and delivery.','spo-1':'Trains and competes at the highest level.','spo-2':'Trains athletes and teams, and builds their skills.','spo-3':'Helps people get fitter and healthier.'}
 careers=[]
@@ -157,8 +157,15 @@ for cid,c in car['careers'].items():
 missing=[c['id'] for c in careers if not c['line']]; print('missing lines',missing)
 for f in F:
     f['sources']=[dict(id=s,name=SRC[s][0],url=SRC[s][1]) for s in f.pop('src')]
-json.dump(dict(fields=F,careers=careers,checked='2026-10-21',status='DRAFT for counsellor review. Exam and admission facts were gathered from secondary sources and need checking against the official sites.'),open('content.json','w'),indent=1,ensure_ascii=False)
 for x in careers:
     if x['id']=='psy-1': x['title']='Clinical or Counselling Psychologist'; x['line']='Helps people with mental-health conditions, stress and life choices, through assessment and therapy.'
     if x['id']=='pub-1': x['title']='Political Scientist or Policy Analyst'
+W=json.load(open('onet/wages.json'))
+MAPNOTE={'pub-5':'Closest O*NET match, not an exact one.','psy-5':'Mapped to Human Factors Engineers and Ergonomists (nearest match).','pub-1':'Policy work is mapped to Political Scientists, an approximate match.'}
+for x in careers:
+    if x['id'] in MAPNOTE: x['mapNote']=MAPNOTE[x['id']]
+for x in careers:
+    w=W.get(x['soc'])
+    if w: x['us']={k:w[k] for k in ('annual','hourly','growth','openings','wageYear') if k in w}
+json.dump(dict(fields=F,careers=careers,checked='2026-10-21',status='DRAFT for counsellor review. Career profiles and US pay are from O*NET (official). Some exam and admission facts were read from official notices; others come from news and education sites and are marked in each field. All need a counsellor check.'),open('content.json','w'),indent=1,ensure_ascii=False)
 print(len(F),'fields',len(careers),'careers')

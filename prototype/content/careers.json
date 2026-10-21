@@ -1187,6 +1187,76 @@
     "A": 23
    },
    "onetTitle": "39-9031.00 - Exercise Trainers and Group Fitness Instructors"
+  },
+  "pub-5": {
+   "field": "pub",
+   "title": "Civil Services Officer (administration)",
+   "soc": "11-3012.00",
+   "values": {
+    "E": 91,
+    "C": 88,
+    "S": 46,
+    "I": 19,
+    "R": 7,
+    "A": 2
+   },
+   "onetTitle": "11-3012.00 - Administrative Services Managers"
+  },
+  "com-9": {
+   "field": "com",
+   "title": "Compliance or Company Secretary",
+   "soc": "13-1041.00",
+   "values": {
+    "C": 89,
+    "E": 51,
+    "I": 35,
+    "S": 33,
+    "R": 25,
+    "A": 0
+   },
+   "onetTitle": "13-1041.00 - Compliance Officers"
+  },
+  "doc-7": {
+   "field": "health",
+   "title": "Medical Laboratory Technologist",
+   "soc": "29-2011.00",
+   "values": {
+    "I": 86,
+    "R": 80,
+    "C": 67,
+    "S": 30,
+    "E": 9,
+    "A": 2
+   },
+   "onetTitle": "29-2011.00 - Medical and Clinical Laboratory Technologists"
+  },
+  "doc-8": {
+   "field": "health",
+   "title": "Radiologic Technologist",
+   "soc": "29-2034.00",
+   "values": {
+    "R": 82,
+    "C": 68,
+    "I": 65,
+    "S": 40,
+    "A": 0,
+    "E": 0
+   },
+   "onetTitle": "29-2034.00 - Radiologic Technologists and Technicians"
+  },
+  "law-3": {
+   "field": "law",
+   "title": "Forensic Science Technician",
+   "soc": "19-4092.00",
+   "values": {
+    "I": 82,
+    "R": 70,
+    "C": 66,
+    "A": 13,
+    "E": 10,
+    "S": 8
+   },
+   "onetTitle": "19-4092.00 - Forensic Science Technicians"
   }
  }
 }

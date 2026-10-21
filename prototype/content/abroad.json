@@ -59,10 +59,10 @@
     "t": "F-1 students can work in their field after graduation on OPT for 12 months. STEM degrees can add a 24-month STEM OPT extension, so up to 36 months. Staying longer usually needs an H-1B work visa.",
     "conf": "secondary",
     "src": "https://studyinthestates.dhs.gov",
-    "verify": "H-1B rules changed sharply in 2025 and 2026: a US$100,000 fee on new petitions for people outside the US, a wage-weighted lottery, and court cases. Sources disagreed on whether students already in the US pay the fee. Check USCIS before planning."
+    "verify": "US rules changed sharply in 2025 and 2026. USCIS guidance in October 2025 says the US$100,000 fee on new H-1B petitions applies to people outside the US, and does not apply to students already in the US who change status. Court challenges are ongoing. The wage-weighted lottery also changed. Check USCIS before planning."
    },
    "settle": "Settling usually means H-1B, then an employer-sponsored green card. Waits for Indian applicants are long.",
-   "salary": "US median pay for each career comes from O*NET and the US Bureau of Labor Statistics (shown on the careers above).",
+   "salary": "US median pay for each career comes from O*NET and the US Bureau of Labor Statistics (shown on the careers above). These are US medians for each job, not a guarantee for new graduates. Doctors trained abroad must also pass US licensing (USMLE) and match into a residency; the odds are low.",
    "notes": [
     "Indian students are the largest group in the US: 363,019 in 2024/25 (IIE Open Doors 2025), and new enrolments fell 17% in fall 2025."
    ]
@@ -75,7 +75,7 @@
    "ug": {
     "lo": 18867,
     "hi": 49802,
-    "conf": "official",
+    "conf": "secondary",
     "note": "Statistics Canada 2025/26: average international undergraduate tuition C$41,746. Ontario averages C$49,802, Newfoundland and Labrador C$18,867.",
     "src": "https://www150.statcan.gc.ca/n1/daily-quotidien/250910/dq250910d-eng.htm"
    },
@@ -89,7 +89,7 @@
    "living": {
     "lo": 23448,
     "hi": 30000,
-    "conf": "secondary",
+    "conf": "estimate",
     "note": "IRCC asks single applicants to show C$23,448 a year for living costs from 1 September 2026 (C$22,895 before). Real costs depend on the city.",
     "src": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit/get-documents/financial-support.html"
    },
@@ -111,14 +111,7 @@
     "verify": "Canada capped study permits at about 408,000 in 2026 (155,000 for new students). Field-of-study rules for the PGWP were not confirmed here."
    },
    "settle": "Canadian work experience can count towards permanent residence through Express Entry. Rules and cut-offs change often.",
-   "salary": "Typical graduate pay is about C$45,000 to 70,000 a year (estimate). Statistics Canada table 37-10-0122-01 has current figures by field.",
-   "salaryRange": {
-    "lo": 45000,
-    "hi": 70000,
-    "conf": "estimate",
-    "note": "Estimate. Check Statistics Canada.",
-    "src": ""
-   },
+   "salary": "No checked figure yet. Statistics Canada table 37-10-0122-01 has current figures by field. Please check before relying on any number.",
    "notes": [
     "Studying in Newfoundland and Labrador is much cheaper than Ontario."
    ]
@@ -174,15 +167,15 @@
    },
    "settle": "After the Graduate Route, staying usually needs a Skilled Worker visa, with a salary and employer sponsor.",
    "salary": "The median salary of UK graduates in full-time work 15 months after graduating is £30,000 (HESA, 2023/24). Medicine and dentistry graduates have the highest median, £43,749. International graduates earn less on average.",
-   "salaryRange": {
-    "lo": 25000,
-    "hi": 35000,
-    "conf": "official",
-    "note": "HESA Graduate Outcomes 2023/24, UK graduates.",
-    "src": "https://www.hesa.ac.uk/news/04-06-2026/87pc-202324-graduates-in-work-study"
-   },
    "notes": [
     "Bachelor's degrees take 3 years in England, Wales and Northern Ireland, and 4 in Scotland."
+   ],
+   "salaryPoints": [
+    {
+     "l": "Median, UK graduates in full-time work 15 months after",
+     "v": "£30,000 a year",
+     "conf": "official"
+    }
    ]
   },
   {
@@ -231,14 +224,19 @@
    },
    "settle": "Permanent residence usually goes through skilled migration and needs points, a skilled occupation and sometimes sponsorship. Rules change often.",
    "salary": "Australian Graduate Outcomes Survey: the national median full-time salary was A$71,000 for undergraduates and A$96,600 for postgraduate coursework graduates in 2023. A secondary source reports A$77,000 for undergraduates in 2025.",
-   "salaryRange": {
-    "lo": 71000,
-    "hi": 97000,
-    "conf": "official",
-    "note": "Government Graduate Outcomes Survey, 2023 medians (undergraduate to postgraduate coursework).",
-    "src": "https://qilt.edu.au"
-   },
-   "notes": []
+   "notes": [],
+   "salaryPoints": [
+    {
+     "l": "Median, undergraduates (2023)",
+     "v": "A$71,000 a year",
+     "conf": "official"
+    },
+    {
+     "l": "Median, postgraduate coursework (2023)",
+     "v": "A$96,600 a year",
+     "conf": "official"
+    }
+   ]
   },
   {
    "id": "nl",
@@ -285,14 +283,7 @@
     "verify": "Salary thresholds quoted (about €3,122 a month for former orientation-year holders, €4,357 under 30, €5,942 from 30) come from a university guide, not IND. Check IND."
    },
    "settle": "Skilled migrant status can lead to permanent residence after about 5 years. Dutch language helps a lot for jobs.",
-   "salary": "Typical graduate starting pay is about €35,000 to 50,000 a year (estimate). Check CBS (Statistics Netherlands).",
-   "salaryRange": {
-    "lo": 35000,
-    "hi": 50000,
-    "conf": "estimate",
-    "note": "Estimate. Check CBS.",
-    "src": ""
-   },
+   "salary": "No checked figure yet. CBS (Statistics Netherlands) and Nuffic have current figures. Please check before relying on any number.",
    "notes": []
   },
   {
@@ -335,7 +326,7 @@
    "tests": "Many bachelor's programmes are taught in German, so a German language certificate is needed (B2 to C1). English-taught master's programmes ask for IELTS or TOEFL. Indian applicants usually need an APS certificate, and many need a foundation year (Studienkolleg) for undergraduate study.",
    "after": {
     "t": "Graduates of German universities can stay up to 18 months to look for a job in their field, and can work any job during that time. The EU Blue Card needs a job paying at least €50,700 a year in 2026 (€45,934.20 for shortage occupations and recent graduates).",
-    "conf": "official",
+    "conf": "secondary",
     "src": "https://www.make-it-in-germany.com",
     "verify": "Blue Card thresholds come from EY and other advisers. Confirm on the official portal. The Baden-Württemberg fee and the APS and Studienkolleg points were not confirmed today."
    },
@@ -399,7 +390,7 @@
    "settle": "Permanent residence in China is very rare. Treat China as a place to study, not to settle.",
    "salary": "Not covered. Pay depends heavily on the city and the employer.",
    "notes": [
-    "Medicine in China: Indian students must have NEET qualification, and the course should be at least 54 months plus a 12-month internship. To practise in India they must pass the FMGE (an NMC draft in 2026 keeps FMGE until the NExT exam starts). Check the NMC site before choosing a university."
+    "Medicine abroad (China and elsewhere): to practise in India you must have NEET, a course of at least 54 months plus a 12-month internship, English-medium teaching, all at the same foreign institution, a licence to practise in that country, and then pass the FMGE (until NExT starts). Check the NMC website before choosing a university."
    ]
   },
   {
@@ -448,22 +439,26 @@
     "verify": "Rules and thresholds rise regularly."
    },
    "settle": "Permanent residence is possible but competitive, and not guaranteed.",
-   "salary": "Fresh graduates from the local universities had a median gross monthly salary of S$4,500 in 2025 (NUS S$4,746, NTU S$4,550, SMU S$4,747). NUS Computing graduates earned a median of S$6,400.",
-   "salaryRange": {
-    "lo": 4500,
-    "hi": 6400,
-    "conf": "official",
-    "note": "Graduate Employment Survey 2025. These are monthly figures.",
-    "src": "https://www.moe.gov.sg"
-   },
-   "salaryMonthly": true,
+   "salary": "Fresh graduates from the local universities had a median gross monthly salary of S$4,500 in 2025 (NUS S$4,746, NTU S$4,550, SMU S$4,747). NUS Computing graduates earned a median of S$6,400. Note: the local graduate median (S$4,500) is below the Employment Pass minimum (S$5,600), so a foreign graduate needs a better-than-median offer to stay.",
    "notes": [
     "Employers know the NUS, NTU and SMU names well, so competition for places is high."
+   ],
+   "salaryPoints": [
+    {
+     "l": "Median, local-university fresh graduates (2025)",
+     "v": "S$4,500 a month",
+     "conf": "official"
+    },
+    {
+     "l": "NUS Computing median",
+     "v": "S$6,400 a month",
+     "conf": "official"
+    }
    ]
   }
  ],
  "fieldNotes": {
-  "health": "Doctors, dentists, nurses and pharmacists must pass the licensing exams of the country they work in (for example USMLE in the US, PLAB in the UK, MCCQE in Canada, AMC in Australia). That takes extra years. Studying medicine abroad can be much harder than studying a master's in public health or biotechnology.",
+  "health": "Doctors, dentists, nurses and pharmacists must pass the licensing exams of the country they work in (for example USMLE in the US, PLAB in the UK, MCCQE in Canada, AMC in Australia). That takes extra years. Studying medicine abroad can be much harder than studying a master's in public health or biotechnology. Medicine abroad does not follow the 4 + 2 pattern, so we do not show a rough total for it.",
   "sci": "Research careers abroad usually go through a PhD, which is often funded. Master's degrees can lead to industry jobs.",
   "eng": "Engineering master's degrees are the most common route abroad. Professional registration (such as PEng in Canada) comes later.",
   "tec": "Computing and data are the most common fields for work abroad after a master's degree. Visa rules matter more than the degree.",
@@ -489,7 +484,7 @@
     "Costs the most overall, since you pay for 4 to 6 years abroad.",
     "You build a local network, and a longer stay can help with work visas and settling.",
     "Entry tests: SAT or ACT (US), UCAS (UK), IELTS or TOEFL, and sometimes aptitude tests.",
-    "Germany, the Netherlands and Singapore often work out cheaper for the whole route."
+    "Total cost depends heavily on the country and university. Compare the cards below before deciding."
    ]
   },
   {
@@ -500,7 +495,8 @@
     "Costs less overall. The Indian degree is cheap, and you pay abroad for only 1 to 2 years.",
     "Entry tests: GRE or GMAT for some programmes, and IELTS or TOEFL.",
     "Check that your Indian degree length is accepted: some countries and programmes prefer 4-year degrees.",
-    "Many students find work and settle through this route, especially in computing, engineering and health."
+    "Some students find work and settle abroad this way, but it is never guaranteed. Visa rules, job markets and your field all matter.",
+    "If you borrow for fees, work out how you would repay the loan if you do not get a job abroad."
    ]
   }
  ],
@@ -509,5 +505,5 @@
   "secondary": "From a news, university or education site. Treat as a guide.",
   "estimate": "Our estimate from general knowledge. Not checked on the date shown."
  },
- "disclaimer": "Figures are ranges from public sources, checked on 21 Oct 2026. Fees, visas and settlement rules change often, and some figures here are estimates. Always check the official site for the university and the country before deciding. This is not immigration or financial advice."
+ "disclaimer": "Figures are ranges from public sources, checked on 21 Oct 2026. Fees, visas and settlement rules change often, and some figures here are estimates. Always check the official site for the university and the country before deciding. This is not immigration or financial advice. Borrowing for study abroad is a serious commitment. Settling abroad is never guaranteed."
 }

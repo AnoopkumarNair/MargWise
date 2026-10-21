@@ -13,23 +13,4 @@ tr.t{cursor:pointer}tr.t:hover{background:rgba(120,130,200,.1)}pre{white-space:p
 <div class="row"><input id="k" type="password" placeholder="Admin key" autocomplete="off"><button id="go">Load</button><button id="csv" hidden>Download CSV</button><span id="msg" class="mute"></span></div>
 <div class="card sc"><table><thead><tr><th>Name</th><th>Joined</th><th>Walks</th><th>Places</th><th>Top 3</th><th>Self (1-5)</th><th>Own-area match</th><th>Feedback</th></tr></thead><tbody id="tb"></tbody></table></div>
 <div class="card" id="det" hidden><div class="row" style="justify-content:space-between"><b id="dn"></b><button id="del">Delete this tester's data</button></div><pre id="dj"></pre></div>
-</div><script>
-var NAME={R:'Builder',I:'Thinker',A:'Creator',S:'Helper',E:'Persuader',C:'Organiser'},AR=['R','I','A','S','E','C'],KEY='',DATA=[];
-function $(i){return document.getElementById(i)}
-function api(q,m){return fetch('/api/admin?'+q+(q?'&':'')+'key='+encodeURIComponent(KEY),{method:m||'GET'}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'Error');return j})})}
-function rank(v){var idx=v.map(function(x,i){return[x,i]}).sort(function(a,b){return b[0]-a[0]}),r=[];var i=0;while(i<idx.length){var j=i;while(j+1<idx.length&&idx[j+1][0]===idx[i][0])j++;var avg=(i+j)/2+1;for(var k=i;k<=j;k++)r[idx[k][1]]=avg;i=j+1}return r}
-function spearman(a,b){var ra=rank(a),rb=rank(b),n=a.length,ma=ra.reduce(function(x,y){return x+y},0)/n,mb=rb.reduce(function(x,y){return x+y},0)/n,num=0,da=0,db=0;for(var i=0;i<n;i++){num+=(ra[i]-ma)*(rb[i]-mb);da+=(ra[i]-ma)*(ra[i]-ma);db+=(rb[i]-mb)*(rb[i]-mb)}return da&&db?num/Math.sqrt(da*db):null}
-function esc(s){var d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML}
-function load(){KEY=$('k').value;$('msg').textContent='Loading…';api('').then(function(j){DATA=j.testers;$('msg').textContent=DATA.length+' testers';$('csv').hidden=false;
-$('tb').innerHTML=DATA.map(function(t,i){var r=t.result,top=r?(r.noSignal?'<span class="mute">no signal</span>':r.code.map(function(a){return NAME[a]}).join(', ')+(r.cautious?' <span class="mute">(rough)</span>':'')):'-';
-var rho='-';if(r&&t.areas){rho=spearman(AR.map(function(a){return r.profile[a]}),AR.map(function(a){return t.areas[a]}));rho=rho==null?'-':rho.toFixed(2)}
-var fb=t.feedback?[t.feedback.look&&'look '+t.feedback.look,t.feedback.clear&&'clear '+t.feedback.clear,t.feedback.fun&&'fun '+t.feedback.fun].filter(Boolean).join(', ')+(t.feedback.text?' · "'+esc(t.feedback.text.slice(0,60))+'"':''):'-';
-return '<tr class="t" data-i="'+i+'"><td><b>'+esc(t.name)+'</b></td><td>'+new Date(t.created_at).toLocaleString()+'</td><td>'+t.walks+'</td><td>'+t.places+'</td><td>'+top+'</td><td>'+(t.self?t.self.v:'-')+'</td><td>'+rho+'</td><td>'+fb+'</td></tr>'}).join('')},function(e){$('msg').innerHTML='<span class="bad">'+esc(e.message)+'</span>'})}
-$('go').onclick=load;$('k').onkeydown=function(e){if(e.key==='Enter')load()};
-$('tb').onclick=function(e){var tr=e.target.closest('tr.t');if(!tr)return;var t=DATA[+tr.dataset.i];$('det').hidden=false;$('dn').textContent=t.name;$('dj').textContent='Loading…';$('del').dataset.id=t.id;
-api('tester='+t.id).then(function(j){$('dj').textContent=j.events.map(function(x){return new Date(x.ts).toLocaleTimeString()+'  '+x.type+'  '+x.data}).join('\n')})};
-$('del').onclick=function(){var id=this.dataset.id;if(!id||this.dataset.armed!==id){this.dataset.armed=id;this.textContent='Click again to confirm delete';return}api('tester='+id,'DELETE').then(function(){$('det').hidden=true;$('del').textContent="Delete this tester's data";$('del').dataset.armed='';load()})};
-$('csv').onclick=function(){var rows=[['name','joined','walks','places','top1','top2','top3','confidence','noSignal','cautious','self_overall'].concat(AR.map(function(a){return'profile_'+a})).concat(AR.map(function(a){return'own_'+a})).concat(['spearman','look','clear','fun','comment'])];
-DATA.forEach(function(t){var r=t.result||{},c=r.code||[],a=t.areas||{},f=t.feedback||{},rho=(r.profile&&t.areas)?spearman(AR.map(function(x){return r.profile[x]}),AR.map(function(x){return a[x]})):'';rows.push([t.name,new Date(t.created_at).toISOString(),t.walks,t.places,c[0]||'',c[1]||'',c[2]||'',r.confidence||'',r.noSignal||'',r.cautious||'',t.self?t.self.v:''].concat(AR.map(function(x){return r.profile?r.profile[x]:''})).concat(AR.map(function(x){return a[x]||''})).concat([rho==null?'':rho,f.look||'',f.clear||'',f.fun||'',f.text||'']))});
-var csv=rows.map(function(r){return r.map(function(v){v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(',')}).join('\n');var b=new Blob([csv],{type:'text/csv'}),u=URL.createObjectURL(b),l=document.createElement('a');l.href=u;l.download='margwise-testers.csv';document.body.appendChild(l);l.click();l.remove()};
-</script></body></html>
+</div><script src="/admin/admin.js"></script></body></html>

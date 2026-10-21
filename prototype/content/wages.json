@@ -17,6 +17,15 @@
   "growth": "Much faster than average",
   "openings": 34000
  },
+ "11-3012.00": {
+  "wageYear": 2025,
+  "annual": 114130,
+  "hourly": 54.87,
+  "raw": "$54.87 hourly, $114,130 annual",
+  "growthYears": "2025-2035",
+  "growth": "Faster than average",
+  "openings": 22000
+ },
  "11-3071.00": {
   "wageYear": 2025,
   "annual": 107230,
@@ -52,6 +61,15 @@
   "growthYears": "2025-2035",
   "growth": "Average",
   "openings": 1100
+ },
+ "13-1041.00": {
+  "wageYear": 2025,
+  "annual": 80730,
+  "hourly": 38.81,
+  "raw": "$38.81 hourly, $80,730 annual",
+  "growthYears": "2025-2035",
+  "growth": "Average",
+  "openings": 32700
  },
  "13-1071.00": {
   "wageYear": 2025,
@@ -368,6 +386,15 @@
   "growth": "Decline",
   "openings": 400
  },
+ "19-4092.00": {
+  "wageYear": 2025,
+  "annual": 72060,
+  "hourly": 34.65,
+  "raw": "$34.65 hourly, $72,060 annual",
+  "growthYears": "2025-2035",
+  "growth": "Much faster than average",
+  "openings": 2800
+ },
  "21-1012.00": {
   "wageYear": 2025,
   "annual": 64330,
@@ -604,6 +631,24 @@
   "growthYears": "2025-2035",
   "growth": "Average",
   "openings": 2900
+ },
+ "29-2011.00": {
+  "wageYear": 2025,
+  "annual": 62930,
+  "hourly": 30.26,
+  "raw": "$30.26 hourly, $62,930 annual",
+  "growthYears": "2025-2035",
+  "growth": "Average",
+  "openings": 20800
+ },
+ "29-2034.00": {
+  "wageYear": 2025,
+  "annual": 80110,
+  "hourly": 38.52,
+  "raw": "$38.52 hourly, $80,110 annual",
+  "growthYears": "2025-2035",
+  "growth": "Faster than average",
+  "openings": 13000
  },
  "33-3051.00": {
   "wageYear": 2025,
