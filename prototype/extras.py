@@ -19,12 +19,15 @@ B = {
  'arts': "If a music, drama or film school place is missed: private institutes, a university BA in music or performing arts, and a performance or recording portfolio you build yourself.",
  'mar': "If IMU CET is missed: other maritime institutes approved by the DG Shipping, or a nautical science degree at an approved college. Check the approval before you pay.",
 }
+DEFAULT_CMP = "NIRF does not rank this area. Check the exam body or council for its list of approved institutions, and ask each institute for last year's cut-offs, seats and placement record."
+CMP = {k: "Compare colleges with the official NIRF rankings (nirfindia.org, category: %s), and ask for last year's cut-offs and seat numbers." % v for k, v in {'eng': 'Engineering', 'health': 'Medical, Dental or Pharmacy', 'law': 'Law', 'com': 'Management or College', 'des': 'Architecture and Planning or College', 'agr': 'Agriculture and Allied Sectors', 'sci': 'College or University', 'psy': 'College or University', 'media': 'College or University', 'pub': 'College or University'}.items()}
 for f in c['fields']:
     f['backup'] = B[f['id']]
-    f['compare'] = "Compare colleges with the official NIRF rankings at nirfindia.org, and ask the exam body for last year's cut-offs and seat numbers."
+    f['compare'] = CMP.get(f['id'], DEFAULT_CMP)
+    if f['id'] == 'voc' and 'well paid and in demand' in (f.get('note') or ''): f['note'] = f['note'].replace('well paid and in demand', 'in demand, though pay varies a lot by place and employer')
     v = f.setdefault('verify', [])
     t = 'Plan B routes are suggestions, not rules. Check each admission process on the official site.'
     if t not in v: v.append(t)
-if os.path.exists('nullcal_4.json'):
-    n = json.load(open('nullcal_4.json'))['nf']; c['fieldNull'] = n; c['fieldK'] = 4
-json.dump(c, open('content.json', 'w', encoding='utf8'), indent=1, ensure_ascii=False); print('extras ok', 'fieldNull' in c)
+if os.path.exists('refcal.json'):
+    c['fieldRef'] = json.load(open('refcal.json'))['tab']; c['fieldK'] = 4; c.pop('fieldNull', None)
+json.dump(c, open('content.json', 'w', encoding='utf8'), indent=1, ensure_ascii=False); print('extras ok', 'fieldRef' in c)

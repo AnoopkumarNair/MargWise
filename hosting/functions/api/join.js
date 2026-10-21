@@ -10,12 +10,13 @@ export async function onRequestPost({ request, env }) {
   if (mine && mine.n >= 40) return json({ error: 'Too many attempts from this connection. Please try again later.' }, 429);
   const act = await env.DB.prepare('SELECT COUNT(*) AS n FROM invites WHERE active = 1').first();
   let inviteId = null;
-  if (need || (act && act.n > 0)) {
+  {   // fail closed: a code is always required; with no master code and no active invite, sign-ups are shut
     let ok = !!need && safeEq(code, need.toLowerCase());
     if (!ok && code) {
       const row = await env.DB.prepare('SELECT id, max_uses, uses, expires_at, active FROM invites WHERE code = ?').bind(code).first();
       if (row && row.active === 1 && (!row.expires_at || row.expires_at > now) && (row.max_uses == null || row.uses < row.max_uses)) { ok = true; inviteId = row.id; }
     }
+    if (!need && !(act && act.n > 0)) return json({ error: 'Sign-ups are closed right now.' }, 403);
     if (!ok) { await env.DB.prepare('INSERT INTO joins (ip, ts) VALUES (?, ?)').bind(ip, now).run(); return json({ error: 'That invite code is not right, or it is no longer active.' }, 403); }
   }
   const recent = await env.DB.prepare('SELECT COUNT(*) AS n FROM testers WHERE created_at > ?').bind(now - 3600000).first();

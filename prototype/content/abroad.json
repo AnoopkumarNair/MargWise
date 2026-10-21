@@ -136,10 +136,10 @@
     "src": ""
    },
    "living": {
-    "lo": 10539,
-    "hi": 18000,
+    "lo": 14052,
+    "hi": 18348,
     "conf": "secondary",
-    "note": "Student visa maintenance: £1,529 a month in London and £1,171 outside (up to 9 months), for applications from 11 November 2025. Real costs are higher in London.",
+    "note": "Student visa maintenance is £1,171 a month outside London and £1,529 in London, counted for up to 9 months (£10,539 and £13,761). This range is the same monthly rates over 12 months. Real costs are higher in London.",
     "src": "https://www.gov.uk/student-visa"
    },
    "scholarships": [

@@ -27,7 +27,7 @@ After steps 1 to 3 pass: "interest snapshot with known reliability". "Fit" or "s
 ## Additions after the second independent review (21 Oct 2026)
 - O*NET interest figures are 0 to 100 scores of occupation profiles. Pay figures shown for US careers are *medians* from O*NET and BLS, not means.
 - Ipsative handling: a student's profile is mean-centred, so a high score means "higher than their own other areas". Do not read profiles as absolute levels or compare students directly.
-- Field ranking is standardised against a null distribution of random profiles, so fields with many broad careers do not win by default. Validate the field ranking separately: do students' later choices and counsellor judgements agree with the top fields?
+- Field ranking (updated after review 3): each field's score is the mean fit of its best four careers, converted to a percentile against 360 reference profiles (120 ordered top-three combinations from consistent simulated players, three seeds), so a field is compared with how fields normally score. This evens out but does not remove bias: over 120 fresh ideal profiles the top field ranges from 1 (law) to 19 (sports), and top-three appearances from 13 to 39. The reference is synthetic. Validate the field ranking separately: do students' later choices and counsellor judgements agree with the top fields?
 - Power analysis: with 100 students, a convergence correlation of 0.5 has a 95% interval of roughly 0.33 to 0.64. Report intervals, not single numbers, and decide thresholds before looking at data.
 - Differential item functioning: check each activity card by board (CBSE, ICSE/ISC, state), urban and rural, and gender, so no card works differently for one group.
 - Validity of the O*NET Interest Profiler short form for Indian teenagers is itself not established. Use it as a reference, not as truth, and add counsellor ratings as a second criterion.
@@ -39,3 +39,8 @@ After steps 1 to 3 pass: "interest snapshot with known reliability". "Fit" or "s
 - Scores are 0 to 3 per area and are shown as Growing / Steady / Strong. They never change the RIASEC radar. They nudge the field order by at most about 0.35 of a field-score standard deviation, using field-by-area weights that are my judgement, not validated. Treat the weights as a hypothesis.
 - Needed before trusting them: norms by class and board, item difficulty from real answers, reliability (8 items will be low), checks for English-language and schooling bias, and whether the nudge improves agreement with counsellor ratings.
 - India pay uses PLFS 2025 averages by broad occupation group (NCO-2015 division), mapped from O*NET SOC codes by hand. The mapping is approximate and the averages cover all ages and experience.
+
+## Status after independent review 3 (22 Oct 2026)
+- Adult controlled testers: acceptable. Tell them the field order is a draft and known to be uneven.
+- Class 9 to 12 students: not yet. Still open: an unbiased, validated field ranking; verifiable parental consent (the gate and popup are self-declared; for minors the owner must collect consent offline); real automated deletion at the end of the test; fact checks for all abroad figures and plan B text (now included in the batches); India pay for individual jobs (only group averages exist).
+- Random and one-note players are now flagged cautious when the profile spread is below 0.5 or 70 percent of the oil goes to one trait. Thresholds were set from simulation (random players median spread 0.32, consistent players 0.81) and need checking with real students.
