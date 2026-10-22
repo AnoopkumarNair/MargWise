@@ -13,6 +13,7 @@ export async function onRequest({ request, env }) {
   if (fails && fails.n >= 8) return json({ error: 'Too many wrong keys. Try again in 15 minutes.' }, 429);
   if (!safeEq(key, env.ADMIN_KEY || '')) { await env.DB.prepare('INSERT INTO admin_fail (ip, ts) VALUES (?, ?)').bind(ip, now0).run(); await env.DB.prepare('DELETE FROM admin_fail WHERE ts < ?').bind(now0 - 86400000).run(); return json({ error: 'Not allowed.' }, 403); }
   const t = q.get('tester'), now = Date.now();
+  if (q.get('endpilot') && m === 'POST') return json({ ok: true, result: await purgeOld(env, now, true, true) });   // end of pilot: delete everything except follow-up consent students' name, class and notes
   if (q.get('purge') && m === 'POST') return json({ ok: true, purged: await purgeOld(env, now, true) });
   if (q.get('counsellors')) {   // personal, school-scoped counsellor keys. The key is shown once; only its hash is stored.
     if (m === 'GET') return json({ counsellors: (await env.DB.prepare('SELECT c.id, c.name, c.active, c.created_at, c.last_used, i.label AS school FROM counsellors c LEFT JOIN invites i ON i.id = c.invite_id ORDER BY c.id DESC').all()).results });
@@ -28,6 +29,13 @@ export async function onRequest({ request, env }) {
     }
     if (m === 'PATCH') { const id = Number(b.id); if (!Number.isInteger(id)) return json({ error: 'id required' }, 400); await env.DB.prepare('UPDATE counsellors SET active = ? WHERE id = ?').bind(b.active ? 1 : 0, id).run(); await env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'counsellor_active', JSON.stringify({ id, active: !!b.active })).run(); return json({ ok: true }); }
     return json({ error: 'Method not allowed.' }, 405);
+  }
+  if (q.get('itemstats') && m === 'GET') {   // pilot item analysis: how often each card is picked and whether screen position matters (a flat spread is expected)
+    const ev = (await env.DB.prepare("SELECT data FROM events WHERE type = 'place_done'").all()).results, pos = [0, 0, 0, 0], card = {}, shown = {}; let n = 0;
+    for (const e of ev) { let d; try { d = JSON.parse(e.data); } catch { continue; } if (d.echo || !Array.isArray(d.order) || d.order.length !== 4) continue; n++;
+      d.order.forEach((id, i) => { shown[id] = (shown[id] || 0) + 1; const sp = (d.spent || {})[id] || 0; pos[i] += sp; card[id] = (card[id] || 0) + sp; }); }
+    const tot = pos.reduce((a, b) => a + b, 0);
+    return json({ stops: n, oilByPosition: pos.map(v => tot ? +(v / tot).toFixed(3) : null), expectedPerPosition: .25, cards: Object.keys(shown).sort().map(id => ({ id, shown: shown[id], oilPerShowing: +(card[id] / shown[id]).toFixed(2) })) });
   }
   if (q.get('reviews') && m === 'GET') {
     const rows = (await env.DB.prepare('SELECT r.code, t.name, i.label AS school, r.counsellor, r.baseline, r.blind, r.sure, r.sections, r.view_after, r.career_note, r.app_top, r.overlap, r.overlap6, r.missed, r.wrong, r.wrong_field, r.use_it, r.notes, r.baseline_at, r.reviewed_at FROM reviews r JOIN testers t ON t.id = r.tester_id LEFT JOIN invites i ON i.id = t.invite_id ORDER BY r.baseline_at DESC').all()).results;

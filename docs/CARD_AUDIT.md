@@ -1,6 +1,6 @@
 # Card audit (social desirability and trade-offs)
 
-Raw data: `docs/audit/card_ratings_blind.json` (blind ratings of the original cards) and `docs/audit/card_rewrites.json` (old and new text for the 48 rewritten cards). The rewrites were applied to `data/story2.json` on 2026-10-22 and are being re-rated blind (see the end of this file).
+Raw data: `docs/audit/card_ratings_blind.json` (blind ratings of the original cards) and `docs/audit/card_rewrites.json` (old and new text for the 48 rewritten cards). The rewrites were applied to `data/story2.json` on 2026-10-22 and are being re-rated blind (see Round 2).
 
 
 **Method.** I rated all 60 cards blind (without the trait key) on social desirability from 1 to 5: how good a teenager would look for choosing the card, whatever they would actually enjoy. I then unblinded and grouped the ratings by Holland type. Note: the key has **10 cards per type** (6 types x 10 = 60), not 15 as the brief assumed. Each type is missing from 5 scenes.
@@ -62,3 +62,7 @@ Data: `docs/audit/card_ratings_blind_round2.json`, `docs/audit/card_rewrites_rou
 | Gap, top to bottom | 2.1 | 1.4 | |
 
 Flagged stops fell from 12 to 6 of 15. A smaller bias remains: Social still rates highest and Organiser and Creator lowest. The reviewer's main finding is that the **kind of cost has itself become a cue** (Builder: the body; Thinker: may lead nowhere; Creator: others may dislike it; Persuader: blame; Organiser: slow and unseen; Helper: giving up sleep or fun), and a heavier cost did not make a card less appealing. Eleven further card fixes were applied (s03-2, s04-4, s06-2, s08-2, s09-1, s09-2, s10-1, s11-4, s12-3, s13-1, s14-3). Left as they are on purpose: the three stops with no costs (s04, s11, s12), the remaining type-flavoured costs, and two mildly tilted stops. These need student data, not another single-rater pass: desirability ratings from 30 or more Class 9 to 12 students, think-aloud sessions to catch type cues, and a field pilot against a validated RIASEC measure.
+
+
+## Round 3: single-construct audit (against an external review's point that some cards still measure more than one thing)
+Data: `docs/audit/card_construct_audit.json`, `docs/audit/card_rewrites_round3.json`. One rater rated each of the 60 cards for its dominant activity and any second type. 12 cards were compound (mostly Persuader cards such as "lead the team and handle the money") and one (s07-A) read as engineering rather than Creator. Thirteen cards were rewritten to one activity each, plus s02-A and s04-I after the final code review. The cost clauses stay: they modify one activity, they do not add a second. Borderline cards left alone are listed in the audit data. The same limits apply: one rater, no student data.

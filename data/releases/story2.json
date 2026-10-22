@@ -22,8 +22,8 @@
    "o": {
     "R": "Fit the new planks by hand in the cold, getting every joint tight before midnight",
     "I": "Find out why this arch cracked, even if it takes all night of measuring",
-    "A": "Sketch a new arch shape that might be safer, though most first ideas get thrown out",
-    "E": "Take charge of the repair team and the money, and face the blame if it goes wrong"
+    "A": "Sketch a new arch shape for the bridge, though most first ideas get thrown out",
+    "E": "Lead the repair team, and face the blame if it goes wrong"
    }
   },
   "s03": {
@@ -36,7 +36,7 @@
     "R": "Climb the tower and follow the broken gear by hand, in a dusty, cramped space",
     "I": "Study the pattern of missed chimes, though it may take days to spot the cause",
     "A": "Repaint the clock face so it is easier to read, even if some liked the old one",
-    "C": "Plan the repair step by step and list the parts needed, rewriting it as things change"
+    "C": "Write up a step-by-step repair checklist, redoing it as things change"
    }
   },
   "s04": {
@@ -47,9 +47,9 @@
    "lit": "The orchard is calm. Its lamp swings among the apple trees.",
    "o": {
     "R": "Run the press and keep it humming all day",
-    "I": "Test apple blends to find which one tastes best",
+    "I": "Test apple blends to work out why one tastes best",
     "S": "Teach visiting children to make juice through games",
-    "E": "Persuade passers-by to buy and strike a good deal"
+    "E": "Sell the fresh juice to passers-by on the village road"
    }
   },
   "s05": {
@@ -61,7 +61,7 @@
    "o": {
     "R": "Mend the dim signal lamp alone on the ridge, in freezing wind",
     "I": "Map where the fog is thickest to find a safer path, standing still in the cold",
-    "S": "Gather the lost travellers and keep their spirits up on a long, cold walk",
+    "S": "Lift the lost travellers' spirits on a long, cold walk",
     "C": "Count everyone through the pass so no one is left behind, even as people grow impatient"
    }
   },
@@ -74,8 +74,8 @@
    "o": {
     "R": "Build a sturdy stall frame from the plan, working fast as the light fades",
     "I": "Examine the old machine to learn its use, though it may turn out to be junk",
-    "E": "Set prices and win over buyers, knowing some will walk away",
-    "C": "Sort the stock and label shelves so buyers find things fast, before the doors open"
+    "E": "Win over the passing buyers, knowing some will walk away",
+    "C": "Label the shelves so buyers find things fast, before the doors open"
    }
   },
   "s07": {
@@ -86,7 +86,7 @@
    "lit": "The group is rested and ready for the crossing. The lamp's reflection drifts downstream.",
    "o": {
     "R": "Build a raft from whatever wood is nearby, with sore arms and wet feet",
-    "A": "Draw up a boat for the crossing that may not float the first time",
+    "A": "Dream up a new boat shape for the crossing, though it may not float the first time",
     "S": "Care for the tired travellers through the night while others plan the crossing",
     "E": "Run the camp meeting and push for a decision, even if some people are unhappy"
    }
@@ -113,7 +113,7 @@
    "o": {
     "R": "Rope down a short stretch to test the rock, which is slow, tiring work",
     "A": "Draw a picture map of the glowing cliff for the climbers, redrawing it as the light shifts",
-    "E": "Split the climbers into teams and set the pace, though some will grumble at your choices",
+    "E": "Lead the climbers to the top, though some will grumble at your choices",
     "C": "Check every harness against the safety list while others start climbing first"
    }
   },
@@ -140,7 +140,7 @@
     "I": "Chart the stars and wonder what is out there",
     "A": "Paint the night sky and notice how it changes",
     "S": "Welcome the visitors and help each one find a good spot to look",
-    "E": "Run the club night and sign up new members"
+    "E": "Recruit new members for the stargazing club"
    }
   },
   "s12": {
@@ -153,7 +153,7 @@
     "I": "Test soils and seeds to grow healthier plants",
     "A": "Shape the garden so it feels peaceful to walk in",
     "S": "Show children how to care for the plants through stories",
-    "C": "Label every herb and keep the beds in tidy rows"
+    "C": "Label each herb bed so nothing gets mixed up"
    }
   },
   "s13": {
@@ -165,7 +165,7 @@
    "o": {
     "I": "Investigate how the old press works, reading faded notes that may lead nowhere",
     "A": "Design a new letter style for the press, then redo it if people can't read it",
-    "E": "Start a new newspaper and find people to pay for it, at the risk it does not sell",
+    "E": "Launch a new newspaper for the quarter, at the risk it does not sell",
     "C": "Proofread each page before printing, starting over whenever a mistake slips through"
    }
   },
@@ -178,7 +178,7 @@
    "o": {
     "I": "Test the water to find what is making people ill, with many tests that show nothing",
     "S": "Sit with the sick travellers and talk with them, though some would rather be left alone",
-    "E": "Lead the clinic team and choose who is seen first, even when someone has to wait",
+    "E": "Lead the clinic team tonight, even when someone has to wait",
     "C": "Sort the medicine store so the right dose is quick to find, checking label after label"
    }
   },
@@ -191,7 +191,7 @@
    "o": {
     "A": "Create the welcome arch, though you may still be painting it as the lamps arrive",
     "S": "Greet newcomers and help them join in, staying by the gate while the fun starts",
-    "E": "Run the stalls and set the prices, then face the stallholders if sales are slow",
+    "E": "Manage the festival stalls, then face the stallholders if sales are slow",
     "C": "Keep the timetable so every act starts on time, working out of sight all evening"
    }
   }

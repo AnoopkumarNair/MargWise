@@ -149,6 +149,7 @@
   .seg button[aria-pressed="true"] { background: #ffe9a8; color: var(--ink); border-color: var(--glow-deep); }
   .xplain { background: rgba(255,255,255,.08); border-radius: 14px; padding: 10px 12px; margin: 0 0 12px; } .xplain summary { cursor: pointer; font-weight: 800; min-height: 40px; display: flex; align-items: center; }
   .xplain h4 { margin: 10px 0 4px; font-size: 14px; letter-spacing: .02em; color: #ffe08a; } .xplain ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; line-height: 1.4; } .xplain .q { font-style: italic; }
+  .howto { margin: 0 16px 6px; font-size: 14px; font-weight: 700; color: #fff3d6; text-align: center; text-shadow: 0 1px 8px rgba(0,0,0,.8); }
   .crow { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; background: rgba(255,255,255,.08); border-radius: 14px; padding: 10px 12px; }
   .crow b { font-size: 16px; } .crow p { grid-column: 1 / -1; font-size: 14.5px; color: rgba(255,243,214,.88); font-weight: 600; }
   .tl { list-style: none; margin: 0; padding: 0 0 0 16px; border-left: 3px solid rgba(255,207,107,.5); display: grid; gap: 14px; }
@@ -534,6 +535,7 @@
       <div class="bubblebar"><div class="bubble" id="bubble" aria-live="polite"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
     </div>
     <div class="objs" id="options"></div>
+    <p class="howto" id="howto" hidden>You have two flasks of oil. Spend them on the two things you would most enjoy: both on one if you love it, or one on each. There are no right answers and nothing is marked.</p>
     <div class="actions"><button class="go" id="light" aria-label="Light the lamp"><span class="lbl">Light the lamp</span></button></div>
   </section>
 
@@ -964,7 +966,7 @@
     if (s.done) { var nx = [2, 4, 6, 8].filter(function (k) { return !state.lockDone[k]; })[0]; if (nx !== undefined && !first) { state.busy = false; document.body.classList.remove('busy'); return showLock(nx, function () { advance(false); }); } return toDreams(); }
     var np = litCount(), rd = ROUNDS[np];
     if (!first && rd && !state.lockDone[np] && !s.echo) { state.busy = false; document.body.classList.remove('busy'); return showLock(np, function () { advance(false); }); }
-    state.scene = s.scene; state.echo = s.echo; state.spent = {};
+    state.scene = s.scene; state.echo = s.echo; state.spent = {}; $('howto').hidden = litCount() > 0;
     show('stop');
     setScene(s.scene.id, first ? 'cut' : 'walk');
     Voice.stop(); Snd.place();
@@ -1299,28 +1301,31 @@
       var rest = state.choices.filter(function (x) { return x !== c && x.echoOf !== c.sceneId; }); if (rest.length < 4) return;
       var prof; try { prof = M.journeyResult(bank, rest).profile; } catch (e) { return; }
       var f2 = fieldFits(prof).filter(function (y) { return y.f.id === id; })[0], sc = bank.scenes.filter(function (x) { return x.id === c.sceneId; })[0];
-      out.push({ place: sc ? sc.place : '', cards: choiceCards(c), d: full.score - f2.score });
+      out.push({ place: sc ? sc.place : '', cards: choiceCards(c), d: full.raw - f2.raw });
     });
     out.sort(function (a, b) { return b.d - a.d; });
-    return { up: out.filter(function (o) { return o.d > .012; }).slice(0, 3), down: out.filter(function (o) { return o.d < -.012; }).slice(-1), n: out.length, supporters: out.filter(function (o) { return o.d > .012; }).length };
+    return { up: out.filter(function (o) { return o.d > .006; }), down: out.filter(function (o) { return o.d < -.006; }).slice(-1), n: out.length, supporters: out.filter(function (o) { return o.d > .006; }).length };
   }
   function renderExplain(id, x) {
     var w = whyField(id), r = state.result, f = x.f, code = r.code.code, h = '', pr = r.profile;
-    function line(o, away) { var mine = o.cards.filter(function (c) { return (f.areas.indexOf(c.trait) >= 0) !== !!away; }); if (!mine.length) mine = o.cards; return '<li><b>' + esc(o.place) + ':</b> you picked ' + mine.map(function (c) { return '<span class="q">\u201c' + esc(c.text) + '\u201d</span> (' + NAME[c.trait] + ')'; }).join(' and ') + '.</li>'; }
-    h += '<h4>Choices that pointed here</h4>' + (w.up.length ? '<ul>' + w.up.map(function (o) { return line(o, false); }).join('') + '</ul>' : '<p>No single choice stands out; this comes from the overall shape of your choices.</p>');
+    function line(o, away) { var mine = o.cards.filter(function (c) { return (f.areas.indexOf(c.trait) >= 0) !== !!away; }); if (!mine.length) return ''; return '<li><b>' + esc(o.place) + ':</b> you picked ' + mine.map(function (c) { return '<span class="q">\u201c' + esc(c.text) + '\u201d</span> (' + NAME[c.trait] + ')'; }).join(' and ') + '.</li>'; }
+    h += '<h4>Choices that pointed here</h4>' + (w.up.length ? '<ul>' + w.up.slice(0, 3).map(function (o) { return line(o, false); }).join('') + '</ul>' : '<p>No single choice stands out; this comes from the overall shape of your choices.</p>');
     if (w.down.length) h += '<h4>A choice that pointed somewhere else</h4><ul>' + w.down.map(function (o) { return line(o, true); }).join('') + '</ul><p class="fineprint">Mixed signals are normal. It is a reason to look at more than one area.</p>';
     var lean = f.areas.map(function (a) { return NAME[a] + ' (' + (pr[a] > .5 ? 'strong in your choices' : pr[a] > -.2 ? 'middling' : 'lower in your choices') + ')'; }).join(' and ');
     h += '<h4>How it lines up with you</h4><p>This area leans on ' + lean + '.</p>';
     var u = [], nxt = state.fits[state.fits.map(function (y) { return y.f.id; }).indexOf(id) + 1], prv = state.fits[state.fits.map(function (y) { return y.f.id; }).indexOf(id) - 1];
     if ((nxt && Math.abs(x.score - nxt.score) < .05) || (prv && Math.abs(x.score - prv.score) < .05)) u.push('It is very close to a neighbouring area in your list. On another day the order could swap.');
-    if (w.supporters < 3) u.push('Only ' + (w.supporters || 'a couple of') + ' of your ' + w.n + ' choices pointed here, so this rests on a small amount of evidence.');
+    if (w.supporters < 3) u.push(w.supporters ? 'Only ' + w.supporters + ' of your ' + w.n + ' choices pointed here, so this rests on a small amount of evidence.' : 'No single choice stands out for this area; it comes from the overall shape of your choices.');
     if (r.cautious || r.noSignal) u.push('Your choices were spread out, so the whole shape is rough.');
     u.push('This is about what you enjoy, not what you are good at. The puzzle results are shown separately and do not change this order.');
     u.push('Matches come from US job profiles. Indian courses, exams and pay can differ, so check the official pages listed below.');
     h += '<h4>What is still uncertain</h4><ul>' + u.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>';
+    var near = state.fits.filter(function (y) { return y.f.id !== id && y.f.areas.some(function (a) { return f.areas.indexOf(a) >= 0; }); }).slice(0, 2);
+    if (near.length) h += '<h4>Nearby areas worth a look</h4><p>' + near.map(function (y) { return esc(y.f.name); }).join(' and ') + ' share part of this area\'s interests.</p>';
     var nx = ['Open two of the careers below that you had not thought about and read what the work involves.', f.early, 'Talk to one person who works in this area and ask what a normal week looks like.'].filter(Boolean);
+    nx.push('Interests grow with experience. What you enjoy now may change, and that is fine.');
     h += '<h4>What you could try next</h4><ul>' + nx.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>';
-    $('fExplainBody').innerHTML = h; track('why_open', { id: id });
+    $('fExplainBody').innerHTML = h; if (state.whyTracked !== id) { state.whyTracked = id; track('why_open', { id: id }); }
   }
   function toField(id) {
     var x = state.fits.filter(function (y) { return y.f.id === id; })[0], f = x.f, code = state.result.code.code;

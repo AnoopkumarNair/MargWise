@@ -55,7 +55,7 @@ export async function onRequest({ request, env }) {
     if (!r) return json({ name: t.name, led: t.source === 'counsellor', state: 'new', followups: fu, followupOk: !!t.followup_ok });
     if (!me.admin && r.counsellor_id !== me.id) return json({ name: t.name, state: 'taken' });
     const top = r.app_top ? JSON.parse(r.app_top) : await appTop(env, t.id, r.baseline_at);
-    return json({ name: t.name, led: t.source === 'counsellor', state: r.reviewed_at ? 'done' : 'baselined', baseline: JSON.parse(r.baseline), appTop: top ? top.slice(0, 3) : null, overlap: r.reviewed_at ? r.overlap : null, followups: fu });
+    return json({ name: t.name, led: t.source === 'counsellor', state: r.reviewed_at ? 'done' : 'baselined', baseline: JSON.parse(r.baseline), appTop: top ? top.slice(0, 3) : null, overlap: r.reviewed_at ? r.overlap : null, followups: fu, followupOk: !!t.followup_ok });
   }
   if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
   const rj = await readJson(request, 6000); if (rj.err) return json({ error: rj.err }, rj.status); const b = rj.b;

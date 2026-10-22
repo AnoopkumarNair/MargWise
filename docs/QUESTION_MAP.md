@@ -45,8 +45,8 @@ Contrast: Builder vs Thinker vs Creator vs Persuader.
 | --- | --- | --- | --- |
 | Fit the new planks by hand in the cold, getting every joint tight before midnight | R Builder (1.0) | C (0.5) | Evidence for realistic interest: working with tools, machines, the outdoors. The C load reflects that the activity also draws on order. |
 | Find out why this arch cracked, even if it takes all night of measuring | I Thinker (1.0) | A (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The A load reflects that the activity also draws on making and expressing. |
-| Sketch a new arch shape that might be safer, though most first ideas get thrown out | A Creator (1.0) | I (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The I load reflects that the activity also draws on working things out. |
-| Take charge of the repair team and the money, and face the blame if it goes wrong | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
+| Sketch a new arch shape for the bridge, though most first ideas get thrown out | A Creator (1.0) | I (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The I load reflects that the activity also draws on working things out. |
+| Lead the repair team, and face the blame if it goes wrong | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
 
 ### s03 Clockmaker's Lane
 _The tower clock that tells the lane when to light its lamps is running wrong, and visitors are arriving for the festival._
@@ -58,7 +58,7 @@ Contrast: Builder vs Thinker vs Creator vs Organiser.
 | Climb the tower and follow the broken gear by hand, in a dusty, cramped space | R Builder (1.0) | I (0.5) | Evidence for realistic interest: working with tools, machines, the outdoors. The I load reflects that the activity also draws on working things out. |
 | Study the pattern of missed chimes, though it may take days to spot the cause | I Thinker (1.0) | R (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The R load reflects that the activity also draws on working with tools. |
 | Repaint the clock face so it is easier to read, even if some liked the old one | A Creator (1.0) | S (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The S load reflects that the activity also draws on teaching. |
-| Plan the repair step by step and list the parts needed, rewriting it as things change | C Organiser (1.0) | E (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The E load reflects that the activity also draws on leading. |
+| Write up a step-by-step repair checklist, redoing it as things change | C Organiser (1.0) | E (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The E load reflects that the activity also draws on leading. |
 
 ### s04 Orchard Village
 _The orchard folk promised sweet juice to every lamp-bearer, but the early harvest is piling up faster than they can cope._
@@ -68,9 +68,9 @@ Contrast: Builder vs Thinker vs Helper vs Persuader.
 | Card shown to the student | Main | Also | Why this card is here |
 | --- | --- | --- | --- |
 | Run the press and keep it humming all day | R Builder (1.0) | C (0.5) | Evidence for realistic interest: working with tools, machines, the outdoors. The C load reflects that the activity also draws on order. |
-| Test apple blends to find which one tastes best | I Thinker (1.0) | A (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The A load reflects that the activity also draws on making and expressing. |
+| Test apple blends to work out why one tastes best | I Thinker (1.0) | A (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The A load reflects that the activity also draws on making and expressing. |
 | Teach visiting children to make juice through games | S Helper (1.0) | A (0.5) | Evidence for social interest: teaching, caring, guiding, working through people. The A load reflects that the activity also draws on making and expressing. |
-| Persuade passers-by to buy and strike a good deal | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
+| Sell the fresh juice to passers-by on the village road | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
 
 ### s05 Fog Pass
 _Fog has settled on the pass, the signal lamp is dim, and festival travellers are feeling their way through._
@@ -81,7 +81,7 @@ Contrast: Builder vs Thinker vs Helper vs Organiser.
 | --- | --- | --- | --- |
 | Mend the dim signal lamp alone on the ridge, in freezing wind | R Builder (1.0) | I (0.5) | Evidence for realistic interest: working with tools, machines, the outdoors. The I load reflects that the activity also draws on working things out. |
 | Map where the fog is thickest to find a safer path, standing still in the cold | I Thinker (1.0) | R (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The R load reflects that the activity also draws on working with tools. |
-| Gather the lost travellers and keep their spirits up on a long, cold walk | S Helper (1.0) | E (0.5) | Evidence for social interest: teaching, caring, guiding, working through people. The E load reflects that the activity also draws on leading. |
+| Lift the lost travellers' spirits on a long, cold walk | S Helper (1.0) | E (0.5) | Evidence for social interest: teaching, caring, guiding, working through people. The E load reflects that the activity also draws on leading. |
 | Count everyone through the pass so no one is left behind, even as people grow impatient | C Organiser (1.0) | E (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The E load reflects that the activity also draws on leading. |
 
 ### s06 Night Bazaar
@@ -93,8 +93,8 @@ Contrast: Builder vs Thinker vs Persuader vs Organiser.
 | --- | --- | --- | --- |
 | Build a sturdy stall frame from the plan, working fast as the light fades | R Builder (1.0) | C (0.5) | Evidence for realistic interest: working with tools, machines, the outdoors. The C load reflects that the activity also draws on order. |
 | Examine the old machine to learn its use, though it may turn out to be junk | I Thinker (1.0) | A (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The A load reflects that the activity also draws on making and expressing. |
-| Set prices and win over buyers, knowing some will walk away | E Persuader (1.0) | S (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The S load reflects that the activity also draws on teaching. |
-| Sort the stock and label shelves so buyers find things fast, before the doors open | C Organiser (1.0) | R (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The R load reflects that the activity also draws on working with tools. |
+| Win over the passing buyers, knowing some will walk away | E Persuader (1.0) | S (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The S load reflects that the activity also draws on teaching. |
+| Label the shelves so buyers find things fast, before the doors open | C Organiser (1.0) | R (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The R load reflects that the activity also draws on working with tools. |
 
 ### s07 River Camp
 _A wide river lies across the road, and a tired group of lamp-bearers has stopped to rest on the bank._
@@ -104,7 +104,7 @@ Contrast: Builder vs Creator vs Helper vs Persuader.
 | Card shown to the student | Main | Also | Why this card is here |
 | --- | --- | --- | --- |
 | Build a raft from whatever wood is nearby, with sore arms and wet feet | R Builder (1.0) | I (0.5) | Evidence for realistic interest: working with tools, machines, the outdoors. The I load reflects that the activity also draws on working things out. |
-| Draw up a boat for the crossing that may not float the first time | A Creator (1.0) | I (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The I load reflects that the activity also draws on working things out. |
+| Dream up a new boat shape for the crossing, though it may not float the first time | A Creator (1.0) | I (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The I load reflects that the activity also draws on working things out. |
 | Care for the tired travellers through the night while others plan the crossing | S Helper (1.0) | E (0.5) | Evidence for social interest: teaching, caring, guiding, working through people. The E load reflects that the activity also draws on leading. |
 | Run the camp meeting and push for a decision, even if some people are unhappy | E Persuader (1.0) | S (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The S load reflects that the activity also draws on teaching. |
 
@@ -129,7 +129,7 @@ Contrast: Builder vs Creator vs Persuader vs Organiser.
 | --- | --- | --- | --- |
 | Rope down a short stretch to test the rock, which is slow, tiring work | R Builder (1.0) | I (0.5) | Evidence for realistic interest: working with tools, machines, the outdoors. The I load reflects that the activity also draws on working things out. |
 | Draw a picture map of the glowing cliff for the climbers, redrawing it as the light shifts | A Creator (1.0) | I (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The I load reflects that the activity also draws on working things out. |
-| Split the climbers into teams and set the pace, though some will grumble at your choices | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
+| Lead the climbers to the top, though some will grumble at your choices | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
 | Check every harness against the safety list while others start climbing first | C Organiser (1.0) | E (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The E load reflects that the activity also draws on leading. |
 
 ### s10 Salt Market
@@ -154,7 +154,7 @@ Contrast: Thinker vs Creator vs Helper vs Persuader.
 | Chart the stars and wonder what is out there | I Thinker (1.0) | A (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The A load reflects that the activity also draws on making and expressing. |
 | Paint the night sky and notice how it changes | A Creator (1.0) | I (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The I load reflects that the activity also draws on working things out. |
 | Welcome the visitors and help each one find a good spot to look | S Helper (1.0) | E (0.5) | Evidence for social interest: teaching, caring, guiding, working through people. The E load reflects that the activity also draws on leading. |
-| Run the club night and sign up new members | E Persuader (1.0) | S (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The S load reflects that the activity also draws on teaching. |
+| Recruit new members for the stargazing club | E Persuader (1.0) | S (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The S load reflects that the activity also draws on teaching. |
 
 ### s12 Herbalists' Garden
 _The garden that grows the festival's sweet lamp-herbs is overgrown, and the season is turning._
@@ -166,7 +166,7 @@ Contrast: Thinker vs Creator vs Helper vs Organiser.
 | Test soils and seeds to grow healthier plants | I Thinker (1.0) | R (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The R load reflects that the activity also draws on working with tools. |
 | Shape the garden so it feels peaceful to walk in | A Creator (1.0) | S (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The S load reflects that the activity also draws on teaching. |
 | Show children how to care for the plants through stories | S Helper (1.0) | A (0.5) | Evidence for social interest: teaching, caring, guiding, working through people. The A load reflects that the activity also draws on making and expressing. |
-| Label every herb and keep the beds in tidy rows | C Organiser (1.0) | R (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The R load reflects that the activity also draws on working with tools. |
+| Label each herb bed so nothing gets mixed up | C Organiser (1.0) | R (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The R load reflects that the activity also draws on working with tools. |
 
 ### s13 Printers' Quarter
 _An old printing press has been found in a cellar, and the quarter wants to use it for the festival._
@@ -177,7 +177,7 @@ Contrast: Thinker vs Creator vs Persuader vs Organiser.
 | --- | --- | --- | --- |
 | Investigate how the old press works, reading faded notes that may lead nowhere | I Thinker (1.0) | A (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The A load reflects that the activity also draws on making and expressing. |
 | Design a new letter style for the press, then redo it if people can't read it | A Creator (1.0) | I (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The I load reflects that the activity also draws on working things out. |
-| Start a new newspaper and find people to pay for it, at the risk it does not sell | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
+| Launch a new newspaper for the quarter, at the risk it does not sell | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
 | Proofread each page before printing, starting over whenever a mistake slips through | C Organiser (1.0) | E (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The E load reflects that the activity also draws on leading. |
 
 ### s14 Healing House
@@ -189,7 +189,7 @@ Contrast: Thinker vs Helper vs Persuader vs Organiser.
 | --- | --- | --- | --- |
 | Test the water to find what is making people ill, with many tests that show nothing | I Thinker (1.0) | R (0.5) | Evidence for investigative interest: working things out, observing, analysing, asking why. The R load reflects that the activity also draws on working with tools. |
 | Sit with the sick travellers and talk with them, though some would rather be left alone | S Helper (1.0) | E (0.5) | Evidence for social interest: teaching, caring, guiding, working through people. The E load reflects that the activity also draws on leading. |
-| Lead the clinic team and choose who is seen first, even when someone has to wait | E Persuader (1.0) | S (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The S load reflects that the activity also draws on teaching. |
+| Lead the clinic team tonight, even when someone has to wait | E Persuader (1.0) | S (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The S load reflects that the activity also draws on teaching. |
 | Sort the medicine store so the right dose is quick to find, checking label after label | C Organiser (1.0) | R (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The R load reflects that the activity also draws on working with tools. |
 
 ### s15 Festival Square
@@ -201,7 +201,7 @@ Contrast: Creator vs Helper vs Persuader vs Organiser.
 | --- | --- | --- | --- |
 | Create the welcome arch, though you may still be painting it as the lamps arrive | A Creator (1.0) | S (0.5) | Evidence for artistic interest: making and expressing, imagining, designing, open-ended work. The S load reflects that the activity also draws on teaching. |
 | Greet newcomers and help them join in, staying by the gate while the fun starts | S Helper (1.0) | A (0.5) | Evidence for social interest: teaching, caring, guiding, working through people. The A load reflects that the activity also draws on making and expressing. |
-| Run the stalls and set the prices, then face the stallholders if sales are slow | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
+| Manage the festival stalls, then face the stallholders if sales are slow | E Persuader (1.0) | C (0.5) | Evidence for enterprising interest: leading, organising others, selling an idea, taking initiative and risk. The C load reflects that the activity also draws on order. |
 | Keep the timetable so every act starts on time, working out of sight all evening | C Organiser (1.0) | E (0.5) | Evidence for conventional interest: order, accuracy, systems, records, following clear procedures. The E load reflects that the activity also draws on leading. |
 
 ## 4. Coverage and independence
@@ -235,7 +235,7 @@ Each type is the main load in 10 to 10 of the 15 stops. Every pair of types is c
 | R and S | 6 |
 
 ## 5. Multiple signals, not one memorable scene
-A journey uses about 13 of the 15 stops (two flasks each) before the result. A leave-one-out test (`engine/tests/design.test.mjs`) removes each stop in turn from 120 simulated journeys and checks how often the top field changes; the test fails if any single stop changes the top field in more than 25 percent of journeys. The current worst case is shown in the test output. No single stop decides the result, and the top three areas always rest on several independent choices.
+A journey uses about 13 of the 15 stops (two flasks each) before the result. A leave-one-out test (`engine/tests/design.test.mjs`) removes each stop in turn from 60 simulated journeys and checks how often the top field changes; the test fails if any single stop changes the top field in more than 25 percent of journeys. The current worst case is shown in the test output. No single stop decides the result, and the top three areas always rest on several independent choices.
 
 ## 6. Known limits
 - The mapping of cards to types is a design judgement, not yet validated against a published interest inventory or against real students (see docs/CALIBRATION.md).

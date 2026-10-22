@@ -23,7 +23,7 @@ Plain version. One school, one counsellor, about 40 students (adults first, then
 3. **Start the game** on the same page and hand over the device. It signs the student in cleanly, wiping any earlier student's session. If the page is refreshed or the connection drops, the student taps **Continue your walk**.
 4. **When they finish,** use Print or save as PDF on their results page for the parent copy.
 5. **Review.** The page shows your picks beside the app's top 3 and the match count. Open the student's top field in the game and mark each part as right, needs a change, or something missing: subjects, exams, degree and plan B, colleges, abroad, pay, AI. Say whether the student's view changed after the chat and whether you would use this with a real student.
-6. **Follow up** at 3, 6 and 12 months, only for students whose consent sheet covers it (the page refuses otherwise): which stream or path the student chose and whether they used the app's suggestions. This is what shows whether the app helped, which day-one agreement cannot. The student notice says follow-up notes (first name, class, notes) are kept for up to 12 months after the test; everything else goes at the end of the test. The end-of-pilot deletion must therefore skip students with follow-up consent until their last follow-up. Have a lawyer check this wording.
+6. **Follow up** at 3, 6 and 12 months, only for students whose consent sheet covers it (the page refuses otherwise): which stream or path the student chose and whether they used the app's suggestions. This is what shows whether the app helped, which day-one agreement cannot. The student notice says follow-up notes (first name, class, notes) are kept for up to 12 months after the test; everything else goes at the end of the test, which `?endpilot=1` does. Have a lawyer check this wording.
 7. **Withdrawal.** "Remove" deletes everything about a student (game data, review, follow-ups); the removal is logged without the name.
 
 ## Reports
@@ -54,8 +54,14 @@ The match count only tests the field ranking. The depth (subjects, exams, colleg
 ## Setup and teardown checklist
 - **Database:** apply `hosting/schema.sql`, then `schema2.sql` to `schema9.sql` once each, in order (the `ALTER` lines fail if run twice).
 - **Privacy notice:** the student notice says the school counsellor can see name, completion and results. The parent consent sheet must say the same. Get it checked before minors take part.
-- **End of pilot:** delete each student's data in Admin > Testers ("Delete this tester's data", which also removes the counsellor review), or set `RETENTION_DAYS` and run `POST /api/admin?purge=1`. The student notice promises deletion by a stated date, so diarise it and check the audit log (`?audit=1`). Turn off every counsellor key.
+- **End of pilot:** run `POST /api/admin?endpilot=1`. It deletes every student's game data and counsellor review, and deletes students without follow-up consent completely. Students whose consent sheet covers follow-ups keep only first name, class, consent date and follow-up notes, as the student notice says. Counsellor keys stay active until the last follow-up, then turn them off. A single student's data can be removed any time in Admin > Testers ("Delete this tester's data") or by the counsellor ("Remove"). Check the result in the audit log (`?audit=1`). The student notice promises deletion by a stated date, so diarise it and check the audit log (`?audit=1`). Turn off every counsellor key.
 - **Lockout:** counsellor and admin wrong-key attempts share one counter per network address, so several typos at one school can lock that address for 15 minutes.
 
 ## What the student sees on each field page (explanation panel)
 For each suggested field the page shows: the three choices that pointed there (with the stop name and the card), one choice that pointed elsewhere, how the field lines up with the student's types, what is still uncertain (a close neighbour, thin evidence, spread-out choices, interest not ability, US-based data) and what to try next. The effect of each choice is measured by leaving it out and re-scoring the field. The question bank is documented card by card in `docs/QUESTION_MAP.md` (generated, kept current by CI) and the wording audit in `docs/CARD_AUDIT.md`.
+
+## Shared devices
+A counsellor-led sign-in lasts 6 hours. After 30 idle minutes the game asks "Is this still <name>?" when it is loaded again; a tab left open and untouched is not re-checked, so the counsellor should press Not you? or start the next student from the counsellor page. Do not use the same browser profile for several students at once.
+
+## Pilot item analysis
+Admin `?itemstats=1` shows how often each card is picked and the share of oil spent on each screen position (about 25 percent each is expected). A strong position effect or a card picked far more or less than the others is a wording problem to review after the pilot, not during it.
