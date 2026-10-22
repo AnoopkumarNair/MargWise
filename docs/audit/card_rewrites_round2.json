@@ -1,0 +1,99 @@
+{
+ "s03": {
+  "s03-2": {
+   "old": "Plan the repair step by step so nothing is missed, while others do the climbing",
+   "new": "Plan the repair step by step and list the parts needed, rewriting it as things change",
+   "why": "Cost was that others do the climbing, so the C card read as shirking (blind rating 2, lowest in scene). The new cost is real effort, and 'so nothing is missed' (a C cue) is removed.",
+   "type": "C",
+   "len": 85
+  }
+ },
+ "s04": {
+  "s04-4": {
+   "old": "Test different apple blends and work out which one tastes best, and why",
+   "new": "Test apple blends to find which one tastes best",
+   "why": "At 73 characters it was about 25 longer than its scene-mates, so it stood out. 'and why' was an I cue.",
+   "type": "I",
+   "len": 47
+  }
+ },
+ "s06": {
+  "s06-2": {
+   "old": "Examine the old machine to learn its use, even if the stall opens without you",
+   "new": "Examine the old machine to learn its use, though it may turn out to be junk",
+   "why": "'even if the stall opens without you' framed the I card as neglecting duty. The new cost falls on the task, not on the others.",
+   "type": "I",
+   "len": 75
+  }
+ },
+ "s08": {
+  "s08-2": {
+   "old": "Track the cloth rolls so none go missing before market day, a slow, careful job",
+   "new": "Track the cloth rolls for market day, recounting whenever the totals don't match",
+   "why": "'a slow, careful job' calls the task itself dull, which lowers its desirability. 'so none go missing' repeats the C purpose-clause cue.",
+   "type": "C",
+   "len": 80
+  }
+ },
+ "s09": {
+  "s09-1": {
+   "old": "Capture the cliff's changing light in drawings, even if it means climbing last",
+   "new": "Draw a picture map of the glowing cliff for the climbers, redrawing it as the light shifts",
+   "why": "The A card did nothing toward the scene goal and 'climbing last' read as selfish (rated 2, odd one out). Now the art serves the group, with a creative cost.",
+   "type": "A",
+   "len": 90
+  },
+  "s09-2": {
+   "old": "Split the climbers into teams and set the pace, taking the blame if anyone is late",
+   "new": "Split the climbers into teams and set the pace, though some will grumble at your choices",
+   "why": "'taking the blame' is the second E blame cost (also s02-4) and the heaviest-sounding in the scene (cost 4). Swapping it for a lighter cost also breaks the blame-means-E pattern.",
+   "type": "E",
+   "len": 88
+  }
+ },
+ "s10": {
+  "s10-1": {
+   "old": "Weigh and record what salt is left, a fiddly job with the crowd shouting nearby",
+   "new": "Weigh what salt is left so each trader's loss is clear, with the crowd shouting nearby",
+   "why": "Recording during a dispute looked useless (rated 2). Tying the weighing to settling the loss makes the C card part of the solution.",
+   "type": "C",
+   "len": 86
+  }
+ },
+ "s11": {
+  "s11-4": {
+   "old": "Lead the club night and persuade new people to join",
+   "new": "Run the club night and sign up new members",
+   "why": "'persuade' is an E trigger already flagged in round 1 and still used twice (s04-2, s11-4).",
+   "type": "E",
+   "len": 42
+  }
+ },
+ "s12": {
+  "s12-3": {
+   "old": "Teach children to care for the plants through stories",
+   "new": "Show children how to care for the plants through stories",
+   "why": "'Teach children ... through games/stories' repeats s04-1 almost word for word, which is a cross-scene S cue.",
+   "type": "S",
+   "len": 56
+  }
+ },
+ "s13": {
+  "s13-1": {
+   "old": "Proofread each page and keep the print run on time, with little praise if it goes well",
+   "new": "Proofread each page before printing, starting over whenever a mistake slips through",
+   "why": "'with little praise' is a status cost that makes C look thankless. 'keep ... on time' repeats s15-4, another C cue.",
+   "type": "C",
+   "len": 83
+  }
+ },
+ "s14": {
+  "s14-3": {
+   "old": "Sit up with the sick travellers and comfort them, missing a night's sleep",
+   "new": "Sit with the sick travellers and talk with them, though some would rather be left alone",
+   "why": "Dominant in a healing house: losing a night's sleep is a noble sacrifice that raises the card's appeal. A rejection cost keeps it S but makes it less of a moral must-pick.",
+   "type": "S",
+   "len": 87
+  }
+ }
+}

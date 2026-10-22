@@ -1,0 +1,67 @@
+{
+ "s02-E": {
+  "old": "Take charge of the repair team and the money, and face the blame if it goes wrong",
+  "new": "Lead the repair team, and face the blame if it goes wrong",
+  "why": "Removes 'and the money' (budgeting reads C); one leadership activity."
+ },
+ "s03-C": {
+  "old": "Plan the repair step by step and list the parts needed, rewriting it as things change",
+  "new": "Write up a step-by-step repair checklist, redoing it as things change",
+  "why": "Merges planning and parts-listing into one record-keeping task."
+ },
+ "s04-E": {
+  "old": "Persuade passers-by to buy and strike a good deal",
+  "new": "Sell the fresh juice to passers-by on the village road",
+  "why": "Single selling activity; drops the separate bargaining skill and the 'persuade' trigger."
+ },
+ "s05-S": {
+  "old": "Gather the lost travellers and keep their spirits up on a long, cold walk",
+  "new": "Lift the lost travellers' spirits on a long, cold walk",
+  "why": "Drops 'gather' (rounding up reads as leading); keeps the supportive activity."
+ },
+ "s06-E": {
+  "old": "Set prices and win over buyers, knowing some will walk away",
+  "new": "Win over the passing buyers, knowing some will walk away",
+  "why": "Drops 'set prices' (pricing reads C); one persuading activity without the trigger word."
+ },
+ "s06-C": {
+  "old": "Sort the stock and label shelves so buyers find things fast, before the doors open",
+  "new": "Label the shelves so buyers find things fast, before the doors open",
+  "why": "One organising activity instead of sort + label."
+ },
+ "s07-A": {
+  "old": "Draw up a boat for the crossing that may not float the first time",
+  "new": "Dream up a new boat shape for the crossing, though it may not float the first time",
+  "why": "Original 'draw up a boat' reads as engineering; 'dream up a new shape' foregrounds invention while keeping the same cost."
+ },
+ "s09-E": {
+  "old": "Split the climbers into teams and set the pace, though some will grumble at your choices",
+  "new": "Lead the climbers to the top, though some will grumble at your choices",
+  "why": "One leadership act instead of team-splitting (organising) + pace-setting."
+ },
+ "s11-E": {
+  "old": "Run the club night and sign up new members",
+  "new": "Recruit new members for the stargazing club",
+  "why": "One enterprising act; drops event-hosting which overlaps with the S card."
+ },
+ "s12-C": {
+  "old": "Label every herb and keep the beds in tidy rows",
+  "new": "Label each herb bed so nothing gets mixed up",
+  "why": "Drops 'keep the beds in tidy rows' (gardening reads R); avoids 'every'."
+ },
+ "s13-E": {
+  "old": "Start a new newspaper and find people to pay for it, at the risk it does not sell",
+  "new": "Launch a new newspaper for the quarter, at the risk it does not sell",
+  "why": "One founding activity; drops the separate fundraising/selling clause."
+ },
+ "s14-E": {
+  "old": "Lead the clinic team and choose who is seen first, even when someone has to wait",
+  "new": "Lead the clinic team tonight, even when someone has to wait",
+  "why": "One leadership activity; triage choice was a second decision-making task."
+ },
+ "s15-E": {
+  "old": "Run the stalls and set the prices, then face the stallholders if sales are slow",
+  "new": "Manage the festival stalls, then face the stallholders if sales are slow",
+  "why": "Drops 'set the prices' (pricing reads C); one managing activity."
+ }
+}

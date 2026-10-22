@@ -1,0 +1,362 @@
+{
+ "s01": {
+  "s01-1": {
+   "old": "Stay with the worried children and help them feel safe while they wait",
+   "new": "Keep the waiting children calm and busy, even if you miss the repair",
+   "why": "Lowers the emotive 'worried children' pull (rated 5); adds a cost so it is not the default kind answer.",
+   "type_kept": "S",
+   "chars": 68
+  },
+  "s01-2": {
+   "old": "Track the tides and wind to work out why it stalled",
+   "new": "Work out from tides and wind why it stalled, though the answer may come too late",
+   "why": "adds a trade-off so it is not the only card with a cost; keeps the investigating activity.",
+   "type_kept": "I",
+   "chars": 80
+  },
+  "s01-3": {
+   "old": "Open the ferry's engine and fix what is broken",
+   "new": "Open the engine and fix it, with oily hands and no one to ask for help",
+   "why": "adds a trade-off so it is not the only card with a cost; keeps hands-on repair.",
+   "type_kept": "R",
+   "chars": 70
+  },
+  "s01-4": {
+   "old": "Paint a bright welcome board for the waiting crowd",
+   "new": "Paint a big board so the crowd knows what is happening, with an hour to finish",
+   "why": "Raises appeal (rated 3) by giving the board a purpose for the crowd; adds time pressure as the trade-off.",
+   "type_kept": "A",
+   "chars": 78
+  }
+ },
+ "s02": {
+  "s02-1": {
+   "old": "Find out how old arches stay up, and why this one cracked",
+   "new": "Find out why this arch cracked, even if it takes all night of measuring",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "I",
+   "chars": 71
+  },
+  "s02-2": {
+   "old": "Imagine a bridge shape unlike any other",
+   "new": "Sketch a new arch shape that might be safer, though most first ideas get thrown out",
+   "why": "Was vague and off-task; now tied to the cracked arch, with a realistic cost.",
+   "type_kept": "A",
+   "chars": 83
+  },
+  "s02-3": {
+   "old": "Take charge of the budget and the team for the repair",
+   "new": "Take charge of the repair team and the money, and face the blame if it goes wrong",
+   "why": "Replaces adult word 'budget'; adds accountability as trade-off.",
+   "type_kept": "E",
+   "chars": 81
+  },
+  "s02-4": {
+   "old": "Fit the new planks exactly as the plan shows",
+   "new": "Fit the new planks by hand in the cold, getting every joint tight before midnight",
+   "why": "Was passive ('exactly as the plan shows', rated 2); now skilled, physical work with a cost.",
+   "type_kept": "R",
+   "chars": 81
+  }
+ },
+ "s03": {
+  "s03-1": {
+   "old": "Study the pattern of missed chimes to find the cause",
+   "new": "Study the pattern of missed chimes, though it may take days to spot the cause",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "I",
+   "chars": 77
+  },
+  "s03-2": {
+   "old": "Climb the tower and follow the broken gear by hand",
+   "new": "Climb the tower and follow the broken gear by hand, in a dusty, cramped space",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "R",
+   "chars": 77
+  },
+  "s03-3": {
+   "old": "Start a repair log and list who does which job",
+   "new": "Plan the repair step by step so nothing is missed, while others do the climbing",
+   "why": "Was paperwork-and-bossy (rated 2); now organising with a visible purpose and a cost.",
+   "type_kept": "C",
+   "chars": 79
+  },
+  "s03-4": {
+   "old": "Decorate the clock face with something that makes people smile",
+   "new": "Repaint the clock face so it is easier to read, even if some liked the old one",
+   "why": "Was off-task decoration; now useful design work with a social cost.",
+   "type_kept": "A",
+   "chars": 78
+  }
+ },
+ "s05": {
+  "s05-1": {
+   "old": "Welcome the lost travellers and get them moving together",
+   "new": "Gather the lost travellers and keep their spirits up on a long, cold walk",
+   "why": "Removes 'Welcome the ...' stem that repeats across helping cards; adds cost.",
+   "type_kept": "S",
+   "chars": 73
+  },
+  "s05-2": {
+   "old": "Mend the signal lamp so travellers can see it",
+   "new": "Mend the dim signal lamp alone on the ridge, in freezing wind",
+   "why": "Was the obvious crisis fix (rated 5); keeps repair but adds solitude and discomfort.",
+   "type_kept": "R",
+   "chars": 61
+  },
+  "s05-3": {
+   "old": "Map where the fog is thickest and find out why",
+   "new": "Map where the fog is thickest to find a safer path, standing still in the cold",
+   "why": "Was purposeless next to the crisis; now useful for travellers, with a cost.",
+   "type_kept": "I",
+   "chars": 78
+  },
+  "s05-4": {
+   "old": "Count everyone through the pass and keep the line in order",
+   "new": "Count everyone through the pass so no one is left behind, even as people grow impatient",
+   "why": "Gives counting a clear purpose (safety) to lift appeal; adds cost.",
+   "type_kept": "C",
+   "chars": 87
+  }
+ },
+ "s06": {
+  "s06-1": {
+   "old": "Set your prices and persuade each visitor to take home your best item",
+   "new": "Set prices and win over buyers, knowing some will walk away",
+   "why": "Shortened (was 70 chars); softens pushy 'persuade each visitor'; adds rejection as cost.",
+   "type_kept": "E",
+   "chars": 59
+  },
+  "s06-2": {
+   "old": "Sort the stock by size and label every shelf",
+   "new": "Sort the stock and label shelves so buyers find things fast, before the doors open",
+   "why": "Was chore-like (rated 2); now has a payoff and time pressure.",
+   "type_kept": "C",
+   "chars": 82
+  },
+  "s06-3": {
+   "old": "Build a sturdy stall frame from the plan",
+   "new": "Build a sturdy stall frame from the plan, working fast as the light fades",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "R",
+   "chars": 73
+  },
+  "s06-4": {
+   "old": "Examine the strange old machine and work out what it was for",
+   "new": "Examine the old machine to learn its use, even if the stall opens without you",
+   "why": "Setup primes the machine; adds a real cost to temper it. Setup text should also be neutralised (not in scope).",
+   "type_kept": "I",
+   "chars": 77
+  }
+ },
+ "s07": {
+  "s07-1": {
+   "old": "Sketch a boat unlike any you have seen",
+   "new": "Draw up a boat for the crossing that may not float the first time",
+   "why": "Was off-task and repeated the 'unlike any' stem of s02; now on-task with risk of failure.",
+   "type_kept": "A",
+   "chars": 65
+  },
+  "s07-2": {
+   "old": "Lead the camp meeting and make sure everyone is heard",
+   "new": "Run the camp meeting and push for a decision, even if some people are unhappy",
+   "why": "'Make sure everyone is heard' leaned toward helping; now clearly leading, with a cost.",
+   "type_kept": "E",
+   "chars": 77
+  },
+  "s07-3": {
+   "old": "Look after the tired travellers and help them get going again",
+   "new": "Care for the tired travellers through the night while others plan the crossing",
+   "why": "Most virtuous card (rated 5); adds what you give up.",
+   "type_kept": "S",
+   "chars": 78
+  },
+  "s07-4": {
+   "old": "Build a raft and test which wood floats best",
+   "new": "Build a raft from whatever wood is nearby, with sore arms and wet feet",
+   "why": "Removed 'test which wood floats best', which mixed in investigating; adds physical cost.",
+   "type_kept": "R",
+   "chars": 70
+  }
+ },
+ "s08": {
+  "s08-1": {
+   "old": "Check every roll of cloth and store it in order",
+   "new": "Track the cloth rolls so none go missing before market day, a slow, careful job",
+   "why": "Was chore-like (rated 2); now has a stake (market day) and an honest cost; drops 'every ... in order' stem.",
+   "type_kept": "C",
+   "chars": 79
+  },
+  "s08-2": {
+   "old": "Repair the loom so it runs smoothly again",
+   "new": "Repair the creaking loom, crawling under it with tools for hours",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "R",
+   "chars": 64
+  },
+  "s08-3": {
+   "old": "Coach a shy weaver to show their work with pride",
+   "new": "Coach a nervous new weaver, even though progress is slow and they may give up",
+   "why": "Was strongly virtue-coded ('with pride', rated 5); adds a realistic frustration.",
+   "type_kept": "S",
+   "chars": 77
+  },
+  "s08-4": {
+   "old": "Design a pattern that tells the town's story",
+   "new": "Design a banner pattern for the town, knowing not everyone will like it",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "A",
+   "chars": 71
+  }
+ },
+ "s09": {
+  "s09-1": {
+   "old": "Sit and watch the cliff light shift, and capture it in a drawing",
+   "new": "Capture the cliff's changing light in drawings, even if it means climbing last",
+   "why": "'Sit and watch' read as idle (rated 2); now active, with a cost.",
+   "type_kept": "A",
+   "chars": 78
+  },
+  "s09-2": {
+   "old": "Split the climbers into teams and set the timetable",
+   "new": "Split the climbers into teams and set the pace, taking the blame if anyone is late",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "E",
+   "chars": 82
+  },
+  "s09-3": {
+   "old": "Rope down the cliff and test the rock as you go",
+   "new": "Rope down a short stretch to test the rock, which is slow, tiring work",
+   "why": "Was the brave-hero card (rated 5); keeps it physical but less heroic, adds cost.",
+   "type_kept": "R",
+   "chars": 70
+  },
+  "s09-4": {
+   "old": "Go through the safety checklist, harness by harness, before anyone climbs",
+   "new": "Check every harness against the safety list while others start climbing first",
+   "why": "Shortened (was 73 chars); adds what you give up.",
+   "type_kept": "C",
+   "chars": 77
+  }
+ },
+ "s10": {
+  "s10-1": {
+   "old": "Help a lost trader find their family",
+   "new": "Calm the gathering crowd and listen to each person's worry, which takes a while",
+   "why": "Old card was not in the setup and was rescue-coded (rated 5); now matches the setup (crowd).",
+   "type_kept": "S",
+   "chars": 79
+  },
+  "s10-2": {
+   "old": "Weigh and record every sack, then pack the cart",
+   "new": "Weigh and record what salt is left, a fiddly job with the crowd shouting nearby",
+   "why": "Was chore-like (rated 2); now tied to the spill, with an honest cost.",
+   "type_kept": "C",
+   "chars": 79
+  },
+  "s10-3": {
+   "old": "Settle the argument with a deal both traders accept",
+   "new": "Settle the argument with a deal both traders accept, though neither is fully happy",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "E",
+   "chars": 82
+  },
+  "s10-4": {
+   "old": "Haul the barrels and stack them so they stay put",
+   "new": "Haul the salt sacks off the road and stack them, heavy work in the heat",
+   "why": "Fixes 'barrels' vs spilled salt mismatch; adds cost.",
+   "type_kept": "R",
+   "chars": 71
+  }
+ },
+ "s13": {
+  "s13-1": {
+   "old": "Proofread every page and keep the print run on time",
+   "new": "Proofread each page and keep the print run on time, with little praise if it goes well",
+   "why": "Was chore-like (rated 2); adds honest trade-off; drops 'every'.",
+   "type_kept": "C",
+   "chars": 86
+  },
+  "s13-2": {
+   "old": "Pitch a new newspaper, with a plan and a price",
+   "new": "Start a new newspaper and find people to pay for it, at the risk it does not sell",
+   "why": "Replaces jargon 'Pitch'; adds risk.",
+   "type_kept": "E",
+   "chars": 81
+  },
+  "s13-3": {
+   "old": "Investigate how the old press makes its mark",
+   "new": "Investigate how the old press works, reading faded notes that may lead nowhere",
+   "why": "'Makes its mark' was figurative; adds cost.",
+   "type_kept": "I",
+   "chars": 78
+  },
+  "s13-4": {
+   "old": "Design a new letter style and see if people can read it",
+   "new": "Design a new letter style for the press, then redo it if people can't read it",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "A",
+   "chars": 77
+  }
+ },
+ "s14": {
+  "s14-1": {
+   "old": "Sit with the patients and comfort them through the night",
+   "new": "Sit up with the sick travellers and comfort them, missing a night's sleep",
+   "why": "Compassion-coded (rated 5); adds cost.",
+   "type_kept": "S",
+   "chars": 73
+  },
+  "s14-2": {
+   "old": "Count the medicine store and put it in perfect order",
+   "new": "Sort the medicine store so the right dose is quick to find, checking label after label",
+   "why": "'Perfect order' sounded fussy (rated 2); now has a clear patient benefit and an honest cost.",
+   "type_kept": "C",
+   "chars": 86
+  },
+  "s14-3": {
+   "old": "Test the water supply to find what is making people ill",
+   "new": "Test the water to find what is making people ill, with many tests that show nothing",
+   "why": "Detective-hero framing (rated 5); adds cost.",
+   "type_kept": "I",
+   "chars": 83
+  },
+  "s14-4": {
+   "old": "Lead the clinic team and decide who is seen first",
+   "new": "Lead the clinic team and choose who is seen first, even when someone has to wait",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "E",
+   "chars": 80
+  }
+ },
+ "s15": {
+  "s15-1": {
+   "old": "Welcome the visitors and help the shy ones join in",
+   "new": "Greet newcomers and help them join in, staying by the gate while the fun starts",
+   "why": "Removes 'Welcome the visitors' stem and 'shy ones' virtue cue; adds cost.",
+   "type_kept": "S",
+   "chars": 79
+  },
+  "s15-2": {
+   "old": "Keep the permits, timings and checklists in order",
+   "new": "Keep the timetable so every act starts on time, working out of sight all evening",
+   "why": "Was a noun list with adult word 'permits' (rated 2); now an action with a purpose and a cost.",
+   "type_kept": "C",
+   "chars": 80
+  },
+  "s15-3": {
+   "old": "Run the festival: the stalls, the prices and the plan",
+   "new": "Run the stalls and set the prices, then face the stallholders if sales are slow",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "E",
+   "chars": 79
+  },
+  "s15-4": {
+   "old": "Create the welcome arch with a story in its design",
+   "new": "Create the welcome arch, though you may still be painting it as the lamps arrive",
+   "why": "adds a trade-off so it is not the only card with a cost.",
+   "type_kept": "A",
+   "chars": 80
+  }
+ }
+}

@@ -207,4 +207,10 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 - School counsellors see their own school's students (name, completion, results after they lock their picks). The student notice says so. A counsellor key is personal and school-scoped; only its SHA-256 is stored.
 - Counsellor reviews are deleted with the tester (admin delete and the purge). Reviews record whether the picks were locked before the student reached the results ("blind"); only blind reviews feed the headline match rate.
 - Counsellor and admin wrong-key attempts share one lockout counter per network address.
-- Apply `hosting/schema.sql`, then `schema2.sql` to `schema7.sql`, once each in order.
+- Apply `hosting/schema.sql`, then `schema2.sql` to `schema9.sql`, once each in order.
+
+### Counsellor-led mode
+A counsellor adds a student (consent sheet ticked and dated), locks their own top 3, then `start` returns a tester token that the counsellor page writes into the browser's own storage (it is never put in a URL), wiping an earlier student's saved result and walk, and opens the game. A counsellor-led sign-in lasts 6 hours; after 30 idle minutes the game asks "Is this still <name>?" before anything is recorded. The walk is saved after each step and replayed on "Continue your walk". Counsellors see their school's self-signed students plus the students they added; `remove` deletes a student's events, review and follow-ups and writes an audit row.
+
+### Question bank documentation and checks (added)
+`engine/tools/question_map.mjs` generates `docs/QUESTION_MAP.md` (constructs, every card with its main and related type, coverage, independence); CI fails if it is stale. `engine/tests/design.test.mjs` checks the bank's balance and that no single stop changes the top field in more than 25 percent of simulated journeys (currently about 20 percent at worst). Card wording was audited for social desirability (`docs/CARD_AUDIT.md`); three rounds of card rewrites (trade-offs, then single-activity wording) changed most of the 60 cards. The audit is one rater and unvalidated.

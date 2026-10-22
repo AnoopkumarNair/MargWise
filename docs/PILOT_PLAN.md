@@ -34,3 +34,9 @@ Stop or change the offer if, after Week 2, no school budget owner is willing to 
 ## What the pilot must not claim
 
 That the tool selects the right career or predicts success; that a counsellor's impression is psychometric validation; causal impact from one unrandomised cohort; adult findings as adolescent validity.
+
+
+## Version freeze and think-aloud (added after the storyline review)
+- **Freeze before data collection:** record the release id (`/manifest.json`), the engine hash, `data/fieldbias.json` and the card wording as the pilot version. Changes during the pilot are logged with the reason and tested as a separate version afterwards.
+- **Think-aloud (8 to 12 students, one counsellor, 20 minutes):** before play, ask the student to explain in their own words what the two flasks mean. At three stops, ask why they chose their cards and what each card meant. Then show the same activity in plain neutral wording (without the story and cost clause) and ask whether their choice would change. Record cards that were misread, cards chosen because they sounded kind, clever or brave, and any stop they did not understand or remember afterwards.
+- **Item pass criteria (set in advance):** at least 80 percent can explain the flask mechanic; no card is chosen in more than 70 percent or fewer than 10 percent of showings; oil share by screen position stays between 20 and 30 percent; at most 10 percent of think-aloud choices change under neutral wording.

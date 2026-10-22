@@ -8,23 +8,34 @@ Plain version. One school, one counsellor, about 40 students (adults first, then
 3. Make **one invite code per school** in Admin > Invite codes (label = school name, use limit = class size plus a few, expiry = end of pilot). The game reads codes from that table, and every student who joins under it is tagged with the school in the Testers tab.
 4. Get a signed scope and the parent consent sheet from the school. No minors before this.
 
-## At the school (counsellor, per student)
-1. **Talk first.** The student signs up with the school's code. The counsellor talks to them for 15 to 20 minutes, then **locks their own top 3 on `/counsellor/` before the student plays**. The page records whether the picks were locked before the student reached the results ("blind"). Only blind reviews count towards the headline match rate; the rest are reported separately.
-2. **Student plays** (about 15 minutes) and saves or prints the parent summary. The summary shows the app's result, so the counsellor should not open it before step 1 is locked.
-3. **Compare.** The counsellor opens the summary and records: how many of the app's top 3 fields match their own, whether the app missed something important, and whether any fact looked wrong.
-4. **Report back to the founder** (the part to streamline): one form per student, not a meeting. See below.
+## Two ways students take part
+| | Self sign-up | Counsellor-led |
+| --- | --- | --- |
+| Who it is for | Known testers whose parents agreed (friends, family, adults) | Students at the school |
+| How they start | Open the site, enter name and the invite code, tick the consent box | The counsellor adds them and starts the game on the counsellor's device |
+| Consent | Tick box (self-declared) | Counsellor confirms a signed parent sheet is on file and gives its date; the app will not add the student without it |
+| Counsellor sees | Everyone who joined with the school's code | Only the students they added themselves |
+| Review blind? | Only if picks were locked before the student reached the results | Always (the game cannot start until the picks are locked) |
 
-## How the counsellor reports back (now built, see the last section)
-A "Counsellor review" page in the admin area, one short form per student:
-- Student code (shown on the student's summary page) and the school.
-- Step 1, **locked with a timestamp before the app result is shown**: counsellor's own top 3 fields.
-- Step 2: the app's top 3 appear. Counsellor ticks: matches (0 to 3), "app missed something important" (free text), "a fact looked wrong" (free text and which field), "would I use this with a real student?" (yes / with changes / no).
-- The founder gets one CSV and one summary: average top-3 overlap, the fields most often missed, every flagged fact, and a yes/no count. Flagged facts go straight into the claims ledger; missed fields feed the question and balance fixes.
-Until this page exists, use a shared spreadsheet with the same columns.
+## At the school, per student (counsellor-led)
+1. **Add the student** on `/counsellor/`: first name, class, consent-sheet tick and date, and whether the sheet also covers follow-up checks. A 6-character student code is made.
+2. **Talk first.** Pick your own top 3 fields, add the career you had in mind, say how sure you are, and lock them. They cannot be changed.
+3. **Start the game** on the same page and hand over the device. It signs the student in cleanly, wiping any earlier student's session. If the page is refreshed or the connection drops, the student taps **Continue your walk**.
+4. **When they finish,** use Print or save as PDF on their results page for the parent copy.
+5. **Review.** The page shows your picks beside the app's top 3 and the match count. Open the student's top field in the game and mark each part as right, needs a change, or something missing: subjects, exams, degree and plan B, colleges, abroad, pay, AI. Say whether the student's view changed after the chat and whether you would use this with a real student.
+6. **Follow up** at 3, 6 and 12 months, only for students whose consent sheet covers it (the page refuses otherwise): which stream or path the student chose and whether they used the app's suggestions. This is what shows whether the app helped, which day-one agreement cannot. The student notice says follow-up notes (first name, class, notes) are kept for up to 12 months after the test; everything else goes at the end of the test, which `?endpilot=1` does. Have a lawyer check this wording.
+7. **Withdrawal.** "Remove" deletes everything about a student (game data, review, follow-ups); the removal is logged without the name.
 
-## After (founder, weekly)
-- Fix the top three problems found; rebuild; accept a new release; tell the counsellor what changed.
-- Judge against the frozen rules in PILOT_PLAN.md: 70% finish, 80% name a next step, zero unresolved critical fact errors, and the counsellor's "would use it" answers.
+## Reports
+- Counsellor: `Report` on the counsellor page, with a date range, print or CSV. Averages appear only from 5 reviews because fewer is too few to mean anything; the list still shows your own students by name, which you already know.
+- Founder: Admin > Counsellor reviews (all schools, CSV, blind-only and "sure"-only match rates, section feedback counts).
+
+## How deep the counsellor checks
+The match count only tests the field ranking. The depth (subjects, exams, colleges, abroad, pay, AI) is checked by the section ticks in step 5, for the student's top field, plus the free-text "something wrong" box. Each tick is counted in the admin summary, so a part that is often marked "needs a change" is the first thing to fix. Counsellors are not expected to verify every college or country; a section left unchecked simply is not counted. The fact-check process (docs/REVIEW_PROCESS.md) covers the underlying facts.
+
+## Known limits
+- The pilot uses **one counsellor per school**. Two independent counsellors per student would show how much counsellors disagree with each other, but it is a larger ask; the "sure / not sure" flag is used instead.
+- The counsellor's picks are an opinion, not ground truth. Follow-ups are the stronger evidence.
 
 ## Who verifies what
 | What | Who | When |
@@ -41,7 +52,16 @@ Until this page exists, use a shared spreadsheet with the same columns.
 - The founder sees all reviews, average overlap, "would use" counts, flagged facts and the fields most often missed in Admin > Counsellor reviews, with a CSV.
 
 ## Setup and teardown checklist
-- **Database:** apply `hosting/schema.sql`, then `schema2.sql` to `schema7.sql` once each, in order (the `ALTER` lines fail if run twice).
+- **Database:** apply `hosting/schema.sql`, then `schema2.sql` to `schema9.sql` once each, in order (the `ALTER` lines fail if run twice).
 - **Privacy notice:** the student notice says the school counsellor can see name, completion and results. The parent consent sheet must say the same. Get it checked before minors take part.
-- **End of pilot:** delete each student's data in Admin > Testers ("Delete this tester's data", which also removes the counsellor review), or set `RETENTION_DAYS` and run `POST /api/admin?purge=1`. The student notice promises deletion by a stated date, so diarise it and check the audit log (`?audit=1`). Turn off every counsellor key.
+- **End of pilot:** run `POST /api/admin?endpilot=1`. It deletes every student's game data and counsellor review, and deletes students without follow-up consent completely. Students whose consent sheet covers follow-ups keep only first name, class, consent date and follow-up notes, as the student notice says. Counsellor keys stay active until the last follow-up, then turn them off. A single student's data can be removed any time in Admin > Testers ("Delete this tester's data") or by the counsellor ("Remove"). Check the result in the audit log (`?audit=1`). The student notice promises deletion by a stated date, so diarise it and check the audit log (`?audit=1`). Turn off every counsellor key.
 - **Lockout:** counsellor and admin wrong-key attempts share one counter per network address, so several typos at one school can lock that address for 15 minutes.
+
+## What the student sees on each field page (explanation panel)
+For each suggested field the page shows: the three choices that pointed there (with the stop name and the card), one choice that pointed elsewhere, how the field lines up with the student's types, what is still uncertain (a close neighbour, thin evidence, spread-out choices, interest not ability, US-based data) and what to try next. The effect of each choice is measured by leaving it out and re-scoring the field. The question bank is documented card by card in `docs/QUESTION_MAP.md` (generated, kept current by CI) and the wording audit in `docs/CARD_AUDIT.md`.
+
+## Shared devices
+A counsellor-led sign-in lasts 6 hours. After 30 idle minutes the game asks "Is this still <name>?" when it is loaded again; a tab left open and untouched is not re-checked, so the counsellor should press Not you? or start the next student from the counsellor page. Do not use the same browser profile for several students at once.
+
+## Pilot item analysis
+Admin `?itemstats=1` shows how often each card is picked and the share of oil spent on each screen position (about 25 percent each is expected). A strong position effect or a card picked far more or less than the others is a wording problem to review after the pilot, not during it.

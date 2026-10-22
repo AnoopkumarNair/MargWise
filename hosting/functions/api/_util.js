@@ -18,18 +18,22 @@ export async function readJson(request, max = 120000) {
 }
 // Retention is OFF unless the RETENTION_DAYS env var is set. When set, the lazy daily purge deletes testers and events older than that; every purge is logged to `audit`.
 // A manual admin purge (force) uses RETENTION_DAYS or, failing that, 90.
-export async function purgeOld(env, now, force = false) {
+// Students whose consent sheet covers follow-up checks keep only their first name, class, consent date and follow-up notes; their game data and counsellor review are deleted
+// with everyone else's. Everyone else is deleted completely. `everything` (end of pilot) ignores the age cut-off.
+export async function purgeOld(env, now, force = false, everything = false) {
   if (!force && !Number(env.RETENTION_DAYS)) return null;
   const days = Math.max(1, Math.min(3650, Number(env.RETENTION_DAYS) || 90));
   if (!force) { const last = await env.DB.prepare("SELECT v FROM meta WHERE k = 'last_purge'").first(); if (last && now - Number(last.v) < 86400000) return null; }
-  const cut = now - days * 86400000;
-  const old = await env.DB.prepare('SELECT COUNT(*) AS n FROM testers WHERE created_at < ?').bind(cut).first();
+  const cut = everything ? now + 86400000 : now - days * 86400000;
+  const gone = await env.DB.prepare('SELECT COUNT(*) AS n FROM testers WHERE created_at < ? AND COALESCE(followup_ok, 0) = 0').bind(cut).first();
+  const kept = await env.DB.prepare('SELECT COUNT(*) AS n FROM testers WHERE created_at < ? AND COALESCE(followup_ok, 0) = 1').bind(cut).first();
   await env.DB.batch([
     env.DB.prepare('DELETE FROM events WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ?)').bind(cut),
     env.DB.prepare('DELETE FROM reviews WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ?)').bind(cut),
-    env.DB.prepare('DELETE FROM testers WHERE created_at < ?').bind(cut),
+    env.DB.prepare('DELETE FROM followups WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ? AND COALESCE(followup_ok, 0) = 0)').bind(cut),
+    env.DB.prepare('DELETE FROM testers WHERE created_at < ? AND COALESCE(followup_ok, 0) = 0').bind(cut),
     env.DB.prepare("INSERT INTO meta (k, v) VALUES ('last_purge', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind(String(now)),
-    env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'purge', JSON.stringify({ testers: old ? old.n : 0, retentionDays: days, forced: !!force })),
+    env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, everything ? 'end_of_pilot' : 'purge', JSON.stringify({ deleted: gone ? gone.n : 0, keptForFollowUp: kept ? kept.n : 0, retentionDays: days, forced: !!force })),
   ]);
-  return { testers: old ? old.n : 0, retentionDays: days };
+  return { deleted: gone ? gone.n : 0, keptForFollowUp: kept ? kept.n : 0, retentionDays: days };
 }

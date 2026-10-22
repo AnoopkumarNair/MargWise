@@ -1,31 +1,59 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Margwise counsellor review</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Margwise counsellor</title>
 <style>
 :root{--bg:#f5f6fa;--card:#fff;--fg:#1c2040;--mute:#555b7e;--line:#d9dcea;--accent:#2f3d9e}
 @media (prefers-color-scheme:dark){:root{--bg:#10132b;--card:#181c3d;--fg:#eceefa;--mute:#a4a9cc;--line:#2f3566;--accent:#9db0ff;color-scheme:dark}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif;padding:16px}
-.w{max-width:640px;margin:0 auto;display:grid;gap:14px}h1{margin:0;font-size:22px}h2{margin:0;font-size:17px}
+.w{max-width:680px;margin:0 auto;display:grid;gap:14px}h1{margin:0;font-size:22px}h2{margin:0;font-size:17px}
 input,textarea,button,select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%}
-button{cursor:pointer;font-weight:700;width:auto}button.p{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+button{cursor:pointer;font-weight:700;width:auto}button.p{background:var(--accent);color:var(--bg);border-color:var(--accent)}button.d{color:#b3261e}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px}.mute{color:var(--mute);font-size:14px}.bad{color:#b3261e;font-weight:700}.ok{color:#1b7a3a;font-weight:700}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}.grid label{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px}.grid input{width:auto}
-.row{display:flex;gap:8px;flex-wrap:wrap}.big{font-size:20px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}.grid label,.chk{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px}.grid input,.chk input{width:auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.big{font-size:20px;font-weight:700}.st{display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:8px}.st span{flex:1;min-width:160px}
+.sec{display:grid;grid-template-columns:1fr 150px;gap:8px;align-items:center}
+@media print{body{background:#fff;color:#000}.noprint{display:none!important}}
 </style></head><body><div class="w">
-<h1>Margwise counsellor review</h1>
-<div class="card"><label>Your personal key<input id="key" type="password" autocomplete="off"></label><div class="row"><button class="p" id="load">Show my students</button><span id="msg" class="mute"></span></div>
-<div id="list"></div>
-<label>Or type a student code (from the student's summary page)<input id="code" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="e.g. 3F9A2C"></label><div class="row"><button id="find">Open</button></div></div>
+<h1>Margwise counsellor</h1>
+<div class="card noprint"><label>Your personal key<input id="key" type="password" autocomplete="off"></label><div class="row"><button class="p" id="load">Show my students</button><span id="msg" class="mute"></span></div></div>
 
-<div class="card" id="s1" hidden><h2>Step 1. Your own view, before you see the app's result</h2>
-<p class="mute" id="s1n">Do this BEFORE the student plays the game, so your picks are recorded as blind. After talking with the student, pick the 3 career fields you think fit them best. When you save, these are locked with the time. Only then is the app's result shown.</p>
-<div class="grid" id="picks"></div><div class="row"><button class="p" id="save1">Lock in my 3 fields</button></div></div>
+<div class="card noprint" id="addbox" hidden><h2>Add a student (counsellor-led)</h2>
+<p class="mute">For students whose parents have signed the consent sheet. The student never signs up; you start the game for them on this device.</p>
+<div class="row"><input id="aName" maxlength="40" placeholder="First name" style="flex:2"><input id="aClass" maxlength="10" placeholder="Class, e.g. 10B" style="flex:1"></div>
+<label class="chk"><input type="checkbox" id="aOk"><span>A signed parent consent sheet is on file at school</span></label>
+<label class="chk"><input type="checkbox" id="aFu"><span>The sheet also covers follow-up checks after 3, 6 and 12 months</span></label>
+<label>Date on the consent sheet<input type="date" id="aOn"></label>
+<div class="row"><button class="p" id="aAdd">Add student</button></div></div>
 
-<div class="card" id="s2" hidden><h2>Step 2. Compare with the app</h2>
+<div class="card noprint" id="listbox" hidden><h2>My students</h2><div id="list"></div><div class="row"><input id="code" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Or type a student code" style="flex:1"><button id="find">Open</button></div></div>
+
+<div class="card noprint" id="s1" hidden><h2>Step 1. Your own view, before the student plays</h2>
+<p class="mute">After talking with the student, pick the 3 career fields you think fit them best. Do this BEFORE the student plays, so your picks are recorded as blind. Once saved they are locked.</p>
+<div class="grid" id="picks"></div>
+<label>A career you had in mind (optional)<input id="cnote" maxlength="120"></label>
+<label>How sure are you of your picks?<select id="sure"><option value="sure">Sure</option><option value="unsure">Not sure</option></select></label>
+<div class="row"><button class="p" id="save1">Lock in my 3 fields</button></div></div>
+
+<div class="card noprint" id="s15" hidden><h2>Step 2. Hand the device to the student</h2><p class="mute">Your picks are locked. Press start and give the student this device. When they finish, use Print or save as PDF on their results page for the parent copy, then come back here.</p><div class="row"><button class="p" id="startGame">Start the game for this student</button></div></div>
+
+<div class="card noprint" id="s2" hidden><h2>Step 3. Compare with the app</h2>
 <div><span class="mute">Your picks</span><div class="big" id="mine"></div></div><div><span class="mute">The app's top 3</span><div class="big" id="theirs"></div></div><div class="big" id="ov"></div>
+<p class="mute">Open the student's top field in the game and check each part. For each, say whether it is right, needs a change, or is missing something.</p>
+<div id="secs"></div>
 <label>What did the app miss that matters for this student? (optional)<textarea id="missed" rows="2" maxlength="600"></textarea></label>
-<label>Did any fact look wrong or out of date? Say what, and in which field (optional)<textarea id="wrong" rows="2" maxlength="600"></textarea></label>
+<label>Did any fact look wrong or out of date? Say what and in which field (optional)<textarea id="wrong" rows="2" maxlength="600"></textarea></label>
 <label>Which field was it in? (optional)<input id="wf" maxlength="60"></label>
+<label>After your chat, the student's view was<select id="view"><option value="">Choose</option><option value="changed">Changed</option><option value="same">The same</option><option value="unsure">Not sure</option></select></label>
 <label>Would you use this with a real student?<select id="use"><option value="">Choose</option><option value="yes">Yes</option><option value="with changes">Yes, with changes</option><option value="no">No</option></select></label>
 <label>Anything else (optional)<textarea id="notes" rows="2" maxlength="800"></textarea></label>
 <div class="row"><button class="p" id="save2">Submit review</button></div></div>
-<div class="card" id="done" hidden><h2 class="ok">Thank you. This review is submitted.</h2><p class="mute">Enter another student code above to continue.</p></div>
+
+<div class="card noprint" id="fu" hidden><h2>Follow-up for this student</h2><p class="mute" id="fuPast"></p>
+<div class="row"><select id="fuM" style="width:auto"><option value="3">After 3 months</option><option value="6">After 6 months</option><option value="12">After 12 months</option></select><input id="fuStream" maxlength="60" placeholder="Stream or path chosen" style="flex:1"></div>
+<label>Did they use the app's suggestions?<select id="fuUsed"><option value="">Choose</option><option value="yes">Yes</option><option value="partly">Partly</option><option value="no">No</option></select></label>
+<label>Note (optional)<textarea id="fuNote" rows="2" maxlength="600"></textarea></label><div class="row"><button class="p" id="fuSave">Save follow-up</button></div></div>
+
+<div class="card noprint" id="done" hidden><h2 class="ok">Review submitted. Thank you.</h2></div>
+
+<div class="card" id="rep" hidden><h2>Report</h2>
+<div class="row noprint"><label style="flex:1">From<input type="date" id="rFrom"></label><label style="flex:1">To<input type="date" id="rTo"></label></div>
+<div class="row noprint"><button id="rShow">Show</button><button id="rCsv">Download CSV</button><button id="rPrint">Print</button></div><div id="rOut"></div></div>
 </div><script src="/counsellor/counsellor.js"></script></body></html>
