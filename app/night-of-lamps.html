@@ -1806,7 +1806,7 @@
       var cards = choiceCards(c); cards.forEach(function (k) { tally[k.trait] += 1; });
       h += '<li><b>' + esc(sc.place) + ':</b> ' + (cards.length ? cards.map(function (k) { return '<span class="q">\u201c' + esc(k.text) + '\u201d</span> <span class="tag">' + NAME[k.trait] + '</span>'; }).join(' and ') : 'you kept your oil') + '</li>';
     });
-    h += '</ul><h3>Step 2. Your interest shape</h3><p>Each card stands for one type (and a smaller share of a related one). In every stop you saw four different types and could only spend two flasks, so the result is about what stood out for you compared with the other cards. Flasks you spent on each type, out of the flasks you could have spent on it:</p>';
+    h += '</ul><h3>Step 2. Your interest shape</h3><p>Each card stands for one type (and a smaller share of a related one). In every stop you saw four different types and could only spend two flasks, so the result is about what stood out for you compared with the other cards. Flasks you spent on each type, out of the flasks you could have spent on it. Two flasks on one card count that card twice, a stronger sign that you prefer it. One on each of two cards counts each once. Keeping your oil adds almost nothing. Neither is more correct, and one stop is only one of about 13:</p>';
     var order = AREAS.slice().sort(function (a, b) { return r.profile[b] - r.profile[a]; });
     order.forEach(function (a) { var w = Math.round(zv(r.profile[a]) * 100); h += '<div class="brow"><span>' + NAME[a] + '</span><span class="bar"><i style="width:' + w + '%"></i></span><span>' + tally[a] + ' of ' + shownN[a] + '</span></div>'; });
     var echo = state.choices.filter(function (c) { return c.echoOf; })[0];
