@@ -19,6 +19,12 @@ const V = {
   beat: d => ({ who: str(d.who, 30) }),
   context: d => ({ cls: str(d.cls, 8), board: str(d.board, 8), lean: str(d.lean, 12) }),
   result: d => ({ code: arr(d.code, 3, area), alts: arr(d.alts, 6, a => (Array.isArray(a) ? a.slice(0, 3).map(area) : null)), profile: obj6(d.profile, num), scores: obj6(d.scores, num), confidence: str(d.confidence, 10), noSignal: bool(d.noSignal), cautious: bool(d.cautious), biased: bool(d.biased), sd: num(d.sd), stops: int(d.stops, 0, 30), mixed: bool(d.mixed), lowEngagement: bool(d.lowEngagement), slots: arr(d.slots, 4, x => int(x, 0, 100)) }),
+  snapshot: d => {
+    const choices = arr(d.choices, 40, c => { if (!c || typeof c !== 'object') return null; const sp = {}; if (c.spent && typeof c.spent === 'object') for (const k of Object.keys(c.spent).slice(0, 8)) { const n = int(c.spent[k], 0, 2); if (optId.test(k) && n !== null) sp[k] = n; } const o = { sceneId: str(c.sceneId, 12), spent: sp }; if (c.echoOf) o.echoOf = str(c.echoOf, 8); return /^s\d{2}(~echo)?$/.test(o.sceneId) ? o : null; });
+    const apt = {}; if (d.apt && typeof d.apt === 'object') for (const k of ['N', 'V', 'S', 'P']) apt[k] = arr(d.apt[k], 2, x => (Array.isArray(x) ? [int(x[0], 0, 600000) || 0, x[1] ? 1 : 0, x[2] ? 1 : 0] : null));
+    return { v: 1, choices, apt, seed: int(d.seed, 0, 1e9), slots: arr(d.slots, 4, x => int(x, 0, 100)), ctx: { cls: str(d.ctx && d.ctx.cls, 8), board: str(d.ctx && d.ctx.board, 8), lean: str(d.ctx && d.ctx.lean, 12) }, code: arr(d.code, 3, area), noSignal: bool(d.noSignal) };
+  },
+  progress: d => { const o = V.snapshot(d); delete o.code; delete o.noSignal; const ld = {}; if (d.lockDone && typeof d.lockDone === 'object') for (const k of Object.keys(d.lockDone).slice(0, 12)) ld[str(k, 12)] = d.lockDone[k] ? 1 : 0; o.lockDone = ld; return o; },
   fields: d => ({ bias: d.bias === true, order: arr(d.order, 24, x => str(x, 12)), scores: arr(d.scores, 24, num) }),
   field_open: d => ({ id: str(d.id, 12) }),
   abroad: d => ({ field: d.field ? str(d.field, 12) : null, country: str(d.country, 3), route: d.route === 'B' ? 'B' : 'A' }),
@@ -42,6 +48,7 @@ export async function onRequestPost({ request, env }) {
     if (data.length > 6000) continue;
     stmts.push(env.DB.prepare('INSERT OR IGNORE INTO events (tester_id, session_id, ts, type, data, eid) VALUES (?, ?, ?, ?, ?, ?)').bind(id, session, now, e.type, data, str(e.eid, 40) || null));
   }
+  if (evs.some(e => e && (e.type === 'progress' || e.type === 'snapshot'))) stmts.unshift(env.DB.prepare("DELETE FROM events WHERE tester_id = ? AND type = 'progress'").bind(id));   // only the latest unfinished walk is kept
   if (stmts.length) await env.DB.batch(stmts);
   return json({ ok: true, n: stmts.length });
 }

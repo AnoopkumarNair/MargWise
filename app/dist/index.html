@@ -1,4 +1,5 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.lastres{display:grid;gap:8px;justify-items:center;text-align:center;margin-bottom:10px;color:#fff3d6}.lastres p{margin:0}.lastres .go{width:100%}
+</style></head><body>
 <title>The Night of Lamps</title>
 <link href="vendor/fonts.css" rel="stylesheet">
 <style>
@@ -543,6 +544,11 @@
         <label class="chkrow"><input type="checkbox" id="gOk"><span>I am 18 or older, or my parent or guardian knows about this and agrees.</span></label>
         <p class="err" id="gErr" role="alert"></p>
         <button class="go" id="gGo" type="button">Start the walk</button>
+        <details class="gdata" id="gBack"><summary>I have been here before</summary>
+          <label>Your return code<input type="text" id="gRet" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-2345" enterkeyhint="go"><small class="fp">It is shown under your results. Enter it to see your last result without answering again.</small></label>
+          <p class="err" id="gRetErr" role="alert"></p>
+          <button class="go quiet" id="gRetGo" type="button">Find my results</button>
+        </details>
         <details class="gdata"><summary>What we keep, and who sees it</summary>
           <p>We keep your name, the choices you make in the game and how long each place takes, your puzzle answers, the class, board and stream you pick, your results, your screen size and any feedback you write. We never ask for your phone number, email or address. A scrambled version of your connection address is kept for 24 hours only, to stop abuse.</p>
           <p>The Margwise team can see it. If you joined through a school, the counsellor at that school can also see your name, whether you finished, and your results. Nobody else can. We use it to improve the game and to check how well it measures interests.</p>
@@ -588,7 +594,7 @@
       <p id="premise"></p>
       <p id="mission"></p>
     </div>
-    <div class="actions"><button class="go" id="begin">Take the lantern</button><p class="tiny" id="welcomeBack" hidden></p><p class="tiny">About 15 minutes. Nothing is marked.</p></div>
+    <div class="actions"><div class="lastres" id="lastRes" hidden></div><button class="go" id="begin">Take the lantern</button><p class="tiny" id="welcomeBack" hidden></p><p class="tiny">About 15 minutes. Nothing is marked.</p></div>
     <div class="foot"><span>Prototype. Places and words are drafts.</span><button id="aboutBtn">About</button></div>
   </section>
 
@@ -623,7 +629,7 @@
     <div class="head"><h2>Your interest shape</h2><p id="revealLine"></p></div>
     <div class="radarwrap"><svg id="compass" viewBox="-10 0 340 290" role="img" aria-label="Radar chart of your six interest areas"></svg><p class="howto">The further a point is from the middle, the more you enjoyed that kind of activity, compared with your own other choices.</p></div>
     <ol class="ranked" id="legend"></ol>
-    <p class="note" id="notes" hidden></p>
+    <p class="note" id="notes" hidden></p><p class="note" id="retLine" hidden></p>
     <p class="outro" id="outro"></p>
     <div id="selfq" hidden><b>Does this shape sound like you?</b><div class="rate" data-k="self"></div><div class="rl"><span>Not me</span><span>Very me</span></div><button class="go quiet" id="chkOpen" type="button">Rate each area yourself</button></div>
     <div class="actions" style="margin-top:auto"><button class="go quiet" id="saveBtn">Save your lighthouse</button><button class="go" id="openDoors">See where this can lead</button></div>
@@ -795,7 +801,9 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   var bank = applyStory(M.JOURNEY_BANK), STORY = bank.story;
   // ---------- tester mode: only active when the host page sets window.MW_CONFIG (the hosted test build)
   var MWC = window.MW_CONFIG || null, TK = null, SESSION = Math.random().toString(36).slice(2, 10), evq = [], flushT = null;
-  try { TK = JSON.parse(localStorage.getItem('margwise.tester') || 'null'); if (TK && (!TK.at || Date.now() - TK.at > (TK.led ? 21600000 : 5400000))) { TK = null; localStorage.removeItem('margwise.tester'); } } catch (e) { TK = null; }
+  try { TK = JSON.parse(localStorage.getItem('margwise.tester') || 'null'); if (TK && (!TK.at || Date.now() - TK.at > (TK.led ? 21600000 : 2592000000))) { TK = null; localStorage.removeItem('margwise.tester'); } } catch (e) { TK = null; }
+  var RET = ''; try { RET = sessionStorage.getItem('margwise.ret') || ''; } catch (e) { /* storage blocked */ }
+  function setRet(c) { RET = c || ''; try { sessionStorage.setItem('margwise.ret', RET); } catch (e) { /* storage blocked */ } }
   var EID = 0, failN = 0, STALE_LED = !!(TK && TK.led && Date.now() - TK.at > 1800000);
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && TK && TK.led && Date.now() - TK.at > 1800000) location.reload(); });   // a counsellor-led tab left idle re-asks who is playing
   function flush(useBeacon) {
@@ -810,7 +818,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     if (evq.length > 400) evq.splice(0, evq.length - 400);
     evq.push({ eid: SESSION + '-' + (++EID), ts: Date.now(), type: type, data: data || {} });
     try { TK.at = Date.now(); localStorage.setItem('margwise.tester', JSON.stringify(TK)); } catch (e) { /* storage blocked */ }
-    var urgent = /^(result|feedback|self|areas)$/.test(type);
+    var urgent = /^(result|snapshot|feedback|self|areas)$/.test(type);
     if (urgent || evq.length >= 10) flush(); else { clearTimeout(flushT); flushT = setTimeout(flush, 4000); }
   }
   addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flush(true); }); addEventListener('pagehide', function () { flush(true); });
@@ -1086,9 +1094,10 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   }
   $('beatGo').addEventListener('click', function () { track('beat', { who: $('beatWho').textContent }); $('beat').hidden = true; var f = beatCb; beatCb = null; if (f) f(); });
   // ---------- resume: the walk is a list of choices, so it is saved after every step and can be replayed after a refresh or a dropped connection
-  var WALK_KEY = 'margwise.walk';
-  function saveWalk() { if (!TK) return; try { localStorage.setItem(WALK_KEY, JSON.stringify({ tid: TK.id, seed: SEED, choices: state.choices, slots: state.slots, apt: state.apt, lockDone: state.lockDone, at: Date.now() })); } catch (e) { /* storage blocked */ } }
-  function clearWalk() { try { localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ } }
+  var WALK_KEY = 'margwise.walk', SRVWALK = null;   // SRVWALK: unfinished walk saved on the server (another device or a cleared browser)
+  function saveWalk() { if (!TK) return; try { localStorage.setItem(WALK_KEY, JSON.stringify({ tid: TK.id, seed: SEED, choices: state.choices, slots: state.slots, apt: state.apt, lockDone: state.lockDone, at: Date.now() })); } catch (e) { /* storage blocked */ }
+    var ap = {}; APT.forEach(function (d) { ap[d] = state.apt[d].map(function (x) { return [x.l || 0, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); }); track('progress', { choices: state.choices, apt: ap, seed: SEED, slots: state.slots, lockDone: state.lockDone, ctx: state.ctx }); }
+  function clearWalk() { SRVWALK = null; try { localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ } }
   function readWalk() { try { var w = JSON.parse(localStorage.getItem(WALK_KEY) || 'null'); return w && TK && w.tid === TK.id && w.choices && w.choices.length && Date.now() - w.at < 7200000 ? w : null; } catch (e) { return null; } }
   function resumeWalk(w) { trapBack(); SEED = w.seed; state.choices = w.choices; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.lockDone = w.lockDone || {}; track('walk_resume', { n: litCount() }); advance(false); }
   function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.ilaFinal = false; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.lockDone = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
@@ -1306,7 +1315,8 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   function list(arr) { return arr.map(function (a) { return NAME[a]; }).join(' and '); }
   function titles(ids) { return ids.map(function (i) { return BYID[i].title; }).join(', '); }
 
-  function toReveal() {
+  var ME = null, CONFIRMED = false;   // saved attempts from the server, newest first
+  function toReveal(restored) {
     clearWalk();
     var r = state.result = M.journeyResult(bank, state.choices);
     var code = r.code.code, pr = r.profile;
@@ -1314,8 +1324,8 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     var tot = state.slots.reduce(function (a, b) { return a + b; }, 0), biased = tot >= 8 && Math.max.apply(null, state.slots) / tot >= .8;
     r.noSignal = !(sd >= .2) || !!r.lowEngagement; var tsp = {}, tt = 0; state.choices.forEach(function (c) { Object.keys(c.spent || {}).forEach(function (k) { var a = k.slice(-1); tsp[a] = (tsp[a] || 0) + c.spent[k]; tt += c.spent[k]; }); }); var oneNote = tt >= 8 && Math.max.apply(null, AREAS.map(function (a) { return tsp[a] || 0; })) / tt >= .7; r.oneNote = oneNote;
     r.cautious = r.confidence === 'broad' || biased || oneNote || sd < .5; r.biased = biased;
-    track('result', { code: code, alts: r.code.alternatives, profile: pr, scores: r.scores, confidence: r.confidence, noSignal: r.noSignal, cautious: r.cautious, biased: biased, sd: +sd.toFixed(3), stops: r.stopsPlayed, mixed: r.consistency && r.consistency.mixed, lowEngagement: !!r.lowEngagement, slots: state.slots });
-    $('selfq').hidden = !MWC || !TK; Array.prototype.forEach.call($('selfq').children, function (c) { if (c.id !== 'chkOpen') c.hidden = r.noSignal; }); $('selfq').querySelectorAll('.rate button').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); }); $('chkOpen').hidden = !MWC;
+    if (!restored) { track('result', { code: code, alts: r.code.alternatives, profile: pr, scores: r.scores, confidence: r.confidence, noSignal: r.noSignal, cautious: r.cautious, biased: biased, sd: +sd.toFixed(3), stops: r.stopsPlayed, mixed: r.consistency && r.consistency.mixed, lowEngagement: !!r.lowEngagement, slots: state.slots }); saveSnapshot(r); }
+    $('selfq').hidden = !MWC || !TK || !!restored; Array.prototype.forEach.call($('selfq').children, function (c) { if (c.id !== 'chkOpen') c.hidden = r.noSignal; }); $('selfq').querySelectorAll('.rate button').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); }); $('chkOpen').hidden = !MWC;
     show('reveal'); if (r.noSignal) Snd.reveal(); $('reveal').scrollTop = 0;
     $('compass').innerHTML = radar(pr, code);
     $('compass').setAttribute('aria-label', 'Radar chart. Your strongest areas: ' + code.map(function (a) { return NAME[a]; }).join(', ') + '.');
@@ -1337,6 +1347,41 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     var none = r.noSignal; $('compass').parentNode.hidden = none; $('legend').hidden = none; $('openDoors').hidden = none; $('revealLine').hidden = none;
     if (none) { $('notes').textContent = 'There is not enough here to show a shape. That happens when almost no oil is spent or everything feels the same. It does not mean anything is wrong. Try the walk again and spend your oil on what you would enjoy most.'; $('revealLine').hidden = true; }
     var na = $('noSigAgain'); if (!na) { na = document.createElement('button'); na.type = 'button'; na.id = 'noSigAgain'; na.className = 'go'; na.textContent = 'Walk the road again'; na.addEventListener('click', function () { show('welcome'); }); $('notes').parentNode.appendChild(na); } na.hidden = !none;
+    var rl = $('retLine'); rl.hidden = !(MWC && TK && RET) || none; rl.textContent = RET ? 'Your return code: ' + RET + '. Keep it. Enter it on "I have been here before" to see these results again on any phone or laptop.' : '';
+  }
+  function saveSnapshot(r) {
+    var apt = {}; APT.forEach(function (d) { apt[d] = state.apt[d].map(function (x) { return [x.l || 0, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); });
+    var snap = { choices: state.choices, apt: apt, seed: SEED, slots: state.slots, ctx: state.ctx, code: r.code.code, noSignal: !!r.noSignal };
+    track('snapshot', snap); if (ME) { snap.ts = Date.now(); ME.unshift(JSON.parse(JSON.stringify(snap))); }
+  }
+  function restoreAttempt(a) {
+    try {
+      if (!a || !a.choices || !a.choices.length || !a.ctx) return false;
+      for (var i = 0; i < a.choices.length; i++) if (!bank.scenes.some(function (sc) { return sc.id === String(a.choices[i].sceneId).replace('~echo', ''); })) return false;
+      M.journeyResult(bank, a.choices);   // dry run: throws before any state is touched if the bank no longer fits
+    } catch (e) { return false; }
+    SEED = a.seed == null ? SEED : a.seed; state.choices = a.choices; state.slots = a.slots && a.slots.length === 4 ? a.slots : [0, 0, 0, 0]; state.lockDone = {};
+    state.apt = { N: [], V: [], S: [], P: [] }; APT.forEach(function (d) { state.apt[d] = ((a.apt && a.apt[d]) || []).map(function (x) { return { l: x[0], ok: !!x[1], skip: !!x[2] }; }); });
+    state.ctx.cls = a.ctx.cls || ''; state.ctx.board = a.ctx.board || ''; state.ctx.lean = a.ctx.lean || '';
+    state.ilaFinal = false; trapBack(); toReveal(true); paintApt(); return true;
+  }
+  function paintLast() {
+    var el = $('lastRes'), a = ME && ME.filter(function (x) { return !x.noSignal && x.code && x.code.length; })[0], b = $('begin');
+    el.hidden = true; el.textContent = ''; b.textContent = 'Take the lantern'; b.classList.remove('quiet');
+    if (!a || !(MWC && TK) || TK.led) return;
+    var when = new Date(a.ts).toLocaleDateString('en-IN', { day: 'numeric', month: 'long' }), top = a.code.map(function (c) { return NAME[c]; }).join(', '), p = document.createElement('p');
+    p.innerHTML = '<b>Your last walk (' + esc(when) + ')</b><br>' + esc(top) + (ME.length > 1 ? '<br><small>' + (ME.length - 1) + ' earlier walk' + (ME.length > 2 ? 's' : '') + ' saved too.</small>' : '');
+    var go = document.createElement('button'); go.type = 'button'; go.className = 'go'; go.textContent = 'See my results'; go.addEventListener('click', function () { if (!restoreAttempt(a)) p.textContent = 'Those results could not be opened. You can walk again.'; });
+    if (Date.now() - TK.at > 7200000 && !CONFIRMED) {   // a shared school device: ask before showing someone's results
+      p.innerHTML = '<b>Is this still ' + esc(TK.name) + '?</b>'; go.textContent = 'Yes, show my results'; go.addEventListener('click', function () { CONFIRMED = true; }, true);
+    }
+    el.appendChild(p); el.appendChild(go); el.hidden = false; b.textContent = 'Walk again (retake)'; b.classList.add('quiet');
+  }
+  function fetchMe() {
+    if (!MWC || !TK || TK.led) return;
+    var t = TK; fetch(MWC.api + '/me', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ testerId: t.id, token: t.token }) })
+      .then(function (r) { if (r.status === 403) { if (TK && TK.id === t.id) { try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); paintTester(); $('gate').hidden = false; } return null; } return r.ok ? r.json() : null; })
+      .then(function (j) { if (j && TK && TK.id === t.id) { ME = j.attempts || []; var pg = j.progress; SRVWALK = null; if (pg && pg.choices && pg.choices.length && (!ME.length || pg.ts > ME[0].ts) && !readWalk()) { SRVWALK = { tid: TK.id, seed: pg.seed == null ? SEED : pg.seed, choices: pg.choices, slots: pg.slots && pg.slots.length === 4 ? pg.slots : [0, 0, 0, 0], lockDone: pg.lockDone || {}, apt: (function () { var o = { N: [], V: [], S: [], P: [] }; APT.forEach(function (d) { o[d] = ((pg.apt && pg.apt[d]) || []).map(function (x) { return { l: x[0], ok: !!x[1], skip: !!x[2] }; }); }); return o; })() }; } paintLast(); paintTester(); } }, function () { /* offline: the game still works */ });
   }
   $('openDoors').addEventListener('click', function () { toDoors(); });
   // ---------- save (prototype only: nothing leaves the phone, the phone number is never stored)
@@ -1892,7 +1937,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     var order = AREAS.slice().sort(function (a, b) { return pr[b] - pr[a]; }), ctx = state.ctx || {};
     var ctxLine = [ctx.cls && ('Class ' + ctx.cls), ctx.board && ('Board: ' + ctx.board), ctx.lean && ('Leaning towards: ' + (LEAN_NAME[ctx.lean] || ctx.lean))].filter(Boolean).join(' · ');
     var h = '<div><label class="pnoprint" for="pNm" style="font-size:13px;font-weight:700">Student name (you can edit it)</label><input class="pnm" id="pNm" type="text" maxlength="40" autocomplete="off"><div class="pmeta">' + d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) + (ctxLine ? ' · ' + esc(ctxLine) : '') + '</div></div>';
-    if (MWC && TK) h += '<div class="pmeta"><b>Student code: ' + studentCode() + '</b> (give this to your counsellor so they can compare notes)</div>';
+    if (MWC && TK) h += '<div class="pmeta"><b>Student code: ' + studentCode() + '</b> (give this to your counsellor so they can compare notes)' + (RET ? '<br>Return code: ' + esc(RET) + ' (to see these results again on another device)' : '') + '</div>';
     h += '<div><h3>Interest shape: ' + esc(r.code.code.slice(0, 3).map(function (a) { return NAME[a]; }).join(', ')) + '</h3><div class="pmeta">Strongest first. The bars compare the student\'s own choices with each other.</div></div>';
     h += '<div style="display:grid;gap:6px">' + order.map(function (a) { var w = Math.round(zv(pr[a]) * 100); return '<div class="prow"><span>' + NAME[a] + '</span><span class="pbar"><i style="width:' + w + '%"></i></span><span>' + w + '</span></div><div class="pmeta" style="margin-top:-4px">' + esc(BLURB[a]) + '</div>'; }).join('') + '</div>';
     h += '<div><h3>Areas to explore</h3><ul>' + fits.slice(0, 5).map(function (x) { var top = x.ms.slice(0, 3).map(function (m) { var c = CAREERS.filter(function (cc) { return cc.id === m.careerId; })[0]; return c ? c.title + (c.ai && c.ai.watch ? ' (very high AI exposure, in use now)' : '') : ''; }).filter(Boolean).join(', '); return '<li><b>' + esc(x.f.name) + '</b> (' + esc(x.f.stream) + ')<div class="pcar">Careers to look at: ' + esc(top) + '</div></li>'; }).join('') + '</ul></div>';
@@ -1946,7 +1991,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   function paintTester() {
     var el = $('welcomeBack');
     if (STALE_LED && !(TK && TK.led)) { STALE_LED = false; $('begin').hidden = false; }
-    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } var rw = readWalk(); if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + rw.choices.filter(function (c) { return !c.echoOf; }).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
+    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } var rw = readWalk() || SRVWALK; if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + rw.choices.filter(function (c) { return !c.echoOf; }).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
   }
   if (MWC) {
     try { $('gScene').style.setProperty('--art', 'url(' + ((ART.bg && (ART.bg.gate || ART.bg.lighthouse)) || 'art/bg-gate.webp') + ')'); } catch (e) { /* plain dark gate */ }
@@ -1969,10 +2014,26 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
         .then(function (x) {
           $('gGo').disabled = false;
           if (!x.ok) { $('gErr').textContent = x.j && x.j.error ? x.j.error : 'That did not work. Please try again.'; return; }
-          TK = { id: x.j.testerId, token: x.j.token, name: name, at: Date.now() }; try { localStorage.setItem('margwise.tester', JSON.stringify(TK)); } catch (e) { /* storage blocked */ }
-          $('gate').hidden = true; paintTester(); track('join', { vw: innerWidth, vh: innerHeight });
+          TK = { id: x.j.testerId, token: x.j.token, name: name, at: Date.now() }; setRet(x.j.returnCode); try { localStorage.setItem('margwise.tester', JSON.stringify(TK)); } catch (e) { /* storage blocked */ }
+          $('gate').hidden = true; paintTester(); ME = []; paintLast(); track('join', { vw: innerWidth, vh: innerHeight });
         }, function () { $('gGo').disabled = false; $('gErr').textContent = 'No connection. Please check your internet and try again.'; });
     }
+  }
+  if (MWC) {
+    $('gRetGo').addEventListener('click', function () {
+      var code = $('gRet').value.trim(); $('gRetErr').textContent = ''; if (!code) { $('gRetErr').textContent = 'Please type your return code.'; return; }
+      $('gRetGo').disabled = true;
+      fetch(MWC.api + '/resume', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code: code }) })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (x) {
+          $('gRetGo').disabled = false;
+          if (!x.ok) { $('gRetErr').textContent = x.j && x.j.error ? x.j.error : 'That did not work. Please try again.'; return; }
+          TK = { id: x.j.testerId, token: x.j.token, name: x.j.name, at: Date.now() }; setRet(code.toUpperCase().replace(/[^A-Z0-9]/g, '').replace(/^(.{4})(.{4}).*/, '$1-$2')); try { localStorage.setItem('margwise.tester', JSON.stringify(TK)); } catch (e) { /* storage blocked */ }
+          $('gate').hidden = true; $('gate').classList.remove('cover'); ME = null; paintTester(); fetchMe();
+        }, function () { $('gRetGo').disabled = false; $('gRetErr').textContent = 'No connection. Please check your internet and try again.'; });
+    });
+    $('gRet').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('gRetGo').click(); });
+    if (TK) fetchMe();
   }
   // ---- ratings, feedback, own-area check
   function buildRates(root) { root.querySelectorAll('.rate').forEach(function (r) { if (r.children.length) return; for (var i = 1; i <= 5; i++) { var b = document.createElement('button'); b.type = 'button'; b.textContent = i; b.setAttribute('aria-pressed', 'false'); b.dataset.v = i; r.appendChild(b); } }); }
