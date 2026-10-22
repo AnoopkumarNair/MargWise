@@ -28,6 +28,10 @@ s = open(os.path.join(A, 'night-of-lamps.html'), encoding='utf8').read()
 # 1. embed data
 blob = '<script>window.MW_CONTENT = ' + j('content.json') + ';window.MW_STORY = ' + j('story2.json') + ';window.MW_ABROAD = ' + j('abroad.json') + ';</script>'
 i = s.index('<script>window.MW_CONTENT = '); k = s.index('</script>', i) + 9; s = s[:i] + blob + s[k:]
+# 1b. engine: the versioned bundle in engine/ is the only copy
+eng = open(os.path.join(ROOT, 'engine', 'margwise-engine.js'), encoding='utf8').read(); assert s.count('<script>/*ENGINE*/</script>') == 1, 'engine marker missing'
+s = s.replace('<script>/*ENGINE*/</script>', '<script>' + eng + '</script>')
+engine_sha = hashlib.sha256(eng.encode()).hexdigest()
 # 2. art: 2:3 crop, 540x810 webp
 dist = os.path.join(A, 'dist'); shutil.rmtree(dist, ignore_errors=True); os.makedirs(os.path.join(dist, 'art'))
 art = {'bg': {}, 'obj': {}, 'char': {}}; total = 0
@@ -48,6 +52,6 @@ os.makedirs(H, exist_ok=True); open(os.path.join(H, 'index.html'), 'w', encoding
 for tgt in (dist, H):
     shutil.rmtree(os.path.join(tgt, 'vendor'), ignore_errors=True); shutil.copytree(os.path.join(A, 'vendor'), os.path.join(tgt, 'vendor'))
 shutil.rmtree(os.path.join(H, 'art'), ignore_errors=True); shutil.copytree(os.path.join(dist, 'art'), os.path.join(H, 'art'))
-json.dump({'release_id': release_id, 'built_at': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'page_sha256': hashlib.sha256(doc.encode()).hexdigest(), 'dev_build': args.dev}, open(os.path.join(H, 'manifest.json'), 'w'), indent=1)
+json.dump({'release_id': release_id, 'built_at': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'page_sha256': hashlib.sha256(doc.encode()).hexdigest(), 'engine_sha256': engine_sha, 'dev_build': args.dev}, open(os.path.join(H, 'manifest.json'), 'w'), indent=1)
 print('release', release_id)
 print('built: %d background images (%.2f MB), standalone %d KB, hosted %d KB' % (len(art['bg']), total / 1e6, len(s) // 1000, len(doc) // 1000))

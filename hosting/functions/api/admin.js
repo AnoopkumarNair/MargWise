@@ -1,4 +1,4 @@
-import { json, safeEq, readJson } from './_util.js';
+import { json, safeEq, readJson, ipHash, keyOk, purgeOld } from './_util.js';
 const safe = s => { try { return JSON.parse(s); } catch { return null; } };
 const clean = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f<>]/g, ' ').trim().slice(0, n);
 const csvCell = v => { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
@@ -8,8 +8,13 @@ const genCode = () => { const a = new Uint8Array(8); crypto.getRandomValues(a); 
 const VERDICTS = { correct: 'correct', wrong: 'wrong', outdated: 'outdated', 'cannot find': 'cannot find', unclear: 'cannot find' };
 export async function onRequest({ request, env }) {
   const u = new URL(request.url), key = request.headers.get('x-admin-key') || '', q = u.searchParams, m = request.method;
-  if (!safeEq(key, env.ADMIN_KEY || '')) return json({ error: 'Not allowed.' }, 403);
+  const now0 = Date.now(), ip = keyOk(env.SIGN_KEY) ? await ipHash(request, env.SIGN_KEY) : 'x';
+  const fails = await env.DB.prepare('SELECT COUNT(*) AS n FROM admin_fail WHERE ip = ? AND ts > ?').bind(ip, now0 - 900000).first();
+  if (fails && fails.n >= 8) return json({ error: 'Too many wrong keys. Try again in 15 minutes.' }, 429);
+  if (!safeEq(key, env.ADMIN_KEY || '')) { await env.DB.prepare('INSERT INTO admin_fail (ip, ts) VALUES (?, ?)').bind(ip, now0).run(); await env.DB.prepare('DELETE FROM admin_fail WHERE ts < ?').bind(now0 - 86400000).run(); return json({ error: 'Not allowed.' }, 403); }
   const t = q.get('tester'), now = Date.now();
+  if (q.get('purge') && m === 'POST') return json({ ok: true, purged: await purgeOld(env, now, true) });
+  if (q.get('audit') && m === 'GET') return json({ audit: (await env.DB.prepare('SELECT ts, action, detail FROM audit ORDER BY id DESC LIMIT 100').all()).results });
   // ---- invite codes
   if (q.get('invites')) {
     if (m === 'GET') return json({ master: !!String(env.INVITE_CODE || '').trim(), invites: (await env.DB.prepare('SELECT id, code, label, max_uses, uses, expires_at, active, created_at FROM invites ORDER BY id DESC').all()).results });
@@ -43,9 +48,13 @@ export async function onRequest({ request, env }) {
       const res = await env.ASSETS.fetch(new Request(new URL('/admin/claims.json', request.url))); if (!res.ok) return json({ error: 'claims.json is missing from this deploy.' }, 500);
       const items = await res.json(); if (!Array.isArray(items) || !items.length) return json({ error: 'No claims found.' }, 500);
       for (let i = items.length - 1; i > 0; i--) { const a = new Uint32Array(1); crypto.getRandomValues(a); const j = a[0] % (i + 1); [items[i], items[j]] = [items[j], items[i]]; }
-      const run = 'r' + now.toString(36), st = items.map((it, i) => { const a = new Uint8Array(4); crypto.getRandomValues(a); const id = [...a].map(x => x.toString(16).padStart(2, '0')).join(''); return env.DB.prepare('INSERT INTO claims (id, run, batch, field_key, statement, urls) VALUES (?, ?, ?, ?, ?, ?)').bind(run + '-' + id + i.toString(36), run, Math.floor(i / size) + 1, clean(it.key, 60), clean(it.statement, 900), clean(it.urls, 600)); });
+      const run = 'r' + now.toString(36), st = items.map((it, i) => { const id = /^[0-9a-f]{12}$/.test(it.cid || '') ? it.cid : (() => { const a = new Uint8Array(6); crypto.getRandomValues(a); return [...a].map(x => x.toString(16).padStart(2, '0')).join(''); })(); return env.DB.prepare('INSERT INTO claims (id, run, batch, field_key, statement, urls) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET run = excluded.run, batch = excluded.batch').bind(id, run, Math.floor(i / size) + 1, clean(it.key, 80), clean(it.statement, 900), clean(it.urls, 900)); });
       for (let i = 0; i < st.length; i += 50) await env.DB.batch(st.slice(i, i + 50));
       return json({ ok: true, run, tasks: items.length, batches: Math.ceil(items.length / size) });
+    }
+    if (cl === 'ledger' && m === 'GET') {   // latest verdict per stable claim id; save as data/ledger.json for the pipeline
+      const rows = (await env.DB.prepare('SELECT cr.claim_id AS cid, cr.verdict, cr.says, cr.checked_on, cr.reviewer, cr.applied FROM claim_reviews cr WHERE cr.id = (SELECT MAX(id) FROM claim_reviews WHERE claim_id = cr.claim_id)').all()).results;
+      return new Response(JSON.stringify({ exported_at: new Date(now).toISOString(), claims: rows }, null, 1), { headers: { 'content-type': 'application/json', 'content-disposition': 'attachment; filename="ledger.json"', 'cache-control': 'no-store' } });
     }
     if (cl === 'runs' && m === 'GET') {
       const rs = (await env.DB.prepare('SELECT run, COUNT(*) AS tasks, MAX(batch) AS batches FROM claims GROUP BY run ORDER BY run DESC LIMIT 20').all()).results, out = [];

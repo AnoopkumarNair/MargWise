@@ -47,7 +47,7 @@ Read the full design in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - Live as a controlled test for named adult testers. Not yet cleared for Class 9 to 12 students.
 - The interest model is not yet validated against an established inventory. The plan is in [docs/CALIBRATION.md](docs/CALIBRATION.md).
 - Interest fit uses US O*NET profiles. India pay is a broad group average. AI exposure is US-based. All of this is stated in the app.
-- Verifiable parental consent, automatic deletion and regional languages are not built yet.
+- Verifiable parental consent and regional languages are not built yet. Automatic deletion after 90 days is built (see docs/ARCHITECTURE.md).
 
 ## Try it and run it
 

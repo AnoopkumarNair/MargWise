@@ -16,3 +16,17 @@ export async function readJson(request, max = 120000) {
   const raw = await request.text(); if (raw.length > max) return { err: 'Too large.', status: 413 };
   try { const b = JSON.parse(raw); if (!b || typeof b !== 'object' || Array.isArray(b)) return { err: 'Bad request.', status: 400 }; return { b }; } catch { return { err: 'Bad request.', status: 400 }; }
 }
+// Retention: testers and their events older than RETENTION_DAYS (default 90) are deleted. Runs lazily, at most once a day, and is logged to `audit`.
+export async function purgeOld(env, now, force = false) {
+  const days = Math.max(1, Math.min(3650, Number(env.RETENTION_DAYS) || 90));
+  if (!force) { const last = await env.DB.prepare("SELECT v FROM meta WHERE k = 'last_purge'").first(); if (last && now - Number(last.v) < 86400000) return null; }
+  const cut = now - days * 86400000;
+  const old = await env.DB.prepare('SELECT COUNT(*) AS n FROM testers WHERE created_at < ?').bind(cut).first();
+  await env.DB.batch([
+    env.DB.prepare('DELETE FROM events WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ?)').bind(cut),
+    env.DB.prepare('DELETE FROM testers WHERE created_at < ?').bind(cut),
+    env.DB.prepare("INSERT INTO meta (k, v) VALUES ('last_purge', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind(String(now)),
+    env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'purge', JSON.stringify({ testers: old ? old.n : 0, retentionDays: days, forced: !!force })),
+  ]);
+  return { testers: old ? old.n : 0, retentionDays: days };
+}

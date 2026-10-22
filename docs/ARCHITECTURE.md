@@ -190,3 +190,12 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 | What did reviewers find? | `docs/reviews/opus_review3.md`, `docs/reviews/` (including the ChatGPT venture review and the Opus validation), `docs/CALIBRATION.md` |
 | How would we decide whether this is a business? | `docs/PILOT_PLAN.md`, `docs/PRICING_AND_MARKET.md` |
 | What does a tester see and what do we keep? | the sign-in page, `hosting/functions/api/event.js` |
+
+## Engine, tests and controls added after the external review
+
+- **Engine source of truth.** `engine/margwise-engine.js` is the scoring bundle, injected into the page by `app/build.py` (its SHA-256 is recorded in the manifest). The original unminified source was lost; `engine/SPEC.md` documents the maths read back from the bundle, and `engine/reference.py` is an independent Python implementation. `python3 engine/reference.py` checks it against the shipped bundle (2,274 comparisons, 0 mismatches).
+- **Tests.** `node --test engine/tests/engine.test.mjs` asserts golden agreement (100 journeys, career fit, display order), determinism, the spend-nothing case and a field-ranking benchmark guard. The guard documents a known, structural skew (the top field wins about 2.3 to 2.5 times its fair share across the 120 ideal profiles; science almost never ranks first) and fails if it gets worse. It is not a validation of the ranking.
+- **Claims ledger.** Each fact-check claim has a stable id (hash of key and statement) and a risk level. Reviewer verdicts follow the id across runs. Export `?claims=ledger` from the admin, save it as `data/ledger.json`; `claims_json.py` then fails the pipeline on any wrong or outdated verdict still present, and with `REQUIRE_REVIEWED=1` on any unreviewed high-risk claim.
+- **Raw input hashes.** `--accept` records SHA-256 of every raw input; `validate.py` warns on a difference and fails under `RAW_STRICT=1` (set in CI).
+- **Markup check.** `validate.py` rejects `<` or `>` in any released text.
+- **Hosting controls.** Invite use is claimed atomically inside one UPDATE. Admin sign-in locks out an address after 8 wrong keys in 15 minutes. Tester data older than `RETENTION_DAYS` (default 90) is deleted lazily once a day, or on demand with `POST /api/admin?purge=1`; every purge and its count is written to the `audit` table (`GET ?audit=1`). Apply `hosting/schema4.sql` once.

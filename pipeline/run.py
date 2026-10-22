@@ -36,6 +36,8 @@ if a.accept:
     man = {'accepted_at': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'python': platform.python_version(), 'files': {}}
     for src, dst in files.items():
         shutil.copy(os.path.join(DATA, src), os.path.join(rel, dst)); man['files'][dst] = hashlib.sha256(open(os.path.join(rel, dst), 'rb').read()).hexdigest()
+    raw = [os.path.join('ai', f) for f in sorted(os.listdir(os.path.join(DATA, 'ai'))) if f.endswith(('.csv', '.json')) and f != 'ai_changes.json'] + ['onet/careers.json', 'onet/wages.json', 'plfs_2025.json', 'refcal.json']
+    man['raw'] = {r: hashlib.sha256(open(os.path.join(DATA, r), 'rb').read()).hexdigest() for r in raw}
     man['release_id'] = hashlib.sha256(json.dumps(man['files'], sort_keys=True).encode()).hexdigest()[:12]
     json.dump(man, open(os.path.join(rel, 'manifest.json'), 'w'), indent=1); print('accepted: release', man['release_id'], 'written to data/releases/')
 print('done. Next: review data/releases/CHANGES.md and the fact-check batches, then run with --accept and rebuild the game (see docs/ARCHITECTURE.md).')

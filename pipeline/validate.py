@@ -72,6 +72,22 @@ for sid, sc in st.items():
     for t, txt in sc['o'].items():
         if t not in TR: E('%s bad trait %s' % (sid, t))
         if len(txt) > 95: W('%s card %s is long (%d chars)' % (sid, t, len(txt)))
+# raw inputs must match what was accepted (a fetch changes them on purpose; CI sets RAW_STRICT=1 so a silent edit fails)
+import hashlib
+mp = os.path.join(D, 'releases', 'manifest.json')
+if os.path.exists(mp):
+    for r, h in (json.load(open(mp)).get('raw') or {}).items():
+        fp = os.path.join(D, r)
+        if not os.path.exists(fp) or hashlib.sha256(open(fp, 'rb').read()).hexdigest() != h: (E if os.environ.get('RAW_STRICT') == '1' else W)('raw input %s differs from the accepted release' % r)
+# scraped or typed text must not carry markup characters (the game renders some of it as HTML)
+def walk(o, path):
+    if isinstance(o, str):
+        if '<' in o or '>' in o: E('markup character in %s: %r' % (path, o[:60]))
+    elif isinstance(o, dict):
+        for k, v in o.items(): walk(v, path + '.' + k)
+    elif isinstance(o, list):
+        for i, v in enumerate(o): walk(v, path + '[%d]' % i)
+for n in ('content.json', 'abroad.json', 'story2.json'): walk(load(n), n)
 for m in warn: print('WARN ', m)
 for m in err: print('ERROR', m)
 print('validate: %d errors, %d warnings' % (len(err), len(warn)))
