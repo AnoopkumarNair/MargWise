@@ -740,6 +740,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.41,
+    "tier": "none",
+    "used": [
+     "Explain procedures and discuss test results or prescribed treatments with patients",
+     "Collect, record, and maintain patient information, such as medical history, reports, or examination results"
+    ],
+    "human": [
+     "Prescribe or administer treatment, therapy, medication, vaccination, and other specialized medical care to treat or...",
+     "Order, perform, and interpret tests and analyze records, reports, and examination information to diagnose patients'..."
+    ],
+    "nTasks": 12
    }
   },
   {
@@ -766,6 +780,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.031,
+    "theo": 0.24,
+    "tier": "low",
+    "used": [
+     "Advise or instruct patients regarding preventive dental care, the causes and treatment of dental problems, or oral..."
+    ],
+    "human": [
+     "Use masks, gloves, and safety glasses to protect patients and self from infectious diseases",
+     "Administer anesthetics to limit the amount of pain experienced by patients during procedures"
+    ],
+    "nTasks": 20
    }
   },
   {
@@ -792,6 +819,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.059,
+    "theo": 0.36,
+    "tier": "low",
+    "used": [
+     "Monitor, record, and report symptoms or changes in patients' conditions"
+    ],
+    "human": [
+     "Record patients' medical information and vital signs",
+     "Administer medications to patients and monitor patients for reactions or side effects"
+    ],
+    "nTasks": 27
    }
   },
   {
@@ -818,6 +858,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.09,
+    "theo": 0.41,
+    "tier": "low",
+    "used": [
+     "Provide information and advice regarding drug interactions, side effects, dosage, and proper medication storage"
+    ],
+    "human": [
+     "Review prescriptions to assure accuracy, to ascertain the needed ingredients, and to evaluate their suitability",
+     "Collaborate with other health care professionals to plan, monitor, review, or evaluate the quality or effectiveness of..."
+    ],
+    "nTasks": 21
    }
   },
   {
@@ -844,6 +897,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.017,
+    "theo": 0.27,
+    "tier": "low",
+    "used": [
+     "Provide educational information about physical therapy or physical therapists, injury prevention, ergonomics, or ways..."
+    ],
+    "human": [
+     "Plan, prepare, or carry out individually designed programs of physical treatment to maintain, improve, or restore...",
+     "Perform and document an initial exam, evaluating data to identify problems and determine a diagnosis prior to..."
+    ],
+    "nTasks": 24
    }
   },
   {
@@ -870,6 +936,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.093,
+    "theo": 0.25,
+    "tier": "low",
+    "used": [
+     "Advise animal owners regarding sanitary measures, feeding, general care, medical conditions, or treatment options"
+    ],
+    "human": [
+     "Treat sick or injured animals by prescribing medication, setting bones, dressing wounds, or performing surgery",
+     "Inoculate animals against various diseases, such as rabies or distemper"
+    ],
+    "nTasks": 21
    }
   },
   {
@@ -896,6 +975,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.273,
+    "theo": 0.69,
+    "tier": "moderate",
+    "used": [
+     "Perform complex calculations as part of the analysis and evaluation of data, using computers",
+     "Design computer simulations to model physical data so that it can be better understood"
+    ],
+    "human": [
+     "Analyze data from research conducted to detect and measure physical phenomena",
+     "Report experimental results by writing papers for scientific journals or by presenting information at scientific..."
+    ],
+    "nTasks": 15
    }
   },
   {
@@ -922,6 +1015,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": null,
+    "theo": null,
+    "tier": "nodata",
+    "used": [
+     "Study basic principles of plant and animal life, such as origin, relationship, development, anatomy, and function",
+     "Study aquatic plants and animals and environmental conditions affecting them, such as radioactivity or pollution"
+    ],
+    "human": [
+     "Program and use computers to store, process, and analyze data",
+     "Prepare technical and research reports, such as environmental impact reports, and communicate the results to..."
+    ],
+    "nTasks": 22
    }
   },
   {
@@ -948,6 +1055,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.261,
+    "theo": 0.39,
+    "tier": "moderate",
+    "used": [
+     "Analyze organic or inorganic compounds to determine chemical or physical properties, composition, structure,...",
+     "Confer with scientists or engineers to conduct analyses of research projects, interpret test results, or develop..."
+    ],
+    "human": [
+     "Develop, improve, or customize products, equipment, formulas, processes, or analytical methods",
+     "Induce changes in composition of substances by introducing heat, light, energy, or chemical catalysts for quantitative..."
+    ],
+    "nTasks": 12
    }
   },
   {
@@ -974,6 +1095,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.055,
+    "theo": 0.61,
+    "tier": "low",
+    "used": [
+     "Process and review environmental permits, licenses, or related materials",
+     "Determine data collection methods to be employed in research projects or surveys",
+     "Collect, synthesize, analyze, manage, and report environmental data, such as pollution emission measurements,..."
+    ],
+    "human": [
+     "Communicate scientific or technical information to the public, organizations, or internal audiences through oral...",
+     "Monitor effects of pollution or land degradation and recommend means of prevention or control"
+    ],
+    "nTasks": 22
    }
   },
   {
@@ -1000,6 +1136,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.211,
+    "theo": 0.75,
+    "tier": "moderate",
+    "used": [
+     "Identify relationships and trends in data, as well as any factors that could affect the results of research",
+     "Report results of statistical analyses, including information in the form of graphs, charts, and tables",
+     "Report results of statistical analyses in peer-reviewed papers and technical manuals"
+    ],
+    "human": [
+     "Analyze and interpret statistical data to identify significant differences in relationships among sources of information",
+     "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and..."
+    ],
+    "nTasks": 19
    }
   },
   {
@@ -1026,6 +1177,17 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.42,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Inspect food processing areas to ensure compliance with government regulations and standards for sanitation, safety,...",
+     "Check raw ingredients for maturity or stability for processing, and finished products for safety, quality, and..."
+    ],
+    "nTasks": 13
    }
   },
   {
@@ -1052,6 +1214,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.081,
+    "theo": 0.41,
+    "tier": "low",
+    "used": [
+     "Read and interpret blueprints, technical drawings, schematics, or computer-generated reports",
+     "Solicit new business",
+     "Provide technical customer service"
+    ],
+    "human": [
+     "Research, design, evaluate, install, operate, or maintain mechanical products, equipment, systems or processes to meet...",
+     "Specify system components or direct modification of products to ensure conformance with engineering design,..."
+    ],
+    "nTasks": 28
    }
   },
   {
@@ -1078,6 +1255,17 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.008,
+    "theo": 0.41,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Direct engineering activities, ensuring compliance with environmental, safety, or other governmental regulations",
+     "Manage and direct the construction, operations, or maintenance activities at project site"
+    ],
+    "nTasks": 16
    }
   },
   {
@@ -1104,6 +1292,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.1,
+    "theo": 0.54,
+    "tier": "moderate",
+    "used": [
+     "Provide technical support or instruction to staff or customers regarding electronics equipment standards",
+     "Design electronic components, software, products, or systems for commercial, industrial, medical, military, or...",
+     "Prepare, review, or maintain maintenance schedules, design documentation, or operational reports or charts"
+    ],
+    "human": [
+     "Operate computer-assisted engineering or design software or equipment to perform electronics engineering tasks",
+     "Evaluate project work to ensure effectiveness, technical adequacy, or compatibility in the resolution of complex..."
+    ],
+    "nTasks": 20
    }
   },
   {
@@ -1130,6 +1333,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.075,
+    "theo": 0.54,
+    "tier": "low",
+    "used": [
+     "Write technical reports or other documentation, such as handbooks or bulletins, for use by engineering staff,..."
+    ],
+    "human": [
+     "Formulate conceptual design of aeronautical or aerospace products or systems to meet customer requirements or conform...",
+     "Evaluate product data or design from inspections or reports for conformance to engineering principles, customer..."
+    ],
+    "nTasks": 14
    }
   },
   {
@@ -1156,6 +1372,17 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.4,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Develop safety procedures to be employed by workers operating equipment or working in close proximity to ongoing...",
+     "Troubleshoot problems with chemical manufacturing processes"
+    ],
+    "nTasks": 13
    }
   },
   {
@@ -1182,6 +1409,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.288,
+    "theo": 0.66,
+    "tier": "moderate",
+    "used": [
+     "Store, retrieve, and manipulate data for analysis of system capabilities and requirements",
+     "Analyze user needs and software requirements to determine feasibility of design within time and cost constraints",
+     "Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system"
+    ],
+    "human": [
+     "Develop or direct software system testing or validation procedures, programming, or documentation",
+     "Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project..."
+    ],
+    "nTasks": 17
    }
   },
   {
@@ -1208,6 +1450,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.461,
+    "theo": 0.67,
+    "tier": "high",
+    "used": [
+     "Identify relationships and trends or any factors that could affect the results of research"
+    ],
+    "human": [
+     "Analyze, manipulate, or process large sets of data using statistical software",
+     "Create graphs, charts, or other visualizations to convey the results of data analysis using specialized software"
+    ],
+    "nTasks": 16
    }
   },
   {
@@ -1234,6 +1489,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.486,
+    "theo": 0.6,
+    "tier": "high",
+    "used": [
+     "Monitor use of data files and regulate access to safeguard information in computer files",
+     "Modify computer security files to incorporate new software, correct errors, or change individual access status",
+     "Perform risk assessments and execute tests of data processing system to ensure functioning of data processing..."
+    ],
+    "human": [
+     "Develop plans to safeguard computer files against accidental or unauthorized modification, destruction, or disclosure...",
+     "Monitor current reports of computer viruses to determine when to update virus protection systems"
+    ],
+    "nTasks": 11
    }
   },
   {
@@ -1260,6 +1530,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.348,
+    "theo": 0.54,
+    "tier": "high",
+    "used": [
+     "Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations",
+     "Establish tables of accounts and assign entries to proper accounts",
+     "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology"
+    ],
+    "human": [
+     "Process invoices for payment",
+     "Review accounts for discrepancies and reconcile differences"
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -1286,6 +1571,20 @@
    "in": {
     "group": "Managers",
     "monthly": 50408
+   },
+   "ai": {
+    "obs": 0.138,
+    "theo": 0.43,
+    "tier": "moderate",
+    "used": [
+     "Review financial statements, sales or activity reports, or other performance data to measure productivity or goal...",
+     "Develop or implement product-marketing strategies, including advertising campaigns or sales promotions"
+    ],
+    "human": [
+     "Direct and coordinate activities of businesses or departments concerned with the production, pricing, sales, or...",
+     "Direct administrative activities directly related to making products or providing services"
+    ],
+    "nTasks": 17
    }
   },
   {
@@ -1312,6 +1611,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.572,
+    "theo": 0.48,
+    "tier": "high",
+    "used": [
+     "Evaluate and compare the relative quality of various securities in a given industry",
+     "Recommend investments and investment timing to companies, investment firm staff, or the public",
+     "Monitor fundamental economic, industrial, and corporate developments by analyzing information from financial..."
+    ],
+    "human": [
+     "Advise clients on aspects of capitalization, such as amounts, sources, or timing",
+     "Assess companies as investments for clients by examining company facilities"
+    ],
+    "nTasks": 26
    }
   },
   {
@@ -1338,6 +1652,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.242,
+    "theo": 0.48,
+    "tier": "moderate",
+    "used": [
+     "Study economic and statistical data in area of specialization, such as finance, labor, or agriculture",
+     "Compile, analyze, and report data to explain economic phenomena and forecast market trends, applying mathematical...",
+     "Provide advice and consultation on economic relationships to businesses, public and private agencies, and other..."
+    ],
+    "human": [
+     "Study the socioeconomic impacts of new public policies, such as proposed legislation, taxes, services, and regulations",
+     "Explain economic impact of policies to the public"
+    ],
+    "nTasks": 13
    }
   },
   {
@@ -1364,6 +1693,21 @@
    "in": {
     "group": "Managers",
     "monthly": 50408
+   },
+   "ai": {
+    "obs": 0.32,
+    "theo": 0.54,
+    "tier": "high",
+    "used": [
+     "Conduct economic or commercial surveys to identify potential markets for products or services",
+     "Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with...",
+     "Use sales forecasting or strategic planning to ensure the sale and profitability of products, lines, or services,..."
+    ],
+    "human": [
+     "Direct the hiring, training, or performance evaluations of marketing or sales staff and oversee their daily activities",
+     "Evaluate the financial aspects of product development, such as budgets, expenditures, research and development..."
+    ],
+    "nTasks": 20
    }
   },
   {
@@ -1390,6 +1734,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.403,
+    "theo": 0.62,
+    "tier": "high",
+    "used": [
+     "Analyze employment-related data and prepare required reports",
+     "Interview job applicants to obtain information on work history, training, education, or job skills",
+     "Perform searches for qualified job candidates, using sources such as computer databases, networking, Internet..."
+    ],
+    "human": [
+     "Hire employees and process hiring-related paperwork",
+     "Maintain current knowledge of Equal Employment Opportunity (EEO) and affirmative action guidelines and laws, such as..."
+    ],
+    "nTasks": 26
    }
   },
   {
@@ -1416,6 +1775,21 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.186,
+    "theo": 0.62,
+    "tier": "moderate",
+    "used": [
+     "Handle customer complaints and take appropriate action to resolve them",
+     "Counsel clients on personal and family financial problems, such as excessive spending or borrowing of funds",
+     "Market bank products to individuals and firms, promoting bank services that may meet customers' needs"
+    ],
+    "human": [
+     "Meet with applicants to obtain information for loan applications and to answer questions about the process",
+     "Analyze applicants' financial status, credit, and property evaluations to determine feasibility of granting loans"
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -1442,6 +1816,19 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.062,
+    "theo": 0.54,
+    "tier": "low",
+    "used": [
+     "Decline excessive risks"
+    ],
+    "human": [
+     "Examine documents to determine degree of risk from factors such as applicant health, financial standing and value, and...",
+     "Write to field representatives, medical personnel, or others to obtain further information, quote rates, or explain..."
+    ],
+    "nTasks": 7
    }
   },
   {
@@ -1468,6 +1855,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.249,
+    "theo": 0.76,
+    "tier": "moderate",
+    "used": [
+     "Respond to user email inquiries, or set up automated systems to send responses",
+     "Identify or maintain links to and from other Web sites and check links to ensure proper functioning",
+     "Create searchable indices for Web page content"
+    ],
+    "human": [
+     "Identify problems uncovered by testing or customer feedback, and correct problems or refer problems to appropriate...",
+     "Perform Web site tests according to planned schedules, or after any Web site or product revision"
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -1494,6 +1896,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.078,
+    "theo": 0.46,
+    "tier": "low",
+    "used": [
+     "Prepare information regarding design, structure specifications, materials, color, equipment, estimated costs, or...",
+     "Prepare contract documents for building contractors"
+    ],
+    "human": [
+     "Prepare scale drawings or architectural designs, using computer-aided design or other tools",
+     "Plan or design structures such as residences, office buildings, theatres, factories, or other structural properties in..."
+    ],
+    "nTasks": 24
    }
   },
   {
@@ -1520,6 +1936,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.367,
+    "theo": 0.46,
+    "tier": "high",
+    "used": [
+     "Use computer software to generate new images",
+     "Develop graphics and layouts for product illustrations, company logos, and Web sites",
+     "Determine size and arrangement of illustrative material and copy, and select style and size of type"
+    ],
+    "human": [
+     "Key information into computer equipment to create layouts for client or supervisor",
+     "Review final layouts and suggest improvements, as needed"
+    ],
+    "nTasks": 16
    }
   },
   {
@@ -1546,6 +1977,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.057,
+    "theo": 0.38,
+    "tier": "low",
+    "used": [
+     "Identify target markets for designs, looking at factors such as age, gender, and socioeconomic status",
+     "Read scripts and consult directors and other production staff to develop design concepts and plan productions"
+    ],
+    "human": [
+     "Sketch rough and detailed drawings of apparel or accessories, and write specifications such as color schemes,...",
+     "Examine sample garments on and off models, modifying designs to achieve desired effects"
+    ],
+    "nTasks": 20
    }
   },
   {
@@ -1572,6 +2017,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.357,
+    "theo": 0.5,
+    "tier": "high",
+    "used": [
+     "Use models to simulate the behavior of animated objects in the finished sequence",
+     "Design complex graphics and animation, using independent judgment, creativity, and computer equipment",
+     "Script, plan, and create animated narrative sequences under tight deadlines, using computer software and hand drawing..."
+    ],
+    "human": [
+     "Create basic designs, drawings, and illustrations for product labels, cartons, direct mail, or television",
+     "Participate in design and production of multimedia campaigns, handling budgeting and scheduling, and assisting with..."
+    ],
+    "nTasks": 13
    }
   },
   {
@@ -1598,6 +2058,21 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.223,
+    "theo": 0.5,
+    "tier": "moderate",
+    "used": [
+     "Edit films and videotapes to insert music, dialogue, and sound effects, to arrange films into sequences, and to...",
+     "Organize and string together raw footage into a continuous whole according to scripts or the instructions of directors...",
+     "Study scripts to become familiar with production concepts and requirements"
+    ],
+    "human": [
+     "Select and combine the most effective shots of each scene to form a logical and smoothly running story",
+     "Review footage sequence by sequence to become familiar with it before assembling it into a final product"
+    ],
+    "nTasks": 22
    }
   },
   {
@@ -1624,6 +2099,17 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.43,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Design plans to be safe and to be compliant with the American Disabilities Act (ADA)",
+     "Use computer-aided drafting (CAD) and related software to produce construction documents"
+    ],
+    "nTasks": 15
    }
   },
   {
@@ -1650,6 +2136,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.059,
+    "theo": 0.44,
+    "tier": "low",
+    "used": [
+     "Collect information about individuals or clients, using interviews, case histories, observational techniques, and..."
+    ],
+    "human": [
+     "Conduct assessments of patients' risk for harm to self or others",
+     "Document patient information including session notes, progress notes, recommendations, and treatment plans"
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -1676,6 +2175,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.118,
+    "theo": 0.31,
+    "tier": "moderate",
+    "used": [
+     "Counsel students regarding educational issues, such as course and program selection, class scheduling and...",
+     "Compile and study occupational, educational, and economic information to assist counselees in determining and carrying...",
+     "Plan, direct, and participate in recruitment and enrollment activities"
+    ],
+    "human": [
+     "Maintain accurate and complete student records as required by laws, district policies, and administrative regulations",
+     "Provide crisis intervention to students when difficult situations occur at schools"
+    ],
+    "nTasks": 32
    }
   },
   {
@@ -1702,6 +2216,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.158,
+    "theo": 0.54,
+    "tier": "moderate",
+    "used": [
+     "Analyze job requirements and content to establish criteria for classification, selection, training, and other related...",
+     "Study consumers' reactions to new products and package designs, and to advertising efforts, using surveys and tests",
+     "Develop new business by contacting potential clients, making sales presentations, and writing proposals"
+    ],
+    "human": [
+     "Develop and implement employee selection or placement programs",
+     "Analyze data, using statistical methods and applications, to evaluate the outcomes and effectiveness of workplace..."
+    ],
+    "nTasks": 26
    }
   },
   {
@@ -1729,6 +2258,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.037,
+    "theo": 0.52,
+    "tier": "low",
+    "used": [
+     "Investigate theoretical or conceptual issues, such as the human design considerations of lunar landers or habitats",
+     "Analyze complex systems to determine potential for further development, production, interoperability, compatibility,..."
+    ],
+    "human": [
+     "Collect data through direct observation of work activities or witnessing the conduct of tests",
+     "Conduct interviews or surveys of users or customers to collect information on topics, such as requirements, needs,..."
+    ],
+    "nTasks": 26
    }
   },
   {
@@ -1755,6 +2298,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.167,
+    "theo": 0.45,
+    "tier": "moderate",
+    "used": [
+     "Advise clients concerning business transactions, claim liability, advisability of prosecuting or defending lawsuits,...",
+     "Interpret laws, rulings and regulations for individuals and businesses",
+     "Prepare legal briefs and opinions, and file appeals in state and federal courts of appeal"
+    ],
+    "human": [
+     "Analyze the probable outcomes of cases, using knowledge of legal precedents",
+     "Gather evidence to formulate defense or to initiate legal actions by such means as interviewing clients and witnesses..."
+    ],
+    "nTasks": 21
    }
   },
   {
@@ -1781,6 +2339,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.311,
+    "theo": 0.33,
+    "tier": "high",
+    "used": [
+     "Read documents on pleadings and motions to ascertain facts and issues",
+     "Write decisions on cases",
+     "Research legal issues and write opinions on the issues"
+    ],
+    "human": [
+     "Sentence defendants in criminal cases, on conviction by jury, according to applicable government statutes",
+     "Monitor proceedings to ensure that all applicable rules and procedures are followed"
+    ],
+    "nTasks": 21
    }
   },
   {
@@ -1807,6 +2380,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.21,
+    "theo": 0.64,
+    "tier": "moderate",
+    "used": [
+     "Analyze and interpret news and information received from various sources to broadcast the information",
+     "Select material most pertinent to presentation, and organize this material into appropriate formats",
+     "Check reference materials, such as books, news files, or public records, to obtain relevant facts"
+    ],
+    "human": [
+     "Report news stories for publication or broadcast, describing the background and details of events",
+     "Gather information and develop perspectives about news subjects through research, interviews, observation, and..."
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -1833,6 +2421,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.246,
+    "theo": 0.84,
+    "tier": "moderate",
+    "used": [
+     "Develop advertising campaigns for a wide range of clients, working with an advertising agency's creative director and...",
+     "Plan project arrangements or outlines, and organize material accordingly",
+     "Revise written material to meet personal standards and to satisfy needs of clients, publishers, directors, or producers"
+    ],
+    "human": [
+     "Write fiction or nonfiction prose, such as short stories, novels, biographies, articles, descriptive or critical...",
+     "Present drafts and ideas to clients"
+    ],
+    "nTasks": 20
    }
   },
   {
@@ -1859,6 +2462,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.453,
+    "theo": 0.69,
+    "tier": "high",
+    "used": [
+     "Respond to requests for information from the media or designate an appropriate spokesperson or information source",
+     "Plan or conduct market or public opinion research to test products or determine potential for product success,...",
+     "Study the objectives, promotional policies, or needs of organizations to develop public relations strategies that will..."
+    ],
+    "human": [
+     "Post and update content on the company's Web site and social media outlets",
+     "Establish or maintain cooperative relationships with representatives of community, consumer, employee, or public..."
+    ],
+    "nTasks": 18
    }
   },
   {
@@ -1884,6 +2502,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.29,
+    "theo": 0.34,
+    "tier": "moderate",
+    "used": [
+     "Prepare, administer, and grade tests and assignments to evaluate students' progress",
+     "Observe and evaluate students' performance, behavior, social development, and physical health",
+     "Use computers, audio-visual aids, and other equipment and materials to supplement presentations"
+    ],
+    "human": [
+     "Prepare students for later grades by encouraging them to explore learning opportunities and to persevere with...",
+     "Establish and enforce rules for behavior and procedures for maintaining order among students"
+    ],
+    "nTasks": 31
    }
   },
   {
@@ -1910,6 +2543,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.007,
+    "theo": 0.27,
+    "tier": "none",
+    "used": [
+     "Conduct social research"
+    ],
+    "human": [
+     "Maintain case history records and prepare reports",
+     "Interview clients individually, in families, or in groups, assessing their situations, capabilities, and problems to..."
+    ],
+    "nTasks": 21
    }
   },
   {
@@ -1936,6 +2582,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.43,
+    "theo": 0.86,
+    "tier": "high",
+    "used": [
+     "Adapt translations to students' cognitive and grade levels, collaborating with educational team members as necessary",
+     "Read written materials, such as legal documents, scientific works, or news reports, and rewrite material into...",
+     "Translate messages simultaneously or consecutively into specified languages, orally or by using hand signs,..."
+    ],
+    "human": [
+     "Follow ethical codes that protect the confidentiality of information",
+     "Listen to speakers' statements to determine meanings and to prepare translations, using electronic listening systems..."
+    ],
+    "nTasks": 17
    }
   },
   {
@@ -1963,6 +2624,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.452,
+    "theo": 0.51,
+    "tier": "high",
+    "used": [
+     "Teach political science",
+     "Develop and test theories, using information from interviews, newspapers, periodicals, case law, historical papers,...",
+     "Interpret and analyze policies, public issues, legislation, or the operations of governments, businesses, and..."
+    ],
+    "human": [
+     "Maintain current knowledge of government policy decisions",
+     "Disseminate research results through academic publications, written reports, or public presentations"
+    ],
+    "nTasks": 14
    }
   },
   {
@@ -1989,6 +2665,19 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.096,
+    "theo": 0.53,
+    "tier": "low",
+    "used": [
+     "Research, compile, analyze and organize information from maps, reports, investigations, and books for use in reports..."
+    ],
+    "human": [
+     "Design, promote, or administer government plans or policies affecting land use, zoning, public utilities, community...",
+     "Advise planning officials on project feasibility, cost-effectiveness, regulatory conformance, or possible alternatives"
+    ],
+    "nTasks": 25
    }
   },
   {
@@ -2015,6 +2704,19 @@
    "in": {
     "group": "Service and sales workers",
     "monthly": 15541
+   },
+   "ai": {
+    "obs": 0.123,
+    "theo": 0.24,
+    "tier": "moderate",
+    "used": [
+     "Record facts to prepare reports that document incidents and activities"
+    ],
+    "human": [
+     "Provide for public safety by maintaining order, responding to emergencies, protecting people and property, enforcing...",
+     "Identify, pursue, and arrest suspects and perpetrators of criminal acts"
+    ],
+    "nTasks": 29
    }
   },
   {
@@ -2041,6 +2743,17 @@
    "in": {
     "group": "Managers",
     "monthly": 50408
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.51,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Consult with officials of local and area governments, schools, hospitals, and other institutions to determine their...",
+     "Develop and maintain liaisons with municipalities, county departments, and similar entities to facilitate plan..."
+    ],
+    "nTasks": 23
    }
   },
   {
@@ -2066,6 +2779,17 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.29,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Use instrumentation to guide flights when visibility is poor",
+     "Start engines, operate controls, and pilot airplanes to transport passengers, mail, or freight, adhering to flight..."
+    ],
+    "nTasks": 24
    }
   },
   {
@@ -2092,6 +2816,19 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.26,
+    "tier": "none",
+    "used": [
+     "Record production or operational data on specified forms"
+    ],
+    "human": [
+     "Monitor sanitation practices to ensure that employees follow standards and regulations",
+     "Instruct cooks or other workers in the preparation, cooking, garnishing, or presentation of food"
+    ],
+    "nTasks": 21
    }
   },
   {
@@ -2118,6 +2855,21 @@
    "in": {
     "group": "Managers",
     "monthly": 50408
+   },
+   "ai": {
+    "obs": 0.121,
+    "theo": 0.42,
+    "tier": "moderate",
+    "used": [
+     "Answer inquiries pertaining to hotel policies and services, and resolve occupants' complaints",
+     "Show, rent, or assign accommodations",
+     "Develop and implement policies and procedures for the operation of a department or establishment"
+    ],
+    "human": [
+     "Participate in financial activities, such as the setting of room rates, the establishment of budgets, and the...",
+     "Confer and cooperate with other managers to ensure coordination of hotel activities"
+    ],
+    "nTasks": 25
    }
   },
   {
@@ -2143,6 +2895,19 @@
    "in": {
     "group": "Service and sales workers",
     "monthly": 15541
+   },
+   "ai": {
+    "obs": 0.091,
+    "theo": 0.16,
+    "tier": "low",
+    "used": [
+     "Answer passengers' questions about flights, aircraft, weather, travel routes and services, arrival times, or schedules"
+    ],
+    "human": [
+     "Verify that first aid kits and other emergency equipment, including fire extinguishers and oxygen bottles, are in...",
+     "Announce and demonstrate safety and emergency procedures, such as the use of oxygen masks, seat belts, and life jackets"
+    ],
+    "nTasks": 24
    }
   },
   {
@@ -2169,6 +2934,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.051,
+    "theo": 0.56,
+    "tier": "low",
+    "used": [
+     "Identify or classify species of insects or allied forms, such as mites or spiders",
+     "Communicate research or project results to other professionals or the public or teach related courses, seminars, or..."
+    ],
+    "human": [
+     "Develop methods of conserving or managing soil that can be applied by farmers or forestry companies",
+     "Provide information or recommendations to farmers or other landowners regarding ways in which they can best use land,..."
+    ],
+    "nTasks": 27
    }
   },
   {
@@ -2195,6 +2974,17 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.69,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Study nutritional requirements of animals and nutritive values of animal feed materials",
+     "Write up or orally communicate research findings to the scientific community, producers, and the public"
+    ],
+    "nTasks": 9
    }
   },
   {
@@ -2221,6 +3011,17 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.37,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Establish short- and long-term plans for management of forest lands and forest resources",
+     "Plan cutting programs and manage timber sales from harvested areas, assisting companies to achieve production goals"
+    ],
+    "nTasks": 25
    }
   },
   {
@@ -2247,6 +3048,17 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.49,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Apply principles of specialized fields of science, such as agronomy, soil science, forestry, or agriculture, to...",
+     "Plan soil management or conservation practices, such as crop rotation, reforestation, permanent vegetation, contour..."
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -2273,6 +3085,17 @@
    "in": {
     "group": "Managers",
     "monthly": 50408
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.31,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Collect and record growth, production, and environmental data",
+     "Manage nurseries that grow horticultural plants for sale to trade or retail customers, for display or exhibition, or..."
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -2299,6 +3122,17 @@
    "in": {
     "group": "Craft and related trades workers",
     "monthly": 16773
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.15,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Prepare sketches or follow blueprints to determine the location of wiring or equipment and to ensure conformance to...",
+     "Place conduit, pipes, or tubing, inside designated partitions, walls, or other concealed areas, and pull insulated..."
+    ],
+    "nTasks": 21
    }
   },
   {
@@ -2325,6 +3159,17 @@
    "in": {
     "group": "Craft and related trades workers",
     "monthly": 16773
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.08,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Follow checklists to ensure all important parts are examined, including belts, hoses, steering systems, spark plugs,...",
+     "Test and adjust repaired systems to meet manufacturers' performance specifications"
+    ],
+    "nTasks": 31
    }
   },
   {
@@ -2351,6 +3196,17 @@
    "in": {
     "group": "Craft and related trades workers",
     "monthly": 16773
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.06,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Operate safety equipment and use safe work habits",
+     "Examine workpieces for defects and measure workpieces with straightedges or templates to ensure conformance with..."
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -2377,6 +3233,19 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.02,
+    "theo": 0.37,
+    "tier": "low",
+    "used": [
+     "Provide user applications or engineering support or recommendations for new or existing equipment with regard to..."
+    ],
+    "human": [
+     "Review electrical engineering plans to ensure adherence to design specifications and compliance with applicable...",
+     "Read blueprints, wiring diagrams, schematic drawings, or engineering instructions for assembling electronics units,..."
+    ],
+    "nTasks": 28
    }
   },
   {
@@ -2403,6 +3272,17 @@
    "in": {
     "group": "Craft and related trades workers",
     "monthly": 16773
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.18,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Calculate dimensions or tolerances, using instruments, such as micrometers or vernier calipers",
+     "Machine parts to specifications, using machine tools, such as lathes, milling machines, shapers, or grinders"
+    ],
+    "nTasks": 29
    }
   },
   {
@@ -2429,6 +3309,19 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.078,
+    "theo": 0.53,
+    "tier": "low",
+    "used": [
+     "Prepare reports and document project activities and data"
+    ],
+    "human": [
+     "Calculate dimensions, square footage, profile and component specifications, and material quantities, using calculator...",
+     "Read and review project blueprints and structural specifications to determine dimensions of structure or system and..."
+    ],
+    "nTasks": 14
    }
   },
   {
@@ -2454,6 +3347,17 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.27,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Perform before live audiences in concerts, recitals, educational presentations, and other social gatherings",
+     "Practice performances, individually or in rehearsal with other musicians, to master individual pieces of music or to..."
+    ],
+    "nTasks": 26
    }
   },
   {
@@ -2479,6 +3383,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.101,
+    "theo": 0.17,
+    "tier": "moderate",
+    "used": [
+     "Learn about characters in scripts and their relationships to each other to develop role interpretations",
+     "Write original or adapted material for dramas, comedies, puppet shows, narration, or other performances"
+    ],
+    "human": [
+     "Attend auditions and casting calls to audition for roles",
+     "Work closely with directors, other actors, and playwrights to find the interpretation most suited to the role"
+    ],
+    "nTasks": 18
    }
   },
   {
@@ -2504,6 +3422,17 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.03,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Study and practice dance moves required in roles",
+     "Harmonize body movements to rhythm of musical accompaniment"
+    ],
+    "nTasks": 14
    }
   },
   {
@@ -2530,6 +3459,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.092,
+    "theo": 0.47,
+    "tier": "low",
+    "used": [
+     "Study and research scripts to determine how they should be directed",
+     "Coordinate the activities of writers, directors, managers, and other personnel throughout the production process",
+     "Write and edit news stories from information collected by reporters and other sources"
+    ],
+    "human": [
+     "Plan details such as framing, composition, camera movement, sound, and actor movement for each shot or scene",
+     "Communicate to actors the approach, characterization, and movement needed for each scene in such a way that rehearsals..."
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -2556,6 +3500,20 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.195,
+    "theo": 0.3,
+    "tier": "moderate",
+    "used": [
+     "Manipulate and enhance scanned or digital images to create desired effects, using computers and specialized software",
+     "Determine desired images and picture composition, selecting and adjusting subjects, equipment, and lighting to achieve..."
+    ],
+    "human": [
+     "Adjust apertures, shutter speeds, and camera focus according to a combination of factors, such as lighting, field...",
+     "Create artificial light, using flashes and reflectors"
+    ],
+    "nTasks": 28
    }
   },
   {
@@ -2582,6 +3540,17 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.24,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Direct courses and speeds of ships, based on specialized knowledge of local winds, weather, water depths, tides,...",
+     "Prevent ships under navigational control from engaging in unsafe operations"
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -2608,6 +3577,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.036,
+    "theo": 0.41,
+    "tier": "low",
+    "used": [
+     "Analyze data to determine feasibility of product proposals",
+     "Prepare plans, estimates, design and construction schedules, and contract specifications, including any special..."
+    ],
+    "human": [
+     "Perform monitoring activities to ensure that ships comply with international regulations and standards for life-saving...",
+     "Design complete hull and superstructure according to specifications and test data, in conformity with standards of..."
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -2634,6 +3617,20 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.157,
+    "theo": 0.48,
+    "tier": "moderate",
+    "used": [
+     "Develop an understanding of customers' needs and take actions to ensure that such needs are met",
+     "Develop and implement technical project management tools, such as plans, schedules, and responsibility and compliance..."
+    ],
+    "human": [
+     "Maintain and develop positive business relationships with a customer's key personnel involved in, or directly relevant...",
+     "Manage subcontractor activities, reviewing proposals, developing performance specifications, and serving as liaisons..."
+    ],
+    "nTasks": 22
    }
   },
   {
@@ -2660,6 +3657,21 @@
    "in": {
     "group": "Managers",
     "monthly": 50408
+   },
+   "ai": {
+    "obs": 0.096,
+    "theo": 0.48,
+    "tier": "low",
+    "used": [
+     "Monitor operations to ensure that staff members comply with administrative policies and procedures, safety rules,...",
+     "Resolve problems concerning transportation, logistics systems, imports or exports, or customer issues",
+     "Analyze all aspects of corporate logistics to determine the most cost-effective or efficient means of transporting..."
+    ],
+    "human": [
+     "Supervise the activities of workers engaged in receiving, storing, testing, and shipping products or materials",
+     "Plan, develop, or implement warehouse safety and security programs and activities"
+    ],
+    "nTasks": 30
    }
   },
   {
@@ -2685,6 +3697,17 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.0,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Assess performance following athletic competition, identifying strengths and weaknesses and making adjustments to...",
+     "Maintain equipment used in a particular sport"
+    ],
+    "nTasks": 9
    }
   },
   {
@@ -2710,6 +3733,17 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.22,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Plan, organize, and conduct practice sessions",
+     "Provide training direction, encouragement, motivation, and nutritional advice to prepare athletes for games,..."
+    ],
+    "nTasks": 27
    }
   },
   {
@@ -2736,6 +3770,17 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.12,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Observe participants and inform them of corrective measures necessary for skill improvement",
+     "Offer alternatives during classes to accommodate different levels of fitness"
+    ],
+    "nTasks": 20
    }
   },
   {
@@ -2763,6 +3808,17 @@
    "in": {
     "group": "Managers",
     "monthly": 50408
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.45,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Prepare and review operational reports and schedules to ensure accuracy and efficiency",
+     "Set goals and deadlines for the department"
+    ],
+    "nTasks": 19
    }
   },
   {
@@ -2789,6 +3845,21 @@
    "in": {
     "group": "Professionals",
     "monthly": 38466
+   },
+   "ai": {
+    "obs": 0.121,
+    "theo": 0.65,
+    "tier": "moderate",
+    "used": [
+     "Evaluate applications, records, or documents to gather information about eligibility or liability issues",
+     "Verify that all firm and regulatory policies and procedures have been documented, implemented, and communicated",
+     "Prepare reports of activities, evaluations, recommendations, or decisions"
+    ],
+    "human": [
+     "Warn violators of infractions or penalties",
+     "Advise licensees or other individuals or groups concerning licensing, permit, or passport regulations"
+    ],
+    "nTasks": 16
    }
   },
   {
@@ -2815,6 +3886,21 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": null,
+    "theo": 0.23,
+    "tier": "nodata",
+    "used": [
+     "Enter data from analysis of medical tests or clinical results into computer for storage",
+     "Analyze laboratory findings to check the accuracy of the results",
+     "Develop, standardize, evaluate, or modify procedures, techniques, or tests used in the analysis of specimens or in..."
+    ],
+    "human": [
+     "Analyze samples of biological material for chemical content or reaction",
+     "Conduct chemical analysis of body fluids, including blood, urine, or spinal fluid, to determine presence of normal or..."
+    ],
+    "nTasks": 15
    }
   },
   {
@@ -2841,6 +3927,19 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.33,
+    "tier": "none",
+    "used": [
+     "Take thorough and accurate patient medical histories"
+    ],
+    "human": [
+     "Explain procedures and observe patients to ensure safety and comfort during scan",
+     "Process exposed radiographs using film processors or computer generated methods"
+    ],
+    "nTasks": 29
    }
   },
   {
@@ -2867,6 +3966,17 @@
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
+   },
+   "ai": {
+    "obs": 0.0,
+    "theo": 0.29,
+    "tier": "none",
+    "used": [],
+    "human": [
+     "Collect evidence from crime scenes, storing it in conditions that preserve its integrity",
+     "Keep records and prepare reports detailing findings, investigative methods, and laboratory techniques"
+    ],
+    "nTasks": 20
    }
   }
  ],
@@ -2890,9 +4000,8 @@
    "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2246009&lang=1&reg=3",
    "https://indialabourobservatory.com/data/plfs-2025/earnings/"
   ],
-  "verify": "Headline figures (male 24,217 and female 18,353 a month) match the MoSPI press note. The occupation split is computed by the India Labour Observatory from MoSPI unit-level records."
+  "verify": "Only the headline averages (male 24,217 and female 18,353 a month) were checked against the MoSPI press note. The education, age and occupation figures come from the India Labour Observatory, which computes them from MoSPI unit-level records."
  },
- "fieldK": 4,
  "fieldRef": {
   "health": [
    -0.8,
@@ -3581,6 +4690,36 @@
    0.611,
    0.648,
    0.736
+  ]
+ },
+ "fieldK": 4,
+ "aiMeta": {
+  "retrieved": "2026-10-22",
+  "tiers": {
+   "high": ">= 0.30",
+   "moderate": "0.10 to 0.30",
+   "low": "0.01 to 0.10",
+   "none": "below 0.01 (not enough use seen)"
+  },
+  "sources": [
+   {
+    "id": "anthropic_job_exposure",
+    "name": "Anthropic Economic Index: observed exposure (Massenkoff and McCrory, 2026)",
+    "url": "https://www.anthropic.com/research/labor-market-impacts",
+    "licence": "CC BY"
+   },
+   {
+    "id": "openai_gpts_are_gpts",
+    "name": "Eloundou et al. 2023, GPTs are GPTs: theoretical exposure",
+    "url": "https://github.com/openai/GPTs-are-GPTs",
+    "licence": "MIT"
+   },
+   {
+    "id": "onet_tasks",
+    "name": "O*NET task statements",
+    "url": "https://www.onetonline.org",
+    "licence": "CC BY 4.0"
+   }
   ]
  }
 }

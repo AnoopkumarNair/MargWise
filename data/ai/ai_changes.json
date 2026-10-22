@@ -1,0 +1,488 @@
+[
+ {
+  "id": "doc-1",
+  "title": "Doctor (Physician)",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "doc-2",
+  "title": "Dentist",
+  "was": null,
+  "now": 0.031
+ },
+ {
+  "id": "doc-3",
+  "title": "Nurse",
+  "was": null,
+  "now": 0.059
+ },
+ {
+  "id": "doc-4",
+  "title": "Pharmacist",
+  "was": null,
+  "now": 0.09
+ },
+ {
+  "id": "doc-5",
+  "title": "Physiotherapist",
+  "was": null,
+  "now": 0.017
+ },
+ {
+  "id": "doc-6",
+  "title": "Veterinarian",
+  "was": null,
+  "now": 0.093
+ },
+ {
+  "id": "sci-1",
+  "title": "Physicist",
+  "was": null,
+  "now": 0.273
+ },
+ {
+  "id": "sci-3",
+  "title": "Chemist",
+  "was": null,
+  "now": 0.261
+ },
+ {
+  "id": "sci-4",
+  "title": "Environmental Scientist",
+  "was": null,
+  "now": 0.055
+ },
+ {
+  "id": "sci-5",
+  "title": "Statistician",
+  "was": null,
+  "now": 0.211
+ },
+ {
+  "id": "sci-6",
+  "title": "Food Scientist",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "eng-1",
+  "title": "Mechanical Engineer",
+  "was": null,
+  "now": 0.081
+ },
+ {
+  "id": "eng-2",
+  "title": "Civil Engineer",
+  "was": null,
+  "now": 0.008
+ },
+ {
+  "id": "tec-3",
+  "title": "Electronics and EV Engineer",
+  "was": null,
+  "now": 0.1
+ },
+ {
+  "id": "eng-4",
+  "title": "Aerospace Engineer",
+  "was": null,
+  "now": 0.075
+ },
+ {
+  "id": "eng-5",
+  "title": "Chemical Engineer",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "tec-1",
+  "title": "AI and Software Engineer",
+  "was": null,
+  "now": 0.288
+ },
+ {
+  "id": "tec-2",
+  "title": "Data Scientist",
+  "was": null,
+  "now": 0.461
+ },
+ {
+  "id": "tec-4",
+  "title": "Cybersecurity Analyst",
+  "was": null,
+  "now": 0.486
+ },
+ {
+  "id": "com-1",
+  "title": "Chartered Accountant",
+  "was": null,
+  "now": 0.348
+ },
+ {
+  "id": "com-2",
+  "title": "Business Manager or Founder",
+  "was": null,
+  "now": 0.138
+ },
+ {
+  "id": "com-3",
+  "title": "Financial Analyst",
+  "was": null,
+  "now": 0.572
+ },
+ {
+  "id": "com-4",
+  "title": "Economist",
+  "was": null,
+  "now": 0.242
+ },
+ {
+  "id": "com-5",
+  "title": "Marketing Manager",
+  "was": null,
+  "now": 0.32
+ },
+ {
+  "id": "com-6",
+  "title": "HR Specialist",
+  "was": null,
+  "now": 0.403
+ },
+ {
+  "id": "com-7",
+  "title": "Bank Loan Officer",
+  "was": null,
+  "now": 0.186
+ },
+ {
+  "id": "com-8",
+  "title": "Insurance Underwriter",
+  "was": null,
+  "now": 0.062
+ },
+ {
+  "id": "des-1",
+  "title": "UX and Product Designer",
+  "was": null,
+  "now": 0.249
+ },
+ {
+  "id": "des-2",
+  "title": "Architect",
+  "was": null,
+  "now": 0.078
+ },
+ {
+  "id": "des-3",
+  "title": "Graphic Designer",
+  "was": null,
+  "now": 0.367
+ },
+ {
+  "id": "des-4",
+  "title": "Fashion Designer",
+  "was": null,
+  "now": 0.057
+ },
+ {
+  "id": "des-5",
+  "title": "Animator and VFX Artist",
+  "was": null,
+  "now": 0.357
+ },
+ {
+  "id": "des-6",
+  "title": "Film and Video Editor",
+  "was": null,
+  "now": 0.223
+ },
+ {
+  "id": "des-7",
+  "title": "Interior Designer",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "psy-1",
+  "title": "Clinical or Counselling Psychologist",
+  "was": null,
+  "now": 0.059
+ },
+ {
+  "id": "psy-3",
+  "title": "School Counsellor",
+  "was": null,
+  "now": 0.118
+ },
+ {
+  "id": "psy-4",
+  "title": "Organisational Psychologist",
+  "was": null,
+  "now": 0.158
+ },
+ {
+  "id": "psy-5",
+  "title": "UX Researcher",
+  "was": null,
+  "now": 0.037
+ },
+ {
+  "id": "law-1",
+  "title": "Corporate Lawyer",
+  "was": null,
+  "now": 0.167
+ },
+ {
+  "id": "law-2",
+  "title": "Judge (Judicial Services)",
+  "was": null,
+  "now": 0.311
+ },
+ {
+  "id": "med-1",
+  "title": "Journalist",
+  "was": null,
+  "now": 0.21
+ },
+ {
+  "id": "med-2",
+  "title": "Writer or Author",
+  "was": null,
+  "now": 0.246
+ },
+ {
+  "id": "med-3",
+  "title": "PR and Communications Specialist",
+  "was": null,
+  "now": 0.453
+ },
+ {
+  "id": "med-4",
+  "title": "School Teacher",
+  "was": null,
+  "now": 0.29
+ },
+ {
+  "id": "med-5",
+  "title": "Social Worker",
+  "was": null,
+  "now": 0.007
+ },
+ {
+  "id": "med-6",
+  "title": "Translator or Interpreter",
+  "was": null,
+  "now": 0.43
+ },
+ {
+  "id": "pub-1",
+  "title": "Political Scientist or Policy Analyst",
+  "was": null,
+  "now": 0.452
+ },
+ {
+  "id": "pub-2",
+  "title": "Urban Planner",
+  "was": null,
+  "now": 0.096
+ },
+ {
+  "id": "pub-3",
+  "title": "Police Officer",
+  "was": null,
+  "now": 0.123
+ },
+ {
+  "id": "pub-4",
+  "title": "Disaster Management Officer",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "hos-1",
+  "title": "Airline Pilot",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "hos-2",
+  "title": "Chef",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "hos-3",
+  "title": "Hotel Manager",
+  "was": null,
+  "now": 0.121
+ },
+ {
+  "id": "hos-4",
+  "title": "Cabin Crew",
+  "was": null,
+  "now": 0.091
+ },
+ {
+  "id": "agr-1",
+  "title": "Soil and Plant Scientist",
+  "was": null,
+  "now": 0.051
+ },
+ {
+  "id": "agr-2",
+  "title": "Animal Scientist",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "agr-3",
+  "title": "Forester",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "agr-4",
+  "title": "Conservation Scientist",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "agr-5",
+  "title": "Farm or Agribusiness Manager",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "voc-1",
+  "title": "Electrician",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "voc-2",
+  "title": "Automobile Technician",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "voc-3",
+  "title": "Welder",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "voc-4",
+  "title": "Electronics Technician",
+  "was": null,
+  "now": 0.02
+ },
+ {
+  "id": "voc-5",
+  "title": "Machinist",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "voc-6",
+  "title": "Civil Engineering Technician",
+  "was": null,
+  "now": 0.078
+ },
+ {
+  "id": "art-1",
+  "title": "Musician or Singer",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "art-2",
+  "title": "Actor",
+  "was": null,
+  "now": 0.101
+ },
+ {
+  "id": "art-3",
+  "title": "Dancer",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "art-4",
+  "title": "Producer or Director",
+  "was": null,
+  "now": 0.092
+ },
+ {
+  "id": "art-5",
+  "title": "Photographer",
+  "was": null,
+  "now": 0.195
+ },
+ {
+  "id": "mar-1",
+  "title": "Ship Captain or Navigator",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "mar-2",
+  "title": "Marine Engineer",
+  "was": null,
+  "now": 0.036
+ },
+ {
+  "id": "mar-3",
+  "title": "Logistics Manager",
+  "was": null,
+  "now": 0.157
+ },
+ {
+  "id": "mar-4",
+  "title": "Supply Chain Manager",
+  "was": null,
+  "now": 0.096
+ },
+ {
+  "id": "spo-1",
+  "title": "Professional Athlete",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "spo-2",
+  "title": "Coach or Sports Trainer",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "spo-3",
+  "title": "Fitness Trainer",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "pub-5",
+  "title": "Civil Services Officer (administration)",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "com-9",
+  "title": "Compliance or Company Secretary",
+  "was": null,
+  "now": 0.121
+ },
+ {
+  "id": "doc-8",
+  "title": "Radiologic Technologist",
+  "was": null,
+  "now": 0.0
+ },
+ {
+  "id": "law-3",
+  "title": "Forensic Science Technician",
+  "was": null,
+  "now": 0.0
+ }
+]

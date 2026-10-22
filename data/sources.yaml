@@ -1,0 +1,103 @@
+# Source registry: every external fact in Margwise traces to one of these entries.
+# trust: official = read from the issuing body; secondary = reliable aggregator or news; estimate = our own estimate.
+# cadence: how often the source should be re-read. stage: the pipeline script that reads it.
+sources:
+  - id: onet_interests
+    name: O*NET OnLine, Interests (RIASEC) by occupation
+    publisher: US Department of Labor, Employment and Training Administration
+    url: https://www.onetonline.org
+    licence: CC BY 4.0
+    trust: official
+    cadence: yearly (O*NET database release, usually mid-year)
+    stage: onet/scrape.py
+    feeds: [careers.values]
+  - id: onet_wages
+    name: O*NET OnLine summary pages (US median wage, projected growth and openings from BLS)
+    publisher: US Bureau of Labor Statistics via O*NET
+    url: https://www.onetonline.org
+    licence: CC BY 4.0
+    trust: official
+    cadence: yearly (wages in spring, projections in late summer)
+    stage: onet/wages.py
+    feeds: [careers.us]
+  - id: onet_tasks
+    name: O*NET task statements
+    publisher: US Department of Labor, Employment and Training Administration
+    url: https://www.onetonline.org
+    licence: CC BY 4.0
+    trust: official
+    cadence: yearly
+    stage: ai_exposure.py
+    feeds: [careers.ai.used, careers.ai.human]
+  - id: anthropic_job_exposure
+    name: Anthropic Economic Index, observed exposure by occupation
+    publisher: Anthropic
+    url: https://huggingface.co/datasets/Anthropic/EconomicIndex
+    licence: CC BY
+    trust: official
+    cadence: each Economic Index release (roughly quarterly)
+    stage: ai_exposure.py
+    feeds: [careers.ai.obs, careers.ai.tier]
+  - id: anthropic_task_penetration
+    name: Anthropic Economic Index, AI use by O*NET task
+    publisher: Anthropic
+    url: https://huggingface.co/datasets/Anthropic/EconomicIndex
+    licence: CC BY
+    trust: official
+    cadence: each release
+    stage: ai_exposure.py
+    feeds: [careers.ai.used, careers.ai.human]
+  - id: openai_gpts_are_gpts
+    name: Eloundou et al. 2023, theoretical exposure by occupation
+    publisher: OpenAI and University of Pennsylvania authors
+    url: https://github.com/openai/GPTs-are-GPTs
+    licence: MIT
+    trust: official
+    cadence: when the authors update (the 2023 estimate is already dated)
+    stage: ai_exposure.py
+    feeds: [careers.ai.theo]
+  - id: plfs
+    name: Periodic Labour Force Survey, earnings tables
+    publisher: MoSPI, via India Labour Observatory tables
+    url: https://www.pib.gov.in/PressReleasePage.aspx?PRID=2246009&lang=1&reg=3
+    licence: Government open data; observatory tables CC BY 4.0
+    trust: secondary
+    cadence: yearly (annual report)
+    stage: plfs.py (reads plfs_2025.json)
+    feeds: [careers.in, plfs]
+  - id: exam_bodies
+    name: Exam and admission rules (NTA, NMC, UPSC, ICAI, Bar Council, Council of Architecture, IMU, NCHM and others)
+    publisher: the bodies themselves
+    url: see content.json fields[].sources
+    licence: public information
+    trust: official where read from a notice, secondary otherwise (marked per fact)
+    cadence: before every admission season and whenever a notice changes
+    stage: content.py (curated text), checked through the fact-check batches
+    feeds: [fields.exams, fields.subjects, fields.degree, fields.verify]
+  - id: nirf
+    name: NIRF rankings
+    publisher: Ministry of Education
+    url: https://www.nirfindia.org
+    licence: public information
+    trust: official
+    cadence: yearly
+    stage: extras.py (link only)
+    feeds: [fields.compare]
+  - id: abroad_official
+    name: Study and work abroad costs, visas and salaries (College Board, GOV.UK, canada.ca, DAAD, Nuffic, MOE Singapore, HESA, QILT and others)
+    publisher: official education and immigration bodies
+    url: see abroad.json countries[].*.src
+    licence: public information
+    trust: official, secondary or estimate (badge per figure)
+    cadence: quarterly for visa and fee rules, yearly for salaries
+    stage: abroad.json (curated), checked through the fact-check batches
+    feeds: [abroad]
+  - id: fx
+    name: Exchange rates
+    publisher: open.er-api.com
+    url: https://open.er-api.com
+    licence: free tier terms
+    trust: secondary
+    cadence: monthly
+    stage: manual until automated (abroad.json fx)
+    feeds: [abroad.fx]

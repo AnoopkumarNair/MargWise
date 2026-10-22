@@ -30,4 +30,4 @@ Poses: (a) hovering, neutral, facing right; (b) flying fast diagonally upward, d
 Wordmark: we will typeset "Margwise" in Fraunces ourselves, so do not ask for text in the image.
 
 ## Delivery
-Attach the images in the chat, or drop them in prototype/art/incoming/ with names: logo-colour.png, logo-light.png, logo-dark.png, logo-small.png, app-icon.png, jyo-hover.png, jyo-fly.png, jyo-sleepy.png, jyo-point.png, bg-s15.png, icon-health.png, icon-sci.png, ... (field ids). We will resize and compress them to stay light on phones.
+Attach the images in the chat, or drop them in app/art-incoming/ with names: logo-colour.png, logo-light.png, logo-dark.png, logo-small.png, app-icon.png, jyo-hover.png, jyo-fly.png, jyo-sleepy.png, jyo-point.png, bg-s15.png, icon-health.png, icon-sci.png, ... (field ids). We will resize and compress them to stay light on phones.

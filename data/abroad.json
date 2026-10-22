@@ -186,8 +186,8 @@
    "ug": {
     "lo": 20000,
     "hi": 50000,
-    "conf": "secondary",
-    "note": "Typical international tuition for bachelor's degrees. Medicine and some specialist degrees cost more.",
+    "conf": "estimate",
+    "note": "Typical international tuition for bachelor's degrees. Medicine and some specialist degrees cost more. This range is our estimate; check the university.",
     "src": ""
    },
    "pg": {

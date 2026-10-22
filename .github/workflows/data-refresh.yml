@@ -1,0 +1,28 @@
+# Weekly data refresh. Re-reads the public sources, rebuilds the data, runs the quality gate and opens a pull request
+# with the change report for a human to review. It never publishes anything by itself.
+# Status: written but not yet run on GitHub. Check the first run by hand.
+name: data-refresh
+on:
+  schedule:
+    - cron: '17 3 * * 1'   # Mondays, 03:17 UTC
+  workflow_dispatch: {}
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Rebuild data from live sources
+        run: python3 pipeline/run.py --fetch
+      - name: Open a pull request if anything changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: data/refresh
+          title: 'Data refresh'
+          commit-message: 'Data refresh from public sources'
+          body-path: data/releases/CHANGES.md
+          labels: data, needs-review
