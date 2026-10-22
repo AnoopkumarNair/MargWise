@@ -10,6 +10,8 @@ button{cursor:pointer;font-weight:700;width:auto}button.p{background:var(--accen
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}.grid label,.chk{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px}.grid input,.chk input{width:auto}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.big{font-size:20px;font-weight:700}.st{display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:8px}.st span{flex:1;min-width:160px}
 .sec{display:grid;grid-template-columns:1fr 150px;gap:8px;align-items:center}
+.cols,.lcol,.rcol{display:contents}#rep{order:9}
+@media (min-width:1000px){.w{max-width:1180px}.cols{display:grid;grid-template-columns:400px 1fr;gap:14px;align-items:start}.lcol,.rcol{display:grid;gap:14px;min-width:0}#rep{order:0}}
 @media print{body{background:#fff;color:#000}.noprint{display:none!important}}
 </style></head><body><div class="w">
 <p class="mute noprint"><a href="/">← Back to the game</a></p>
@@ -17,6 +19,7 @@ button{cursor:pointer;font-weight:700;width:auto}button.p{background:var(--accen
 <p class="mute noprint">How the questions map to the result: <a href="/how/">/how/</a></p>
 <div class="card noprint"><label>Your personal key<input id="key" type="password" autocomplete="off"></label><div class="row"><button class="p" id="load">Show my students</button><span id="msg" class="mute"></span></div></div>
 
+<div class="cols"><div class="lcol">
 <div class="card noprint" id="addbox" hidden><h2>Add a student (counsellor-led)</h2>
 <p class="mute">For students whose parents have signed the consent sheet. The student never signs up; you start the game for them on this device.</p>
 <div class="row"><input id="aName" maxlength="40" placeholder="First name" style="flex:2"><input id="aClass" maxlength="10" placeholder="Class, e.g. 10B" style="flex:1"></div>
@@ -27,6 +30,10 @@ button{cursor:pointer;font-weight:700;width:auto}button.p{background:var(--accen
 
 <div class="card noprint" id="listbox" hidden><h2>My students</h2><div id="list"></div><div class="row"><input id="code" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Or type a student code" style="flex:1"><button id="find">Open</button></div></div>
 
+<div class="card" id="rep" hidden><h2>Report</h2>
+<div class="row noprint"><label style="flex:1">From<input type="date" id="rFrom"></label><label style="flex:1">To<input type="date" id="rTo"></label></div>
+<div class="row noprint"><button id="rShow">Show</button><button id="rCsv">Download CSV</button><button id="rPrint">Print</button></div><div id="rOut"></div></div>
+</div><div class="rcol">
 <div class="card noprint" id="s1" hidden><h2>Step 1. Your own view, before the student plays</h2>
 <p class="mute">After talking with the student, pick the 3 career fields you think fit them best. Do this BEFORE the student plays, so your picks are recorded as blind. Once saved they are locked.</p>
 <div class="grid" id="picks"></div>
@@ -54,8 +61,5 @@ button{cursor:pointer;font-weight:700;width:auto}button.p{background:var(--accen
 <label>Note (optional)<textarea id="fuNote" rows="2" maxlength="600"></textarea></label><div class="row"><button class="p" id="fuSave">Save follow-up</button></div></div>
 
 <div class="card noprint" id="done" hidden><h2 class="ok">Review submitted. Thank you.</h2></div>
-
-<div class="card" id="rep" hidden><h2>Report</h2>
-<div class="row noprint"><label style="flex:1">From<input type="date" id="rFrom"></label><label style="flex:1">To<input type="date" id="rTo"></label></div>
-<div class="row noprint"><button id="rShow">Show</button><button id="rCsv">Download CSV</button><button id="rPrint">Print</button></div><div id="rOut"></div></div>
+</div></div>
 </div><script src="/counsellor/counsellor.js"></script></body></html>

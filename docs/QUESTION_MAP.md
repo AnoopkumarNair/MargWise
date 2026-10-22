@@ -21,6 +21,12 @@ The game measures **interest**, not ability. It uses the six Holland (RIASEC) ty
 4. **Match to careers.** The six-trait shape is correlated with each career's O*NET interest profile; a field's score is the mean of its best four careers, converted to a percentile against a reference set and balanced across fields (`data/fieldbias.json`).
 5. **Not used for ranking:** the lamp-lock puzzles show rough aptitude signals on the results page but do not change the field order until they are validated.
 
+**How the two flasks work.**
+- **Both flasks on one card** counts that card twice: a stronger signal that you prefer it to the other three.
+- **One flask on each of two cards** counts each once: a signal for both, weaker for either.
+- **Keeping your oil** counts as "none of these" and adds almost nothing to the estimate (a student who keeps most of their oil gets a "not enough signal" note).
+- Neither way of spending is more correct. In a test case, putting both flasks on a Builder card raised the Builder estimate by about 0.1 on the model's scale, and splitting between a Builder and a Creator card raised Creator by about 0.15 and left Builder where it was. One stop is one of about 13, so no single spend decides the result.
+
 ## 3. Every card
 Reading guide: **main** is the type the card expresses, **also** the smaller related load. "Contrast" is what the stop makes the student trade off.
 
