@@ -15,8 +15,8 @@ A student walks a lamp-lit road at night. In each town they spend two flasks of 
 - **Their interest shape**: six interest areas on a radar chart, with an honest note when the shape is unclear.
 - **16 career fields, ranked for them**, each with careers to look at and why they fit.
 - **A real path for each field**: the Class 11 and 12 subjects for CBSE, ICSE/ISC or a state board, the entrance exams, the degree, a plan B if the first route does not work, and how to compare colleges.
-- **What the work pays**: US medians from O*NET and BLS, and India pay bands from the Periodic Labour Force Survey.
-- **How AI is changing the job.** Careers with high AI exposure are flagged, with the tasks where AI is already used today and the tasks where no AI use has been seen yet. The data comes from the Anthropic Economic Index and Eloundou et al. (2023), and the app says plainly that exposure is not a forecast of job loss.
+- **What the work pays and where it is heading**: US median pay and 2025 to 2035 projected job change from BLS, and India pay bands from the Periodic Labour Force Survey.
+- **How AI is changing the job.** Careers with high AI exposure are flagged, with the tasks where AI is already used today and the tasks where no AI use has been seen yet. The level comes from the U.S. Bureau of Labor Statistics' 2026 AI exposure categories, which combine five studies. Real use comes from the Anthropic Economic Index. The app says plainly that exposure is relative and not a forecast of job loss.
 - **Studying and working abroad**, inside each field: two routes (bachelor's and master's abroad, or bachelor's in India and master's abroad) across eight countries, with costs, scholarships and settling rules, each figure marked official, secondary or estimate.
 - **A one-page summary for parents** to read together, save or print.
 
@@ -79,6 +79,6 @@ npx wrangler pages deploy hosting/public --project-name margwise
 
 - O*NET OnLine, U.S. Department of Labor, Employment and Training Administration (CC BY 4.0). Margwise has modified this information. USDOL/ETA has not approved, endorsed or tested these modifications. O*NET® is a trademark of USDOL/ETA.
 - Anthropic Economic Index, observed exposure and task data (CC BY).
-- Eloundou, Manning, Mishkin and Rock, "GPTs are GPTs" (2023), data released under the MIT licence.
+- U.S. Bureau of Labor Statistics, AI exposure categories and 2025 to 2035 employment projections (August 2026).
 - Periodic Labour Force Survey 2025 (MoSPI), via the India Labour Observatory tables.
 - Exam bodies, NIRF, and official education and immigration pages for the abroad view. Each is linked where it is used.

@@ -44,3 +44,8 @@ After steps 1 to 3 pass: "interest snapshot with known reliability". "Fit" or "s
 - Adult controlled testers: acceptable. Tell them the field order is a draft and known to be uneven.
 - Class 9 to 12 students: not yet. Still open: an unbiased, validated field ranking; verifiable parental consent (the gate and popup are self-declared; for minors the owner must collect consent offline); real automated deletion at the end of the test; fact checks for all abroad figures and plan B text (now included in the batches); India pay for individual jobs (only group averages exist).
 - Random and one-note players are now flagged cautious when the profile spread is below 0.5 or 70 percent of the oil goes to one trait. Thresholds were set from simulation (random players median spread 0.32, consistent players 0.81) and need checking with real students.
+
+## AI exposure layer
+- Primary signal: BLS relative AI exposure categories (Aug 2026), which combine five studies. Secondary: Anthropic observed exposure and task use. Both are US-based and about tasks.
+- Display only. It does not change any ranking.
+- To validate: whether students and parents read the tag as information and not as an instruction to avoid a field; whether counsellors agree the flagged careers are the ones changing in India (the Indian job market may differ).

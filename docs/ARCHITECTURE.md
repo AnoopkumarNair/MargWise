@@ -32,7 +32,7 @@ The central design decision is that **facts are data with provenance, not text b
 flowchart LR
   subgraph Sources["Public sources (data/sources.yaml)"]
     O[O*NET interests, wages, tasks]
-    A[Anthropic Economic Index + Eloundou 2023]
+    A[BLS AI exposure categories + Anthropic Economic Index]
     P[PLFS India pay]
     X[Exam bodies, NIRF]
     B[Abroad: visas, fees, salaries, FX]
@@ -65,15 +65,25 @@ Three curated data files plus the built `content.json`. Contracts are in `data/s
   - `values`: O*NET interest profile (R, I, A, S, E, C, 0 to 100).
   - `us`: US median pay, growth and openings (O*NET and BLS).
   - `in`: the PLFS India occupation group and its average monthly salary.
-  - `ai`: `obs` (observed AI exposure, Anthropic), `theo` (theoretical exposure, Eloundou et al. 2023), `tier`, tasks where AI is used today, tasks with no AI use seen, and the number of tasks matched.
+  - `ai`: `tier` (BLS relative exposure: very high, high, moderate, low), `obs` (observed exposure from real Claude usage, Anthropic), `watch` (BLS very high and observed 0.10 or more), tasks where AI is used today, tasks with no AI use seen, and the number of tasks matched.
+  - `us.growthPct`: BLS projected job change 2025 to 2035.
 - **abroad.json**: eight countries, with ranges for tuition, living cost and salary, each with a trust badge and a source link, plus visa and settling notes and the exchange rates used.
 - **story2.json**: the 15 places, their narration, keepers and the four activity cards each (one per trait).
 
 **The SOC code is the join key.** Adding a career means adding one line to the career list; every dataset keyed on SOC then attaches automatically, or is reported as `nodata`.
 
-### AI exposure tiers
+### AI exposure
 
-Derived mechanically from Anthropic's observed exposure: high (0.30 or more, roughly the top 10 percent of occupations), moderate (0.10 to 0.30), low (0.01 to 0.10), none (under 0.01, meaning not enough use seen, not safe). The UI flags high tiers, lists where AI is used today, and states that exposure is not a forecast of job loss. Reasons for this caution are in Anthropic's paper: no systematic rise in unemployment yet, with early signs of slower hiring of 22 to 25 year olds in exposed jobs. The validator checks that each tier matches its number.
+Two independent signals, shown together, never merged into one score:
+
+- **BLS relative exposure (Aug 2026, primary).** The U.S. Bureau of Labor Statistics combined five studies into four relative categories for 831 occupations: three theoretical measures (Felten et al., Eloundou et al. 2023, Eisfeldt et al.) and two based on real AI use (Anthropic and Microsoft Copilot). The categories are relative bins (roughly a quarter of occupations each), not absolute risk. That is why a doctor can be "high" and a data scientist "very high".
+- **Observed use (Anthropic Economic Index, 2025 usage).** The share of an occupation's tasks seen being done or helped by AI in real work conversations, plus which specific tasks. This is what makes the card concrete: "where AI is used today" and "where no AI use has been seen yet".
+
+A career is flagged **watch** (strongest tag, "in use now") when BLS says very high **and** observed exposure is 0.10 or more: AI could do much of the work and is already doing some of it. 25 of the 83 careers are flagged today.
+
+The older 2023 theoretical estimate is not shown on its own. It is already inside the BLS composite. The UI states that exposure is relative and is not a forecast of job loss, wages or hiring, quoting BLS's own limits. Anthropic's paper adds why caution is right: no systematic rise in unemployment so far, with early signs of slower hiring of 22 to 25 year olds in exposed jobs. The validator checks that the flag follows its rule.
+
+**Known limit:** BLS blocks scripted downloads of its xlsx. The pipeline therefore reads a committed CSV, and updating means saving the xlsx by hand (instructions in `data/ai_exposure.py`).
 
 ## 5. The pipeline
 
@@ -85,9 +95,9 @@ Run `python3 pipeline/run.py` (offline, from committed snapshots) or `--fetch` (
 | 2 | Build fields and careers | curated text in `content.py`, O*NET files | `content.json` | Yes |
 | 3 | Attach India pay | `plfs_2025.json` | `careers[].in` | Yes (data entered by hand once a year) |
 | 4 | Plan B, colleges, field reference table | `extras.py`, `refcal.json` | fields and `fieldRef` | Yes |
-| 5 | Attach AI exposure | Anthropic, Eloundou, O*NET tasks | `careers[].ai` | Yes, with `--refresh` |
+| 5 | Attach AI exposure | BLS categories, Anthropic, O*NET tasks | `careers[].ai`, `careers[].us.growthPct` | Yes; Anthropic and O*NET with `--refresh`, BLS by saving its xlsx by hand |
 | 6 | Validate | all data files | pass or fail, warnings for stale data | Yes |
-| 7 | Build reviewer fact checks | `content.json`, `abroad.json` | `hosting/public/admin/claims.json` (300 tasks) | Yes |
+| 7 | Build reviewer fact checks | `content.json`, `abroad.json` | `hosting/public/admin/claims.json` (322 tasks) | Yes |
 | 8 | Change report | previous release vs new build | `data/releases/CHANGES.md` | Yes |
 | 9 | Human review and `--accept` | change report, reviewer answers | `data/releases/latest.json` | **Manual by design** |
 | 10 | Build and deploy the game | released data, art | `app/dist`, `hosting/public` | `app/build.py`, then `wrangler pages deploy` (manual) |
@@ -162,7 +172,7 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 ## 12. Known limits (read before trusting a number)
 
 - Interest fit uses US O*NET profiles. India-specific profiles are not available; counsellor review in the pilot is the planned correction.
-- AI exposure data is US-based and about tasks, not jobs. The two sources disagree in places, and the UI shows both.
+- AI exposure data is US-based and about tasks, not jobs. BLS categories are relative and its theoretical inputs reflect mid-2023 AI capability; the observed inputs reflect 2024 to 2025 usage. The signals can disagree (a doctor is BLS "high" but shows little observed use), and the UI shows both.
 - India pay is a broad occupation-group average for salaried workers, not a figure for an individual job.
 - Several exam and abroad figures are secondary or estimates. They are badged in the UI and listed for fact checking.
 - The field ranking is uneven across fields, and the aptitude weights are unvalidated.

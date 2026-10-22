@@ -735,16 +735,19 @@
     "hourly": 117.39,
     "growth": "Average",
     "openings": 2900,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 3.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.0,
-    "theo": 0.41,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [
      "Explain procedures and discuss test results or prescribed treatments with patients",
      "Collect, record, and maintain patient information, such as medical history, reports, or examination results"
@@ -775,16 +778,19 @@
     "hourly": 82.19,
     "growth": "Faster than average",
     "openings": 4200,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.031,
-    "theo": 0.24,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Advise or instruct patients regarding preventive dental care, the causes and treatment of dental problems, or oral..."
     ],
@@ -814,16 +820,19 @@
     "hourly": 46.9,
     "growth": "Faster than average",
     "openings": 180800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.6,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.059,
-    "theo": 0.36,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Monitor, record, and report symptoms or changes in patients' conditions"
     ],
@@ -853,16 +862,19 @@
     "hourly": 67.75,
     "growth": "Faster than average",
     "openings": 12500,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.09,
-    "theo": 0.41,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Provide information and advice regarding drug interactions, side effects, dosage, and proper medication storage"
     ],
@@ -892,16 +904,19 @@
     "hourly": 49.4,
     "growth": "Much faster than average",
     "openings": 13400,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 11.9,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.017,
-    "theo": 0.27,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Provide educational information about physical therapy or physical therapists, injury prevention, ergonomics, or ways..."
     ],
@@ -931,16 +946,19 @@
     "hourly": 62.55,
     "growth": "Much faster than average",
     "openings": 3100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 9.4,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.093,
-    "theo": 0.25,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Advise animal owners regarding sanitary measures, feeding, general care, medical conditions, or treatment options"
     ],
@@ -970,16 +988,19 @@
     "hourly": 82.81,
     "growth": "Much faster than average",
     "openings": 1300,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 7.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.273,
-    "theo": 0.69,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Perform complex calculations as part of the analysis and evaluation of data, using computers",
      "Design computer simulations to model physical data so that it can be better understood"
@@ -1017,9 +1038,10 @@
     "monthly": 38466
    },
    "ai": {
-    "obs": null,
-    "theo": null,
     "tier": "nodata",
+    "obs": null,
+    "obsTier": null,
+    "watch": false,
     "used": [
      "Study basic principles of plant and animal life, such as origin, relationship, development, anatomy, and function",
      "Study aquatic plants and animals and environmental conditions affecting them, such as radioactivity or pollution"
@@ -1050,16 +1072,19 @@
     "hourly": 43.87,
     "growth": "Faster than average",
     "openings": 5900,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.4,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.261,
-    "theo": 0.39,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Analyze organic or inorganic compounds to determine chemical or physical properties, composition, structure,...",
      "Confer with scientists or engineers to conduct analyses of research projects, interpret test results, or develop..."
@@ -1090,16 +1115,19 @@
     "hourly": 39.53,
     "growth": "Faster than average",
     "openings": 7300,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.1,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.055,
-    "theo": 0.61,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Process and review environmental permits, licenses, or related materials",
      "Determine data collection methods to be employed in research projects or surveys",
@@ -1131,16 +1159,19 @@
     "hourly": 50.79,
     "growth": "Much faster than average",
     "openings": 1900,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 11.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.211,
-    "theo": 0.75,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Identify relationships and trends in data, as well as any factors that could affect the results of research",
      "Report results of statistical analyses, including information in the form of graphs, charts, and tables",
@@ -1172,16 +1203,19 @@
     "hourly": 42.65,
     "growth": "Faster than average",
     "openings": 1000,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.0,
-    "theo": 0.42,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Inspect food processing areas to ensure compliance with government regulations and standards for sanitation, safety,...",
@@ -1209,16 +1243,19 @@
     "hourly": 50.05,
     "growth": "Much faster than average",
     "openings": 17800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 11.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.081,
-    "theo": 0.41,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Read and interpret blueprints, technical drawings, schematics, or computer-generated reports",
      "Solicit new business",
@@ -1250,16 +1287,19 @@
     "hourly": 48.48,
     "growth": "Faster than average",
     "openings": 22700,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.4,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.008,
-    "theo": 0.41,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Direct engineering activities, ensuring compliance with environmental, safety, or other governmental regulations",
@@ -1287,16 +1327,19 @@
     "hourly": 62.6,
     "growth": "Average",
     "openings": 4900,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 3.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.1,
-    "theo": 0.54,
-    "tier": "low",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Provide technical support or instruction to staff or customers regarding electronics equipment standards",
      "Design electronic components, software, products, or systems for commercial, industrial, medical, military, or...",
@@ -1328,16 +1371,19 @@
     "hourly": 64.89,
     "growth": "Much faster than average",
     "openings": 3800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 8.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.075,
-    "theo": 0.54,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Write technical reports or other documentation, such as handbooks or bulletins, for use by engineering staff,..."
     ],
@@ -1367,16 +1413,19 @@
     "hourly": 60.12,
     "growth": "Faster than average",
     "openings": 1100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 4.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.0,
-    "theo": 0.4,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Develop safety procedures to be employed by workers operating equipment or working in close proximity to ongoing...",
@@ -1404,16 +1453,19 @@
     "hourly": 65.38,
     "growth": "Much faster than average",
     "openings": 95300,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 10.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.288,
-    "theo": 0.66,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Store, retrieve, and manipulate data for analysis of system capabilities and requirements",
      "Analyze user needs and software requirements to determine feasibility of design within time and cost constraints",
@@ -1445,16 +1497,19 @@
     "hourly": 57.8,
     "growth": "Much faster than average",
     "openings": 24800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 34.6,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.461,
-    "theo": 0.67,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Identify relationships and trends or any factors that could affect the results of research"
     ],
@@ -1484,16 +1539,19 @@
     "hourly": 62.11,
     "growth": "Much faster than average",
     "openings": 14100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 21.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.486,
-    "theo": 0.6,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Monitor use of data files and regulate access to safeguard information in computer files",
      "Modify computer security files to incorporate new software, correct errors, or change individual access status",
@@ -1525,16 +1583,19 @@
     "hourly": 40.23,
     "growth": "Faster than average",
     "openings": 115300,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.348,
-    "theo": 0.54,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations",
      "Establish tables of accounts and assign entries to proper accounts",
@@ -1566,16 +1627,19 @@
     "hourly": 50.85,
     "growth": "Faster than average",
     "openings": 285000,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Managers",
     "monthly": 50408
    },
    "ai": {
+    "tier": "high",
     "obs": 0.138,
-    "theo": 0.43,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": false,
     "used": [
      "Review financial statements, sales or activity reports, or other performance data to measure productivity or goal...",
      "Develop or implement product-marketing strategies, including advertising campaigns or sales promotions"
@@ -1606,16 +1670,19 @@
     "hourly": 49.4,
     "growth": "Much faster than average",
     "openings": 24700,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 7.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.572,
-    "theo": 0.48,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Evaluate and compare the relative quality of various securities in a given industry",
      "Recommend investments and investment timing to companies, investment firm staff, or the public",
@@ -1647,16 +1714,19 @@
     "hourly": 59.96,
     "growth": "Faster than average",
     "openings": 1100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 4.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.242,
-    "theo": 0.48,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Study economic and statistical data in area of specialization, such as finance, labor, or agriculture",
      "Compile, analyze, and report data to explain economic phenomena and forecast market trends, applying mathematical...",
@@ -1688,16 +1758,19 @@
     "hourly": 80.19,
     "growth": "Much faster than average",
     "openings": 34000,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.9,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Managers",
     "monthly": 50408
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.32,
-    "theo": 0.54,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Conduct economic or commercial surveys to identify potential markets for products or services",
      "Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with...",
@@ -1729,16 +1802,19 @@
     "hourly": 36.51,
     "growth": "Faster than average",
     "openings": 73700,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.4,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.403,
-    "theo": 0.62,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Analyze employment-related data and prepare required reports",
      "Interview job applicants to obtain information on work history, training, education, or job skills",
@@ -1770,16 +1846,19 @@
     "hourly": 36.87,
     "growth": "Slower than average",
     "openings": 17100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 1.1,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.186,
-    "theo": 0.62,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Handle customer complaints and take appropriate action to resolve them",
      "Counsel clients on personal and family financial problems, such as excessive spending or borrowing of funds",
@@ -1811,16 +1890,19 @@
     "hourly": 39.12,
     "growth": "Decline",
     "openings": 6800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": -3.8,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.062,
-    "theo": 0.54,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Decline excessive risks"
     ],
@@ -1850,16 +1932,19 @@
     "hourly": 50.0,
     "growth": "Faster than average",
     "openings": 8300,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.249,
-    "theo": 0.76,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Respond to user email inquiries, or set up automated systems to send responses",
      "Identify or maintain links to and from other Web sites and check links to ensure proper functioning",
@@ -1891,16 +1976,19 @@
     "hourly": 47.73,
     "growth": "Average",
     "openings": 6900,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 4.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.078,
-    "theo": 0.46,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Prepare information regarding design, structure specifications, materials, color, equipment, estimated costs, or...",
      "Prepare contract documents for building contractors"
@@ -1931,16 +2019,19 @@
     "hourly": 30.27,
     "growth": "Decline",
     "openings": 16000,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": -1.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.367,
-    "theo": 0.46,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Use computer software to generate new images",
      "Develop graphics and layouts for product illustrations, company logos, and Web sites",
@@ -1972,16 +2063,19 @@
     "hourly": 38.92,
     "growth": "Little or no change",
     "openings": 2500,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 0.1,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.057,
-    "theo": 0.38,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Identify target markets for designs, looking at factors such as age, gender, and socioeconomic status",
      "Read scripts and consult directors and other production staff to develop design concepts and plan productions"
@@ -2012,16 +2106,19 @@
     "hourly": 49.06,
     "growth": "Little or no change",
     "openings": 4200,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": -0.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
-    "obs": 0.357,
-    "theo": 0.5,
     "tier": "high",
+    "obs": 0.357,
+    "obsTier": "high",
+    "watch": false,
     "used": [
      "Use models to simulate the behavior of animated objects in the finished sequence",
      "Design complex graphics and animation, using independent judgment, creativity, and computer equipment",
@@ -2053,16 +2150,19 @@
     "hourly": 36.26,
     "growth": "Average",
     "openings": 3100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 3.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "high",
     "obs": 0.223,
-    "theo": 0.5,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": false,
     "used": [
      "Edit films and videotapes to insert music, dialogue, and sound effects, to arrange films into sequences, and to...",
      "Organize and string together raw footage into a continuous whole according to scripts or the instructions of directors...",
@@ -2094,16 +2194,19 @@
     "hourly": 32.31,
     "growth": "Average",
     "openings": 7700,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 2.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.0,
-    "theo": 0.43,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Design plans to be safe and to be compliant with the American Disabilities Act (ADA)",
@@ -2131,16 +2234,19 @@
     "hourly": 48.36,
     "growth": "Much faster than average",
     "openings": 4100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 11.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.059,
-    "theo": 0.44,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Collect information about individuals or clients, using interviews, case histories, observational techniques, and..."
     ],
@@ -2170,16 +2276,19 @@
     "hourly": 30.93,
     "growth": "Average",
     "openings": 27800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 2.9,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.118,
-    "theo": 0.31,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Counsel students regarding educational issues, such as course and program selection, class scheduling and...",
      "Compile and study occupational, educational, and economic information to assist counselees in determining and carrying...",
@@ -2211,16 +2320,19 @@
     "hourly": 93.24,
     "growth": "Much faster than average",
     "openings": 300,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.5,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.158,
-    "theo": 0.54,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Analyze job requirements and content to establish criteria for classification, selection, training, and other related...",
      "Study consumers' reactions to new products and package designs, and to advertising efforts, using surveys and tests",
@@ -2253,16 +2365,19 @@
     "hourly": 49.25,
     "growth": "Much faster than average",
     "openings": 23100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 12.4,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.037,
-    "theo": 0.52,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Investigate theoretical or conceptual issues, such as the human design considerations of lunar landers or habitats",
      "Analyze complex systems to determine potential for further development, production, interoperability, compatibility,..."
@@ -2293,16 +2408,19 @@
     "hourly": 76.76,
     "growth": "Faster than average",
     "openings": 28700,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 4.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.167,
-    "theo": 0.45,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Advise clients concerning business transactions, claim liability, advisability of prosecuting or defending lawsuits,...",
      "Interpret laws, rulings and regulations for individuals and businesses",
@@ -2334,16 +2452,19 @@
     "hourly": 74.03,
     "growth": "Average",
     "openings": 800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 2.8,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
-    "obs": 0.311,
-    "theo": 0.33,
     "tier": "high",
+    "obs": 0.311,
+    "obsTier": "high",
+    "watch": false,
     "used": [
      "Read documents on pleadings and motions to ascertain facts and issues",
      "Write decisions on cases",
@@ -2375,16 +2496,19 @@
     "hourly": 29.91,
     "growth": "Decline",
     "openings": 3400,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": -5.9,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.21,
-    "theo": 0.64,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Analyze and interpret news and information received from various sources to broadcast the information",
      "Select material most pertinent to presentation, and organize this material into appropriate formats",
@@ -2416,16 +2540,19 @@
     "hourly": 36.98,
     "growth": "Little or no change",
     "openings": 11900,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": -0.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.246,
-    "theo": 0.84,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Develop advertising campaigns for a wide range of clients, working with an advertising agency's creative director and...",
      "Plan project arrangements or outlines, and organize material accordingly",
@@ -2457,16 +2584,19 @@
     "hourly": 35.94,
     "growth": "Slower than average",
     "openings": 23000,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 1.8,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.453,
-    "theo": 0.69,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Respond to requests for information from the media or designate an appropriate spokesperson or information source",
      "Plan or conduct market or public opinion research to test products or determine potential for product success,...",
@@ -2497,16 +2627,19 @@
     "annual": 72040,
     "growth": "Little or no change",
     "openings": 63500,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": -0.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.29,
-    "theo": 0.34,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": false,
     "used": [
      "Prepare, administer, and grade tests and assignments to evaluate students' progress",
      "Observe and evaluate students' performance, behavior, social development, and physical health",
@@ -2538,16 +2671,19 @@
     "hourly": 28.63,
     "growth": "Average",
     "openings": 33900,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 4.4,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.007,
-    "theo": 0.27,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [
      "Conduct social research"
     ],
@@ -2577,16 +2713,19 @@
     "hourly": 28.93,
     "growth": "Slower than average",
     "openings": 6000,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 2.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.43,
-    "theo": 0.86,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Adapt translations to students' cognitive and grade levels, collaborating with educational team members as necessary",
      "Read written materials, such as legal documents, scientific works, or news reports, and rewrite material into...",
@@ -2619,16 +2758,19 @@
     "hourly": 68.31,
     "growth": "Decline",
     "openings": 400,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": -2.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.452,
-    "theo": 0.51,
-    "tier": "high",
+    "obsTier": "high",
+    "watch": true,
     "used": [
      "Teach political science",
      "Develop and test theories, using information from interviews, newspapers, periodicals, case law, historical papers,...",
@@ -2660,16 +2802,19 @@
     "hourly": 42.94,
     "growth": "Average",
     "openings": 3200,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 3.9,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.096,
-    "theo": 0.53,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Research, compile, analyze and organize information from maps, reports, investigations, and books for use in reports..."
     ],
@@ -2699,16 +2844,19 @@
     "hourly": 36.64,
     "growth": "Average",
     "openings": 51500,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 3.5,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Service and sales workers",
     "monthly": 15541
    },
    "ai": {
+    "tier": "high",
     "obs": 0.123,
-    "theo": 0.24,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": false,
     "used": [
      "Record facts to prepare reports that document incidents and activities"
     ],
@@ -2738,16 +2886,19 @@
     "hourly": 44.87,
     "growth": "Average",
     "openings": 1100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 3.9,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Managers",
     "monthly": 50408
    },
    "ai": {
+    "tier": "high",
     "obs": 0.0,
-    "theo": 0.51,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Consult with officials of local and area governments, schools, hospitals, and other institutions to determine their...",
@@ -2774,16 +2925,19 @@
     "annual": 232140,
     "growth": "Much faster than average",
     "openings": 11200,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 8.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.29,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Use instrumentation to guide flights when visibility is poor",
@@ -2811,16 +2965,19 @@
     "hourly": 30.03,
     "growth": "Much faster than average",
     "openings": 25200,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.6,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.26,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [
      "Record production or operational data on specified forms"
     ],
@@ -2850,16 +3007,19 @@
     "hourly": 33.29,
     "growth": "Average",
     "openings": 5500,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 3.8,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Managers",
     "monthly": 50408
    },
    "ai": {
+    "tier": "high",
     "obs": 0.121,
-    "theo": 0.42,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": false,
     "used": [
      "Answer inquiries pertaining to hotel policies and services, and resolve occupants' complaints",
      "Show, rent, or assign accommodations",
@@ -2890,16 +3050,19 @@
     "annual": 63580,
     "growth": "Much faster than average",
     "openings": 18500,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 8.8,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Service and sales workers",
     "monthly": 15541
    },
    "ai": {
+    "tier": "high",
     "obs": 0.091,
-    "theo": 0.16,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Answer passengers' questions about flights, aircraft, weather, travel routes and services, arrival times, or schedules"
     ],
@@ -2929,16 +3092,19 @@
     "hourly": 37.91,
     "growth": "Much faster than average",
     "openings": 1400,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.051,
-    "theo": 0.56,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Identify or classify species of insects or allied forms, such as mites or spiders",
      "Communicate research or project results to other professionals or the public or teach related courses, seminars, or..."
@@ -2969,16 +3135,19 @@
     "hourly": 33.14,
     "growth": "Faster than average",
     "openings": 200,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.8,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.0,
-    "theo": 0.69,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Study nutritional requirements of animals and nutritive values of animal feed materials",
@@ -3006,16 +3175,19 @@
     "hourly": 36.73,
     "growth": "Slower than average",
     "openings": 900,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 2.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.37,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Establish short- and long-term plans for management of forest lands and forest resources",
@@ -3043,16 +3215,19 @@
     "hourly": 35.1,
     "growth": "Faster than average",
     "openings": 2100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.0,
-    "theo": 0.49,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Apply principles of specialized fields of science, such as agronomy, soil science, forestry, or agriculture, to...",
@@ -3080,16 +3255,19 @@
     "hourly": 43.22,
     "growth": "Decline",
     "openings": 70800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": -3.4,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Managers",
     "monthly": 50408
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.31,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Collect and record growth, production, and environmental data",
@@ -3117,16 +3295,19 @@
     "hourly": 30.38,
     "growth": "Much faster than average",
     "openings": 72700,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 9.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Craft and related trades workers",
     "monthly": 16773
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.15,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Prepare sketches or follow blueprints to determine the location of wiring or equipment and to ensure conformance to...",
@@ -3154,16 +3335,19 @@
     "hourly": 24.34,
     "growth": "Faster than average",
     "openings": 66200,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Craft and related trades workers",
     "monthly": 16773
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.08,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Follow checklists to ensure all important parts are examined, including belts, hoses, steering systems, spark plugs,...",
@@ -3191,16 +3375,19 @@
     "hourly": 25.84,
     "growth": "Slower than average",
     "openings": 40300,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 2.4,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Craft and related trades workers",
     "monthly": 16773
    },
    "ai": {
+    "tier": "low",
     "obs": 0.0,
-    "theo": 0.06,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Operate safety equipment and use safe work habits",
@@ -3228,16 +3415,19 @@
     "hourly": 37.59,
     "growth": "Slower than average",
     "openings": 8100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 2.4,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "high",
     "obs": 0.02,
-    "theo": 0.37,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Provide user applications or engineering support or recommendations for new or existing equipment with regard to..."
     ],
@@ -3267,16 +3457,19 @@
     "hourly": 28.24,
     "growth": "Slower than average",
     "openings": 26100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 1.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Craft and related trades workers",
     "monthly": 16773
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.18,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Calculate dimensions or tolerances, using instruments, such as micrometers or vernier calipers",
@@ -3304,16 +3497,19 @@
     "hourly": 31.23,
     "growth": "Average",
     "openings": 6100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 3.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.078,
-    "theo": 0.53,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Prepare reports and document project activities and data"
     ],
@@ -3342,16 +3538,19 @@
     "hourly": 47.8,
     "growth": "Little or no change",
     "openings": 17400,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 0.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.27,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Perform before live audiences in concerts, recitals, educational presentations, and other social gatherings",
@@ -3378,16 +3577,19 @@
     "hourly": 29.05,
     "growth": "Little or no change",
     "openings": 6300,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 0.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
-    "obs": 0.101,
-    "theo": 0.17,
     "tier": "moderate",
+    "obs": 0.101,
+    "obsTier": "moderate",
+    "watch": false,
     "used": [
      "Learn about characters in scripts and their relationships to each other to develop role interpretations",
      "Write original or adapted material for dramas, comedies, puppet shows, narration, or other performances"
@@ -3417,16 +3619,19 @@
     "hourly": 24.8,
     "growth": "Slower than average",
     "openings": 1600,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 2.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "low",
     "obs": 0.0,
-    "theo": 0.03,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Study and practice dance moves required in roles",
@@ -3454,16 +3659,19 @@
     "hourly": 43.44,
     "growth": "Average",
     "openings": 12100,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 4.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.092,
-    "theo": 0.47,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Study and research scripts to determine how they should be directed",
      "Coordinate the activities of writers, directors, managers, and other personnel throughout the production process",
@@ -3495,16 +3703,19 @@
     "hourly": 21.47,
     "growth": "Decline",
     "openings": 10700,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": -0.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "high",
     "obs": 0.195,
-    "theo": 0.3,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": false,
     "used": [
      "Manipulate and enhance scanned or digital images to create desired effects, using computers and specialized software",
      "Determine desired images and picture composition, selecting and adjusting subjects, equipment, and lighting to achieve..."
@@ -3535,16 +3746,19 @@
     "hourly": 44.45,
     "growth": "Average",
     "openings": 3800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 4.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.24,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Direct courses and speeds of ships, based on specialized knowledge of local winds, weather, water depths, tides,...",
@@ -3572,16 +3786,19 @@
     "hourly": 53.96,
     "growth": "Much faster than average",
     "openings": 500,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.7,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "high",
     "obs": 0.036,
-    "theo": 0.41,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Analyze data to determine feasibility of product proposals",
      "Prepare plans, estimates, design and construction schedules, and contract specifications, including any special..."
@@ -3612,16 +3829,19 @@
     "hourly": 39.58,
     "growth": "Much faster than average",
     "openings": 26600,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 17.6,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.157,
-    "theo": 0.48,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Develop an understanding of customers' needs and take actions to ensure that such needs are met",
      "Develop and implement technical project management tools, such as plans, schedules, and responsibility and compliance..."
@@ -3652,16 +3872,19 @@
     "hourly": 51.55,
     "growth": "Faster than average",
     "openings": 18300,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.1,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Managers",
     "monthly": 50408
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.096,
-    "theo": 0.48,
-    "tier": "low",
+    "obsTier": "low",
+    "watch": false,
     "used": [
      "Monitor operations to ensure that staff members comply with administrative policies and procedures, safety rules,...",
      "Resolve problems concerning transportation, logistics systems, imports or exports, or customer issues",
@@ -3692,16 +3915,19 @@
     "annual": 66710,
     "growth": "Faster than average",
     "openings": 2200,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.5,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.0,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Assess performance following athletic competition, identifying strengths and weaknesses and making adjustments to...",
@@ -3728,16 +3954,19 @@
     "annual": 47320,
     "growth": "Faster than average",
     "openings": 36400,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 6.1,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.22,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Plan, organize, and conduct practice sessions",
@@ -3765,16 +3994,19 @@
     "hourly": 22.67,
     "growth": "Much faster than average",
     "openings": 68000,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 7.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.12,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Observe participants and inform them of corrective measures necessary for skill improvement",
@@ -3803,16 +4035,19 @@
     "hourly": 54.87,
     "growth": "Faster than average",
     "openings": 22000,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.2,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Managers",
     "monthly": 50408
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.45,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Prepare and review operational reports and schedules to ensure accuracy and efficiency",
@@ -3840,16 +4075,19 @@
     "hourly": 38.81,
     "growth": "Average",
     "openings": 32700,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 3.8,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Professionals",
     "monthly": 38466
    },
    "ai": {
+    "tier": "veryhigh",
     "obs": 0.121,
-    "theo": 0.65,
-    "tier": "moderate",
+    "obsTier": "moderate",
+    "watch": true,
     "used": [
      "Evaluate applications, records, or documents to gather information about eligibility or liability issues",
      "Verify that all firm and regulatory policies and procedures have been documented, implemented, and communicated",
@@ -3888,9 +4126,10 @@
     "monthly": 26175
    },
    "ai": {
-    "obs": null,
-    "theo": 0.23,
     "tier": "nodata",
+    "obs": null,
+    "obsTier": null,
+    "watch": false,
     "used": [
      "Enter data from analysis of medical tests or clinical results into computer for storage",
      "Analyze laboratory findings to check the accuracy of the results",
@@ -3922,16 +4161,19 @@
     "hourly": 38.52,
     "growth": "Faster than average",
     "openings": 13000,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 5.0,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "moderate",
     "obs": 0.0,
-    "theo": 0.33,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [
      "Take thorough and accurate patient medical histories"
     ],
@@ -3961,16 +4203,19 @@
     "hourly": 34.65,
     "growth": "Much faster than average",
     "openings": 2800,
-    "wageYear": 2025
+    "wageYear": 2025,
+    "growthPct": 13.3,
+    "growthYears": "2025-35"
    },
    "in": {
     "group": "Technicians and associate professionals",
     "monthly": 26175
    },
    "ai": {
+    "tier": "high",
     "obs": 0.0,
-    "theo": 0.29,
-    "tier": "none",
+    "obsTier": "none",
+    "watch": false,
     "used": [],
     "human": [
      "Collect evidence from crime scenes, storing it in conditions that preserve its integrity",
@@ -4696,23 +4941,25 @@
  "aiMeta": {
   "retrieved": "2026-10-22",
   "tiers": {
-   "high": ">= 0.30",
-   "moderate": "0.10 to 0.30",
-   "low": "0.01 to 0.10",
-   "none": "below 0.01 (not enough use seen)"
+   "veryhigh": "BLS: very high relative exposure (top quarter of occupations)",
+   "high": "BLS: high",
+   "moderate": "BLS: moderate",
+   "low": "BLS: low",
+   "nodata": "not covered"
   },
+  "watch": "BLS very high AND Anthropic observed exposure of 0.10 or more",
   "sources": [
+   {
+    "id": "bls_ai_exposure",
+    "name": "U.S. Bureau of Labor Statistics, AI exposure categories (Aug 2026)",
+    "url": "https://www.bls.gov/emp/publications/ai-exposure-categories.htm",
+    "licence": "US government work"
+   },
    {
     "id": "anthropic_job_exposure",
     "name": "Anthropic Economic Index: observed exposure (Massenkoff and McCrory, 2026)",
     "url": "https://www.anthropic.com/research/labor-market-impacts",
     "licence": "CC BY"
-   },
-   {
-    "id": "openai_gpts_are_gpts",
-    "name": "Eloundou et al. 2023, GPTs are GPTs: theoretical exposure",
-    "url": "https://github.com/openai/GPTs-are-GPTs",
-    "licence": "MIT"
    },
    {
     "id": "onet_tasks",

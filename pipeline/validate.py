@@ -7,7 +7,7 @@ err, warn = [], []
 def E(m): err.append(m)
 def W(m): warn.append(m)
 def load(n): return json.load(open(os.path.join(D, n), encoding='utf8'))
-TR = ['R', 'I', 'A', 'S', 'E', 'C']; CONF = ('official', 'secondary', 'estimate'); TIERS = ('high', 'moderate', 'low', 'none', 'nodata')
+TR = ['R', 'I', 'A', 'S', 'E', 'C']; CONF = ('official', 'secondary', 'estimate'); TIERS = ('veryhigh', 'high', 'moderate', 'low', 'nodata')
 today = datetime.date.today()
 def age(ds):
     try: return (today - datetime.date.fromisoformat(ds)).days
@@ -36,12 +36,9 @@ for x in c['careers']:
     if not a: E('%s missing ai block' % i)
     else:
         if a['tier'] not in TIERS: E('%s bad ai tier' % i)
-        for k in ('obs', 'theo'):
-            if a.get(k) is not None and not 0 <= a[k] <= 1: E('%s ai.%s out of range' % (i, k))
-        if a['tier'] == 'nodata' and a.get('obs') is not None: E('%s nodata but has obs' % i)
-        if a.get('obs') is not None:
-            exp = 'high' if a['obs'] >= .30 else 'moderate' if a['obs'] >= .10 else 'low' if a['obs'] >= .01 else 'none'
-            if exp != a['tier']: E('%s tier %s does not match obs %s' % (i, a['tier'], a['obs']))
+        if a.get('obs') is not None and not 0 <= a['obs'] <= 1: E('%s ai.obs out of range' % i)
+        if a['tier'] == 'nodata' and a.get('watch'): E('%s nodata but flagged watch' % i)
+        if bool(a.get('watch')) != bool(a['tier'] == 'veryhigh' and a.get('obs') is not None and a['obs'] >= .10): E('%s watch flag does not match the rule' % i)
     if x.get('in') and groups is not None and x['in']['group'] not in c['plfs'].get('groupsNames', list(c.get('plfs', {}).get('groups', {}).keys()) or [x['in']['group']]): pass
     if not x.get('in'): W('%s has no India pay group' % i)
 if not c.get('fieldRef') or set(c['fieldRef']) != set(fids): E('fieldRef missing or does not cover all fields (run refcal)')

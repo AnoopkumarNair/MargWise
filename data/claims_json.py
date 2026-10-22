@@ -18,8 +18,9 @@ for x in c['careers']:
     if x.get('in'): out.append({'key': 'pay.map.' + x['id'], 'statement': 'In the Indian PLFS occupation grouping (NCO-2015 divisions), the job "%s" belongs to the group "%s".' % (x['title'], x['in']['group']), 'urls': 'https://www.mospi.gov.in'})
 for x in c['careers']:
     a = x.get('ai')
-    if a and a['tier'] in ('high', 'nodata'):
-        out.append({'key': 'ai.' + x['id'], 'statement': 'In Anthropic Economic Index job_exposure.csv, the occupation "%s" (SOC %s) has observed exposure %s.' % (x['title'], x['soc'][:7], a['obs'] if a['obs'] is not None else 'no entry'), 'urls': 'https://huggingface.co/datasets/Anthropic/EconomicIndex/blob/main/labor_market_impacts/job_exposure.csv'})
+    if a and (a['tier'] in ('veryhigh', 'nodata') or a['watch']):
+        names = {'veryhigh': 'Very high', 'high': 'High', 'moderate': 'Moderate', 'low': 'Low', 'nodata': None}
+        out.append({'key': 'ai.' + x['id'], 'statement': 'In the BLS AI exposure categories (2025-35 projections), the occupation "%s" (SOC %s) is in the category: %s.' % (x['title'], x['soc'][:7], names[a['tier']] or 'not listed'), 'urls': 'https://www.bls.gov/emp/publications/ai-exposure-categories.htm'})
 p = c.get('plfs')
 if p: out.append({'key': 'plfs.note', 'statement': 'India PLFS 2025: average monthly earnings of salaried employees are about Rs 32,683 for graduates and Rs 45,430 for postgraduates.', 'urls': ' | '.join(p['src'])})
 json.dump(out, open(os.environ.get('CLAIMS_OUT', 'claims.json'), 'w'), ensure_ascii=False)

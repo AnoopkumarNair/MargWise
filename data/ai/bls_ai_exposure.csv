@@ -1,0 +1,832 @@
+code,title,emp2025k,emp2035k,chgPct,openingsK,wage2025,ai
+11-1011,Chief executives,291.6,300.9,3.2,19.1,213990.0,Very high
+11-1021,General and operations managers,3599.0,3780.3,5.0,285.0,105770.0,High
+11-2011,Advertising and promotions managers,33.2,31.9,-3.7,2.3,133660.0,Very high
+11-2021,Marketing managers,421.6,450.8,6.9,34.0,166790.0,Very high
+11-2022,Sales managers,650.1,679.1,4.5,47.3,148270.0,High
+11-2032,Public relations managers,80.8,85.4,5.7,6.1,146910.0,Very high
+11-2033,Fundraising managers,48.8,51.4,5.4,3.7,125470.0,High
+11-3012,Administrative services managers,279.0,293.3,5.2,22.0,114130.0,Moderate
+11-3013,Facilities managers,165.9,173.5,4.6,14.2,106660.0,High
+11-3021,Computer and information systems managers,685.8,793.9,15.8,53.5,175140.0,Very high
+11-3031,Financial managers,879.7,964.6,9.7,65.6,166570.0,Very high
+11-3051,Industrial production managers,252.1,258.6,2.6,17.0,126060.0,High
+11-3061,Purchasing managers,88.3,91.8,4.0,6.4,148080.0,Very high
+11-3071,"Transportation, storage, and distribution managers",228.1,242.1,6.1,18.3,107230.0,Very high
+11-3111,Compensation and benefits managers,23.7,24.0,1.1,1.6,149230.0,High
+11-3121,Human resources managers,224.9,237.4,5.5,16.8,149280.0,High
+11-3131,Training and development managers,50.2,53.5,6.4,4.1,133000.0,Very high
+11-9013,"Farmers, ranchers, and other agricultural managers",788.7,762.2,-3.4,70.8,89900.0,Moderate
+11-9021,Construction managers,609.1,664.3,9.1,49.7,114990.0,High
+11-9031,"Education and childcare administrators, preschool and daycare",91.9,89.0,-3.1,5.2,59300.0,High
+11-9032,"Education administrators, kindergarten through secondary",343.8,342.7,-0.3,20.6,105870.0,High
+11-9033,"Education administrators, postsecondary",231.8,235.9,1.8,14.5,104590.0,High
+11-9039,"Education administrators, all other",62.0,63.0,1.6,3.9,95200.0,High
+11-9041,Architectural and engineering managers,220.9,233.1,5.5,14.9,171270.0,High
+11-9051,Food service managers,344.3,364.2,5.8,38.8,69390.0,Moderate
+11-9071,Gambling managers,5.6,5.8,3.6,0.6,93220.0,High
+11-9072,"Entertainment and recreation managers, except gambling",43.9,46.5,6.0,5.1,79520.0,Very high
+11-9081,Lodging managers,54.8,56.9,3.8,5.5,69250.0,High
+11-9111,Medical and health services managers,640.4,795.5,24.2,62.3,123860.0,High
+11-9121,Natural sciences managers,112.2,121.5,8.2,9.2,167220.0,High
+11-9131,Postmasters and mail superintendents,13.3,13.2,-0.3,0.9,96660.0,High
+11-9141,"Property, real estate, and community association managers",460.4,477.6,3.7,36.9,69990.0,High
+11-9151,Social and community service managers,231.0,247.7,7.2,18.5,80390.0,Very high
+11-9161,Emergency management directors,14.0,14.5,3.9,1.1,93330.0,High
+11-9171,Funeral home managers,34.8,36.2,4.1,2.6,78790.0,High
+11-9179,"Personal service managers, all other",25.5,27.1,6.2,2.0,69770.0,High
+11-9199,"Managers, all other",1338.8,1404.4,4.9,100.9,141900.0,High
+13-1011,"Agents and business managers of artists, performers, and athletes",26.9,29.5,9.7,2.4,82890.0,Very high
+13-1020,Buyers and purchasing agents,516.1,547.0,6.0,47.2,77710.0,Very high
+13-1031,"Claims adjusters, examiners, and investigators",376.1,355.5,-5.5,20.9,78000.0,Very high
+13-1032,"Insurance appraisers, auto damage",13.5,12.4,-8.7,0.7,78240.0,High
+13-1041,Compliance officers,436.4,453.1,3.8,32.7,80730.0,Very high
+13-1051,Cost estimators,226.4,219.5,-3.1,17.6,78740.0,High
+13-1071,Human resources specialists,939.7,999.7,6.4,73.7,75940.0,Very high
+13-1074,Farm labor contractors,1.9,2.0,7.4,0.1,58460.0,Low
+13-1075,Labor relations specialists,66.3,67.7,2.1,4.8,95420.0,High
+13-1081,Logisticians,255.1,300.0,17.6,26.6,82320.0,Very high
+13-1082,Project management specialists,1094.3,1167.4,6.7,76.5,102320.0,Very high
+13-1111,Management analysts,1077.1,1186.3,10.1,94.1,101860.0,Very high
+13-1121,"Meeting, convention, and event planners",172.1,182.1,5.8,16.8,61160.0,High
+13-1131,Fundraisers,140.9,148.7,5.5,10.0,72550.0,High
+13-1141,"Compensation, benefits, and job analysis specialists",118.1,125.2,6.0,9.0,78210.0,Very high
+13-1151,Training and development specialists,472.5,523.7,10.8,46.0,69280.0,Very high
+13-1161,Market research analysts and marketing specialists,952.7,1019.0,7.0,82.0,78760.0,Very high
+13-1199,"Business operations specialists, all other",1157.6,1202.3,3.9,98.7,83050.0,Very high
+13-2011,Accountants and auditors,1595.2,1674.6,5.0,115.3,83680.0,Very high
+13-2020,Property appraisers and assessors,68.4,70.7,3.5,5.2,67960.0,Very high
+13-2031,Budget analysts,50.4,51.3,1.9,2.9,91640.0,Very high
+13-2041,Credit analysts,64.7,61.9,-4.3,3.1,83510.0,Very high
+13-2051,Financial and investment analysts,377.2,404.3,7.2,24.7,102740.0,Very high
+13-2052,Personal financial advisors,299.4,303.5,1.4,17.1,105070.0,Very high
+13-2053,Insurance underwriters,125.6,120.8,-3.8,6.8,81370.0,Very high
+13-2054,Financial risk specialists,66.0,70.8,7.4,4.8,117330.0,Very high
+13-2061,Financial examiners,70.0,76.5,9.3,4.5,94160.0,Very high
+13-2071,Credit counselors,31.2,32.3,3.3,2.0,52230.0,Very high
+13-2072,Loan officers,283.0,286.0,1.1,17.1,76690.0,Very high
+13-2081,"Tax examiners and collectors, and revenue agents",60.1,59.5,-1.0,4.4,62370.0,Very high
+13-2082,Tax preparers,95.8,100.3,4.7,9.4,54920.0,Very high
+13-2099,"Financial specialists, all other",137.8,143.4,4.1,9.4,81100.0,Very high
+15-1211,Computer systems analysts,544.4,587.2,7.9,32.9,105850.0,Very high
+15-1212,Information security analysts,192.9,233.4,21.0,14.1,129180.0,Very high
+15-1221,Computer and information research scientists,38.6,47.0,21.8,2.9,140300.0,Very high
+15-1231,Computer network support specialists,152.5,154.4,1.2,9.0,76220.0,Very high
+15-1232,Computer user support specialists,750.6,724.4,-3.5,39.7,61860.0,Very high
+15-1241,Computer network architects,181.8,195.8,7.7,9.6,134050.0,Very high
+15-1242,Database administrators,75.0,74.9,-0.1,3.3,104620.0,Very high
+15-1243,Database architects,69.5,76.0,9.4,3.9,139500.0,Very high
+15-1244,Network and computer systems administrators,323.6,310.4,-4.1,13.4,99130.0,Very high
+15-1251,Computer programmers,110.8,102.7,-7.3,4.4,100390.0,Very high
+15-1252,Software developers,1717.8,1892.6,10.2,95.3,135980.0,Very high
+15-1253,Software quality assurance analysts and testers,187.6,198.2,5.7,10.7,104300.0,Very high
+15-1254,Web developers,87.4,90.6,3.8,5.3,92650.0,Very high
+15-1255,Web and digital interface designers,132.7,140.8,6.0,8.3,104000.0,Very high
+15-1299,"Computer occupations, all other",471.2,495.3,5.1,27.0,116580.0,Very high
+15-2011,Actuaries,31.2,34.1,9.2,1.5,130000.0,Very high
+15-2021,Mathematicians,2.2,2.2,0.6,0.1,126710.0,Very high
+15-2031,Operations research analysts,113.1,126.6,11.9,7.5,88940.0,Very high
+15-2041,Statisticians,31.3,34.7,11.0,1.9,105650.0,Very high
+15-2051,Data scientists,275.6,371.0,34.6,24.8,120230.0,Very high
+15-2099,"Mathematical science occupations, all other",4.0,4.2,7.1,0.2,81490.0,Very high
+17-1011,"Architects, except landscape and naval",124.6,129.9,4.3,6.9,99280.0,High
+17-1012,Landscape architects,23.5,24.5,4.4,1.7,79870.0,High
+17-1021,Cartographers and photogrammetrists,14.7,15.7,7.4,0.9,81390.0,High
+17-1022,Surveyors,52.0,55.0,5.8,3.1,75440.0,High
+17-2011,Aerospace engineers,68.7,74.4,8.3,3.8,134960.0,Very high
+17-2021,Agricultural engineers,1.5,1.6,6.9,0.1,98590.0,High
+17-2031,Bioengineers and biomedical engineers,23.8,25.7,7.6,1.2,109370.0,Very high
+17-2041,Chemical engineers,21.9,22.9,4.7,1.1,125040.0,High
+17-2051,Civil engineers,380.6,405.1,6.4,22.7,100840.0,High
+17-2061,Computer hardware engineers,76.1,83.0,9.1,4.1,161740.0,Very high
+17-2071,Electrical engineers,199.7,219.5,9.9,11.4,120630.0,High
+17-2072,"Electronics engineers, except computer",98.2,101.8,3.7,4.9,130220.0,Very high
+17-2081,Environmental engineers,39.1,41.6,6.3,2.3,107110.0,Very high
+17-2111,"Health and safety engineers, except mining safety engineers and inspectors",22.3,23.5,5.4,1.2,115160.0,High
+17-2112,Industrial engineers,365.1,410.6,12.4,23.1,102440.0,Very high
+17-2121,Marine engineers and naval architects,8.4,8.9,6.7,0.5,112230.0,High
+17-2131,Materials engineers,23.8,25.6,7.5,1.3,112860.0,High
+17-2141,Mechanical engineers,298.5,332.0,11.2,17.8,104110.0,Very high
+17-2151,"Mining and geological engineers, including mining safety engineers",6.2,6.4,3.8,0.3,106220.0,High
+17-2161,Nuclear engineers,16.6,16.6,0.4,0.8,133970.0,High
+17-2171,Petroleum engineers,18.5,18.8,2.0,1.0,144910.0,High
+17-2199,"Engineers, all other",166.7,173.0,3.7,8.8,122930.0,Very high
+17-3011,Architectural and civil drafters,104.1,109.5,5.2,9.1,66150.0,High
+17-3012,Electrical and electronics drafters,18.9,18.2,-3.4,1.4,76870.0,Very high
+17-3013,Mechanical drafters,42.1,39.6,-6.0,2.9,71550.0,High
+17-3019,"Drafters, all other",15.2,14.1,-7.3,1.0,63520.0,Very high
+17-3021,Aerospace engineering and operations technologists and technicians,11.6,12.9,11.9,1.1,82890.0,High
+17-3022,Civil engineering technologists and technicians,70.9,73.2,3.2,6.1,64950.0,Very high
+17-3023,Electrical and electronic engineering technologists and technicians,96.9,99.2,2.4,8.1,78190.0,High
+17-3024,Electro-mechanical and mechatronics technologists and technicians,15.7,16.2,2.6,1.4,73900.0,Moderate
+17-3025,Environmental engineering technologists and technicians,12.5,12.9,3.1,1.1,59920.0,High
+17-3026,Industrial engineering technologists and technicians,76.7,79.0,3.1,6.6,66120.0,High
+17-3027,Mechanical engineering technologists and technicians,36.9,37.4,1.3,3.1,74510.0,High
+17-3028,Calibration technologists and technicians,17.0,17.8,4.8,1.5,67820.0,High
+17-3029,"Engineering technologists and technicians, except drafters, all other",62.4,64.1,2.8,5.4,78350.0,High
+17-3031,Surveying and mapping technicians,58.8,62.2,5.8,6.9,54240.0,High
+19-1011,Animal scientists,3.4,3.6,5.8,0.2,68940.0,High
+19-1012,Food scientists and technologists,14.1,14.9,6.2,1.0,88720.0,High
+19-1013,Soil and plant scientists,19.9,21.3,6.7,1.4,78850.0,Very high
+19-1021,Biochemists and biophysicists,35.2,39.5,12.3,2.9,127410.0,Very high
+19-1022,Microbiologists,20.1,21.4,6.2,1.5,87990.0,High
+19-1023,Zoologists and wildlife biologists,19.5,20.2,3.6,1.4,76780.0,High
+19-1029,"Biological scientists, all other",59.6,62.4,4.7,4.3,98920.0,Very high
+19-1031,Conservation scientists,27.7,29.2,5.3,2.1,73010.0,High
+19-1032,Foresters,13.2,13.5,2.2,0.9,76400.0,Moderate
+19-1041,Epidemiologists,12.8,15.2,18.7,0.8,87220.0,High
+19-1042,"Medical scientists, except epidemiologists",181.0,203.7,12.6,10.5,103410.0,Very high
+19-1099,"Life scientists, all other",8.0,8.5,6.3,0.4,93750.0,Very high
+19-2011,Astronomers,2.4,2.6,7.8,0.1,128820.0,Very high
+19-2012,Physicists,23.2,24.8,7.2,1.3,172250.0,Very high
+19-2021,Atmospheric and space scientists,10.7,10.9,2.6,0.8,99070.0,Very high
+19-2031,Chemists,84.9,90.3,6.4,5.9,91240.0,Very high
+19-2032,Materials scientists,8.6,9.3,8.3,0.6,117790.0,Very high
+19-2041,"Environmental scientists and specialists, including health",93.4,99.2,6.1,7.3,82220.0,Very high
+19-2042,"Geoscientists, except hydrologists and geographers",25.4,26.7,5.1,1.8,101920.0,High
+19-2043,Hydrologists,6.3,6.4,1.5,0.4,96600.0,High
+19-2099,"Physical scientists, all other",26.6,27.1,2.1,1.4,122570.0,High
+19-3011,Economists,18.6,19.5,4.7,1.1,124720.0,Very high
+19-3022,Survey researchers,9.8,9.3,-4.8,0.6,69460.0,Very high
+19-3032,Industrial-organizational psychologists,4.0,4.3,6.5,0.3,193950.0,Very high
+19-3033,Clinical and counseling psychologists,81.3,90.9,11.7,4.1,100580.0,High
+19-3034,School psychologists,64.0,64.5,0.8,3.4,95990.0,Very high
+19-3039,"Psychologists, all other",60.0,61.4,2.3,3.5,110840.0,High
+19-3041,Sociologists,2.7,2.8,3.8,0.2,106030.0,Very high
+19-3051,Urban and regional planners,45.8,47.6,3.9,3.2,89320.0,Very high
+19-3091,Anthropologists and archeologists,10.2,10.8,6.0,0.8,70770.0,Very high
+19-3092,Geographers,1.5,1.5,-2.1,0.1,102040.0,Very high
+19-3093,Historians,3.8,3.9,3.0,0.3,76750.0,Very high
+19-3094,Political scientists,6.1,6.0,-2.0,0.4,142080.0,Very high
+19-3099,"Social scientists and related workers, all other",41.5,41.4,-0.2,2.7,101110.0,Very high
+19-4012,Agricultural technicians,19.5,20.6,5.4,2.8,49630.0,High
+19-4013,Food science technicians,20.8,21.8,4.8,3.0,52130.0,High
+19-4021,Biological technicians,74.4,79.9,7.4,9.4,57510.0,High
+19-4031,Chemical technicians,60.0,63.0,4.9,7.6,60390.0,High
+19-4042,"Environmental science and protection technicians, including health",36.4,38.9,6.9,5.3,55090.0,High
+19-4043,"Geological technicians, except hydrologic technicians",7.3,7.6,3.6,1.0,53350.0,High
+19-4044,Hydrologic technicians,3.0,3.0,-1.3,0.4,64790.0,Very high
+19-4051,Nuclear technicians,6.7,6.8,1.1,0.9,110240.0,Moderate
+19-4061,Social science research assistants,38.4,40.4,5.0,4.9,61990.0,Very high
+19-4071,Forest and conservation technicians,32.8,32.2,-2.1,3.8,54560.0,Moderate
+19-4092,Forensic science technicians,20.1,22.8,13.3,2.8,72060.0,High
+19-4099,"Life, physical, and social science technicians, all other",89.5,93.4,4.4,11.2,62280.0,Very high
+19-5011,Occupational health and safety specialists,143.1,169.6,18.5,17.1,90150.0,High
+19-5012,Occupational health and safety technicians,31.2,37.2,19.4,3.8,61560.0,Moderate
+21-1012,"Educational, guidance, and career counselors and advisors",389.5,400.9,2.9,27.8,64330.0,Very high
+21-1013,Marriage and family therapists,76.3,86.6,13.5,6.9,66940.0,High
+21-1015,Rehabilitation counselors,96.9,99.0,2.2,8.2,46850.0,High
+21-1018,"Substance abuse, behavioral disorder, and mental health counselors",533.4,631.4,18.4,50.5,59350.0,High
+21-1019,"Counselors, all other",49.8,52.7,5.9,4.3,50860.0,High
+21-1021,"Child, family, and school social workers",405.1,422.9,4.4,33.9,59550.0,High
+21-1022,Healthcare social workers,194.8,211.3,8.5,16.9,67880.0,High
+21-1023,Mental health and substance abuse social workers,138.9,153.2,10.3,12.5,60280.0,Moderate
+21-1029,"Social workers, all other",77.4,79.2,2.3,5.8,71900.0,High
+21-1091,Health education specialists,70.4,74.4,5.6,6.9,64070.0,Very high
+21-1092,Probation officers and correctional treatment specialists,93.7,96.5,3.0,7.9,66270.0,High
+21-1093,Social and human service assistants,463.4,497.6,7.4,48.9,45930.0,High
+21-1094,Community health workers,64.7,72.9,12.7,7.0,51850.0,High
+21-1099,"Community and social service specialists, all other",118.6,125.2,5.5,11.6,56730.0,High
+21-2011,Clergy,242.0,247.8,2.4,19.2,60810.0,High
+21-2021,"Directors, religious activities and education",141.9,146.6,3.3,13.0,52100.0,Very high
+21-2099,"Religious workers, all other",113.3,115.0,1.5,12.1,45280.0,High
+23-1011,Lawyers,863.7,904.3,4.7,28.7,159670.0,Very high
+23-1012,Judicial law clerks,14.0,14.4,2.8,1.5,64920.0,High
+23-1021,"Administrative law judges, adjudicators, and hearing officers",17.4,17.4,0.0,0.5,117860.0,Very high
+23-1022,"Arbitrators, mediators, and conciliators",10.5,11.0,4.7,0.3,75530.0,Very high
+23-1023,"Judges, magistrate judges, and magistrates",25.3,26.0,2.8,0.8,153990.0,High
+23-2011,Paralegals and legal assistants,404.9,403.8,-0.3,40.8,62890.0,High
+23-2093,"Title examiners, abstractors, and searchers",59.8,61.1,2.1,5.3,58650.0,High
+23-2099,"Legal support workers, all other",50.2,50.0,-0.3,4.7,72110.0,Very high
+25-1011,"Business teachers, postsecondary",103.6,109.7,5.9,7.6,99080.0,Very high
+25-1021,"Computer science teachers, postsecondary",43.9,46.1,4.9,3.2,96980.0,Very high
+25-1022,"Mathematical science teachers, postsecondary",57.1,58.1,1.7,3.9,79940.0,Very high
+25-1031,"Architecture teachers, postsecondary",9.7,10.0,2.6,0.7,96870.0,High
+25-1032,"Engineering teachers, postsecondary",50.9,54.9,7.8,3.9,109270.0,Very high
+25-1041,"Agricultural sciences teachers, postsecondary",10.9,11.2,2.9,0.8,98700.0,High
+25-1042,"Biological science teachers, postsecondary",62.0,66.5,7.3,4.7,84620.0,Very high
+25-1043,"Forestry and conservation science teachers, postsecondary",1.8,1.9,2.8,0.1,101420.0,Very high
+25-1051,"Atmospheric, earth, marine, and space sciences teachers, postsecondary",12.0,12.3,2.4,0.8,103170.0,Very high
+25-1052,"Chemistry teachers, postsecondary",24.9,25.4,2.3,1.7,93250.0,Very high
+25-1053,"Environmental science teachers, postsecondary",8.4,8.7,2.7,0.6,94980.0,Very high
+25-1054,"Physics teachers, postsecondary",16.4,16.8,2.4,1.1,100310.0,High
+25-1061,"Anthropology and archeology teachers, postsecondary",6.5,6.7,2.6,0.4,99650.0,Very high
+25-1062,"Area, ethnic, and cultural studies teachers, postsecondary",14.3,14.7,2.7,1.0,85020.0,High
+25-1063,"Economics teachers, postsecondary",14.6,15.0,2.4,1.0,123920.0,High
+25-1064,"Geography teachers, postsecondary",4.1,4.2,2.7,0.3,97590.0,High
+25-1065,"Political science teachers, postsecondary",21.5,22.0,2.5,1.5,98070.0,High
+25-1066,"Psychology teachers, postsecondary",52.3,54.4,4.0,3.7,80340.0,Very high
+25-1067,"Sociology teachers, postsecondary",14.6,15.0,2.2,1.0,84290.0,High
+25-1069,"Social sciences teachers, postsecondary, all other",19.6,19.9,1.6,1.3,72990.0,High
+25-1071,"Health specialties teachers, postsecondary",278.4,328.3,17.9,24.9,107310.0,Very high
+25-1072,"Nursing instructors and teachers, postsecondary",96.1,112.6,17.1,8.5,80250.0,Very high
+25-1081,"Education teachers, postsecondary",77.2,79.2,2.5,5.3,75350.0,Very high
+25-1082,"Library science teachers, postsecondary",4.5,4.6,2.7,0.3,80340.0,Very high
+25-1111,"Criminal justice and law enforcement teachers, postsecondary",15.7,15.9,1.5,1.1,76590.0,High
+25-1112,"Law teachers, postsecondary",25.8,26.5,2.6,1.8,128500.0,High
+25-1113,"Social work teachers, postsecondary",16.0,16.4,2.6,1.1,77570.0,High
+25-1121,"Art, drama, and music teachers, postsecondary",116.9,119.5,2.2,8.0,78620.0,Very high
+25-1122,"Communications teachers, postsecondary",35.8,36.5,2.1,2.4,78580.0,Very high
+25-1123,"English language and literature teachers, postsecondary",69.3,69.3,0.0,4.5,78760.0,Very high
+25-1124,"Foreign language and literature teachers, postsecondary",24.6,24.7,0.2,1.6,79350.0,Very high
+25-1125,"History teachers, postsecondary",23.2,23.2,0.0,1.5,83820.0,Very high
+25-1126,"Philosophy and religion teachers, postsecondary",26.8,27.3,2.0,1.8,80260.0,Very high
+25-1192,"Family and consumer sciences teachers, postsecondary",3.4,3.5,2.4,0.2,75870.0,High
+25-1193,"Recreation and fitness studies teachers, postsecondary",15.2,15.6,2.2,1.0,77270.0,Very high
+25-1194,"Career/technical education teachers, postsecondary",123.1,122.7,-0.3,8.0,63820.0,Very high
+25-1199,"Postsecondary teachers, all other",183.2,186.8,2.0,12.5,77640.0,Very high
+25-2011,"Preschool teachers, except special education",583.2,609.4,4.5,66.7,38140.0,Moderate
+25-2012,"Kindergarten teachers, except special education",111.2,110.9,-0.3,11.9,62680.0,Moderate
+25-2021,"Elementary school teachers, except special education",1419.3,1413.4,-0.4,87.5,63970.0,High
+25-2022,"Middle school teachers, except special and career/technical education",630.1,627.4,-0.4,38.8,64370.0,High
+25-2023,"Career/technical education teachers, middle school",16.6,16.6,-0.5,1.0,65030.0,High
+25-2031,"Secondary school teachers, except special and career/technical education",1087.5,1085.0,-0.2,63.5,72040.0,High
+25-2032,"Career/technical education teachers, secondary school",110.5,110.1,-0.4,6.4,66270.0,High
+25-2051,"Special education teachers, preschool",30.5,31.3,2.4,2.0,64830.0,High
+25-2052,"Special education teachers, kindergarten and elementary school",259.1,258.1,-0.4,16.4,65120.0,High
+25-2057,"Special education teachers, middle school",94.8,94.4,-0.4,6.0,66810.0,High
+25-2058,"Special education teachers, secondary school",164.8,164.5,-0.2,10.4,74260.0,High
+25-2059,"Special education teachers, all other",34.8,35.5,1.9,2.3,76580.0,High
+25-3011,"Adult basic education, adult secondary education, and english as a second language instructors",41.1,35.4,-13.9,3.8,61540.0,Very high
+25-3021,Self-enrichment teachers,419.1,433.7,3.5,50.0,46800.0,High
+25-3031,"Substitute teachers, short-term",556.1,567.0,2.0,65.0,41670.0,High
+25-3041,Tutors,208.4,208.0,-0.2,34.2,43350.0,Very high
+25-3099,"Teachers and instructors, all other",138.6,138.3,-0.2,15.7,66140.0,High
+25-4011,Archivists,10.3,10.6,3.4,1.1,64550.0,Very high
+25-4012,Curators,14.2,14.9,4.9,1.6,63420.0,Very high
+25-4013,Museum technicians and conservators,14.0,14.5,3.6,1.6,51440.0,Moderate
+25-4022,Librarians and media collections specialists,142.3,145.9,2.6,12.6,68270.0,Very high
+25-4031,Library technicians,72.8,68.1,-6.4,10.8,44580.0,Very high
+25-9021,Farm and home management educators,9.7,9.4,-3.2,0.8,60220.0,High
+25-9031,Instructional coordinators,248.7,252.8,1.6,23.1,77440.0,Very high
+25-9044,"Teaching assistants, postsecondary",205.5,211.0,2.7,25.7,42910.0,Very high
+25-9045,"Teaching assistants, except postsecondary",1463.0,1458.0,-0.3,176.2,36780.0,High
+25-9099,"Educational instruction and library workers, all other",136.8,139.3,1.8,12.7,50890.0,High
+27-1011,Art directors,140.2,146.0,4.2,12.2,114850.0,Very high
+27-1012,Craft artists,11.5,11.8,2.0,1.0,46080.0,High
+27-1013,"Fine artists, including painters, sculptors, and illustrators",28.9,28.0,-2.9,2.2,55490.0,High
+27-1014,Special effects artists and animators,51.9,51.8,-0.3,4.2,102030.0,High
+27-1019,"Artists and related workers, all other",13.0,13.2,2.0,1.1,71240.0,High
+27-1021,Commercial and industrial designers,35.4,36.3,2.4,2.8,83910.0,High
+27-1022,Fashion designers,32.7,32.8,0.1,2.5,80960.0,High
+27-1023,Floral designers,45.2,42.7,-5.6,5.2,37360.0,Moderate
+27-1024,Graphic designers,253.1,248.8,-1.7,16.0,62960.0,Very high
+27-1025,Interior designers,97.1,99.7,2.7,7.7,67190.0,High
+27-1026,Merchandise displayers and window trimmers,164.8,169.2,2.7,17.2,39390.0,Moderate
+27-1027,Set and exhibit designers,31.6,32.0,1.4,2.2,75240.0,High
+27-1029,"Designers, all other",29.5,29.9,1.2,2.1,64950.0,High
+27-2011,Actors,67.5,67.5,0.0,6.3,,Moderate
+27-2012,Producers and directors,181.0,188.3,4.0,12.1,90360.0,High
+27-2021,Athletes and sports competitors,22.9,24.1,5.5,2.2,66710.0,Moderate
+27-2022,Coaches and scouts,298.8,316.9,6.1,36.4,47320.0,Moderate
+27-2023,"Umpires, referees, and other sports officials",18.2,19.2,5.2,4.3,40710.0,Moderate
+27-2031,Dancers,13.8,14.1,2.2,1.6,,Low
+27-2032,Choreographers,4.7,4.9,3.1,0.6,55310.0,Moderate
+27-2041,Music directors and composers,51.1,51.7,1.2,4.2,73710.0,High
+27-2042,Musicians and singers,170.4,170.9,0.3,17.4,,Moderate
+27-2091,"Disc jockeys, except radio",16.9,17.6,3.8,1.7,,High
+27-2099,"Entertainers and performers, sports and related workers, all other",43.7,45.8,4.7,4.5,,High
+27-3011,Broadcast announcers and radio disc jockeys,21.8,20.2,-7.6,2.0,47340.0,Very high
+27-3023,"News analysts, reporters, and journalists",47.1,44.3,-5.9,3.4,62200.0,Very high
+27-3031,Public relations specialists,314.5,320.2,1.8,23.0,74750.0,Very high
+27-3041,Editors,105.0,103.8,-1.1,7.9,77920.0,Very high
+27-3042,Technical writers,46.4,46.7,0.8,3.2,90390.0,Very high
+27-3043,Writers and authors,140.3,139.9,-0.3,11.9,76910.0,Very high
+27-3091,Interpreters and translators,73.9,75.4,2.0,6.0,60170.0,Very high
+27-3092,Court reporters and simultaneous captioners,19.9,19.9,-0.1,1.8,72420.0,Very high
+27-3099,"Media and communication workers, all other",25.5,26.5,3.9,2.0,73620.0,Very high
+27-4011,Audio and video technicians,87.6,91.1,3.9,6.6,58100.0,High
+27-4012,Broadcast technicians,24.1,23.3,-3.1,1.6,59570.0,High
+27-4014,Sound engineering technicians,15.0,14.6,-3.1,1.0,73130.0,Moderate
+27-4015,Lighting technicians,9.9,9.4,-4.8,0.6,68060.0,Moderate
+27-4021,Photographers,145.0,144.0,-0.7,10.7,44660.0,High
+27-4031,"Camera operators, television, video, and film",32.6,33.0,1.3,2.5,74990.0,High
+27-4032,Film and video editors,39.4,40.8,3.7,3.1,75420.0,High
+27-4099,"Media and communication equipment workers, all other",14.0,14.3,1.6,1.0,70720.0,Moderate
+29-1011,Chiropractors,61.7,67.0,8.7,2.6,79200.0,Moderate
+29-1021,"Dentists, general",141.9,150.0,5.7,4.2,170950.0,Moderate
+29-1022,Oral and maxillofacial surgeons,5.6,5.9,5.6,0.2,352220.0,Low
+29-1023,Orthodontists,7.1,7.5,6.0,0.2,289140.0,Moderate
+29-1024,Prosthodontists,1.0,1.1,5.8,0.0,311180.0,Low
+29-1029,"Dentists, all other specialists",5.8,5.9,1.3,0.1,224990.0,Moderate
+29-1031,Dietitians and nutritionists,86.3,93.0,7.7,5.7,76400.0,Very high
+29-1041,Optometrists,45.1,49.4,9.5,2.0,136570.0,Low
+29-1051,Pharmacists,325.2,342.3,5.2,12.5,140910.0,High
+29-1071,Physician assistants,168.9,204.6,21.1,11.5,135880.0,Low
+29-1081,Podiatrists,10.0,10.2,2.0,0.2,160300.0,Moderate
+29-1122,Occupational therapists,169.6,194.8,14.8,10.0,100330.0,High
+29-1123,Physical therapists,283.7,317.6,11.9,13.4,102760.0,High
+29-1124,Radiation therapists,17.4,17.9,2.8,0.7,105310.0,Moderate
+29-1125,Recreational therapists,15.6,16.3,4.8,1.4,61960.0,Moderate
+29-1126,Respiratory therapists,142.0,154.2,8.5,8.6,82280.0,Low
+29-1127,Speech-language pathologists,193.4,225.5,16.6,12.5,97870.0,High
+29-1128,Exercise physiologists,21.2,23.9,12.8,1.4,59460.0,Moderate
+29-1129,"Therapists, all other",56.1,63.2,12.6,3.6,77930.0,High
+29-1131,Veterinarians,91.1,99.6,9.4,3.1,130100.0,High
+29-1141,Registered nurses,3465.4,3660.1,5.6,180.8,97550.0,High
+29-1151,Nurse anesthetists,54.5,59.8,9.7,2.4,236590.0,Low
+29-1161,Nurse midwives,8.2,9.1,11.5,0.4,134040.0,High
+29-1171,Nurse practitioners,336.3,474.1,41.0,29.4,132300.0,High
+29-1181,Audiologists,14.2,15.7,11.0,0.6,95780.0,High
+29-1211,Anesthesiologists,41.5,43.0,3.6,1.1,391490.0,Low
+29-1212,Cardiologists,18.5,19.4,4.8,0.5,496010.0,High
+29-1213,Dermatologists,12.2,13.0,6.8,0.4,328730.0,Moderate
+29-1214,Emergency medicine physicians,34.9,36.1,3.2,0.9,335550.0,High
+29-1215,Family medicine physicians,114.3,118.0,3.3,2.9,244180.0,High
+29-1216,General internal medicine physicians,73.1,76.0,4.0,1.9,256560.0,High
+29-1217,Neurologists,11.4,12.1,6.4,0.3,248560.0,High
+29-1218,Obstetricians and gynecologists,22.8,23.2,1.7,0.5,292910.0,High
+29-1221,"Pediatricians, general",42.2,42.9,1.5,1.0,210040.0,High
+29-1222,"Physicians, pathologists",11.8,12.4,4.8,0.3,312400.0,High
+29-1223,Psychiatrists,30.0,32.1,7.2,0.9,281870.0,High
+29-1224,Radiologists,28.7,29.6,3.4,0.7,420860.0,High
+29-1229,"Physicians, all other",367.4,380.1,3.4,9.4,265930.0,High
+29-1241,"Ophthalmologists, except pediatric",9.7,10.2,4.5,0.2,300080.0,Moderate
+29-1242,"Orthopedic surgeons, except pediatric",15.5,16.1,4.0,0.4,358550.0,Moderate
+29-1243,Pediatric surgeons,1.3,1.3,2.0,0.0,559030.0,Moderate
+29-1249,"Surgeons, all other",27.5,28.6,4.0,0.7,414010.0,Moderate
+29-1291,Acupuncturists,14.8,16.0,8.6,0.8,76040.0,Moderate
+29-1292,Dental hygienists,225.3,243.2,8.0,15.0,98100.0,Low
+29-1299,"Healthcare diagnosing or treating practitioners, all other",39.6,41.8,5.5,1.9,115210.0,High
+29-2010,Clinical laboratory technologists and technicians,343.0,352.4,2.7,20.8,62930.0,Moderate
+29-2031,Cardiovascular technologists and technicians,64.5,66.9,3.7,3.4,74310.0,Moderate
+29-2032,Diagnostic medical sonographers,92.2,105.1,13.9,6.0,96590.0,Moderate
+29-2033,Nuclear medicine technologists,17.4,18.2,4.4,0.8,101370.0,High
+29-2034,Radiologic technologists and technicians,234.2,246.0,5.0,13.0,80110.0,Moderate
+29-2035,Magnetic resonance imaging technologists,43.9,47.3,7.7,2.3,95480.0,Moderate
+29-2036,Medical dosimetrists,3.5,3.7,5.0,0.2,147470.0,High
+29-2042,Emergency medical technicians,181.9,192.5,5.8,13.8,44470.0,Low
+29-2043,Paramedics,102.2,108.0,5.7,4.3,60600.0,Low
+29-2051,Dietetic technicians,32.1,32.9,2.7,4.2,37640.0,High
+29-2052,Pharmacy technicians,471.2,501.3,6.4,44.7,45750.0,High
+29-2053,Psychiatric technicians,161.5,197.5,22.3,17.0,45130.0,Moderate
+29-2055,Surgical technologists,118.4,124.3,5.0,7.1,64650.0,Low
+29-2056,Veterinary technologists and technicians,131.4,143.8,9.4,13.4,47380.0,Moderate
+29-2057,Ophthalmic medical technicians,72.5,88.0,21.4,11.8,45570.0,Low
+29-2061,Licensed practical and licensed vocational nurses,666.9,686.7,3.0,51.8,64400.0,Low
+29-2072,Medical records specialists,200.7,216.3,7.8,14.0,51140.0,Very high
+29-2081,"Opticians, dispensing",74.3,77.4,4.2,5.6,47260.0,Moderate
+29-2091,Orthotists and prosthetists,9.5,10.7,12.9,0.7,81110.0,Low
+29-2092,Hearing aid specialists,11.2,13.4,19.4,0.9,65160.0,Moderate
+29-2099,"Health technologists and technicians, all other",185.6,196.4,5.9,12.4,50290.0,High
+29-9021,Health information technologists and medical registrars,42.0,48.6,15.9,3.0,68020.0,Very high
+29-9091,Athletic trainers,35.2,39.6,12.7,2.4,62520.0,Moderate
+29-9092,Genetic counselors,4.2,4.6,10.4,0.3,100040.0,Very high
+29-9093,Surgical assistants,24.4,25.9,6.1,1.4,66800.0,Low
+29-9099,"Healthcare practitioners and technical workers, all other",39.1,41.0,5.1,2.2,65790.0,Moderate
+31-1120,Home health and personal care aides,4677.1,5524.4,18.1,760.5,35800.0,Moderate
+31-1131,Nursing assistants,1505.9,1544.9,2.6,196.2,42260.0,Low
+31-1132,Orderlies,52.8,54.9,4.0,7.2,38290.0,Low
+31-1133,Psychiatric aides,36.9,37.6,1.9,4.9,44910.0,Low
+31-2011,Occupational therapy assistants,52.2,63.4,21.5,8.1,72300.0,Moderate
+31-2012,Occupational therapy aides,4.4,4.6,3.6,0.6,39160.0,Moderate
+31-2021,Physical therapist assistants,114.1,140.4,23.0,18.5,68380.0,Low
+31-2022,Physical therapist aides,49.0,51.0,4.0,6.4,35240.0,Low
+31-9011,Massage therapists,155.4,179.1,15.3,20.4,58450.0,Low
+31-9091,Dental assistants,388.6,417.4,7.4,53.0,48070.0,Low
+31-9092,Medical assistants,833.9,941.5,12.9,109.7,45690.0,Moderate
+31-9093,Medical equipment preparers,79.9,88.6,10.8,10.7,47700.0,Low
+31-9094,Medical transcriptionists,42.0,40.2,-4.4,6.2,40410.0,High
+31-9095,Pharmacy aides,39.2,39.0,-0.7,5.1,37680.0,Moderate
+31-9096,Veterinary assistants and laboratory animal caretakers,132.1,144.2,9.1,23.2,38150.0,Moderate
+31-9097,Phlebotomists,143.9,153.7,6.8,18.0,45230.0,Low
+31-9099,"Healthcare support workers, all other",113.9,119.4,4.8,14.1,48430.0,Moderate
+33-1011,First-line supervisors of correctional officers,56.3,54.8,-2.5,3.7,77970.0,Moderate
+33-1012,First-line supervisors of police and detectives,160.2,165.4,3.3,10.6,106040.0,Moderate
+33-1021,First-line supervisors of firefighting and prevention workers,101.6,105.4,3.7,6.6,93530.0,Low
+33-1091,First-line supervisors of security workers,82.7,85.7,3.7,6.8,55940.0,Moderate
+33-1099,"First-line supervisors of protective service workers, all other",21.6,22.0,1.9,1.7,76400.0,High
+33-2011,Firefighters,355.3,368.4,3.7,26.8,59280.0,Low
+33-2021,Fire inspectors and investigators,14.7,15.3,4.2,1.6,75920.0,Moderate
+33-2022,Forest fire inspectors and prevention specialists,3.0,3.4,13.1,0.4,56870.0,Moderate
+33-3011,Bailiffs,18.0,17.7,-1.9,1.6,56600.0,Moderate
+33-3012,Correctional officers and jailers,397.8,368.2,-7.4,28.4,58940.0,Moderate
+33-3021,Detectives and criminal investigators,120.5,120.7,0.2,7.8,93790.0,High
+33-3031,Fish and game wardens,6.2,5.8,-5.7,0.5,74060.0,Moderate
+33-3041,Parking enforcement workers,9.4,9.3,-1.1,0.8,46730.0,Moderate
+33-3051,Police and sheriff's patrol officers,693.2,717.3,3.5,51.5,76210.0,High
+33-3052,Transit and railroad police,4.4,4.5,3.2,0.3,90230.0,Moderate
+33-9011,Animal control workers,13.8,14.3,4.0,1.5,45660.0,Moderate
+33-9021,Private detectives and investigators,39.5,41.7,5.5,3.2,51220.0,High
+33-9031,Gambling surveillance officers and gambling investigators,9.8,9.6,-1.8,1.1,43370.0,High
+33-9032,Security guards,1294.3,1305.6,0.9,156.0,38020.0,Moderate
+33-9091,Crossing guards and flaggers,94.8,98.1,3.5,17.3,38100.0,Moderate
+33-9092,"Lifeguards, ski patrol, and other recreational protective service workers",162.0,170.8,5.5,45.4,33580.0,Low
+33-9093,Transportation security screeners,53.5,51.2,-4.2,4.5,66770.0,Moderate
+33-9094,School bus monitors,76.7,75.3,-1.9,13.4,35100.0,High
+33-9099,"Protective service workers, all other",82.1,84.6,3.0,22.6,42540.0,Moderate
+35-1011,Chefs and head cooks,220.3,234.7,6.6,25.2,62470.0,Moderate
+35-1012,First-line supervisors of food preparation and serving workers,1236.4,1303.5,5.4,171.5,44080.0,High
+35-2011,"Cooks, fast food",640.5,644.1,0.6,86.4,30890.0,Moderate
+35-2012,"Cooks, institution and cafeteria",454.0,466.6,2.8,62.9,37450.0,Low
+35-2013,"Cooks, private household",35.4,37.2,5.1,5.0,47940.0,Moderate
+35-2014,"Cooks, restaurant",1417.5,1588.8,12.1,218.6,37390.0,Moderate
+35-2015,"Cooks, short order",138.7,131.5,-5.2,17.4,35880.0,Low
+35-2019,"Cooks, all other",19.7,20.8,5.2,2.8,37690.0,Moderate
+35-2021,Food preparation workers,908.5,881.3,-3.0,135.7,35320.0,Low
+35-3011,Bartenders,762.6,800.5,5.0,121.2,34340.0,Moderate
+35-3023,Fast food and counter workers,3855.9,4079.1,5.8,827.4,31200.0,Moderate
+35-3031,Waiters and waitresses,2284.4,2330.9,2.0,423.1,35230.0,Moderate
+35-3041,"Food servers, nonrestaurant",296.3,309.6,4.5,48.8,35360.0,Moderate
+35-9011,Dining room and cafeteria attendants and bartender helpers,546.6,575.5,5.3,95.3,33980.0,Low
+35-9021,Dishwashers,480.4,475.6,-1.0,68.9,34810.0,Low
+35-9031,"Hosts and hostesses, restaurant, lounge, and coffee shop",444.2,459.5,3.4,107.1,31200.0,High
+35-9099,"Food preparation and serving related workers, all other",85.1,89.7,5.5,11.8,35840.0,Moderate
+37-1011,First-line supervisors of housekeeping and janitorial workers,265.2,273.6,3.2,30.8,49100.0,High
+37-1012,"First-line supervisors of landscaping, lawn service, and groundskeeping workers",243.3,253.0,4.0,23.9,58430.0,High
+37-2011,"Janitors and cleaners, except maids and housekeeping cleaners",2432.6,2486.2,2.2,321.8,36840.0,Low
+37-2012,Maids and housekeeping cleaners,1332.1,1339.5,0.6,175.5,35510.0,Low
+37-2019,"Building cleaning workers, all other",18.6,19.0,2.0,2.5,44040.0,Low
+37-2021,Pest control workers,108.7,114.7,5.5,13.7,45250.0,Moderate
+37-3011,Landscaping and groundskeeping workers,1188.6,1244.2,4.7,149.5,39150.0,Low
+37-3012,"Pesticide handlers, sprayers, and applicators, vegetation",25.7,26.7,3.9,3.3,46340.0,Low
+37-3013,Tree trimmers and pruners,70.6,73.6,4.2,7.9,50960.0,Low
+37-3019,"Grounds maintenance workers, all other",14.2,14.8,3.7,1.8,46860.0,Low
+39-1013,First-line supervisors of gambling services workers,27.2,28.1,3.5,2.6,63820.0,High
+39-1014,"First-line supervisors of entertainment and recreation workers, except gambling services",109.3,115.1,5.3,10.6,48560.0,High
+39-1022,First-line supervisors of personal service workers,122.5,130.2,6.3,12.0,48590.0,High
+39-2011,Animal trainers,47.8,49.7,4.2,6.5,39990.0,Low
+39-2021,Animal caretakers,365.3,409.4,12.1,62.8,35360.0,Moderate
+39-3011,Gambling dealers,88.9,91.9,3.4,13.3,34320.0,Moderate
+39-3012,Gambling and sports book writers and runners,9.6,9.8,1.8,1.4,34980.0,High
+39-3019,"Gambling service workers, all other",15.3,15.9,4.2,2.3,36310.0,Moderate
+39-3021,Motion picture projectionists,1.5,1.4,-6.2,0.3,38270.0,Low
+39-3031,"Ushers, lobby attendants, and ticket takers",124.5,125.6,0.9,27.3,32910.0,Moderate
+39-3091,Amusement and recreation attendants,408.4,423.6,3.7,100.4,32150.0,High
+39-3092,Costume attendants,6.6,7.0,5.9,1.7,50400.0,Moderate
+39-3093,"Locker room, coatroom, and dressing room attendants",16.0,17.1,6.4,4.0,36300.0,Moderate
+39-3099,"Entertainment attendants and related workers, all other",7.2,7.5,4.0,1.8,32640.0,High
+39-4011,Embalmers,3.9,4.0,0.7,0.7,58780.0,Low
+39-4012,Crematory operators,3.0,3.1,3.1,0.5,43650.0,Moderate
+39-4021,Funeral attendants,31.3,32.1,2.6,5.4,35680.0,Moderate
+39-4031,"Morticians, undertakers, and funeral arrangers",26.7,27.5,3.0,3.0,55010.0,Moderate
+39-5011,Barbers,75.8,78.3,3.3,6.9,38210.0,Moderate
+39-5012,"Hairdressers, hairstylists, and cosmetologists",595.0,640.9,7.7,73.4,35790.0,Moderate
+39-5091,"Makeup artists, theatrical and performance",4.3,4.6,6.1,0.6,97150.0,Moderate
+39-5092,Manicurists and pedicurists,201.8,220.4,9.2,21.9,35760.0,Low
+39-5093,Shampooers,15.4,16.2,5.6,2.2,32600.0,Low
+39-5094,Skincare specialists,104.2,113.3,8.8,14.2,45330.0,Moderate
+39-6011,Baggage porters and bellhops,29.2,28.4,-3.0,3.8,37080.0,Moderate
+39-6012,Concierges,50.2,51.5,2.6,6.9,38950.0,Very high
+39-7010,Tour and travel guides,62.2,66.1,6.3,11.9,38120.0,High
+39-9011,Childcare workers,1010.3,990.4,-2.0,150.3,34980.0,Moderate
+39-9031,Exercise trainers and group fitness instructors,388.4,416.9,7.3,68.0,47160.0,Moderate
+39-9032,Recreation workers,346.9,361.9,4.3,67.0,36560.0,Moderate
+39-9041,Residential advisors,94.1,97.4,3.5,16.5,42240.0,High
+39-9099,"Personal care and service workers, all other",94.6,100.2,5.9,14.4,41600.0,Moderate
+41-1011,First-line supervisors of retail sales workers,1419.8,1367.4,-3.7,113.5,48520.0,High
+41-1012,First-line supervisors of non-retail sales workers,311.9,313.6,0.5,21.7,87520.0,Very high
+41-2011,Cashiers,3106.3,2905.7,-6.5,521.3,32880.0,High
+41-2012,Gambling change persons and booth cashiers,22.0,21.6,-1.9,3.9,36220.0,Moderate
+41-2021,Counter and rental clerks,409.4,421.9,3.0,46.1,41300.0,Very high
+41-2022,Parts salespersons,273.3,281.6,3.0,30.0,38630.0,High
+41-2031,Retail salespersons,3998.1,3984.1,-0.3,520.6,35410.0,Very high
+41-3011,Advertising sales agents,99.3,92.2,-7.2,7.8,64820.0,Very high
+41-3021,Insurance sales agents,572.6,591.4,3.3,43.1,62280.0,Very high
+41-3031,"Securities, commodities, and financial services sales agents",531.0,538.5,1.4,35.1,78660.0,Very high
+41-3041,Travel agents,61.5,61.7,0.2,5.9,50160.0,Very high
+41-3091,"Sales representatives of services, except advertising, insurance, financial services, and travel",1272.7,1306.7,2.7,115.7,69990.0,Very high
+41-4011,"Sales representatives, wholesale and manufacturing, technical and scientific products",292.0,295.5,1.2,23.6,104920.0,Very high
+41-4012,"Sales representatives, wholesale and manufacturing, except technical and scientific products",1279.4,1268.2,-0.9,99.8,72080.0,Very high
+41-9011,Demonstrators and product promoters,70.4,70.5,0.2,11.4,39320.0,High
+41-9012,Models,4.2,4.1,-2.1,0.7,48470.0,High
+41-9021,Real estate brokers,103.5,104.3,0.8,7.8,73220.0,Very high
+41-9022,Real estate sales agents,427.0,434.5,1.7,32.6,52830.0,Very high
+41-9031,Sales engineers,51.6,53.0,2.8,3.8,124900.0,Very high
+41-9041,Telemarketers,60.9,47.8,-21.4,5.8,35450.0,Very high
+41-9091,"Door-to-door sales workers, news and street vendors, and related workers",50.9,45.6,-10.4,4.8,41380.0,Very high
+41-9099,"Sales and related workers, all other",115.3,116.6,1.1,13.1,48280.0,Very high
+43-1011,First-line supervisors of office and administrative support workers,1506.1,1507.0,0.1,127.4,69500.0,Very high
+43-2011,"Switchboard operators, including answering service",35.4,26.2,-26.0,3.1,38630.0,Very high
+43-2021,Telephone operators,3.5,2.5,-27.6,0.2,41740.0,High
+43-2099,"Communications equipment operators, all other",1.2,1.3,1.0,0.1,54680.0,Very high
+43-3011,Bill and account collectors,160.2,143.4,-10.4,11.2,47030.0,Very high
+43-3021,Billing and posting clerks,418.0,417.7,-0.1,37.0,48500.0,Very high
+43-3031,"Bookkeeping, accounting, and auditing clerks",1532.4,1446.8,-5.6,144.1,50670.0,Very high
+43-3041,Gambling cage workers,15.0,14.6,-3.1,1.2,37580.0,High
+43-3051,Payroll and timekeeping clerks,159.6,134.3,-15.9,11.4,58260.0,Very high
+43-3061,Procurement clerks,56.9,52.3,-8.1,3.7,50580.0,Very high
+43-3071,Tellers,339.2,294.5,-13.2,26.8,43030.0,High
+43-3099,"Financial clerks, all other",38.5,38.5,0.0,3.4,53830.0,Very high
+43-4011,Brokerage clerks,36.9,34.1,-7.6,3.4,65750.0,Very high
+43-4021,Correspondence clerks,4.8,4.5,-5.6,0.5,46800.0,Very high
+43-4031,"Court, municipal, and license clerks",187.0,193.3,3.4,17.1,48700.0,Very high
+43-4041,"Credit authorizers, checkers, and clerks",12.2,11.3,-7.4,0.9,50080.0,Very high
+43-4051,Customer service representatives,2666.0,2524.1,-5.3,289.5,44770.0,Very high
+43-4061,"Eligibility interviewers, government programs",162.8,165.3,1.6,12.7,54210.0,Very high
+43-4071,File clerks,76.2,64.2,-15.8,5.6,43600.0,Very high
+43-4081,"Hotel, motel, and resort desk clerks",264.6,269.5,1.8,35.5,35070.0,Very high
+43-4111,"Interviewers, except eligibility and loan",153.6,137.6,-10.4,13.2,45920.0,Very high
+43-4121,"Library assistants, clerical",89.5,83.8,-6.4,12.3,36910.0,High
+43-4131,Loan interviewers and clerks,169.1,165.0,-2.4,10.5,50020.0,Very high
+43-4141,New accounts clerks,37.9,35.5,-6.5,2.3,47670.0,High
+43-4151,Order clerks,78.9,65.1,-17.5,6.3,46170.0,Very high
+43-4161,"Human resources assistants, except payroll and timekeeping",96.5,90.5,-6.2,7.9,50610.0,Very high
+43-4171,Receptionists and information clerks,947.5,931.6,-1.7,105.1,38010.0,Very high
+43-4181,Reservation and transportation ticket agents and travel clerks,120.1,123.1,2.5,11.8,44390.0,Very high
+43-4199,"Information and record clerks, all other",143.1,144.3,0.8,15.0,49500.0,Very high
+43-5011,Cargo and freight agents,100.3,106.4,6.2,9.0,52260.0,Very high
+43-5021,Couriers and messengers,228.9,247.1,8.0,23.8,39200.0,Moderate
+43-5031,Public safety telecommunicators,105.6,109.5,3.7,9.0,53040.0,Very high
+43-5032,"Dispatchers, except police, fire, and ambulance",203.5,202.1,-0.7,16.0,50340.0,Very high
+43-5041,"Meter readers, utilities",19.7,17.6,-10.5,1.4,48150.0,Moderate
+43-5051,Postal service clerks,70.9,70.7,-0.3,5.3,62130.0,High
+43-5052,Postal service mail carriers,316.4,315.5,-0.3,19.6,60550.0,Moderate
+43-5053,"Postal service mail sorters, processors, and processing machine operators",101.2,95.9,-5.3,7.3,58470.0,Low
+43-5061,"Production, planning, and expediting clerks",392.1,387.1,-1.3,32.6,59650.0,Very high
+43-5071,"Shipping, receiving, and inventory clerks",827.7,765.0,-7.6,61.3,45260.0,High
+43-5111,"Weighers, measurers, checkers, and samplers, recordkeeping",53.6,51.0,-4.8,4.7,46380.0,Moderate
+43-6011,Executive secretaries and executive administrative assistants,489.3,489.2,0.0,43.3,76590.0,Very high
+43-6012,Legal secretaries and administrative assistants,157.6,149.3,-5.2,18.1,55570.0,Very high
+43-6013,Medical secretaries and administrative assistants,979.0,1026.1,4.8,89.2,45930.0,Very high
+43-6014,"Secretaries and administrative assistants, except legal, medical, and executive",1889.8,1775.7,-6.0,163.9,47540.0,Very high
+43-9021,Data entry keyers,131.8,98.2,-25.5,7.7,41340.0,Very high
+43-9022,Word processors and typists,40.4,26.5,-34.4,1.9,49280.0,Very high
+43-9031,Desktop publishers,4.6,4.0,-14.5,0.3,55290.0,Very high
+43-9041,Insurance claims and policy processing clerks,239.1,234.7,-1.9,17.5,49230.0,Very high
+43-9051,"Mail clerks and mail machine operators, except postal service",57.8,53.6,-7.2,4.7,39280.0,Moderate
+43-9061,"Office clerks, general",2600.0,2443.7,-6.0,249.0,45010.0,Very high
+43-9071,"Office machine operators, except computer",25.8,21.9,-14.9,2.1,40960.0,High
+43-9081,Proofreaders and copy markers,8.5,8.5,-0.9,1.1,51120.0,Very high
+43-9111,Statistical assistants,5.1,5.0,-1.8,0.5,50330.0,Very high
+43-9199,"Office and administrative support workers, all other",231.1,214.1,-7.3,19.1,45670.0,Very high
+45-1011,"First-line supervisors of farming, fishing, and forestry workers",57.6,59.8,3.8,7.2,59320.0,Low
+45-2011,Agricultural inspectors,17.8,18.2,2.3,2.5,49940.0,Moderate
+45-2021,Animal breeders,6.9,7.1,3.0,1.0,51130.0,Moderate
+45-2041,"Graders and sorters, agricultural products",45.4,43.8,-3.4,5.8,35730.0,Low
+45-2091,Agricultural equipment operators,66.9,72.6,8.6,10.1,41730.0,Low
+45-2092,"Farmworkers and laborers, crop, nursery, and greenhouse",546.8,533.6,-2.4,72.5,35660.0,Low
+45-2093,"Farmworkers, farm, ranch, and aquacultural animals",202.1,195.7,-3.2,26.6,36670.0,Moderate
+45-2099,"Agricultural workers, all other",9.3,9.7,3.8,1.3,39850.0,Low
+45-3031,Fishing and hunting workers,28.2,27.0,-4.2,3.3,,Low
+45-4011,Forest and conservation workers,14.7,14.5,-1.5,2.2,43680.0,Low
+45-4021,Fallers,4.3,3.9,-9.9,0.5,52100.0,Low
+45-4022,Logging equipment operators,29.3,28.2,-3.8,3.7,49740.0,Low
+45-4023,Log graders and scalers,4.4,4.3,-2.2,0.6,46330.0,Low
+45-4029,"Logging workers, all other",2.4,2.2,-7.6,0.3,50840.0,Low
+47-1011,First-line supervisors of construction trades and extraction workers,913.3,959.4,5.0,67.0,79920.0,Moderate
+47-2011,Boilermakers,10.2,10.1,-1.8,0.7,76410.0,Low
+47-2021,Brickmasons and blockmasons,62.4,63.1,1.1,4.1,62120.0,Low
+47-2022,Stonemasons,9.3,8.8,-5.4,0.5,57390.0,Low
+47-2031,Carpenters,889.7,924.7,3.9,62.8,60580.0,Low
+47-2041,Carpet installers,17.4,14.5,-16.4,0.7,50340.0,Low
+47-2042,"Floor layers, except carpet, wood, and hard tiles",29.8,32.4,9.0,2.2,56460.0,Low
+47-2043,Floor sanders and finishers,4.7,4.7,1.4,0.3,50440.0,Low
+47-2044,Tile and stone setters,45.2,49.6,9.8,3.3,55690.0,Low
+47-2051,Cement masons and concrete finishers,204.8,208.1,1.6,13.6,57020.0,Low
+47-2053,Terrazzo workers and finishers,1.2,1.0,-13.0,0.1,76170.0,Low
+47-2061,Construction laborers,1489.3,1598.6,7.3,120.0,47120.0,Low
+47-2071,"Paving, surfacing, and tamping equipment operators",42.3,41.9,-0.9,3.1,53340.0,Low
+47-2072,Pile driver operators,2.3,2.2,-5.7,0.2,73300.0,Low
+47-2073,Operating engineers and other construction equipment operators,489.5,511.8,4.6,39.2,59850.0,Low
+47-2081,Drywall and ceiling tile installers,102.2,104.7,2.5,6.6,58930.0,Low
+47-2082,Tapers,15.8,15.5,-1.6,0.9,68270.0,Low
+47-2111,Electricians,821.0,896.9,9.2,72.7,63190.0,Moderate
+47-2121,Glaziers,59.2,60.3,1.9,3.9,57080.0,Low
+47-2131,"Insulation workers, floor, ceiling, and wall",45.1,46.2,2.4,3.0,49120.0,Low
+47-2132,"Insulation workers, mechanical",26.7,28.1,5.1,1.8,58340.0,Moderate
+47-2141,"Painters, construction and maintenance",326.9,336.7,3.0,24.9,49400.0,Low
+47-2142,Paperhangers,2.3,2.4,4.3,0.2,52140.0,Low
+47-2151,Pipelayers,33.2,32.2,-3.1,2.1,49000.0,Low
+47-2152,"Plumbers, pipefitters, and steamfitters",510.6,545.2,6.8,42.0,63800.0,Moderate
+47-2161,Plasterers and stucco masons,22.9,23.6,2.8,1.5,57660.0,Low
+47-2171,Reinforcing iron and rebar workers,16.6,15.7,-5.3,1.0,58970.0,Low
+47-2181,Roofers,166.9,175.6,5.3,12.0,55440.0,Low
+47-2211,Sheet metal workers,131.1,134.4,2.5,9.8,61800.0,Low
+47-2221,Structural iron and steel workers,68.3,70.4,3.1,5.9,62780.0,Low
+47-2231,Solar photovoltaic installers,31.1,42.4,36.5,4.2,53140.0,Moderate
+47-3011,"Helpers--brickmasons, blockmasons, stonemasons, and tile and marble setters",14.1,12.5,-11.7,1.1,47550.0,Low
+47-3012,Helpers--carpenters,21.9,21.5,-1.7,2.0,43780.0,Low
+47-3013,Helpers--electricians,65.0,65.4,0.6,6.1,42670.0,Low
+47-3014,"Helpers--painters, paperhangers, plasterers, and stucco masons",7.6,7.7,1.5,0.7,40470.0,Low
+47-3015,"Helpers--pipelayers, plumbers, pipefitters, and steamfitters",45.3,46.4,2.4,4.4,42360.0,Low
+47-3016,Helpers--roofers,6.1,6.1,-0.1,0.6,44160.0,Low
+47-3019,"Helpers, construction trades, all other",25.2,24.9,-1.0,2.3,42670.0,Low
+47-4011,Construction and building inspectors,153.9,153.9,0.0,14.8,74690.0,High
+47-4021,Elevator and escalator installers and repairers,24.7,26.1,5.7,1.9,109910.0,Low
+47-4031,Fence erectors,30.6,32.3,5.6,2.5,47980.0,Low
+47-4041,Hazardous materials removal workers,52.7,53.5,1.5,4.3,49450.0,Low
+47-4051,Highway maintenance workers,161.8,167.3,3.4,11.8,50260.0,Low
+47-4061,Rail-track laying and maintenance equipment operators,17.4,17.7,1.5,1.2,70070.0,Low
+47-4071,Septic tank servicers and sewer pipe cleaners,31.9,34.4,7.8,2.8,49880.0,Low
+47-4090,Miscellaneous construction and related workers,29.5,30.6,3.9,2.4,49910.0,Moderate
+47-5011,"Derrick operators, oil and gas",10.7,10.9,1.6,0.9,58620.0,Low
+47-5012,"Rotary drill operators, oil and gas",12.7,12.9,0.8,1.1,67890.0,Low
+47-5013,"Service unit operators, oil and gas",43.8,44.3,1.1,3.8,58160.0,Low
+47-5022,"Excavating and loading machine and dragline operators, surface mining",34.7,35.0,1.0,2.4,57430.0,Low
+47-5023,"Earth drillers, except oil and gas",19.5,20.2,3.6,1.4,60190.0,Low
+47-5032,"Explosives workers, ordnance handling experts, and blasters",5.2,5.2,0.0,0.4,61390.0,Low
+47-5041,Continuous mining machine operators,14.0,14.4,3.2,1.4,61810.0,Low
+47-5043,"Roof bolters, mining",2.2,1.8,-18.9,0.1,78540.0,Low
+47-5044,"Loading and moving machine operators, underground mining",5.9,5.0,-15.8,0.4,74500.0,Low
+47-5049,"Underground mining machine operators, all other",3.2,3.1,-1.0,0.3,70130.0,Low
+47-5051,"Rock splitters, quarry",3.5,3.7,5.8,0.4,48740.0,Low
+47-5071,"Roustabouts, oil and gas",45.5,47.1,3.6,4.1,46960.0,Low
+47-5081,Helpers--extraction workers,7.1,7.2,1.7,0.7,47730.0,Low
+47-5099,"Extraction workers, all other",5.9,6.1,3.4,0.6,57010.0,Low
+49-1011,"First-line supervisors of mechanics, installers, and repairers",629.0,654.5,4.1,48.9,79860.0,High
+49-2011,"Computer, automated teller, and office machine repairers",72.1,69.9,-3.0,6.1,47810.0,High
+49-2021,"Radio, cellular, and tower equipment installers and repairers",11.3,11.4,1.2,1.0,63520.0,Moderate
+49-2022,"Telecommunications equipment installers and repairers, except line installers",143.1,138.4,-3.3,11.3,63890.0,High
+49-2091,Avionics technicians,19.8,21.6,9.4,1.7,82280.0,Moderate
+49-2092,"Electric motor, power tool, and related repairers",16.1,16.8,4.4,1.4,56210.0,Low
+49-2093,"Electrical and electronics installers and repairers, transportation equipment",6.6,6.9,5.4,0.5,84890.0,Moderate
+49-2094,"Electrical and electronics repairers, commercial and industrial equipment",65.5,65.7,0.3,4.7,74090.0,Moderate
+49-2095,"Electrical and electronics repairers, powerhouse, substation, and relay",20.9,22.9,9.7,1.8,103020.0,Moderate
+49-2096,"Electronic equipment installers and repairers, motor vehicles",8.6,7.4,-14.5,0.4,48420.0,Moderate
+49-2097,Audiovisual equipment installers and repairers,22.4,23.4,4.8,2.2,52600.0,Moderate
+49-2098,Security and fire alarm systems installers,86.3,92.1,6.8,8.5,60070.0,Moderate
+49-3011,Aircraft mechanics and service technicians,140.0,147.6,5.4,11.4,79870.0,Low
+49-3021,Automotive body and related repairers,163.2,169.3,3.7,12.6,54890.0,Low
+49-3022,Automotive glass installers and repairers,22.6,23.9,5.7,1.3,47630.0,Low
+49-3023,Automotive service technicians and mechanics,825.8,866.7,5.0,66.2,50620.0,Moderate
+49-3031,Bus and truck mechanics and diesel engine specialists,316.0,327.4,3.6,24.4,61770.0,Low
+49-3041,Farm equipment mechanics and service technicians,41.9,46.4,10.7,3.7,56550.0,Moderate
+49-3042,"Mobile heavy equipment mechanics, except engines",180.3,192.5,6.7,15.0,65510.0,Low
+49-3043,Rail car repairers,20.1,20.6,2.6,1.6,67530.0,Low
+49-3051,Motorboat mechanics and service technicians,25.0,26.2,4.9,2.6,57550.0,Low
+49-3052,Motorcycle mechanics,14.2,14.5,2.1,1.4,48580.0,Low
+49-3053,Outdoor power equipment and other small engine mechanics,38.3,39.2,2.3,3.8,47880.0,Low
+49-3091,Bicycle repairers,12.2,11.5,-5.7,1.2,42780.0,Moderate
+49-3092,Recreational vehicle service technicians,17.5,19.2,9.7,2.2,52000.0,Moderate
+49-3093,Tire repairers and changers,112.2,116.0,3.4,12.9,37710.0,Low
+49-9011,Mechanical door repairers,28.4,30.3,6.4,2.1,55720.0,Low
+49-9012,"Control and valve installers and repairers, except mechanical door",50.4,52.6,4.3,3.6,74340.0,Moderate
+49-9021,"Heating, air conditioning, and refrigeration mechanics and installers",440.9,489.1,10.9,40.6,61010.0,Moderate
+49-9031,Home appliance repairers,40.5,41.3,1.9,2.8,50990.0,Moderate
+49-9041,Industrial machinery mechanics,446.9,526.6,17.8,44.4,64520.0,Moderate
+49-9043,"Maintenance workers, machinery",59.7,58.6,-1.9,4.4,60850.0,Moderate
+49-9044,Millwrights,40.7,41.0,0.9,3.2,65700.0,Low
+49-9045,"Refractory materials repairers, except brickmasons",1.1,0.9,-13.7,0.1,61290.0,Low
+49-9051,Electrical power-line installers and repairers,131.9,145.5,10.3,10.9,95320.0,Low
+49-9052,Telecommunications line installers and repairers,103.4,99.9,-3.4,8.0,74330.0,Moderate
+49-9061,Camera and photographic equipment repairers,1.8,1.5,-15.5,0.1,52720.0,Moderate
+49-9062,Medical equipment repairers,71.8,80.9,12.6,8.2,61660.0,Moderate
+49-9063,Musical instrument repairers and tuners,6.0,6.1,1.9,0.6,46420.0,Low
+49-9064,Watch and clock repairers,1.4,1.4,-0.3,0.1,67230.0,Moderate
+49-9069,"Precision instrument and equipment repairers, all other",10.2,10.5,2.5,1.0,68990.0,Moderate
+49-9071,"Maintenance and repair workers, general",1621.8,1690.5,4.2,148.7,49590.0,Low
+49-9081,Wind turbine service technicians,11.8,15.3,29.5,1.5,64120.0,Moderate
+49-9091,"Coin, vending, and amusement machine servicers and repairers",34.7,33.5,-3.4,3.8,47450.0,Moderate
+49-9092,Commercial divers,4.0,4.2,4.8,0.4,72990.0,Low
+49-9094,Locksmiths and safe repairers,18.7,16.5,-11.7,1.2,51320.0,Low
+49-9095,Manufactured building and mobile home installers,3.5,3.7,5.8,0.3,45990.0,Moderate
+49-9096,Riggers,22.5,23.4,3.9,1.7,62640.0,Moderate
+49-9097,Signal and track switch repairers,8.7,8.9,1.8,0.8,92460.0,Low
+49-9098,"Helpers--installation, maintenance, and repair workers",97.1,102.2,5.3,13.6,39630.0,Low
+49-9099,"Installation, maintenance, and repair workers, all other",205.2,210.6,2.6,18.3,49230.0,Moderate
+51-1011,First-line supervisors of production and operating workers,679.9,692.3,1.8,61.0,74450.0,High
+51-2011,"Aircraft structure, surfaces, rigging, and systems assemblers",34.4,32.5,-5.6,3.1,65380.0,Moderate
+51-2021,"Coil winders, tapers, and finishers",12.9,12.4,-4.0,1.2,48220.0,Low
+51-2028,"Electrical, electronic, and electromechanical assemblers, except coil winders, tapers, and finishers",246.3,258.7,5.0,25.9,45850.0,Moderate
+51-2031,Engine and other machine assemblers,33.5,27.8,-17.0,2.1,53710.0,Low
+51-2041,Structural metal fabricators and fitters,52.3,49.0,-6.2,4.8,51330.0,Low
+51-2051,Fiberglass laminators and fabricators,16.3,17.0,4.6,1.7,46880.0,Low
+51-2061,Timing device assemblers and adjusters,0.2,0.2,-6.1,0.0,62620.0,Moderate
+51-2090,Miscellaneous assemblers and fabricators,1403.5,1418.4,1.1,138.7,44650.0,Moderate
+51-3011,Bakers,262.4,276.9,5.5,36.5,37160.0,Moderate
+51-3021,Butchers and meat cutters,138.4,141.7,2.4,15.1,40140.0,Moderate
+51-3022,"Meat, poultry, and fish cutters and trimmers",149.8,158.3,5.7,17.0,38300.0,Moderate
+51-3023,Slaughterers and meat packers,71.2,72.6,2.0,7.7,40130.0,Low
+51-3091,"Food and tobacco roasting, baking, and drying machine operators and tenders",21.6,21.7,0.4,2.5,44810.0,Low
+51-3092,Food batchmakers,176.8,188.2,6.5,23.1,42290.0,Moderate
+51-3093,Food cooking machine operators and tenders,31.2,31.2,-0.3,3.7,41590.0,Low
+51-3099,"Food processing workers, all other",67.4,71.1,5.5,7.4,39680.0,Moderate
+51-4021,"Extruding and drawing machine setters, operators, and tenders, metal and plastic",60.9,61.4,0.7,5.4,47720.0,Moderate
+51-4022,"Forging machine setters, operators, and tenders, metal and plastic",8.9,7.4,-17.2,0.6,49030.0,Low
+51-4023,"Rolling machine setters, operators, and tenders, metal and plastic",25.3,23.2,-8.3,1.9,50140.0,Moderate
+51-4031,"Cutting, punching, and press machine setters, operators, and tenders, metal and plastic",171.0,153.1,-10.5,13.2,46330.0,Low
+51-4032,"Drilling and boring machine tool setters, operators, and tenders, metal and plastic",4.7,4.2,-9.5,0.4,49080.0,Low
+51-4033,"Grinding, lapping, polishing, and buffing machine tool setters, operators, and tenders, metal and plastic",68.5,61.1,-10.8,4.5,46550.0,Low
+51-4034,"Lathe and turning machine tool setters, operators, and tenders, metal and plastic",16.7,14.8,-11.3,1.4,50620.0,Moderate
+51-4035,"Milling and planing machine setters, operators, and tenders, metal and plastic",12.4,10.8,-13.2,1.0,52800.0,Moderate
+51-4041,Machinists,288.3,291.2,1.0,26.1,58750.0,Moderate
+51-4051,Metal-refining furnace operators and tenders,16.8,16.3,-2.9,1.4,54430.0,Low
+51-4052,"Pourers and casters, metal",4.6,4.3,-5.0,0.4,51810.0,Low
+51-4061,"Model makers, metal and plastic",2.6,2.2,-17.3,0.2,63340.0,Low
+51-4062,"Patternmakers, metal and plastic",1.5,1.1,-22.8,0.1,58000.0,Moderate
+51-4071,Foundry mold and coremakers,12.7,9.8,-23.0,0.8,48110.0,Low
+51-4072,"Molding, coremaking, and casting machine setters, operators, and tenders, metal and plastic",150.0,144.9,-3.4,13.8,44350.0,Low
+51-4081,"Multiple machine tool setters, operators, and tenders, metal and plastic",127.1,127.9,0.6,11.6,47180.0,Moderate
+51-4111,Tool and die makers,56.7,51.5,-9.2,4.3,64050.0,Moderate
+51-4121,"Welders, cutters, solderers, and brazers",437.7,448.1,2.4,40.3,53750.0,Low
+51-4122,"Welding, soldering, and brazing machine setters, operators, and tenders",32.9,30.0,-8.9,2.5,47920.0,Low
+51-4191,"Heat treating equipment setters, operators, and tenders, metal and plastic",14.4,13.0,-9.5,1.1,48750.0,Moderate
+51-4192,"Layout workers, metal and plastic",6.2,5.9,-3.4,0.5,63870.0,Low
+51-4193,"Plating machine setters, operators, and tenders, metal and plastic",33.3,30.1,-9.7,2.5,43960.0,Low
+51-4194,"Tool grinders, filers, and sharpeners",5.8,5.4,-6.8,0.5,50060.0,Low
+51-4199,"Metal workers and plastic workers, all other",16.3,15.1,-7.1,1.3,45950.0,Moderate
+51-5111,Prepress technicians and workers,24.7,20.9,-15.3,2.1,48690.0,High
+51-5112,Printing press operators,144.0,131.4,-8.7,12.1,45780.0,Moderate
+51-5113,Print binding and finishing workers,32.3,26.6,-17.5,2.3,42290.0,Low
+51-6011,Laundry and dry-cleaning workers,204.9,213.7,4.3,28.2,34890.0,Low
+51-6021,"Pressers, textile, garment, and related materials",26.3,22.2,-15.7,2.2,35060.0,Low
+51-6031,Sewing machine operators,117.2,99.5,-15.1,9.8,36670.0,Low
+51-6041,Shoe and leather workers and repairers,10.3,9.6,-6.5,1.0,37800.0,Low
+51-6042,Shoe machine operators and tenders,4.6,4.2,-6.9,0.4,35650.0,Low
+51-6051,"Sewers, hand",5.3,4.6,-12.0,0.6,36480.0,Low
+51-6052,"Tailors, dressmakers, and custom sewers",33.2,30.3,-8.8,3.7,41640.0,Moderate
+51-6061,Textile bleaching and dyeing machine operators and tenders,5.7,5.0,-12.5,0.6,38180.0,Moderate
+51-6062,"Textile cutting machine setters, operators, and tenders",9.4,8.2,-13.6,0.9,38760.0,Moderate
+51-6063,"Textile knitting and weaving machine setters, operators, and tenders",13.9,12.0,-13.7,1.3,39530.0,Moderate
+51-6064,"Textile winding, twisting, and drawing out machine setters, operators, and tenders",23.5,21.0,-10.3,2.4,38670.0,Low
+51-6091,"Extruding and forming machine setters, operators, and tenders, synthetic and glass fibers",13.5,13.0,-3.3,1.1,46350.0,Low
+51-6092,Fabric and apparel patternmakers,3.0,2.6,-15.0,0.2,62750.0,Moderate
+51-6093,Upholsterers,22.7,22.2,-2.3,1.7,46340.0,Low
+51-6099,"Textile, apparel, and furnishings workers, all other",14.1,12.2,-13.4,0.9,37280.0,Low
+51-7011,Cabinetmakers and bench carpenters,81.8,79.4,-2.9,6.9,46680.0,Low
+51-7021,Furniture finishers,15.9,15.3,-3.5,1.5,44540.0,Low
+51-7031,"Model makers, wood",0.7,0.7,-3.3,0.1,56550.0,Moderate
+51-7032,"Patternmakers, wood",0.6,0.6,-2.0,0.1,49630.0,Moderate
+51-7041,"Sawing machine setters, operators, and tenders, wood",41.2,40.8,-1.0,4.5,42770.0,Low
+51-7042,"Woodworking machine setters, operators, and tenders, except sawing",60.9,59.4,-2.5,5.3,43380.0,Low
+51-7099,"Woodworkers, all other",15.4,15.1,-2.3,1.7,44530.0,Low
+51-8011,Nuclear power reactor operators,5.2,4.9,-5.9,0.4,122890.0,Moderate
+51-8012,Power distributors and dispatchers,8.6,8.7,1.2,0.7,106730.0,Moderate
+51-8013,Power plant operators,29.8,28.3,-5.1,2.3,102040.0,Moderate
+51-8021,Stationary engineers and boiler operators,31.2,32.2,3.1,3.2,78620.0,Moderate
+51-8031,Water and wastewater treatment plant and system operators,131.0,123.5,-5.7,10.0,60020.0,Low
+51-8091,Chemical plant and system operators,16.7,15.9,-5.2,1.3,78120.0,Low
+51-8092,Gas plant operators,18.2,17.1,-6.0,1.4,87820.0,Moderate
+51-8093,"Petroleum pump system operators, refinery operators, and gaugers",32.9,32.3,-1.9,2.7,96710.0,Moderate
+51-8099,"Plant and system operators, all other",14.3,14.6,2.3,1.2,62470.0,Low
+51-9011,Chemical equipment operators and tenders,140.8,145.8,3.6,13.9,58040.0,Moderate
+51-9012,"Separating, filtering, clarifying, precipitating, and still machine setters, operators, and tenders",61.4,57.9,-5.7,5.2,51610.0,Moderate
+51-9021,"Crushing, grinding, and polishing machine setters, operators, and tenders",26.6,26.1,-1.7,2.3,48540.0,Moderate
+51-9022,"Grinding and polishing workers, hand",10.8,8.7,-19.2,0.7,42660.0,Low
+51-9023,"Mixing and blending machine setters, operators, and tenders",97.3,91.4,-6.1,7.9,48990.0,Low
+51-9031,"Cutters and trimmers, hand",5.9,4.8,-18.9,0.5,38020.0,Low
+51-9032,"Cutting and slicing machine setters, operators, and tenders",45.9,45.5,-0.9,5.4,46570.0,Moderate
+51-9041,"Extruding, forming, pressing, and compacting machine setters, operators, and tenders",58.3,59.2,1.5,5.2,45760.0,Low
+51-9051,"Furnace, kiln, oven, drier, and kettle operators and tenders",14.5,14.9,2.6,1.8,48040.0,Moderate
+51-9061,"Inspectors, testers, sorters, samplers, and weighers",602.0,617.2,2.5,66.7,48570.0,Moderate
+51-9071,Jewelers and precious stone and metal workers,32.8,31.8,-3.2,3.7,52540.0,Moderate
+51-9081,Dental laboratory technicians,34.4,32.3,-5.9,3.6,49610.0,Low
+51-9082,Medical appliance technicians,11.3,11.7,3.5,1.3,48030.0,Low
+51-9083,Ophthalmic laboratory technicians,18.6,19.0,2.2,2.2,39460.0,Low
+51-9111,Packaging and filling machine operators and tenders,377.7,393.3,4.1,41.4,43220.0,Low
+51-9123,"Painting, coating, and decorating workers",8.2,8.3,1.3,0.7,41600.0,Low
+51-9124,"Coating, painting, and spraying machine setters, operators, and tenders",164.8,168.9,2.5,15.3,48250.0,Low
+51-9141,Semiconductor processing technicians,31.2,33.8,8.2,3.4,51430.0,Moderate
+51-9151,Photographic process workers and processing machine operators,5.3,5.0,-5.6,0.6,40610.0,Moderate
+51-9161,Computer numerically controlled tool operators,170.0,154.1,-9.4,12.5,50690.0,High
+51-9162,Computer numerically controlled tool programmers,28.6,30.3,5.9,2.7,68120.0,Very high
+51-9191,Adhesive bonding machine operators and tenders,12.1,12.2,1.3,1.3,46460.0,Low
+51-9192,"Cleaning, washing, and metal pickling equipment operators and tenders",16.2,16.8,3.4,1.7,43530.0,Low
+51-9193,Cooling and freezing equipment operators and tenders,7.7,8.1,5.9,0.8,41330.0,Low
+51-9194,Etchers and engravers,8.9,8.8,-0.7,0.8,43310.0,Low
+51-9195,"Molders, shapers, and casters, except metal and plastic",43.0,45.5,5.8,5.1,46170.0,Low
+51-9196,"Paper goods machine setters, operators, and tenders",96.1,92.6,-3.6,9.0,50270.0,Low
+51-9197,Tire builders,20.3,20.5,0.8,1.9,57390.0,Low
+51-9198,Helpers--production workers,167.4,153.6,-8.2,20.9,39070.0,Low
+51-9199,"Production workers, all other",275.7,277.8,0.8,27.3,40110.0,Moderate
+53-1041,Aircraft cargo handling supervisors,9.7,10.6,9.2,0.9,58170.0,Low
+53-1047,"First-line supervisors of transportation and material moving workers, except aircraft cargo handling supervisors",621.5,640.3,3.0,54.9,62890.0,High
+53-2011,"Airline pilots, copilots, and flight engineers",104.6,113.3,8.3,11.2,232140.0,Moderate
+53-2012,Commercial pilots,50.4,53.0,5.2,5.2,123220.0,Moderate
+53-2021,Air traffic controllers,24.0,24.4,1.7,2.1,148080.0,Moderate
+53-2022,Airfield operations specialists,15.3,16.5,7.8,1.5,56850.0,High
+53-2031,Flight attendants,133.7,145.5,8.8,18.5,63580.0,High
+53-3011,"Ambulance drivers and attendants, except emergency medical technicians",14.3,14.1,-1.3,1.4,35450.0,Low
+53-3031,Driver/sales workers,442.9,478.1,7.9,45.5,38770.0,Moderate
+53-3032,Heavy and tractor-trailer truck drivers,2221.2,2305.0,3.8,214.5,58640.0,Moderate
+53-3033,Light truck drivers,1068.5,1136.4,6.3,107.2,44860.0,Moderate
+53-3051,"Bus drivers, school",396.8,399.7,0.7,56.5,47920.0,Moderate
+53-3052,"Bus drivers, transit and intercity",166.4,173.3,4.1,21.1,59050.0,Moderate
+53-3053,Shuttle drivers and chauffeurs,251.5,269.4,7.1,35.5,37290.0,Moderate
+53-3054,Taxi drivers,204.2,227.7,11.5,20.4,42100.0,Moderate
+53-3099,"Motor vehicle operators, all other",54.5,56.0,2.8,6.9,37180.0,Moderate
+53-4011,Locomotive engineers,27.4,27.6,0.5,2.0,81410.0,Moderate
+53-4013,"Rail yard engineers, dinkey operators, and hostlers",3.5,3.6,0.8,0.3,60600.0,Moderate
+53-4022,"Railroad brake, signal, and switch operators and locomotive firers",10.7,10.8,0.8,0.9,68840.0,Low
+53-4031,Railroad conductors and yardmasters,38.9,39.2,0.9,3.0,78000.0,Moderate
+53-4041,Subway and streetcar operators,10.5,10.9,3.7,0.9,86380.0,Moderate
+53-4099,"Rail transportation workers, all other",1.1,1.2,4.4,0.1,56360.0,Moderate
+53-5011,Sailors and marine oilers,33.0,34.1,3.2,3.6,51520.0,Low
+53-5021,"Captains, mates, and pilots of water vessels",41.3,42.9,4.0,3.8,92460.0,Moderate
+53-5022,Motorboat operators,2.8,2.9,4.9,0.3,47520.0,Low
+53-5031,Ship engineers,8.8,9.0,2.7,0.9,109530.0,Low
+53-6011,Bridge and lock tenders,3.1,3.1,-2.3,0.3,57700.0,Low
+53-6021,Parking attendants,139.2,142.0,2.0,16.4,35150.0,Moderate
+53-6031,Automotive and watercraft service attendants,102.4,106.3,3.8,12.9,35670.0,Low
+53-6032,Aircraft service attendants,31.2,32.9,5.6,4.0,40450.0,Low
+53-6041,Traffic technicians,8.1,8.4,4.0,0.9,59090.0,High
+53-6051,Transportation inspectors,25.1,25.6,2.2,2.3,92100.0,Moderate
+53-6061,Passenger attendants,27.2,28.9,6.0,4.3,37720.0,High
+53-6099,"Transportation workers, all other",13.7,14.3,4.0,1.6,45650.0,Moderate
+53-7011,Conveyor operators and tenders,29.0,28.2,-2.6,2.2,42420.0,Low
+53-7021,Crane and tower operators,42.9,44.5,3.8,3.5,68080.0,Low
+53-7031,Dredge operators,1.3,1.3,0.7,0.1,49640.0,Low
+53-7041,Hoist and winch operators,3.2,3.2,0.2,0.3,56450.0,Low
+53-7051,Industrial truck and tractor operators,765.2,776.3,1.5,64.7,46420.0,Low
+53-7061,Cleaners of vehicles and equipment,419.5,435.8,3.9,51.5,35830.0,Low
+53-7062,"Laborers and freight, stock, and material movers, hand",2940.3,2991.9,1.8,340.5,40240.0,Low
+53-7063,Machine feeders and offbearers,41.8,36.3,-13.1,4.0,41220.0,Low
+53-7064,"Packers and packagers, hand",555.5,528.0,-5.0,61.8,36280.0,Low
+53-7065,Stockers and order fillers,2804.3,3055.0,8.9,430.7,37330.0,Moderate
+53-7071,Gas compressor and gas pumping station operators,3.5,3.6,2.1,0.3,77320.0,Low
+53-7072,"Pump operators, except wellhead pumpers",9.8,10.2,4.3,1.0,61770.0,Moderate
+53-7073,Wellhead pumpers,18.4,18.0,-2.0,1.7,69960.0,Low
+53-7081,Refuse and recyclable material collectors,156.4,159.6,2.1,15.5,49690.0,Low
+53-7121,"Tank car, truck, and ship loaders",12.8,13.2,2.8,1.3,58870.0,Low
+53-7199,"Material moving workers, all other",27.8,28.6,2.7,2.8,41800.0,Low

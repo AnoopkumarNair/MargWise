@@ -37,7 +37,7 @@ sources:
     trust: official
     cadence: each Economic Index release (roughly quarterly)
     stage: ai_exposure.py
-    feeds: [careers.ai.obs, careers.ai.tier]
+    feeds: [careers.ai.obs, careers.ai.watch]
   - id: anthropic_task_penetration
     name: Anthropic Economic Index, AI use by O*NET task
     publisher: Anthropic
@@ -47,15 +47,16 @@ sources:
     cadence: each release
     stage: ai_exposure.py
     feeds: [careers.ai.used, careers.ai.human]
-  - id: openai_gpts_are_gpts
-    name: Eloundou et al. 2023, theoretical exposure by occupation
-    publisher: OpenAI and University of Pennsylvania authors
-    url: https://github.com/openai/GPTs-are-GPTs
-    licence: MIT
+  - id: bls_ai_exposure
+    name: BLS AI exposure categories (relative exposure of 831 occupations, combining five studies; also 2025-35 projections)
+    publisher: US Bureau of Labor Statistics, Employment Projections
+    url: https://www.bls.gov/emp/publications/ai-exposure-categories.htm
+    licence: US government work (public domain)
     trust: official
-    cadence: when the authors update (the 2023 estimate is already dated)
-    stage: ai_exposure.py
-    feeds: [careers.ai.theo]
+    cadence: yearly, with each projections release (the 2026-36 set is due in 2027)
+    stage: ai_exposure.py (reads data/ai/bls_ai_exposure.csv; BLS blocks scripted downloads, so the xlsx is saved by hand)
+    feeds: [careers.ai.tier, careers.us.growthPct]
+    notes: Built from Felten et al., Eloundou et al. 2023, Eisfeldt et al. (theoretical) and Anthropic and Microsoft (observed). Categories are relative bins, not absolute risk.
   - id: plfs
     name: Periodic Labour Force Survey, earnings tables
     publisher: MoSPI, via India Labour Observatory tables
