@@ -481,6 +481,8 @@
   .sheet { position: fixed; inset: 0; background: rgba(10,12,30,.7); display: grid; place-items: end center; z-index: 30; padding: 12px; }
   .sheet > div { background: var(--cream); color: var(--ink); border-radius: 22px; padding: 18px; max-width: 520px; width: 100%; display: grid; gap: 10px; max-height: 88dvh; overflow: auto; font-size: 14px; font-weight: 600; }
   .sheet h3 { font-size: 22px; }
+  .cscode { text-align: center; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 34px; font-weight: 900; letter-spacing: .14em; padding: 14px 8px; border: 2px dashed var(--glow-deep); border-radius: 16px; background: #fff3c4; user-select: all; }
+  #codeSheet { place-items: center; z-index: 60; }
   .sheet .row { display: flex; flex-wrap: wrap; gap: 8px; }
   .sheet .row button { background: #fff; border: 2px solid var(--ink-soft); border-radius: 999px; padding: 8px 12px; font-weight: 800; min-height: 40px; color: var(--ink); }
   .sheet .go { color: var(--ink); }
@@ -791,6 +793,14 @@
   <button class="go" id="svSave" type="button">Save</button><button class="go quiet" id="svClose" type="button">Not now</button>
 </div></div>
 
+<div class="sheet" id="codeSheet" hidden><div role="dialog" aria-modal="true" aria-labelledby="csT">
+  <h3 id="csT">Save your login code</h3>
+  <p>This is your key back in. With it you can see your results again, on this phone or any other, without answering everything again.</p>
+  <div class="cscode" id="csCode"></div>
+  <div class="row"><button class="go quiet" id="csCopy" type="button" style="flex:1">Copy</button><button class="go quiet" id="csShare" type="button" style="flex:1" hidden>Share</button></div>
+  <p class="mute">Write it down, take a photo, or send it to yourself or a parent. We cannot show it to you again if it is lost, but the person who invited you can make a new one.</p>
+  <button class="go" id="csDone" type="button">I have saved it</button>
+</div></div>
 <div class="sheet" id="fbSheet" hidden><div role="dialog" aria-modal="true" aria-label="Your feedback">
   <h3>What did you think?</h3>
   <div class="fld" style="display:grid;gap:4px"><b>How did it look and feel?</b><div class="rate" data-k="look"></div><div class="rl"><span>Poor</span><span>Great</span></div></div>
@@ -1873,9 +1883,17 @@
   $('aboutBtn').addEventListener('click', function () { $('about').hidden = false; $('aboutClose').focus(); });
   $('aboutClose').addEventListener('click', function () { $('about').hidden = true; });
   $('about').addEventListener('click', function (e) { if (e.target === $('about')) $('about').hidden = true; });
-  function modalEl() { return !$('consent').hidden ? $('consent') : !$('gate').hidden ? $('gate') : !$('beat').hidden ? $('beat') : !$('fbSheet').hidden ? $('fbSheet') : !$('chkSheet').hidden ? $('chkSheet') : !$('saveSheet').hidden ? $('saveSheet') : !$('about').hidden ? $('about') : null; }
+  // a first-time player is shown their login code once, large, with ways to keep it, before the walk starts
+  function showCodeSheet() {
+    if (!RET) return;
+    $('csCode').textContent = RET; $('csCopy').textContent = 'Copy'; $('csShare').hidden = !navigator.share; $('codeSheet').hidden = false; $('csDone').focus(); track('code_shown');
+  }
+  $('csCopy').addEventListener('click', function () { var b = this; try { navigator.clipboard.writeText(RET).then(function () { b.textContent = 'Copied'; }, function () { /* no clipboard: the code is on screen */ }); } catch (x) { /* no clipboard */ } track('code_copy'); });
+  $('csShare').addEventListener('click', function () { try { navigator.share({ title: 'Margwise login code', text: 'My Margwise login code: ' + RET + '. To see my results again, open ' + location.origin + ' and tap "Log in with my code".' }).catch(function () { /* closed */ }); } catch (x) { /* no share sheet */ } track('code_share'); });
+  $('csDone').addEventListener('click', function () { $('codeSheet').hidden = true; try { $('begin').focus(); } catch (x) { /* focus */ } });
+  function modalEl() { return !$('codeSheet').hidden ? $('codeSheet') : !$('consent').hidden ? $('consent') : !$('gate').hidden ? $('gate') : !$('beat').hidden ? $('beat') : !$('fbSheet').hidden ? $('fbSheet') : !$('chkSheet').hidden ? $('chkSheet') : !$('saveSheet').hidden ? $('saveSheet') : !$('about').hidden ? $('about') : null; }
   function syncModal() { var on = !!modalEl(); document.querySelectorAll('#app > .screen, #hud').forEach(function (e) { e.inert = on; }); }
-  ['consent', 'gate', 'beat', 'saveSheet', 'about', 'fbSheet', 'chkSheet'].forEach(function (id) { new MutationObserver(syncModal).observe($(id), { attributes: true, attributeFilter: ['hidden'] }); });
+  ['consent', 'gate', 'beat', 'saveSheet', 'about', 'fbSheet', 'chkSheet', 'codeSheet'].forEach(function (id) { new MutationObserver(syncModal).observe($(id), { attributes: true, attributeFilter: ['hidden'] }); });
   document.addEventListener('keydown', function (e) {
     var m = modalEl(); if (!m) return;
     if (e.key === 'Escape' && m !== $('beat') && m !== $('gate') && m !== $('consent')) { m.hidden = true; return; }
@@ -2178,7 +2196,7 @@
           $('gGo').disabled = false;
           if (!x.ok) { $('gErr').textContent = x.j && x.j.error ? x.j.error : 'That did not work. Please try again.'; return; }
           TK = { id: x.j.testerId, token: x.j.token, name: name, at: Date.now() }; setRet(x.j.returnCode); try { localStorage.setItem('margwise.tester', JSON.stringify(TK)); } catch (e) { /* storage blocked */ }
-          $('gate').hidden = true; paintTester(); ME = []; paintLast(); track('join', { vw: innerWidth, vh: innerHeight });
+          $('gate').hidden = true; paintTester(); ME = []; paintLast(); showCodeSheet(); track('join', { vw: innerWidth, vh: innerHeight });
         }, function () { $('gGo').disabled = false; $('gErr').textContent = 'No connection. Please check your internet and try again.'; });
     }
   }
