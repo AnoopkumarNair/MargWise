@@ -136,13 +136,40 @@ export async function onRequest({ request, env }) {
     return json({ error: 'Unknown fact-check action.' }, 400);
   }
   // ---- testers
+  if (q.get('merge') && m === 'POST') {   // the same person signed up twice: move everything from one row onto the row that is kept, then remove the empty row
+    const r = await readJson(request, 1000); if (r.err) return json({ error: r.err }, r.status);
+    const from = clean(r.b.from, 40), into = clean(r.b.into, 40);
+    if (!from || !into || from === into) return json({ error: 'Choose two different testers.' }, 400);
+    const cols = 'id, name, source, invite_id, ret_hash, counsellor_id, klass, consent_on, followup_ok';
+    const a = await env.DB.prepare('SELECT ' + cols + ' FROM testers WHERE id = ?').bind(from).first(), k = await env.DB.prepare('SELECT ' + cols + ' FROM testers WHERE id = ?').bind(into).first();
+    if (!a || !k) return json({ error: 'One of these testers no longer exists. Press Load again.' }, 404);
+    if ((a.source || '') !== (k.source || '')) return json({ error: 'One was added by a counsellor and the other signed up alone, so they are not merged.' }, 409);
+    if ((a.invite_id || null) !== (k.invite_id || null)) return json({ error: 'They joined with different invite codes, so they are not merged.' }, 409);
+    const rv = await env.DB.prepare('SELECT COUNT(*) AS n FROM reviews WHERE tester_id IN (?, ?)').bind(from, into).first();
+    if (rv && rv.n > 1) return json({ error: 'Both have a counsellor review. Keep both, or delete the review you do not need first.' }, 409);
+    const fu = await env.DB.prepare('SELECT COUNT(*) AS n FROM followups f WHERE f.tester_id = ? AND EXISTS (SELECT 1 FROM followups g WHERE g.tester_id = ? AND g.months = f.months)').bind(from, into).first();
+    if (fu && fu.n) return json({ error: 'Both have a follow-up note for the same month, so they are not merged.' }, 409);
+    const moved = await env.DB.prepare('SELECT COUNT(*) AS n FROM events WHERE tester_id = ?').bind(from).first();
+    await env.DB.batch([
+      // event ids are unique per tester; a clash is the same event sent twice, so the copy already on the kept row wins
+      env.DB.prepare('UPDATE OR IGNORE events SET tester_id = ? WHERE tester_id = ?').bind(into, from),
+      env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(from),
+      env.DB.prepare('UPDATE reviews SET tester_id = ? WHERE tester_id = ?').bind(into, from),
+      env.DB.prepare('UPDATE followups SET tester_id = ? WHERE tester_id = ?').bind(into, from),
+      // the kept row keeps its own return code; it takes the other one only if it had none
+      env.DB.prepare('UPDATE testers SET ret_hash = COALESCE(ret_hash, ?), counsellor_id = COALESCE(counsellor_id, ?), klass = COALESCE(klass, ?), consent_on = COALESCE(consent_on, ?), followup_ok = MAX(COALESCE(followup_ok, 0), ?) WHERE id = ?').bind(a.ret_hash, a.counsellor_id, a.klass, a.consent_on, a.followup_ok || 0, into),
+      env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(from),
+      env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'tester_merged', JSON.stringify({ from, into, events: moved ? moved.n : 0 }))
+    ]);
+    return json({ ok: true, events: moved ? moved.n : 0 });
+  }
   if (m === 'DELETE') {
     if (!t) return json({ error: 'tester required' }, 400);
     await env.DB.batch([env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM reviews WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM followups WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(t)]);
     return json({ ok: true });
   }
   if (t) { const r = await env.DB.prepare('SELECT ts, type, data, session_id FROM events WHERE tester_id = ? ORDER BY id').bind(t).all(); return json({ events: r.results }); }
-  const tes = (await env.DB.prepare('SELECT t.id, t.name, t.created_at, i.label AS source FROM testers t LEFT JOIN invites i ON i.id = t.invite_id ORDER BY t.created_at DESC').all()).results;
+  const tes = (await env.DB.prepare('SELECT t.id, t.name, t.created_at, i.label AS source, t.invite_id, t.source AS kind FROM testers t LEFT JOIN invites i ON i.id = t.invite_id ORDER BY t.created_at DESC').all()).results;
   const ev = (await env.DB.prepare("SELECT tester_id, type, data, ts FROM events WHERE type IN ('result','self','areas','feedback','walk_start','place_done','fields','apt') ORDER BY id").all()).results;
   const by = {}; for (const e of ev) { (by[e.tester_id] ||= []).push(e); }
   const out = tes.map(x => {
