@@ -40,12 +40,13 @@ test('scores stay in 0..40', () => { for (const j of G.journeys) for (const v of
 // Regression guard on field ranking. Measured today (seeds 4000/100/7777): the top field wins 2.3-2.5x its fair share of the 120 profiles;
 // one or two fields (science) almost never rank first. Thresholds sit just above that so it cannot silently get worse. The skew is structural (more A/S-trait fields) and documented in docs/CALIBRATION.md;
 // this test stops it getting worse unnoticed and checks the shipped reference tables are not stale.
+// With the fitted per-field offsets (data/fieldbias.json), held-out seeds give a top field at about 1.2-1.6x fair share and no field at zero.
 test('field ranking benchmark: no field dominates or vanishes across the 120 ordered profiles', () => {
-  const C = loadContent(), K = C.fieldK || 4, tab = C.fieldRef, wins = {}; C.fields.forEach(f => wins[f.id] = 0);
-  const ps = idealProfiles(M, 4000).map(p => ({ profile: J(p.profile) })); assert.equal(ps.length, 120);
-  for (const p of ps) { const raw = rawFieldScores(M, C, p.profile, K); let best = null, bs = -1; for (const f of C.fields) { const s = pctOf(tab[f.id], raw[f.id]) + .002 * raw[f.id]; if (s > bs) { bs = s; best = f.id; } } wins[best]++; }
+  const C = loadContent(), K = C.fieldK || 4, tab = C.fieldRef, B = C.fieldBias || {}, wins = {}; C.fields.forEach(f => wins[f.id] = 0);
+  const ps = idealProfiles(M, 7777).map(p => ({ profile: J(p.profile) })); assert.equal(ps.length, 120);
+  for (const p of ps) { const raw = rawFieldScores(M, C, p.profile, K); let best = null, bs = -1; for (const f of C.fields) { const s = pctOf(tab[f.id], raw[f.id]) + .002 * raw[f.id] + (B[f.id] || 0); if (s > bs) { bs = s; best = f.id; } } wins[best]++; }
   const fair = 120 / C.fields.length, ratios = Object.values(wins).map(w => w / fair);
-  assert.ok(Math.max(...ratios) <= 2.8, 'a field wins too often: ' + JSON.stringify(wins));
-  const never = Object.entries(wins).filter(([, w]) => w < 2).map(([k]) => k);
-  assert.ok(never.length <= 3, 'fields that never rank first: ' + never.join(','));
+  assert.ok(Math.max(...ratios) <= 1.9, 'a field wins too often: ' + JSON.stringify(wins));
+  const never = Object.entries(wins).filter(([, w]) => w < 1).map(([k]) => k);
+  assert.ok(never.length <= 1, 'fields that never rank first: ' + never.join(','));
 });

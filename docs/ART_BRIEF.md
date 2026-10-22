@@ -1,5 +1,22 @@
 # Art brief for ChatGPT and Gemini
 
+## PILOT SCOPE: only two images are needed now
+We already have 15 backgrounds (bg-s01 to bg-s14, bg-lighthouse, bg-welcome). Do NOT regenerate them. Jyo, the lamps and the field icons are already drawn in the game. The guide stays **Jyo the firefly** (a firefly is a tiny living lamp, which is our idea; an owl is the generic edtech "wise guide"). Logo, app icon, extra Jyo poses and field badges wait until after the pilot.
+
+**How to ask ChatGPT (one chat, in this order):**
+1. Paste the "Shared style" block below and say: "Remember this as the Margwise style. I will ask for one image at a time. Never put text in the image."
+2. Paste prompt A, pick the best, then prompt B. If a result drifts, say "same style as the first image, but ..." instead of starting over.
+3. Ask for ONE image per request. Collage sheets (many pictures with captions) cannot be used in the game.
+You do not need ChatGPT to write the prompts; the ones below are ready. If you want variations, ask it for "3 variations of this prompt", then use them one at a time.
+
+### A. Missing background: Festival Square (needed, the game has a blank slot at stop 15)
+"Festival Square at dusk: a wide cobbled square where all the lamps of the road will gather, still bare, with empty stalls, strings of unlit lamps and a tall wooden welcome arch not yet decorated, hills and a deep-indigo sky behind. No people. Vertical 2:3, 1024 x 1536, calm space in the top third and bottom third. No text."
+
+### B. Front-page picture (recommended, it is the first impression)
+"Two teenage students, a boy and a girl, seen from behind and slightly to the side, standing on a hill at night and holding one glowing brass lantern between them. Below them a winding road of tiny lit lamps leads to a glowing lighthouse and a lamp-lit town in the distance. One small friendly firefly glows beside the lantern. Vertical 2:3, 1024 x 1536, the top 40 percent is calm night sky with a few stars (we place the title there). No text, no logo."
+(The ChatGPT boards you shared are a good mood reference: dark indigo sky, warm gold lights, the pair looking at the city. Use them as the look, not as files. Replace their owl with the firefly.)
+
+---
 Shared style (paste at the start of every prompt):
 "Soft painterly children's storybook illustration for teenagers. Warm lantern glow against a deep indigo dusk sky (#141a3a to #2b2f63) with amber and gold light (#ffcf6b, #f2a03d) and cream highlights (#fff3d6). Gentle, magical, hopeful. Clean shapes, no harsh outlines, no photorealism, no anime. Absolutely no text, letters, numbers, signs or captions anywhere in the image."
 
@@ -17,7 +34,7 @@ Rules for both tools: ask for ONE image per request, no text in the picture (we 
 Character: "A friendly firefly with a round glowing lantern-like abdomen, big kind eyes, tiny translucent wings, small antennae. Warm golden glow. Cute but not babyish."
 Poses: (a) hovering, neutral, facing right; (b) flying fast diagonally upward, delighted; (c) drooping and dim, sleepy; (d) pointing a tiny arm towards the right, encouraging. "Full body, centred, 1024 x 1024, transparent background." Keep the same face and colours in all four. Tip: generate pose (a) first, then say "same character, now ..." in the same chat.
 
-## 4. Missing place: Festival Square (background)
+## 4. (Same as A above) Festival Square
 "Festival Square at dusk: a wide cobbled square where all the lamps of the road will gather, still bare, with empty stalls, strings of unlit lamps and a tall wooden welcome arch not yet decorated, hills and a deep-indigo sky behind. No people in the foreground. Vertical 2:3, 1024 x 1536, centred composition, calm space in the top third and bottom third for text."
 
 ## 5. Field icons (16, one prompt each, same style)

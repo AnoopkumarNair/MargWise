@@ -14,6 +14,28 @@ export async function onRequest({ request, env }) {
   if (!safeEq(key, env.ADMIN_KEY || '')) { await env.DB.prepare('INSERT INTO admin_fail (ip, ts) VALUES (?, ?)').bind(ip, now0).run(); await env.DB.prepare('DELETE FROM admin_fail WHERE ts < ?').bind(now0 - 86400000).run(); return json({ error: 'Not allowed.' }, 403); }
   const t = q.get('tester'), now = Date.now();
   if (q.get('purge') && m === 'POST') return json({ ok: true, purged: await purgeOld(env, now, true) });
+  if (q.get('counsellors')) {   // personal, school-scoped counsellor keys. The key is shown once; only its hash is stored.
+    if (m === 'GET') return json({ counsellors: (await env.DB.prepare('SELECT c.id, c.name, c.active, c.created_at, c.last_used, i.label AS school FROM counsellors c LEFT JOIN invites i ON i.id = c.invite_id ORDER BY c.id DESC').all()).results });
+    const r = await readJson(request, 2000); if (r.err) return json({ error: r.err }, r.status); const b = r.b;
+    if (m === 'POST') {
+      const name = clean(b.name, 40), inv = Number(b.invite_id); if (!name || !Number.isInteger(inv)) return json({ error: 'Add the counsellor name and choose a school.' }, 400);
+      if (!(await env.DB.prepare('SELECT 1 AS x FROM invites WHERE id = ?').bind(inv).first())) return json({ error: 'Unknown school.' }, 400);
+      const ab = new Uint8Array(15); crypto.getRandomValues(ab); const key = [0, 1, 2].map(g => [...ab.slice(g * 5, g * 5 + 5)].map(x => ALPHA[x % ALPHA.length]).join('')).join('-');
+      const h = [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(key)))].map(x => x.toString(16).padStart(2, '0')).join('');
+      await env.DB.prepare('INSERT INTO counsellors (name, invite_id, key_hash, active, created_at) VALUES (?, ?, ?, 1, ?)').bind(name, inv, h, now).run();
+      await env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'counsellor_created', JSON.stringify({ name, invite_id: inv })).run();
+      return json({ ok: true, key });
+    }
+    if (m === 'PATCH') { const id = Number(b.id); if (!Number.isInteger(id)) return json({ error: 'id required' }, 400); await env.DB.prepare('UPDATE counsellors SET active = ? WHERE id = ?').bind(b.active ? 1 : 0, id).run(); await env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'counsellor_active', JSON.stringify({ id, active: !!b.active })).run(); return json({ ok: true }); }
+    return json({ error: 'Method not allowed.' }, 405);
+  }
+  if (q.get('reviews') && m === 'GET') {
+    const rows = (await env.DB.prepare('SELECT r.code, t.name, i.label AS school, r.counsellor, r.baseline, r.blind, r.app_top, r.overlap, r.overlap6, r.missed, r.wrong, r.wrong_field, r.use_it, r.notes, r.baseline_at, r.reviewed_at FROM reviews r JOIN testers t ON t.id = r.tester_id LEFT JOIN invites i ON i.id = t.invite_id ORDER BY r.baseline_at DESC').all()).results;
+    if (q.get('reviews') === 'csv') return csvResp('counsellor-reviews.csv', [['student_code', 'student', 'school', 'counsellor', 'own_top3', 'blind', 'app_top6', 'top3_overlap', 'own_in_app_top6', 'app_missed', 'fact_wrong', 'fact_wrong_field', 'would_use', 'notes', 'reviewed_at']].concat(rows.map(r => [r.code, r.name, r.school || 'master', r.counsellor, r.baseline, r.blind === 1 ? 'yes' : 'no', r.app_top || '', r.overlap ?? '', r.overlap6 ?? '', r.missed || '', r.wrong || '', r.wrong_field || '', r.use_it || '', r.notes || '', r.reviewed_at ? new Date(r.reviewed_at).toISOString() : ''])));
+    const done = rows.filter(r => r.reviewed_at), n = done.length, sum = k => done.reduce((a, r) => a + (r[k] || 0), 0), missed = {};
+    for (const r of done) { const top = JSON.parse(r.app_top || '[]').slice(0, 3); for (const p of JSON.parse(r.baseline)) if (!top.includes(p)) missed[p] = (missed[p] || 0) + 1; }
+    return json({ reviews: rows, summary: { started: rows.length, done: n, blindReviews: done.filter(r => r.blind === 1).length, avgTop3OverlapBlindOnly: done.filter(r => r.blind === 1).length ? +(done.filter(r => r.blind === 1).reduce((a, r) => a + r.overlap, 0) / done.filter(r => r.blind === 1).length).toFixed(2) : null, avgTop3Overlap: n ? +(sum('overlap') / n).toFixed(2) : null, share2plus: n ? +(done.filter(r => r.overlap >= 2).length / n).toFixed(2) : null, avgOwnInTop6: n ? +(sum('overlap6') / n).toFixed(2) : null, wouldUse: { yes: done.filter(r => r.use_it === 'yes').length, withChanges: done.filter(r => r.use_it === 'with changes').length, no: done.filter(r => r.use_it === 'no').length }, factsFlagged: done.filter(r => r.wrong).length, fieldsCounsellorsPickedButAppMissed: missed } });
+  }
   if (q.get('audit') && m === 'GET') return json({ audit: (await env.DB.prepare('SELECT ts, action, detail FROM audit ORDER BY id DESC LIMIT 100').all()).results });
   // ---- invite codes
   if (q.get('invites')) {
@@ -97,7 +119,7 @@ export async function onRequest({ request, env }) {
   // ---- testers
   if (m === 'DELETE') {
     if (!t) return json({ error: 'tester required' }, 400);
-    await env.DB.batch([env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(t)]);
+    await env.DB.batch([env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM reviews WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(t)]);
     return json({ ok: true });
   }
   if (t) { const r = await env.DB.prepare('SELECT ts, type, data, session_id FROM events WHERE tester_id = ? ORDER BY id').bind(t).all(); return json({ events: r.results }); }

@@ -72,6 +72,8 @@ for sid, sc in st.items():
     for t, txt in sc['o'].items():
         if t not in TR: E('%s bad trait %s' % (sid, t))
         if len(txt) > 95: W('%s card %s is long (%d chars)' % (sid, t, len(txt)))
+c0 = load('content.json')
+if c0.get('fieldRef') and not c0.get('fieldBias'): W('fieldBias missing or stale: field ranking is not balanced (node engine/tests/make_fieldbias.mjs)')
 # raw inputs must match what was accepted (a fetch changes them on purpose; CI sets RAW_STRICT=1 so a silent edit fails)
 import hashlib
 mp = os.path.join(D, 'releases', 'manifest.json')

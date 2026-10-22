@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS reviews (id INTEGER PRIMARY KEY AUTOINCREMENT, tester_id TEXT NOT NULL UNIQUE, code TEXT NOT NULL, counsellor TEXT NOT NULL, baseline TEXT NOT NULL, baseline_at INTEGER NOT NULL, app_top TEXT, overlap INTEGER, overlap6 INTEGER, missed TEXT, wrong TEXT, wrong_field TEXT, use_it TEXT, notes TEXT, reviewed_at INTEGER);
+CREATE INDEX IF NOT EXISTS idx_reviews_code ON reviews(code);

@@ -30,4 +30,8 @@ for f in c['fields']:
     if t not in v: v.append(t)
 if os.path.exists('refcal.json'):
     _r = json.load(open('refcal.json')); c['fieldRef'] = _r['tab']; c['fieldRefKey'] = _r.get('key'); c['fieldK'] = 4; c.pop('fieldNull', None)
+if os.path.exists('fieldbias.json'):
+    _b = json.load(open('fieldbias.json'))
+    if _b.get('key') == c.get('fieldRefKey'): c['fieldBias'] = _b['bias']
+    else: print('WARN fieldbias.json is stale (content changed); regenerate with node engine/tests/make_fieldbias.mjs')
 json.dump(c, open('content.json', 'w', encoding='utf8'), indent=1, ensure_ascii=False); print('extras ok', 'fieldRef' in c)

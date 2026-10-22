@@ -1,13 +1,37 @@
-# How facts get checked (owner-run, no outsiders needed)
+# Fact-check process (who, what, when)
 
-Principle: every fact in Margwise is public. The product is the engine, the game and the pilot data. Checkers never see those.
+Goal: before every release, every high-risk fact has been checked by a person against an official page, and nothing known to be wrong or out of date ships. Facts are public, so reviewers never see the game or the scoring.
 
-1. Open the admin page (`/admin/`), tab **Fact checks**, and press **Generate a new set**. The server turns `claims.json` (300 single facts built by `pipeline/run.py`) into shuffled tasks with random ids and batches of 12. The mapping from ids to fields stays in the database.
-2. Download a batch as a CSV for each reviewer. Give each reviewer a different batch. **All tasks (for you)** downloads everything for your own pass.
-3. A reviewer opens the official page for each statement and fills in the verdict (correct, wrong, outdated, cannot find), the exact words the page says, and the date. No counselling expertise is needed. A counsellor adds value only on judgement questions ("is this sensible advice for a Class 9 student?"), and should then see output screens, never code or scoring.
-4. For high-stakes claims (medicine, law, defence, civil services, abroad visas), send the same task to a second person who has not seen the first answer.
-5. Back in the admin page, choose the filled CSV, enter the reviewer name and press **Load answers**. **Show report** lists everything wrong, outdated, unfindable or disputed. **Report CSV** downloads it.
-6. An editor changes the content (`data/content.py`, `data/abroad.json`, `data/plfs_2025.json`), runs `python3 pipeline/run.py`, reads `data/releases/CHANGES.md`, then `--accept`. Press **Mark as applied** in the report so the same finding is not fixed twice.
-7. Re-run after every content change and on the refresh cycle: exam notices before each admission season, visa rules quarterly, O*NET, PLFS and AI exposure yearly (AI exposure whenever a new Economic Index is released), exchange rates monthly.
+## 1. What gets checked
+`pipeline/run.py` builds `claims.json`: about 240 single facts, each with a **stable id**, a **risk level** and the official pages to check.
+- **High risk (about 130):** exams and eligibility, degree lengths, abroad fees and rules, India pay, AI-exposure labels. Wrong ones can change a family's decision.
+- **Normal risk:** school subjects, plan B text, early-steps advice, "verify" notes.
+A verdict follows the claim id. If a statement is edited, its id changes and it needs a new check.
 
-Reviewer answers never change live content automatically. See `docs/ARCHITECTURE.md` section 6.
+## 2. Roles
+| Role | Who | Does |
+| --- | --- | --- |
+| Coordinator | Founder | Generates the set, hands out batches, loads answers, makes the edits, signs off |
+| Reviewer A, B | Two different people (a counsellor, an admissions-aware parent, a final-year student all work). Not the founder | Check facts only. No expertise beyond reading the official page |
+| Tie-breaker | A counsellor or the exam body's helpdesk reply | Decides when A and B disagree |
+
+## 3. Cycle (about 1 to 2 hours per reviewer per batch of 12 to 15)
+1. **Coordinator:** Admin > Fact checks > Generate a set. Batches of 12. Batches mix risk levels today, so give **every batch to both reviewers** until the tool can batch by risk. The coordinator, not the software, checks that each high-risk claim has two verdicts (compare the two CSVs).
+2. **Reviewer:** for each task, open the official page, then record the verdict (correct / wrong / outdated / cannot find), paste the exact words the page says, and the date checked. Rule: no quote, no verdict. This is a reviewer rule; the upload does not reject a verdict without a quote, so the coordinator rejects those rows before loading. If the page cannot be found, write "cannot find" and say where you looked.
+3. **Coordinator:** load each CSV (enter the reviewer's name). Report shows: correct, needs change, disagree, unreviewed.
+4. **Disagreements and "cannot find":** the tie-breaker settles. Record the decision in the notes and load the tie-breaker's CSV **last**: the ledger keeps the most recently uploaded verdict per claim, and the report still shows "disagree" until content is changed.
+5. **Fix:** edit `data/content.py`, `data/abroad.json` or `data/plfs_2025.json`; run `python3 pipeline/run.py` and read `data/releases/CHANGES.md`. Mark the finding applied.
+6. **Gate:** Admin > export ledger (`?claims=ledger`), save as `data/ledger.json`. The pipeline now fails on any claim still marked wrong or outdated. For a pilot release run with `REQUIRE_REVIEWED=1` so it also fails if any high-risk claim has no review.
+7. **Release:** `python3 pipeline/run.py --accept`, build, deploy. Write the release id and date in the pilot log.
+
+## 4. Cadence
+- Before every release and every school pilot: all high-risk claims (two reviewers).
+- Exam notices before admission season; abroad rules quarterly; AI exposure when BLS or the Economic Index updates; PLFS, O*NET yearly; exchange rates monthly.
+- Anything a counsellor flags in the pilot form goes in the next cycle immediately.
+
+## 5. Quality of the check itself
+- Reviewer sign-off is a name plus a date next to each verdict. No quote means the verdict is not counted.
+- Spot-check: the coordinator re-checks 10 percent of "correct" verdicts personally.
+- Target for the pilot: 100 percent of high-risk claims reviewed twice, zero unresolved wrong or outdated, normal-risk 100 percent reviewed once.
+
+Reviewer answers never change live content automatically. See `docs/ARCHITECTURE.md`.
