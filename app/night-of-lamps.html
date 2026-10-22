@@ -546,6 +546,14 @@
   }
   @media (min-width: 700px) { #fields { display: grid !important; } }
   @media (min-width: 1100px) { #allFields { grid-template-columns: 1fr 1fr 1fr; } }
+  /* the way back to saved results */
+  #gate .gback { width: 100%; margin-top: 8px; }
+  #gate .gcard > .gback { margin: 0 0 6px; color: var(--ink); background: #ffe9a8; border-color: var(--glow-deep); box-shadow: 0 3px 0 #c9a25a; }
+  #gate .gcard > #gBack[open] { background: #fff3d6; border: 2px solid var(--glow-deep); border-radius: 14px; padding: 8px 12px 12px; margin-bottom: 8px; }
+  .retcard { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 10px; background: rgba(255,207,107,.14); border: 1.5px dashed var(--glow-deep); border-radius: 14px; padding: 10px 12px; }
+  .retcard > span { grid-column: 1 / -1; font-size: 12.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--glow); }
+  .retcard b { font-size: 24px; font-weight: 900; letter-spacing: .12em; font-family: ui-monospace, Menlo, Consolas, monospace; } .retcard .linkbtn { padding: 6px 4px; min-height: 40px; }
+  .retcard small { grid-column: 1 / -1; font-size: 13.5px; font-weight: 600; color: var(--cream-2); }
   /* motion with a meaning: values grow to their size, things arrive in order, the next step glows. All one-off; reduced motion freezes them on the last frame */
   @keyframes popin { 0% { opacity: 0; transform: scale(.3); } 70% { opacity: 1; transform: scale(1.15); } 100% { opacity: 1; transform: none; } }
   @keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-12deg) scale(1.1); } 60% { transform: rotate(9deg) scale(1.05); } }
@@ -602,7 +610,7 @@
     <div class="gscene" id="gScene" aria-hidden="true"></div>
     <div class="gcover" id="gCover">
       <div class="gct"><div class="gk">Margwise</div><div class="gs">The Night of Lamps</div><p>Find the work that fits you. One lamp at a time.</p></div>
-      <div class="gcb"><button class="go" id="gStart" type="button">Begin</button><span>About 15 minutes. No marks, no wrong answers.</span></div>
+      <div class="gcb"><button class="go" id="gStart" type="button">Begin</button><span>About 15 minutes. No marks, no wrong answers.</span><button class="go quiet gback" id="gBackCover" type="button">Been here before? See my results</button></div>
     </div>
     <div class="gwrap">
       <header class="ghead">
@@ -612,6 +620,7 @@
         <p class="gfacts">About 15 minutes. No marks and no wrong answers. Best with a parent beside you.</p>
       </header>
       <div class="gcard">
+        <button class="go quiet gback" id="gBackTop" type="button">Been here before? See my results</button>
         <p class="gtest">You are one of the first people to try this. Your feedback helps us fix it before other students see it.</p>
         <label>Your name<input type="text" id="gName" maxlength="40" autocomplete="given-name" enterkeyhint="next"><small class="fp">The person who invited you will use it to match your feedback to you.</small></label>
         <label id="gCodeL" hidden>Invite code<input type="text" id="gCode" maxlength="40" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="go"><small class="fp">You got this from the person who invited you.</small></label>
@@ -619,9 +628,9 @@
         <p class="err" id="gErr" role="alert"></p>
         <button class="go" id="gGo" type="button">Start the walk</button>
         <details class="gdata" id="gBack"><summary>I have been here before</summary>
-          <label>Your return code<input type="text" id="gRet" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-2345" enterkeyhint="go"><small class="fp">It is shown under your results. Enter it to see your last result without answering again.</small></label>
+          <label>Your return code<input type="text" id="gRet" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-2345" enterkeyhint="go"><small class="fp">It is shown under your results and on the parent summary, and when you log out. Enter it to go straight to your last result without answering again. Lost it? You can start a new walk above.</small></label>
           <p class="err" id="gRetErr" role="alert"></p>
-          <button class="go quiet" id="gRetGo" type="button">Find my results</button>
+          <button class="go" id="gRetGo" type="button">Find my results</button>
         </details>
         <details class="gdata"><summary>What we keep, and who sees it</summary>
           <p>We keep your name, the choices you make in the game and how long each place takes, your puzzle answers, the class, board and stream you pick, your results, your screen size and any feedback you write. We never ask for your phone number, email or address. A scrambled version of your connection address is kept for 24 hours only, to stop abuse.</p>
@@ -705,7 +714,7 @@
     <div class="radarwrap"><svg id="compass" viewBox="-10 0 340 290" role="img" aria-label="Radar chart of your six interest areas"></svg><p class="howto">Further from the middle means you enjoyed it more, compared with your own other choices. Tap an area to see what it means.</p><p class="rinfo" id="rInfo" aria-live="polite" hidden></p></div>
     <div id="legend"></div>
     <div class="sure" id="sure" hidden></div>
-    <p class="note" id="notes" hidden></p><p class="note" id="retLine" hidden></p><button class="go quiet logout" type="button" hidden>Log out</button>
+    <p class="note" id="notes" hidden></p><div class="retcard" id="retLine" hidden></div><button class="go quiet logout" type="button" hidden>Log out</button>
     <div id="selfq" hidden><b>Does this shape sound like you?</b><div class="rate" data-k="self"></div><div class="rl"><span>Not me</span><span>Very me</span></div><button class="go quiet" id="chkOpen" type="button">Rate each area yourself</button></div>
     <button class="go quiet" id="saveBtn">Save your lighthouse</button>
     <div class="actions nextbar" style="margin-top:auto"><small class="nexthint">Next: the fields that fit this shape</small><button class="go" id="openDoors">See where this can lead</button></div>
@@ -827,8 +836,10 @@
   // ---------- tester mode: only active when the host page sets window.MW_CONFIG (the hosted test build)
   var MWC = window.MW_CONFIG || null, TK = null, SESSION = Math.random().toString(36).slice(2, 10), evq = [], flushT = null;
   try { TK = JSON.parse(localStorage.getItem('margwise.tester') || 'null'); if (TK && (!TK.at || Date.now() - TK.at > (TK.led ? 21600000 : 2592000000))) { TK = null; localStorage.removeItem('margwise.tester'); } } catch (e) { TK = null; }
-  var RET = ''; try { RET = sessionStorage.getItem('margwise.ret') || ''; } catch (e) { /* storage blocked */ }
-  function setRet(c) { RET = c || ''; try { sessionStorage.setItem('margwise.ret', RET); } catch (e) { /* storage blocked */ } }
+  var RET = (TK && TK.ret) || ''; try { RET = RET || sessionStorage.getItem('margwise.ret') || ''; } catch (e) { /* storage blocked */ }
+  // the return code is kept with the login on this device (and goes with it at log out), so results always show it
+  function setRet(c) { RET = c || ''; if (TK) TK.ret = RET; try { sessionStorage.setItem('margwise.ret', RET); } catch (e) { /* storage blocked */ } }
+  var GO_RES = false;   // set by the return code: open the saved results as soon as they arrive
   var EID = 0, failN = 0, STALE_LED = !!(TK && TK.led && Date.now() - TK.at > 1800000);
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && TK && TK.led && Date.now() - TK.at > 1800000) location.reload(); });   // a counsellor-led tab left idle re-asks who is playing
   function flush(useBeacon) {
@@ -1434,7 +1445,7 @@
     var none = r.noSignal; document.querySelector('#reveal .stepbar').hidden = none; $('compass').parentNode.hidden = none; $('legend').hidden = none; if (none) { $('sure').hidden = true; $('notes').hidden = false; } $('openDoors').hidden = none; $('revealLine').hidden = none;
     if (none) { $('notes').textContent = 'There is not enough here to show a shape. That happens when almost no oil is spent or everything feels the same. It does not mean anything is wrong. Try the walk again and spend your oil on what you would enjoy most.'; $('revealLine').hidden = true; }
     var na = $('noSigAgain'); if (!na) { na = document.createElement('button'); na.type = 'button'; na.id = 'noSigAgain'; na.className = 'go'; na.textContent = 'Walk the road again'; na.addEventListener('click', function () { show('welcome'); }); $('notes').parentNode.appendChild(na); } na.hidden = !none;
-    var rl = $('retLine'); rl.hidden = !(MWC && TK && RET) || none; rl.textContent = RET ? 'Your return code: ' + RET + '. Keep it. Enter it on "I have been here before" to see these results again on any phone or laptop.' : '';
+    var rl = $('retLine'); rl.hidden = !(MWC && TK && RET) || none; rl.innerHTML = RET ? '<span>Your return code</span><b>' + esc(RET) + '</b><button type="button" class="linkbtn" id="retCopy">Copy</button><small>Keep it. With it you can see these results again on any phone or laptop, without answering again.</small>' : '';
   }
   function saveSnapshot(r) {
     var apt = {}; APT.forEach(function (d) { apt[d] = state.apt[d].map(function (x) { return [x.l || 0, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); });
@@ -1468,9 +1479,11 @@
     if (!MWC || !TK || TK.led) return;
     var t = TK; fetch(MWC.api + '/me', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ testerId: t.id, token: t.token }) })
       .then(function (r) { if (r.status === 403) { if (TK && TK.id === t.id) { try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); paintTester(); $('gate').hidden = false; } return null; } return r.ok ? r.json() : null; })
-      .then(function (j) { if (j && TK && TK.id === t.id) { ME = j.attempts || []; var pg = j.progress; SRVWALK = null; if (pg && pg.choices && pg.choices.length && (!ME.length || pg.ts > ME[0].ts) && !readWalk()) { SRVWALK = { tid: TK.id, seed: pg.seed == null ? SEED : pg.seed, choices: pg.choices, slots: pg.slots && pg.slots.length === 4 ? pg.slots : [0, 0, 0, 0], lockDone: pg.lockDone || {}, apt: (function () { var o = { N: [], V: [], S: [], P: [] }; APT.forEach(function (d) { o[d] = ((pg.apt && pg.apt[d]) || []).map(function (x) { return { l: x[0], ok: !!x[1], skip: !!x[2] }; }); }); return o; })() }; } paintLast(); paintTester(); } }, function () { /* offline: the game still works */ });
+      .then(function (j) { if (j && TK && TK.id === t.id) { ME = j.attempts || []; var pg = j.progress, goRes = GO_RES; GO_RES = false; SRVWALK = null; if (pg && pg.choices && pg.choices.length && (!ME.length || pg.ts > ME[0].ts) && !readWalk()) { SRVWALK = { tid: TK.id, seed: pg.seed == null ? SEED : pg.seed, choices: pg.choices, slots: pg.slots && pg.slots.length === 4 ? pg.slots : [0, 0, 0, 0], lockDone: pg.lockDone || {}, apt: (function () { var o = { N: [], V: [], S: [], P: [] }; APT.forEach(function (d) { o[d] = ((pg.apt && pg.apt[d]) || []).map(function (x) { return { l: x[0], ok: !!x[1], skip: !!x[2] }; }); }); return o; })() }; } paintLast(); paintTester();
+        var last = goRes && !SRVWALK && ME.filter(function (x) { return !x.noSignal && x.code && x.code.length; })[0]; if (last) restoreAttempt(last); } }, function () { /* offline: the game still works */ });
   }
   $('openDoors').addEventListener('click', function () { toDoors(); });
+  $('retLine').addEventListener('click', function (e) { var b = e.target.closest('#retCopy'); if (!b) return; var done = function () { b.textContent = 'Copied'; }; try { navigator.clipboard.writeText(RET).then(done, function () {}); } catch (x) { /* no clipboard: the code is on screen */ } });
   // ---------- save (prototype only: nothing leaves the phone, the phone number is never stored)
   var DEMO_CODE = '4271', SAVE_KEY = 'margwise.save';
   function readSave() { try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) { return null; } }
@@ -2115,10 +2128,10 @@
   // ---- gate
   function paintCode() { var e = $('scLine'); if (e && MWC && TK) e.textContent = ' Your student code: ' + studentCode() + '.'; }
   function doLogout() {
-    var msg = 'Log out of Margwise on this device?' + (RET ? ' Your progress is saved. To come back, use your return code ' + RET + '.' : ' Your progress is saved.');
+    var msg = 'Log out of Margwise on this device?' + (RET ? '\n\nYour results are saved. To see them again without answering, use your return code:\n\n' + RET + '\n\nWrite it down before you log out.' : ' Your progress is saved.');
     if (!window.confirm(msg)) return;
     flush(true); evq = [];
-    try { localStorage.removeItem('margwise.tester'); localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ }
+    try { localStorage.removeItem('margwise.tester'); localStorage.removeItem(WALK_KEY); localStorage.setItem('margwise.washere', '1'); } catch (e) { /* storage blocked */ }
     try { sessionStorage.removeItem('margwise.ret'); } catch (e) { /* storage blocked */ }
     TK = null; ME = null; SRVWALK = null; RET = ''; location.reload();
   }
@@ -2132,7 +2145,11 @@
     try { $('gScene').style.setProperty('--art', 'url(' + ((ART.bg && (ART.bg.gate || ART.bg.lighthouse)) || 'art/bg-gate.webp') + ')'); } catch (e) { /* plain dark gate */ }
     (function () { var pe = $('personas'), x = pe.previousElementSibling; pe.hidden = true; while (x && (x.tagName === 'P' || x.tagName === 'H3')) { var p = x.previousElementSibling; if (/Reviewer|Fill the road/.test(x.textContent)) x.hidden = true; x = p && p.tagName !== 'BUTTON' ? p : null; } })();
     $('saveBtn').hidden = true;
+    function openBack() { $('gate').classList.remove('cover'); var d = $('gBack'); d.open = true; d.parentNode.insertBefore(d, $('gBackTop')); $('gBackTop').hidden = true; try { d.scrollIntoView({ block: 'start' }); } catch (e) { /* old browser */ } $('gRet').focus(); }
     if (!TK) { $('gate').classList.add('cover'); $('gate').hidden = false; $('gStart').addEventListener('click', function () { $('gate').classList.remove('cover'); $('gName').focus(); }); }
+    $('gBackCover').addEventListener('click', openBack); $('gBackTop').addEventListener('click', openBack);
+    var wasHere = false; try { wasHere = localStorage.getItem('margwise.washere') === '1'; } catch (e) { /* storage blocked */ }
+    if (!TK && wasHere) openBack();
     fetch(MWC.api + '/config').then(function (r) { return r.json(); }).then(function (j) { $('gCodeL').hidden = !j.needsCode; }, function () { $('gCodeL').hidden = false; });
     paintTester();
     $('gGo').addEventListener('click', function () {
@@ -2164,7 +2181,7 @@
           $('gRetGo').disabled = false;
           if (!x.ok) { $('gRetErr').textContent = x.j && x.j.error ? x.j.error : 'That did not work. Please try again.'; return; }
           TK = { id: x.j.testerId, token: x.j.token, name: x.j.name, at: Date.now() }; setRet(code.toUpperCase().replace(/[^A-Z0-9]/g, '').replace(/^(.{4})(.{4}).*/, '$1-$2')); try { localStorage.setItem('margwise.tester', JSON.stringify(TK)); } catch (e) { /* storage blocked */ }
-          $('gate').hidden = true; $('gate').classList.remove('cover'); ME = null; paintTester(); fetchMe();
+          $('gate').hidden = true; $('gate').classList.remove('cover'); ME = null; GO_RES = true; paintTester(); fetchMe();
         }, function () { $('gRetGo').disabled = false; $('gRetErr').textContent = 'No connection. Please check your internet and try again.'; });
     });
     $('gRet').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('gRetGo').click(); });
