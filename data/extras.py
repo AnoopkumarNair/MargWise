@@ -29,5 +29,5 @@ for f in c['fields']:
     t = 'Plan B routes are suggestions, not rules. Check each admission process on the official site.'
     if t not in v: v.append(t)
 if os.path.exists('refcal.json'):
-    c['fieldRef'] = json.load(open('refcal.json'))['tab']; c['fieldK'] = 4; c.pop('fieldNull', None)
+    _r = json.load(open('refcal.json')); c['fieldRef'] = _r['tab']; c['fieldRefKey'] = _r.get('key'); c['fieldK'] = 4; c.pop('fieldNull', None)
 json.dump(c, open('content.json', 'w', encoding='utf8'), indent=1, ensure_ascii=False); print('extras ok', 'fieldRef' in c)

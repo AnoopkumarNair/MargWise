@@ -1,4 +1,4 @@
-import { json, safeEq, sign, readJson } from './_util.js';
+import { json, safeEq, sign, readJson, keyOk } from './_util.js';
 const AREAS = ['R', 'I', 'A', 'S', 'E', 'C'];
 const str = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f]/g, ' ').slice(0, n);
 const int = (v, lo, hi) => { const n = Number(v); return Number.isInteger(n) && n >= lo && n <= hi ? n : null; };
@@ -26,6 +26,7 @@ const V = {
   error: d => ({ msg: str(d.msg, 200), at: str(d.at, 80) })
 };
 export async function onRequestPost({ request, env }) {
+  if (!keyOk(env.SIGN_KEY)) return json({ error: 'Not available right now.' }, 503);
   const r = await readJson(request, 120000); if (r.err) return json({ error: r.err }, r.status); const b = r.b;
   const id = String(b.testerId || ''); if (!safeEq(String(b.token || ''), await sign(id, env.SIGN_KEY))) return json({ error: 'Not allowed.' }, 403);
   const exists = await env.DB.prepare('SELECT 1 AS x FROM testers WHERE id = ?').bind(id).first(); if (!exists) return json({ error: 'Not allowed.' }, 403);

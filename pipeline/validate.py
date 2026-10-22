@@ -39,9 +39,14 @@ for x in c['careers']:
         if a.get('obs') is not None and not 0 <= a['obs'] <= 1: E('%s ai.obs out of range' % i)
         if a['tier'] == 'nodata' and a.get('watch'): E('%s nodata but flagged watch' % i)
         if bool(a.get('watch')) != bool(a['tier'] == 'veryhigh' and a.get('obs') is not None and a['obs'] >= .10): E('%s watch flag does not match the rule' % i)
-    if x.get('in') and groups is not None and x['in']['group'] not in c['plfs'].get('groupsNames', list(c.get('plfs', {}).get('groups', {}).keys()) or [x['in']['group']]): pass
-    if not x.get('in'): W('%s has no India pay group' % i)
+    if x.get('in'): E('%s still carries a per-career India pay mapping' % i)
 if not c.get('fieldRef') or set(c['fieldRef']) != set(fids): E('fieldRef missing or does not cover all fields (run refcal)')
+def _h(t):
+    h = 5381
+    for ch in t: h = ((h * 33) ^ ord(ch)) & 0xFFFFFFFF
+    return h
+_key = _h(json.dumps([[x['id'], x['field'], [x['values'][t] for t in TR]] for x in c['careers']], separators=(',', ':')))
+if c.get('fieldRefKey') != _key: E('field reference table is stale: careers or their fields changed since it was calibrated (run app/tests/refcal.mjs, then pipeline/run.py)')
 ca = age(c.get('checked', ''))
 if ca is None: E('content.checked is not a date')
 elif ca > 180: W('content last checked %d days ago' % ca)

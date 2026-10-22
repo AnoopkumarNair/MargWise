@@ -1,5 +1,6 @@
-import { json, safeEq, sign, ipHash, readJson } from './_util.js';
+import { json, safeEq, sign, ipHash, readJson, keyOk } from './_util.js';
 export async function onRequestPost({ request, env }) {
+  if (!keyOk(env.SIGN_KEY)) return json({ error: 'Sign-up is not available right now.' }, 503);
   const r = await readJson(request, 4000); if (r.err) return json({ error: r.err }, r.status); const b = r.b;
   const name = String(b.name || '').replace(/[\u0000-\u001f<>]/g, '').trim().slice(0, 40), code = String(b.code || '').trim().toLowerCase();
   if (!name) return json({ error: 'Please add your name.' }, 400);

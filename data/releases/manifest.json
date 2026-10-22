@@ -1,0 +1,10 @@
+{
+ "accepted_at": "2026-10-22T03:03:52+00:00",
+ "python": "3.13.16",
+ "files": {
+  "latest.json": "7291a24cf34cb6af91c3aa2e559ebb2d9238cf6adfa0880b07e3b4092430d354",
+  "abroad.json": "a5485147963325efd22c671c6d3a67f45e37ffde5636f7d79b2cf5b22f4db8a8",
+  "story2.json": "3d1ea97a1f33027111e4526e3e6db4c998884c12a86ac6c236dee836b5fa0c0a"
+ },
+ "release_id": "6eb66f80dabc"
+}

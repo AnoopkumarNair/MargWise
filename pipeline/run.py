@@ -7,7 +7,7 @@
 
 Stages run inside data/ so each script reads and writes plain files there.
 """
-import argparse, os, subprocess, sys, time, shutil, json
+import argparse, os, subprocess, sys, time, shutil, json, hashlib, datetime, platform
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')); DATA = os.path.join(ROOT, 'data')
 ap = argparse.ArgumentParser(); ap.add_argument('--fetch', action='store_true'); ap.add_argument('--accept', action='store_true'); a = ap.parse_args()
 def run(label, args, cwd=DATA, env=None):
@@ -31,5 +31,11 @@ if os.path.exists(prev):
     open(os.path.join(DATA, 'releases', 'CHANGES.md'), 'w', encoding='utf8').write(out); print('8  change report                    ok    ', out.count('\n- '), 'changes -> data/releases/CHANGES.md')
 else: print('8  change report                    skipped (no previous release)')
 if a.accept:
-    os.makedirs(os.path.join(DATA, 'releases'), exist_ok=True); shutil.copy(os.path.join(DATA, 'content.json'), prev); print('accepted: data/releases/latest.json updated')
+    rel = os.path.join(DATA, 'releases'); os.makedirs(rel, exist_ok=True)
+    files = {'content.json': 'latest.json', 'abroad.json': 'abroad.json', 'story2.json': 'story2.json'}
+    man = {'accepted_at': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'python': platform.python_version(), 'files': {}}
+    for src, dst in files.items():
+        shutil.copy(os.path.join(DATA, src), os.path.join(rel, dst)); man['files'][dst] = hashlib.sha256(open(os.path.join(rel, dst), 'rb').read()).hexdigest()
+    man['release_id'] = hashlib.sha256(json.dumps(man['files'], sort_keys=True).encode()).hexdigest()[:12]
+    json.dump(man, open(os.path.join(rel, 'manifest.json'), 'w'), indent=1); print('accepted: release', man['release_id'], 'written to data/releases/')
 print('done. Next: review data/releases/CHANGES.md and the fact-check batches, then run with --accept and rebuild the game (see docs/ARCHITECTURE.md).')

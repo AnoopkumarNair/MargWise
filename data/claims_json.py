@@ -15,8 +15,6 @@ for k in ab['countries']:
     out.append({'key': 'abroad.' + k['id'] + '.after', 'statement': k['after']['t'], 'urls': k['after'].get('src', '')})
     if k.get('salary'): out.append({'key': 'abroad.' + k['id'] + '.pay', 'statement': k['salary'], 'urls': (k.get('salaryRange') or {}).get('src', '')})
 for x in c['careers']:
-    if x.get('in'): out.append({'key': 'pay.map.' + x['id'], 'statement': 'In the Indian PLFS occupation grouping (NCO-2015 divisions), the job "%s" belongs to the group "%s".' % (x['title'], x['in']['group']), 'urls': 'https://www.mospi.gov.in'})
-for x in c['careers']:
     a = x.get('ai')
     if a and (a['tier'] in ('veryhigh', 'nodata') or a['watch']):
         names = {'veryhigh': 'Very high', 'high': 'High', 'moderate': 'Moderate', 'low': 'Low', 'nodata': None}

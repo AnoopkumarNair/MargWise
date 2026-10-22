@@ -2,7 +2,7 @@ import { chromium } from '/opt/node-tools/node_modules/playwright/index.mjs';
 import fs from 'fs';
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 const pg = await b.newPage(); await pg.route('**/fonts.g*/**', r=>r.abort());
-await pg.goto('file:///tmp/claude-0/-home-user/f4b06d8a-580e-5b33-bacd-fb95950c9cc3/scratchpad/site/index.html'); await pg.waitForTimeout(1500);
+await pg.goto(process.env.PAGE || ('file://' + new URL('../dist/index.html', import.meta.url).pathname)); await pg.waitForTimeout(1500);
 const out = await pg.evaluate((K)=>{
   const M=Margwise, bank=M.JOURNEY_BANK, A=['R','I','A','S','E','C'], C=window.MW_CONTENT, CAR=C.careers, FIELDS=C.fields;
   function raw(pr){ const ms=M.careerPaths(pr,CAR.map(c=>({careerId:c.id,values:c.values}))),by={}; ms.forEach(m=>by[m.careerId]=m.r); const o={}; FIELDS.forEach(f=>{const cs=CAR.filter(c=>c.field===f.id).map(c=>by[c.id]).sort((a,b)=>b-a).slice(0,K); o[f.id]=cs.reduce((a,c)=>a+c,0)/cs.length}); return o; }
@@ -24,7 +24,8 @@ const out = await pg.evaluate((K)=>{
   const q=(a,p)=>a.slice().sort((x,y)=>x-y)[Math.floor(p*(a.length-1))];
   return {tab, idealTop1:top1, idealTop3:top3, randTop3:rt3, sd:{randP10:q(sds.rand,.1),randP50:q(sds.rand,.5),randP90:q(sds.rand,.9),idealP10:q(sds.ideal,.1),idealP50:q(sds.ideal,.5),idealP90:q(sds.ideal,.9)}};
 },4);
-fs.writeFileSync('refcal.json',JSON.stringify(out));
+const TR=['R','I','A','S','E','C']; const keyStr=await pg.evaluate((TR)=>JSON.stringify(window.MW_CONTENT.careers.map(x=>[x.id,x.field,TR.map(t=>x.values[t])])),TR); let hh=5381; for(const ch of keyStr){ hh=(((hh*33)^ch.charCodeAt(0))>>>0) } out.key=hh;
+fs.writeFileSync(process.env.OUT || 'refcal.json',JSON.stringify(out));
 const s=o=>JSON.stringify(Object.entries(o).sort((a,b)=>b[1]-a[1]));
 console.log('idealTop1',s(out.idealTop1)); console.log('idealTop3',s(out.idealTop3)); console.log('randTop3',s(out.randTop3)); console.log(out.sd);
 await b.close();

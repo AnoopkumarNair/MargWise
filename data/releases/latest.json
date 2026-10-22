@@ -739,10 +739,6 @@
     "growthPct": 3.3,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.0,
@@ -782,10 +778,6 @@
     "growthPct": 5.7,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "moderate",
     "obs": 0.031,
@@ -823,10 +815,6 @@
     "wageYear": 2025,
     "growthPct": 5.6,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "high",
@@ -866,10 +854,6 @@
     "growthPct": 5.2,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.09,
@@ -907,10 +891,6 @@
     "wageYear": 2025,
     "growthPct": 11.9,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "high",
@@ -950,10 +930,6 @@
     "growthPct": 9.4,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.093,
@@ -992,10 +968,6 @@
     "growthPct": 7.2,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.273,
@@ -1032,10 +1004,6 @@
     "growth": "Faster than average",
     "openings": 4300,
     "wageYear": 2025
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "nodata",
@@ -1076,10 +1044,6 @@
     "growthPct": 6.4,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.261,
@@ -1118,10 +1082,6 @@
     "wageYear": 2025,
     "growthPct": 6.1,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -1163,10 +1123,6 @@
     "growthPct": 11.0,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.211,
@@ -1207,10 +1163,6 @@
     "growthPct": 6.2,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.0,
@@ -1246,10 +1198,6 @@
     "wageYear": 2025,
     "growthPct": 11.2,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -1291,10 +1239,6 @@
     "growthPct": 6.4,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.008,
@@ -1330,10 +1274,6 @@
     "wageYear": 2025,
     "growthPct": 3.7,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -1375,10 +1315,6 @@
     "growthPct": 8.3,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.075,
@@ -1417,10 +1353,6 @@
     "growthPct": 4.7,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.0,
@@ -1456,10 +1388,6 @@
     "wageYear": 2025,
     "growthPct": 10.2,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -1501,10 +1429,6 @@
     "growthPct": 34.6,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.461,
@@ -1542,10 +1466,6 @@
     "wageYear": 2025,
     "growthPct": 21.0,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -1587,10 +1507,6 @@
     "growthPct": 5.0,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.348,
@@ -1631,10 +1547,6 @@
     "growthPct": 5.0,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Managers",
-    "monthly": 50408
-   },
    "ai": {
     "tier": "high",
     "obs": 0.138,
@@ -1673,10 +1585,6 @@
     "wageYear": 2025,
     "growthPct": 7.2,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -1718,10 +1626,6 @@
     "growthPct": 4.7,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.242,
@@ -1761,10 +1665,6 @@
     "wageYear": 2025,
     "growthPct": 6.9,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Managers",
-    "monthly": 50408
    },
    "ai": {
     "tier": "veryhigh",
@@ -1806,10 +1706,6 @@
     "growthPct": 6.4,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.403,
@@ -1849,10 +1745,6 @@
     "wageYear": 2025,
     "growthPct": 1.1,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
    },
    "ai": {
     "tier": "veryhigh",
@@ -1894,10 +1786,6 @@
     "growthPct": -3.8,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.062,
@@ -1935,10 +1823,6 @@
     "wageYear": 2025,
     "growthPct": 6.0,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -1980,10 +1864,6 @@
     "growthPct": 4.3,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.078,
@@ -2022,10 +1902,6 @@
     "wageYear": 2025,
     "growthPct": -1.7,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -2067,10 +1943,6 @@
     "growthPct": 0.1,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.057,
@@ -2109,10 +1981,6 @@
     "wageYear": 2025,
     "growthPct": -0.3,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "high",
@@ -2154,10 +2022,6 @@
     "growthPct": 3.7,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
-   },
    "ai": {
     "tier": "high",
     "obs": 0.223,
@@ -2198,10 +2062,6 @@
     "growthPct": 2.7,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.0,
@@ -2237,10 +2097,6 @@
     "wageYear": 2025,
     "growthPct": 11.7,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "high",
@@ -2279,10 +2135,6 @@
     "wageYear": 2025,
     "growthPct": 2.9,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -2323,10 +2175,6 @@
     "wageYear": 2025,
     "growthPct": 6.5,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -2369,10 +2217,6 @@
     "growthPct": 12.4,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.037,
@@ -2411,10 +2255,6 @@
     "wageYear": 2025,
     "growthPct": 4.7,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -2456,10 +2296,6 @@
     "growthPct": 2.8,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.311,
@@ -2499,10 +2335,6 @@
     "wageYear": 2025,
     "growthPct": -5.9,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -2544,10 +2376,6 @@
     "growthPct": -0.3,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.246,
@@ -2588,10 +2416,6 @@
     "growthPct": 1.8,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.453,
@@ -2630,10 +2454,6 @@
     "wageYear": 2025,
     "growthPct": -0.2,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "high",
@@ -2675,10 +2495,6 @@
     "growthPct": 4.4,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.007,
@@ -2716,10 +2532,6 @@
     "wageYear": 2025,
     "growthPct": 2.0,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -2762,10 +2574,6 @@
     "growthPct": -2.0,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.452,
@@ -2806,10 +2614,6 @@
     "growthPct": 3.9,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.096,
@@ -2847,10 +2651,6 @@
     "wageYear": 2025,
     "growthPct": 3.5,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Service and sales workers",
-    "monthly": 15541
    },
    "ai": {
     "tier": "high",
@@ -2890,10 +2690,6 @@
     "growthPct": 3.9,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Managers",
-    "monthly": 50408
-   },
    "ai": {
     "tier": "high",
     "obs": 0.0,
@@ -2928,10 +2724,6 @@
     "wageYear": 2025,
     "growthPct": 8.3,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
    },
    "ai": {
     "tier": "moderate",
@@ -2968,10 +2760,6 @@
     "wageYear": 2025,
     "growthPct": 6.6,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
    },
    "ai": {
     "tier": "moderate",
@@ -3010,10 +2798,6 @@
     "wageYear": 2025,
     "growthPct": 3.8,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Managers",
-    "monthly": 50408
    },
    "ai": {
     "tier": "high",
@@ -3054,10 +2838,6 @@
     "growthPct": 8.8,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Service and sales workers",
-    "monthly": 15541
-   },
    "ai": {
     "tier": "high",
     "obs": 0.091,
@@ -3095,10 +2875,6 @@
     "wageYear": 2025,
     "growthPct": 6.7,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -3139,10 +2915,6 @@
     "growthPct": 5.8,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.0,
@@ -3178,10 +2950,6 @@
     "wageYear": 2025,
     "growthPct": 2.2,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "moderate",
@@ -3219,10 +2987,6 @@
     "growthPct": 5.3,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "high",
     "obs": 0.0,
@@ -3258,10 +3022,6 @@
     "wageYear": 2025,
     "growthPct": -3.4,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Managers",
-    "monthly": 50408
    },
    "ai": {
     "tier": "moderate",
@@ -3299,10 +3059,6 @@
     "growthPct": 9.2,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Craft and related trades workers",
-    "monthly": 16773
-   },
    "ai": {
     "tier": "moderate",
     "obs": 0.0,
@@ -3338,10 +3094,6 @@
     "wageYear": 2025,
     "growthPct": 5.0,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Craft and related trades workers",
-    "monthly": 16773
    },
    "ai": {
     "tier": "moderate",
@@ -3379,10 +3131,6 @@
     "growthPct": 2.4,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Craft and related trades workers",
-    "monthly": 16773
-   },
    "ai": {
     "tier": "low",
     "obs": 0.0,
@@ -3418,10 +3166,6 @@
     "wageYear": 2025,
     "growthPct": 2.4,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
    },
    "ai": {
     "tier": "high",
@@ -3461,10 +3205,6 @@
     "growthPct": 1.0,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Craft and related trades workers",
-    "monthly": 16773
-   },
    "ai": {
     "tier": "moderate",
     "obs": 0.0,
@@ -3500,10 +3240,6 @@
     "wageYear": 2025,
     "growthPct": 3.2,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
    },
    "ai": {
     "tier": "veryhigh",
@@ -3542,10 +3278,6 @@
     "growthPct": 0.3,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "moderate",
     "obs": 0.0,
@@ -3580,10 +3312,6 @@
     "wageYear": 2025,
     "growthPct": 0.0,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "moderate",
@@ -3623,10 +3351,6 @@
     "growthPct": 2.2,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "low",
     "obs": 0.0,
@@ -3662,10 +3386,6 @@
     "wageYear": 2025,
     "growthPct": 4.0,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "high",
@@ -3707,10 +3427,6 @@
     "growthPct": -0.7,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
-   },
    "ai": {
     "tier": "high",
     "obs": 0.195,
@@ -3750,10 +3466,6 @@
     "growthPct": 4.0,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
-   },
    "ai": {
     "tier": "moderate",
     "obs": 0.0,
@@ -3789,10 +3501,6 @@
     "wageYear": 2025,
     "growthPct": 6.7,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "high",
@@ -3833,10 +3541,6 @@
     "growthPct": 17.6,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
-   },
    "ai": {
     "tier": "veryhigh",
     "obs": 0.157,
@@ -3875,10 +3579,6 @@
     "wageYear": 2025,
     "growthPct": 6.1,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Managers",
-    "monthly": 50408
    },
    "ai": {
     "tier": "veryhigh",
@@ -3919,10 +3619,6 @@
     "growthPct": 5.5,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
-   },
    "ai": {
     "tier": "moderate",
     "obs": 0.0,
@@ -3957,10 +3653,6 @@
     "wageYear": 2025,
     "growthPct": 6.1,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
    },
    "ai": {
     "tier": "moderate",
@@ -3997,10 +3689,6 @@
     "wageYear": 2025,
     "growthPct": 7.3,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
    },
    "ai": {
     "tier": "moderate",
@@ -4039,10 +3727,6 @@
     "growthPct": 5.2,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Managers",
-    "monthly": 50408
-   },
    "ai": {
     "tier": "moderate",
     "obs": 0.0,
@@ -4078,10 +3762,6 @@
     "wageYear": 2025,
     "growthPct": 3.8,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Professionals",
-    "monthly": 38466
    },
    "ai": {
     "tier": "veryhigh",
@@ -4120,10 +3800,6 @@
     "growth": "Average",
     "openings": 20800,
     "wageYear": 2025
-   },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
    },
    "ai": {
     "tier": "nodata",
@@ -4165,10 +3841,6 @@
     "growthPct": 5.0,
     "growthYears": "2025-35"
    },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
-   },
    "ai": {
     "tier": "moderate",
     "obs": 0.0,
@@ -4206,10 +3878,6 @@
     "wageYear": 2025,
     "growthPct": 13.3,
     "growthYears": "2025-35"
-   },
-   "in": {
-    "group": "Technicians and associate professionals",
-    "monthly": 26175
    },
    "ai": {
     "tier": "high",
@@ -4937,6 +4605,7 @@
    0.736
   ]
  },
+ "fieldRefKey": 3705368484,
  "fieldK": 4,
  "aiMeta": {
   "retrieved": "2026-10-22",

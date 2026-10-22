@@ -8,14 +8,17 @@ for i in sorted(set(cb) - set(ca)): out.append('- NEW career %s: %s' % (i, cb[i]
 for i in sorted(set(ca) - set(cb)): out.append('- REMOVED career %s: %s' % (i, ca[i]['title']))
 for i in sorted(set(ca) & set(cb)):
     x, y = ca[i], cb[i]
-    for k in ('title', 'soc', 'values', 'us', 'in', 'line'):
+    for k in ('title', 'soc', 'field', 'values', 'us', 'line'):
         if x.get(k) != y.get(k): out.append('- %s (%s) %s: %s -> %s' % (i, y['title'], k, json.dumps(x.get(k), ensure_ascii=False)[:90], json.dumps(y.get(k), ensure_ascii=False)[:90]))
     xa, ya = x.get('ai') or {}, y.get('ai') or {}
     if xa.get('tier') != ya.get('tier'): out.append('- %s (%s) AI tier: %s -> %s (obs %s -> %s)' % (i, y['title'], xa.get('tier'), ya.get('tier'), xa.get('obs'), ya.get('obs')))
 fa = {f['id']: f for f in a['fields']}; fb = {f['id']: f for f in b['fields']}
 for i in sorted(set(fa) & set(fb)):
-    for k in ('exams', 'degree', 'pick', 'subjects', 'verify', 'backup', 'compare', 'note'):
+    for k in ('name', 'areas', 'group', 'stream', 'exams', 'degree', 'pick', 'subjects', 'verify', 'backup', 'compare', 'note', 'early', 'blurb'):
         if fa[i].get(k) != fb[i].get(k): out.append('- field %s %s changed' % (i, k))
-if a.get('plfs') != b.get('plfs'): out.append('- PLFS block changed')
+for k in ('plfs', 'fieldRef', 'fieldK', 'aiMeta'):
+    if k == 'aiMeta':
+        if {x: y for x, y in (a.get(k) or {}).items() if x != 'retrieved'} != {x: y for x, y in (b.get(k) or {}).items() if x != 'retrieved'}: out.append('- aiMeta changed')
+    elif a.get(k) != b.get(k): out.append('- %s changed (this can move rankings)' % k)
 if len(out) == 2: out.append('No changes.')
 print('\n'.join(out))

@@ -1,7 +1,7 @@
 import { chromium } from '/opt/node-tools/node_modules/playwright/index.mjs';
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 const pg = await b.newPage(); await pg.route('**/fonts.g*/**', r=>r.abort());
-await pg.goto('file:///tmp/claude-0/-home-user/f4b06d8a-580e-5b33-bacd-fb95950c9cc3/scratchpad/site/index.html'); await pg.waitForTimeout(1500);
+await pg.goto(process.env.PAGE || ('file://' + new URL('../dist/index.html', import.meta.url).pathname)); await pg.waitForTimeout(1500);
 const out = await pg.evaluate(()=>{
   const M=Margwise, bank=M.JOURNEY_BANK, A=['R','I','A','S','E','C'];
   let seed=7; const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};

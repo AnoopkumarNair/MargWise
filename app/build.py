@@ -7,10 +7,23 @@ Inputs : app/night-of-lamps.html (the page), app/art/*.jpg, data/content.json, d
 The three data files are embedded into the page at build time, so the game needs no database and works on a slow network.
 Needs Pillow (pip install pillow).
 """
-import glob, json, os, re, shutil
+import argparse, glob, hashlib, json, os, re, shutil, sys, datetime
 from PIL import Image
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')); A = os.path.join(ROOT, 'app'); D = os.path.join(ROOT, 'data'); H = os.path.join(ROOT, 'hosting', 'public')
-def j(p): return json.dumps(json.load(open(os.path.join(D, p), encoding='utf8')), separators=(',', ':'), ensure_ascii=False)
+ap = argparse.ArgumentParser(); ap.add_argument('--dev', action='store_true', help='build from the working data files instead of the accepted release (never deploy this)'); args = ap.parse_args()
+REL = os.path.join(D, 'releases'); SRC = {'content.json': 'latest.json', 'abroad.json': 'abroad.json', 'story2.json': 'story2.json'}
+release_id = 'dev-unaccepted'
+if not args.dev:
+    mp = os.path.join(REL, 'manifest.json')
+    if not os.path.exists(mp): sys.exit('No accepted release. Run: python3 pipeline/run.py --accept  (or use --dev for a local test build)')
+    man = json.load(open(mp))
+    for name, f in SRC.items():
+        h = hashlib.sha256(open(os.path.join(REL, f), 'rb').read()).hexdigest()
+        if h != man['files'][f]: sys.exit('Release file %s does not match its recorded hash. Re-accept the release.' % f)
+    release_id = man['release_id']
+def j(p):
+    path = os.path.join(D, p) if args.dev else os.path.join(REL, SRC[p])
+    return json.dumps(json.load(open(path, encoding='utf8')), separators=(',', ':'), ensure_ascii=False)
 s = open(os.path.join(A, 'night-of-lamps.html'), encoding='utf8').read()
 # 1. embed data
 blob = '<script>window.MW_CONTENT = ' + j('content.json') + ';window.MW_STORY = ' + j('story2.json') + ';window.MW_ABROAD = ' + j('abroad.json') + ';</script>'
@@ -32,5 +45,9 @@ SHELL = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="
 doc = SHELL + body.replace('<title>', '</head><body><title>', 1) + '</body></html>'
 doc = doc.replace('</head><body><title>The Night of Lamps</title>', '<title>The Night of Lamps</title></head><body>', 1)
 os.makedirs(H, exist_ok=True); open(os.path.join(H, 'index.html'), 'w', encoding='utf8').write(doc)
+for tgt in (dist, H):
+    shutil.rmtree(os.path.join(tgt, 'vendor'), ignore_errors=True); shutil.copytree(os.path.join(A, 'vendor'), os.path.join(tgt, 'vendor'))
 shutil.rmtree(os.path.join(H, 'art'), ignore_errors=True); shutil.copytree(os.path.join(dist, 'art'), os.path.join(H, 'art'))
+json.dump({'release_id': release_id, 'built_at': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'page_sha256': hashlib.sha256(doc.encode()).hexdigest(), 'dev_build': args.dev}, open(os.path.join(H, 'manifest.json'), 'w'), indent=1)
+print('release', release_id)
 print('built: %d background images (%.2f MB), standalone %d KB, hosted %d KB' % (len(art['bg']), total / 1e6, len(s) // 1000, len(doc) // 1000))

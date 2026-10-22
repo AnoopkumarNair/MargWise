@@ -64,7 +64,6 @@ Three curated data files plus the built `content.json`. Contracts are in `data/s
 - **careers[83]**: each career carries a US SOC code that links every external dataset to it.
   - `values`: O*NET interest profile (R, I, A, S, E, C, 0 to 100).
   - `us`: US median pay, growth and openings (O*NET and BLS).
-  - `in`: the PLFS India occupation group and its average monthly salary.
   - `ai`: `tier` (BLS relative exposure: very high, high, moderate, low), `obs` (observed exposure from real Claude usage, Anthropic), `watch` (BLS very high and observed 0.10 or more), tasks where AI is used today, tasks with no AI use seen, and the number of tasks matched.
   - `us.growthPct`: BLS projected job change 2025 to 2035.
 - **abroad.json**: eight countries, with ranges for tuition, living cost and salary, each with a trust badge and a source link, plus visa and settling notes and the exchange rates used.
@@ -93,16 +92,16 @@ Run `python3 pipeline/run.py` (offline, from committed snapshots) or `--fetch` (
 | --- | --- | --- | --- | --- |
 | 1 | Fetch O*NET interests and wages | onetonline.org | `data/onet/*.json` | Yes, with `--fetch` |
 | 2 | Build fields and careers | curated text in `content.py`, O*NET files | `content.json` | Yes |
-| 3 | Attach India pay | `plfs_2025.json` | `careers[].in` | Yes (data entered by hand once a year) |
+| 3 | Attach national India salary context | `plfs_2025.json` | `plfs` block (national figures only; no per-career pay) | Yes (data entered by hand once a year) |
 | 4 | Plan B, colleges, field reference table | `extras.py`, `refcal.json` | fields and `fieldRef` | Yes |
 | 5 | Attach AI exposure | BLS categories, Anthropic, O*NET tasks | `careers[].ai`, `careers[].us.growthPct` | Yes; Anthropic and O*NET with `--refresh`, BLS by saving its xlsx by hand |
 | 6 | Validate | all data files | pass or fail, warnings for stale data | Yes |
 | 7 | Build reviewer fact checks | `content.json`, `abroad.json` | `hosting/public/admin/claims.json` (322 tasks) | Yes |
 | 8 | Change report | previous release vs new build | `data/releases/CHANGES.md` | Yes |
-| 9 | Human review and `--accept` | change report, reviewer answers | `data/releases/latest.json` | **Manual by design** |
-| 10 | Build and deploy the game | released data, art | `app/dist`, `hosting/public` | `app/build.py`, then `wrangler pages deploy` (manual) |
+| 9 | Human review and `--accept` | change report, reviewer answers | `data/releases/` (latest.json, abroad.json, story2.json, manifest.json with SHA-256 hashes and a release id) | **Manual by design** |
+| 10 | Build and deploy the game | the accepted release only, art, vendored fonts and GSAP | `app/dist`, `hosting/public`, `hosting/public/manifest.json` | `python3 app/build.py` fails if there is no accepted release or a hash does not match (`--dev` makes a local-only build); deploy is manual |
 
-A scheduled GitHub workflow (`.github/workflows/data-refresh.yml`) opens a pull request with the change report every Monday. It is written but has not run yet; treat its first run as a test.
+Scheduled and pull-request workflows (`data-refresh.yml`, `build-check.yml`) exist but have not run on GitHub yet; treat their first runs as tests.
 
 Running offline needs no network: it rebuilds `content.json` from the committed raw snapshots (`data/onet`, `data/ai`). When the pipeline was assembled, this rebuild matched the previously deployed careers and fields exactly.
 
@@ -116,15 +115,15 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
    - A reviewer fills in a verdict, the exact words on the official page and a date.
    - The owner loads the answers back; a report lists everything wrong, outdated, unfindable or disputed between reviewers.
    - Fixes are applied by an editor (today, the owner or an engineer) and marked as applied. Reviewer answers never change live content automatically.
-5. **Release snapshot**: `--accept` records what students are seeing, so the next diff has a baseline.
+5. **Release control**: `--accept` snapshots the three data files with SHA-256 hashes. The build reads only the accepted release, so an unreviewed edit cannot ship. The deployed page publishes its release id at `/manifest.json`.
 
 ## 7. Scoring and results
 
 - **Engine**: a bundled module scores each choice (primary trait 1.0, adjacent trait 0.5), is adaptive (8 to 15 places), and returns a mean-centred, ipsative profile with a confidence label. The source of this bundle is not in this repository; extracting it into a versioned package is a recommended next step.
 - **Radar** shows the six traits, top three highlighted.
 - **Honesty rules**: "not enough signal" when the profile is flat; "rough" when the profile spread is below 0.5 or 70 percent of oil goes to one trait; no claim of accuracy beyond what the pilot will show.
-- **Field ranking**: for each field, the mean fit of its four best-matching careers (correlation between the profile and the career's O*NET interest profile), converted to a percentile against 360 reference profiles built from consistent simulated players. This evens out fields with many broad careers. It does not remove bias: across 120 fresh ideal profiles the top field ranges from 1 (law) to 19 (sports).
-- **Aptitude puzzles ("lamp locks")**: eight original items inside the story. They never change the radar. They nudge the field order by at most about 0.05 of the percentile scale, with field weights that are judgement, not validated.
+- **Field ranking** is presented as tied "areas to explore" (a pill marks fields within 0.05 of the next one, each card gives a one-line reason). For each field, the mean fit of its four best-matching careers (correlation between the profile and the career's O*NET interest profile), converted to a percentile against 360 reference profiles built from consistent simulated players. This evens out fields with many broad careers. It does not remove bias: across 120 fresh ideal profiles the top field ranges from 1 (law) to 19 (sports).
+- **Aptitude puzzles ("lamp locks")**: eight original items inside the story. They never change the radar. A flag (`APT_NUDGE`, default off) controls whether they may nudge the field order; it stays off until item difficulty, language bias and incremental value are tested. The puzzle card is display only.
 - **Results are an interest guide, not an ability test or a prediction.**
 
 ## 8. Runtime and operations
@@ -135,19 +134,20 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 | Endpoint | Purpose | Notes |
 | --- | --- | --- |
 | `GET /api/config` | Does sign-up need a code? | Always yes (fails closed) |
-| `POST /api/join` | Create a named tester | Checks master code or an active invite; per-IP and global rate limits; stores a scrambled IP for 24 hours |
+| `POST /api/join` | Create a named tester (503 if `SIGN_KEY` is missing or shorter than 16 characters; there is no fallback key) | Checks master code or an active invite; per-IP and global rate limits; stores a scrambled IP for 24 hours |
 | `POST /api/event` | Batch of events | HMAC token per tester; per-type validators clamp every field; server stamps time; duplicates dropped by event id; daily cap |
 | `/api/admin` | Admin actions | `x-admin-key` header only; fails closed |
 
 - **Tables**: `testers`, `events`, `joins`, `invites`, `claims`, `claim_reviews`.
 - **Invite codes**: created in the admin page with a label (source), use limit, expiry and an on/off switch; the Testers table shows each person's source.
 - **Security controls**: parameterised SQL everywhere; strict CSP on the admin page; all admin output escaped; CSV export guards against formula injection; secrets only in Cloudflare; no secrets in the repository.
-- **Privacy**: the sign-in page lists everything kept. Per-tester deletion exists in the admin page. Deletion at the end of the test (about 31 January 2027) is a manual step today.
+- **Third parties**: none at runtime. Fonts and GSAP are vendored in `app/vendor`, and the content security policy allows only our own origin.
+- **Privacy**: the sign-in page lists everything kept. A tester login expires after 90 minutes without activity. Per-tester deletion exists in the admin page. Deletion at the end of the test (about 31 January 2027) is a manual step today.
 - **Consent**: self-declared by the user, plus a parent popup. It is **not verifiable**. For under-18s the owner must collect parental consent outside the app before inviting.
 
 ## 9. Evidence that it works, and how it was checked
 
-- `app/tests/cover.mjs`, `refcal.mjs` (headless browser): simulate random, positional, one-note and consistent players over all 120 ordered trait triples. Findings are in `docs/CALIBRATION.md` and `opus_review3.md`.
+- `app/tests/cover.mjs`, `refcal.mjs` (headless browser): simulate random, positional, one-note and consistent players over all 120 ordered trait triples. Findings are in `docs/CALIBRATION.md` and `docs/reviews/opus_review3.md`.
 - Walk-throughs with a fake clock (`app/tests/t25.mjs`, `t26.mjs`) play a full journey including all eight puzzle locks.
 - Three independent AI-assisted reviews (security, UX, psychometrics, content) were run; their reports and the fixes are in the repository history. The most recent verdict: adult controlled testers acceptable; Class 9 to 12 students not yet.
 
@@ -187,5 +187,6 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 | What changed since the last release? | `data/releases/CHANGES.md` |
 | How are facts checked without exposing the product? | `docs/REVIEW_PROCESS.md`, `hosting/functions/api/admin.js` |
 | How is a result computed? | section 7 here; `app/night-of-lamps.html` (`fieldFits`, `toReveal`) |
-| What did reviewers find? | `opus_review3.md`, `docs/CALIBRATION.md` |
+| What did reviewers find? | `docs/reviews/opus_review3.md`, `docs/reviews/` (including the ChatGPT venture review and the Opus validation), `docs/CALIBRATION.md` |
+| How would we decide whether this is a business? | `docs/PILOT_PLAN.md`, `docs/PRICING_AND_MARKET.md` |
 | What does a tester see and what do we keep? | the sign-in page, `hosting/functions/api/event.js` |
