@@ -1,0 +1,1262 @@
+{
+ "fields": [
+  {
+   "id": "health",
+   "name": "Health and medicine",
+   "careers": []
+  },
+  {
+   "id": "sci",
+   "name": "Science and research",
+   "careers": []
+  },
+  {
+   "id": "eng",
+   "name": "Engineering",
+   "careers": []
+  },
+  {
+   "id": "tec",
+   "name": "Technology and data",
+   "careers": []
+  },
+  {
+   "id": "com",
+   "name": "Business and finance",
+   "careers": []
+  },
+  {
+   "id": "des",
+   "name": "Design and creative arts",
+   "careers": []
+  },
+  {
+   "id": "psy",
+   "name": "Understanding people",
+   "careers": []
+  },
+  {
+   "id": "law",
+   "name": "Law and justice",
+   "careers": []
+  },
+  {
+   "id": "media",
+   "name": "Media, writing and teaching",
+   "careers": []
+  },
+  {
+   "id": "pub",
+   "name": "Public service and defence",
+   "careers": []
+  },
+  {
+   "id": "hos",
+   "name": "Travel, hospitality and aviation",
+   "careers": []
+  },
+  {
+   "id": "agr",
+   "name": "Agriculture and environment",
+   "careers": []
+  },
+  {
+   "id": "voc",
+   "name": "Skilled trades and technical diplomas",
+   "careers": []
+  },
+  {
+   "id": "arts",
+   "name": "Performing arts and music",
+   "careers": []
+  },
+  {
+   "id": "mar",
+   "name": "Maritime and logistics",
+   "careers": []
+  },
+  {
+   "id": "spo",
+   "name": "Sports and fitness",
+   "careers": []
+  }
+ ],
+ "careers": {
+  "doc-1": {
+   "field": "health",
+   "title": "Doctor (Physician)",
+   "soc": "29-1215.00",
+   "values": {
+    "S": 87,
+    "I": 85,
+    "C": 49,
+    "R": 46,
+    "E": 22,
+    "A": 8
+   },
+   "onetTitle": "29-1215.00 - Family Medicine Physicians"
+  },
+  "doc-2": {
+   "field": "health",
+   "title": "Dentist",
+   "soc": "29-1021.00",
+   "values": {
+    "I": 75,
+    "R": 71,
+    "S": 57,
+    "C": 45,
+    "E": 17,
+    "A": 3
+   },
+   "onetTitle": "29-1021.00 - Dentists, General"
+  },
+  "doc-3": {
+   "field": "health",
+   "title": "Nurse",
+   "soc": "29-1141.00",
+   "values": {
+    "S": 76,
+    "C": 63,
+    "I": 62,
+    "R": 41,
+    "E": 23,
+    "A": 6
+   },
+   "onetTitle": "29-1141.00 - Registered Nurses"
+  },
+  "doc-4": {
+   "field": "health",
+   "title": "Pharmacist",
+   "soc": "29-1051.00",
+   "values": {
+    "I": 78,
+    "S": 65,
+    "C": 59,
+    "R": 30,
+    "E": 27,
+    "A": 8
+   },
+   "onetTitle": "29-1051.00 - Pharmacists"
+  },
+  "doc-5": {
+   "field": "health",
+   "title": "Physiotherapist",
+   "soc": "29-1123.00",
+   "values": {
+    "S": 82,
+    "I": 65,
+    "R": 56,
+    "C": 35,
+    "E": 25,
+    "A": 20
+   },
+   "onetTitle": "29-1123.00 - Physical Therapists"
+  },
+  "doc-6": {
+   "field": "health",
+   "title": "Veterinarian",
+   "soc": "29-1131.00",
+   "values": {
+    "I": 83,
+    "R": 83,
+    "C": 41,
+    "S": 41,
+    "E": 12,
+    "A": 0
+   },
+   "onetTitle": "29-1131.00 - Veterinarians"
+  },
+  "sci-1": {
+   "field": "sci",
+   "title": "Physicist",
+   "soc": "19-2012.00",
+   "values": {
+    "I": 100,
+    "R": 66,
+    "C": 63,
+    "A": 29,
+    "S": 19,
+    "E": 13
+   },
+   "onetTitle": "19-2012.00 - Physicists"
+  },
+  "sci-2": {
+   "field": "sci",
+   "title": "Biologist",
+   "soc": "19-1020.01",
+   "values": {
+    "I": 100,
+    "C": 58,
+    "R": 52,
+    "E": 29,
+    "S": 27,
+    "A": 23
+   },
+   "onetTitle": "19-1029.04 - Biologists"
+  },
+  "sci-3": {
+   "field": "sci",
+   "title": "Chemist",
+   "soc": "19-2031.00",
+   "values": {
+    "I": 95,
+    "R": 78,
+    "C": 64,
+    "E": 10,
+    "A": 9,
+    "S": 2
+   },
+   "onetTitle": "19-2031.00 - Chemists"
+  },
+  "sci-4": {
+   "field": "sci",
+   "title": "Environmental Scientist",
+   "soc": "19-2041.00",
+   "values": {
+    "I": 100,
+    "R": 63,
+    "C": 55,
+    "S": 29,
+    "E": 26,
+    "A": 15
+   },
+   "onetTitle": "19-2041.00 - Environmental Scientists and Specialists, Including Health"
+  },
+  "sci-5": {
+   "field": "sci",
+   "title": "Statistician",
+   "soc": "15-2041.00",
+   "values": {
+    "I": 93,
+    "C": 84,
+    "R": 19,
+    "E": 14,
+    "A": 13,
+    "S": 12
+   },
+   "onetTitle": "15-2041.00 - Statisticians"
+  },
+  "sci-6": {
+   "field": "sci",
+   "title": "Food Scientist",
+   "soc": "19-1012.00",
+   "values": {
+    "I": 79,
+    "R": 68,
+    "C": 49,
+    "E": 26,
+    "A": 24,
+    "S": 19
+   },
+   "onetTitle": "19-1012.00 - Food Scientists and Technologists"
+  },
+  "eng-1": {
+   "field": "eng",
+   "title": "Mechanical Engineer",
+   "soc": "17-2141.00",
+   "values": {
+    "R": 90,
+    "I": 69,
+    "C": 64,
+    "A": 17,
+    "E": 16,
+    "S": 4
+   },
+   "onetTitle": "17-2141.00 - Mechanical Engineers"
+  },
+  "eng-2": {
+   "field": "eng",
+   "title": "Civil Engineer",
+   "soc": "17-2051.00",
+   "values": {
+    "R": 91,
+    "I": 69,
+    "C": 60,
+    "E": 28,
+    "A": 20,
+    "S": 12
+   },
+   "onetTitle": "17-2051.00 - Civil Engineers"
+  },
+  "tec-3": {
+   "field": "eng",
+   "title": "Electronics and EV Engineer",
+   "soc": "17-2072.00",
+   "values": {
+    "R": 87,
+    "I": 80,
+    "C": 61,
+    "A": 17,
+    "E": 10,
+    "S": 10
+   },
+   "onetTitle": "17-2072.00 - Electronics Engineers, Except Computer"
+  },
+  "eng-4": {
+   "field": "eng",
+   "title": "Aerospace Engineer",
+   "soc": "17-2011.00",
+   "values": {
+    "I": 84,
+    "R": 78,
+    "C": 57,
+    "E": 25,
+    "A": 23,
+    "S": 4
+   },
+   "onetTitle": "17-2011.00 - Aerospace Engineers"
+  },
+  "eng-5": {
+   "field": "eng",
+   "title": "Chemical Engineer",
+   "soc": "17-2041.00",
+   "values": {
+    "R": 88,
+    "I": 79,
+    "C": 59,
+    "E": 14,
+    "A": 13,
+    "S": 0
+   },
+   "onetTitle": "17-2041.00 - Chemical Engineers"
+  },
+  "tec-1": {
+   "field": "tec",
+   "title": "AI and Software Engineer",
+   "soc": "15-1252.00",
+   "values": {
+    "I": 84,
+    "C": 77,
+    "R": 44,
+    "A": 23,
+    "E": 15,
+    "S": 14
+   },
+   "onetTitle": "15-1252.00 - Software Developers"
+  },
+  "tec-2": {
+   "field": "tec",
+   "title": "Data Scientist",
+   "soc": "15-2051.00",
+   "values": {
+    "I": 100,
+    "C": 73,
+    "A": 27,
+    "R": 20,
+    "E": 12,
+    "S": 11
+   },
+   "onetTitle": "15-2051.00 - Data Scientists"
+  },
+  "tec-4": {
+   "field": "tec",
+   "title": "Cybersecurity Analyst",
+   "soc": "15-1212.00",
+   "values": {
+    "C": 85,
+    "I": 73,
+    "R": 43,
+    "E": 31,
+    "S": 19,
+    "A": 6
+   },
+   "onetTitle": "15-1212.00 - Information Security Analysts"
+  },
+  "com-1": {
+   "field": "com",
+   "title": "Chartered Accountant",
+   "soc": "13-2011.00",
+   "values": {
+    "C": 100,
+    "E": 48,
+    "I": 43,
+    "S": 19,
+    "R": 2,
+    "A": 1
+   },
+   "onetTitle": "13-2011.00 - Accountants and Auditors"
+  },
+  "com-2": {
+   "field": "com",
+   "title": "Business Manager or Founder",
+   "soc": "11-1021.00",
+   "values": {
+    "E": 100,
+    "C": 72,
+    "S": 40,
+    "I": 23,
+    "R": 20,
+    "A": 5
+   },
+   "onetTitle": "11-1021.00 - General and Operations Managers"
+  },
+  "com-3": {
+   "field": "com",
+   "title": "Financial Analyst",
+   "soc": "13-2051.00",
+   "values": {
+    "C": 76,
+    "E": 68,
+    "I": 68,
+    "S": 21,
+    "A": 13,
+    "R": 0
+   },
+   "onetTitle": "13-2051.00 - Financial and Investment Analysts"
+  },
+  "com-4": {
+   "field": "com",
+   "title": "Economist",
+   "soc": "19-3011.00",
+   "values": {
+    "I": 100,
+    "C": 59,
+    "E": 49,
+    "A": 24,
+    "S": 23,
+    "R": 6
+   },
+   "onetTitle": "19-3011.00 - Economists"
+  },
+  "com-5": {
+   "field": "com",
+   "title": "Marketing Manager",
+   "soc": "11-2021.00",
+   "values": {
+    "E": 100,
+    "C": 62,
+    "I": 32,
+    "S": 30,
+    "A": 24,
+    "R": 0
+   },
+   "onetTitle": "11-2021.00 - Marketing Managers"
+  },
+  "com-6": {
+   "field": "com",
+   "title": "HR Specialist",
+   "soc": "13-1071.00",
+   "values": {
+    "E": 78,
+    "C": 75,
+    "S": 46,
+    "I": 25,
+    "A": 6,
+    "R": 1
+   },
+   "onetTitle": "13-1071.00 - Human Resources Specialists"
+  },
+  "com-7": {
+   "field": "com",
+   "title": "Bank Loan Officer",
+   "soc": "13-2072.00",
+   "values": {
+    "C": 85,
+    "E": 66,
+    "S": 44,
+    "I": 22,
+    "R": 7,
+    "A": 0
+   },
+   "onetTitle": "13-2072.00 - Loan Officers"
+  },
+  "com-8": {
+   "field": "com",
+   "title": "Insurance Underwriter",
+   "soc": "13-2053.00",
+   "values": {
+    "C": 86,
+    "E": 58,
+    "I": 44,
+    "S": 31,
+    "R": 12,
+    "A": 0
+   },
+   "onetTitle": "13-2053.00 - Insurance Underwriters"
+  },
+  "des-1": {
+   "field": "des",
+   "title": "UX and Product Designer",
+   "soc": "15-1255.00",
+   "values": {
+    "I": 65,
+    "A": 58,
+    "C": 57,
+    "E": 36,
+    "R": 27,
+    "S": 20
+   },
+   "onetTitle": "15-1255.00 - Web and Digital Interface Designers"
+  },
+  "des-2": {
+   "field": "des",
+   "title": "Architect",
+   "soc": "17-1011.00",
+   "values": {
+    "R": 65,
+    "C": 57,
+    "A": 52,
+    "I": 48,
+    "E": 44,
+    "S": 26
+   },
+   "onetTitle": "17-1011.00 - Architects, Except Landscape and Naval"
+  },
+  "des-3": {
+   "field": "des",
+   "title": "Graphic Designer",
+   "soc": "27-1024.00",
+   "values": {
+    "A": 100,
+    "C": 49,
+    "E": 41,
+    "R": 40,
+    "I": 31,
+    "S": 19
+   },
+   "onetTitle": "27-1024.00 - Graphic Designers"
+  },
+  "des-4": {
+   "field": "des",
+   "title": "Fashion Designer",
+   "soc": "27-1022.00",
+   "values": {
+    "A": 100,
+    "R": 56,
+    "E": 49,
+    "C": 32,
+    "S": 23,
+    "I": 20
+   },
+   "onetTitle": "27-1022.00 - Fashion Designers"
+  },
+  "des-5": {
+   "field": "des",
+   "title": "Animator and VFX Artist",
+   "soc": "27-1014.00",
+   "values": {
+    "A": 100,
+    "R": 45,
+    "C": 36,
+    "I": 30,
+    "E": 27,
+    "S": 20
+   },
+   "onetTitle": "27-1014.00 - Special Effects Artists and Animators"
+  },
+  "des-6": {
+   "field": "des",
+   "title": "Film and Video Editor",
+   "soc": "27-4032.00",
+   "values": {
+    "A": 77,
+    "C": 46,
+    "R": 36,
+    "E": 35,
+    "S": 16,
+    "I": 15
+   },
+   "onetTitle": "27-4032.00 - Film and Video Editors"
+  },
+  "des-7": {
+   "field": "des",
+   "title": "Interior Designer",
+   "soc": "27-1025.00",
+   "values": {
+    "A": 76,
+    "R": 52,
+    "C": 47,
+    "E": 45,
+    "I": 35,
+    "S": 28
+   },
+   "onetTitle": "27-1025.00 - Interior Designers"
+  },
+  "psy-1": {
+   "field": "psy",
+   "title": "Clinical Psychologist",
+   "soc": "19-3033.00",
+   "values": {
+    "S": 93,
+    "I": 76,
+    "C": 42,
+    "A": 34,
+    "E": 28,
+    "R": 1
+   },
+   "onetTitle": "19-3033.00 - Clinical and Counseling Psychologists"
+  },
+  "psy-2": {
+   "field": "psy",
+   "title": "Counselling Psychologist",
+   "soc": "19-3033.00",
+   "values": {
+    "S": 93,
+    "I": 76,
+    "C": 42,
+    "A": 34,
+    "E": 28,
+    "R": 1
+   },
+   "onetTitle": "19-3033.00 - Clinical and Counseling Psychologists"
+  },
+  "psy-3": {
+   "field": "psy",
+   "title": "School Counsellor",
+   "soc": "21-1012.00",
+   "values": {
+    "S": 100,
+    "C": 52,
+    "E": 49,
+    "I": 38,
+    "A": 36,
+    "R": 0
+   },
+   "onetTitle": "21-1012.00 - Educational, Guidance, and Career Counselors and Advisors"
+  },
+  "psy-4": {
+   "field": "psy",
+   "title": "Organisational Psychologist",
+   "soc": "19-3032.00",
+   "values": {
+    "I": 72,
+    "E": 62,
+    "C": 55,
+    "S": 50,
+    "A": 36,
+    "R": 1
+   },
+   "onetTitle": "19-3032.00 - Industrial-Organizational Psychologists"
+  },
+  "psy-5": {
+   "field": "psy",
+   "title": "UX Researcher",
+   "soc": "17-2112.01",
+   "values": {
+    "I": 87,
+    "R": 59,
+    "C": 57,
+    "A": 28,
+    "E": 27,
+    "S": 19
+   },
+   "onetTitle": "17-2112.01 - Human Factors Engineers and Ergonomists"
+  },
+  "law-1": {
+   "field": "law",
+   "title": "Corporate Lawyer",
+   "soc": "23-1011.00",
+   "values": {
+    "E": 75,
+    "C": 60,
+    "I": 56,
+    "S": 41,
+    "A": 23,
+    "R": 2
+   },
+   "onetTitle": "23-1011.00 - Lawyers"
+  },
+  "law-2": {
+   "field": "law",
+   "title": "Judge (Judicial Services)",
+   "soc": "23-1023.00",
+   "values": {
+    "E": 71,
+    "C": 52,
+    "S": 49,
+    "I": 47,
+    "R": 22,
+    "A": 20
+   },
+   "onetTitle": "23-1023.00 - Judges, Magistrate Judges, and Magistrates"
+  },
+  "med-1": {
+   "field": "media",
+   "title": "Journalist",
+   "soc": "27-3023.00",
+   "values": {
+    "A": 68,
+    "I": 53,
+    "E": 49,
+    "C": 44,
+    "S": 30,
+    "R": 8
+   },
+   "onetTitle": "27-3023.00 - News Analysts, Reporters, and Journalists"
+  },
+  "med-2": {
+   "field": "media",
+   "title": "Writer or Author",
+   "soc": "27-3043.00",
+   "values": {
+    "A": 95,
+    "E": 63,
+    "C": 39,
+    "I": 38,
+    "S": 31,
+    "R": 0
+   },
+   "onetTitle": "27-3043.00 - Writers and Authors"
+  },
+  "med-3": {
+   "field": "media",
+   "title": "PR and Communications Specialist",
+   "soc": "27-3031.00",
+   "values": {
+    "E": 80,
+    "A": 61,
+    "S": 49,
+    "C": 41,
+    "I": 29,
+    "R": 0
+   },
+   "onetTitle": "27-3031.00 - Public Relations Specialists"
+  },
+  "med-4": {
+   "field": "media",
+   "title": "School Teacher",
+   "soc": "25-2031.00",
+   "values": {
+    "S": 100,
+    "A": 46,
+    "C": 44,
+    "I": 37,
+    "E": 32,
+    "R": 29
+   },
+   "onetTitle": "25-2031.00 - Secondary School Teachers, Except Special and Career/Technical Education"
+  },
+  "med-5": {
+   "field": "media",
+   "title": "Social Worker",
+   "soc": "21-1021.00",
+   "values": {
+    "S": 98,
+    "C": 43,
+    "I": 39,
+    "A": 32,
+    "E": 32,
+    "R": 12
+   },
+   "onetTitle": "21-1021.00 - Child, Family, and School Social Workers"
+  },
+  "med-6": {
+   "field": "media",
+   "title": "Translator or Interpreter",
+   "soc": "27-3091.00",
+   "values": {
+    "C": 63,
+    "A": 55,
+    "S": 41,
+    "I": 37,
+    "E": 15,
+    "R": 15
+   },
+   "onetTitle": "27-3091.00 - Interpreters and Translators"
+  },
+  "pub-1": {
+   "field": "pub",
+   "title": "Policy Analyst (Political Scientist)",
+   "soc": "19-3094.00",
+   "values": {
+    "I": 95,
+    "A": 48,
+    "E": 44,
+    "C": 42,
+    "S": 40,
+    "R": 0
+   },
+   "onetTitle": "19-3094.00 - Political Scientists"
+  },
+  "pub-2": {
+   "field": "pub",
+   "title": "Urban Planner",
+   "soc": "19-3051.00",
+   "values": {
+    "I": 72,
+    "E": 58,
+    "C": 49,
+    "R": 37,
+    "A": 34,
+    "S": 34
+   },
+   "onetTitle": "19-3051.00 - Urban and Regional Planners"
+  },
+  "pub-3": {
+   "field": "pub",
+   "title": "Police Officer",
+   "soc": "33-3051.00",
+   "values": {
+    "R": 73,
+    "C": 56,
+    "E": 51,
+    "S": 41,
+    "I": 29,
+    "A": 1
+   },
+   "onetTitle": "33-3051.00 - Police and Sheriff's Patrol Officers"
+  },
+  "pub-4": {
+   "field": "pub",
+   "title": "Disaster Management Officer",
+   "soc": "11-9161.00",
+   "values": {
+    "E": 68,
+    "C": 62,
+    "I": 58,
+    "S": 50,
+    "R": 42,
+    "A": 14
+   },
+   "onetTitle": "11-9161.00 - Emergency Management Directors"
+  },
+  "hos-1": {
+   "field": "hos",
+   "title": "Airline Pilot",
+   "soc": "53-2011.00",
+   "values": {
+    "C": 62,
+    "R": 62,
+    "E": 47,
+    "I": 36,
+    "S": 25,
+    "A": 7
+   },
+   "onetTitle": "53-2011.00 - Airline Pilots, Copilots, and Flight Engineers"
+  },
+  "hos-2": {
+   "field": "hos",
+   "title": "Chef",
+   "soc": "35-1011.00",
+   "values": {
+    "E": 69,
+    "R": 64,
+    "C": 56,
+    "S": 33,
+    "A": 29,
+    "I": 11
+   },
+   "onetTitle": "35-1011.00 - Chefs and Head Cooks"
+  },
+  "hos-3": {
+   "field": "hos",
+   "title": "Hotel Manager",
+   "soc": "11-9081.00",
+   "values": {
+    "E": 87,
+    "C": 70,
+    "S": 55,
+    "R": 28,
+    "A": 7,
+    "I": 2
+   },
+   "onetTitle": "11-9081.00 - Lodging Managers"
+  },
+  "hos-4": {
+   "field": "hos",
+   "title": "Cabin Crew",
+   "soc": "53-2031.00",
+   "values": {
+    "C": 57,
+    "S": 53,
+    "R": 51,
+    "E": 44,
+    "I": 17,
+    "A": 5
+   },
+   "onetTitle": "53-2031.00 - Flight Attendants"
+  },
+  "agr-1": {
+   "field": "agr",
+   "title": "Soil and Plant Scientist",
+   "soc": "19-1013.00",
+   "values": {
+    "I": 95,
+    "R": 91,
+    "C": 40,
+    "A": 19,
+    "E": 12,
+    "S": 11
+   },
+   "onetTitle": "19-1013.00 - Soil and Plant Scientists"
+  },
+  "agr-2": {
+   "field": "agr",
+   "title": "Animal Scientist",
+   "soc": "19-1011.00",
+   "values": {
+    "I": 99,
+    "R": 71,
+    "C": 39,
+    "E": 23,
+    "A": 16,
+    "S": 16
+   },
+   "onetTitle": "19-1011.00 - Animal Scientists"
+  },
+  "agr-3": {
+   "field": "agr",
+   "title": "Forester",
+   "soc": "19-1032.00",
+   "values": {
+    "R": 72,
+    "I": 58,
+    "C": 57,
+    "E": 46,
+    "S": 22,
+    "A": 4
+   },
+   "onetTitle": "19-1032.00 - Foresters"
+  },
+  "agr-4": {
+   "field": "agr",
+   "title": "Conservation Scientist",
+   "soc": "19-1031.00",
+   "values": {
+    "I": 78,
+    "R": 69,
+    "C": 50,
+    "E": 36,
+    "S": 31,
+    "A": 16
+   },
+   "onetTitle": "19-1031.00 - Conservation Scientists"
+  },
+  "agr-5": {
+   "field": "agr",
+   "title": "Farm or Agribusiness Manager",
+   "soc": "11-9013.00",
+   "values": {
+    "E": 75,
+    "R": 69,
+    "C": 59,
+    "I": 29,
+    "S": 27,
+    "A": 1
+   },
+   "onetTitle": "11-9013.00 - Farmers, Ranchers, and Other Agricultural Managers"
+  },
+  "voc-1": {
+   "field": "voc",
+   "title": "Electrician",
+   "soc": "47-2111.00",
+   "values": {
+    "R": 100,
+    "C": 52,
+    "I": 28,
+    "E": 14,
+    "S": 5,
+    "A": 4
+   },
+   "onetTitle": "47-2111.00 - Electricians"
+  },
+  "voc-2": {
+   "field": "voc",
+   "title": "Automobile Technician",
+   "soc": "49-3023.00",
+   "values": {
+    "R": 100,
+    "C": 55,
+    "I": 43,
+    "E": 10,
+    "S": 8,
+    "A": 0
+   },
+   "onetTitle": "49-3023.00 - Automotive Service Technicians and Mechanics"
+  },
+  "voc-3": {
+   "field": "voc",
+   "title": "Welder",
+   "soc": "51-4121.00",
+   "values": {
+    "R": 100,
+    "C": 44,
+    "I": 18,
+    "E": 9,
+    "A": 7,
+    "S": 1
+   },
+   "onetTitle": "51-4121.00 - Welders, Cutters, Solderers, and Brazers"
+  },
+  "voc-4": {
+   "field": "voc",
+   "title": "Electronics Technician",
+   "soc": "17-3023.00",
+   "values": {
+    "R": 88,
+    "I": 70,
+    "C": 67,
+    "A": 13,
+    "S": 13,
+    "E": 5
+   },
+   "onetTitle": "17-3023.00 - Electrical and Electronic Engineering Technologists and Technicians"
+  },
+  "voc-5": {
+   "field": "voc",
+   "title": "Machinist",
+   "soc": "51-4041.00",
+   "values": {
+    "R": 100,
+    "C": 57,
+    "I": 45,
+    "A": 16,
+    "E": 4,
+    "S": 3
+   },
+   "onetTitle": "51-4041.00 - Machinists"
+  },
+  "voc-6": {
+   "field": "voc",
+   "title": "Civil Engineering Technician",
+   "soc": "17-3022.00",
+   "values": {
+    "R": 79,
+    "I": 73,
+    "C": 71,
+    "A": 31,
+    "E": 17,
+    "S": 9
+   },
+   "onetTitle": "17-3022.00 - Civil Engineering Technologists and Technicians"
+  },
+  "art-1": {
+   "field": "arts",
+   "title": "Musician or Singer",
+   "soc": "27-2042.00",
+   "values": {
+    "A": 94,
+    "E": 40,
+    "S": 40,
+    "R": 31,
+    "C": 20,
+    "I": 9
+   },
+   "onetTitle": "27-2042.00 - Musicians and Singers"
+  },
+  "art-2": {
+   "field": "arts",
+   "title": "Actor",
+   "soc": "27-2011.00",
+   "values": {
+    "A": 100,
+    "S": 51,
+    "E": 50,
+    "R": 22,
+    "I": 19,
+    "C": 14
+   },
+   "onetTitle": "27-2011.00 - Actors"
+  },
+  "art-3": {
+   "field": "arts",
+   "title": "Dancer",
+   "soc": "27-2031.00",
+   "values": {
+    "A": 90,
+    "R": 64,
+    "S": 44,
+    "E": 36,
+    "C": 10,
+    "I": 7
+   },
+   "onetTitle": "27-2031.00 - Dancers"
+  },
+  "art-4": {
+   "field": "arts",
+   "title": "Producer or Director",
+   "soc": "27-2012.00",
+   "values": {
+    "A": 86,
+    "E": 80,
+    "C": 43,
+    "S": 35,
+    "I": 21,
+    "R": 19
+   },
+   "onetTitle": "27-2012.00 - Producers and Directors"
+  },
+  "art-5": {
+   "field": "arts",
+   "title": "Photographer",
+   "soc": "27-4021.00",
+   "values": {
+    "R": 76,
+    "A": 71,
+    "C": 39,
+    "E": 21,
+    "I": 20,
+    "S": 16
+   },
+   "onetTitle": "27-4021.00 - Photographers"
+  },
+  "mar-1": {
+   "field": "mar",
+   "title": "Ship Captain or Navigator",
+   "soc": "53-5021.00",
+   "values": {
+    "R": 77,
+    "C": 59,
+    "E": 54,
+    "I": 27,
+    "S": 15,
+    "A": 0
+   },
+   "onetTitle": "53-5021.00 - Captains, Mates, and Pilots of Water Vessels"
+  },
+  "mar-2": {
+   "field": "mar",
+   "title": "Marine Engineer",
+   "soc": "17-2121.00",
+   "values": {
+    "I": 79,
+    "R": 79,
+    "C": 55,
+    "E": 38,
+    "A": 27,
+    "S": 5
+   },
+   "onetTitle": "17-2121.00 - Marine Engineers and Naval Architects"
+  },
+  "mar-3": {
+   "field": "mar",
+   "title": "Logistics Manager",
+   "soc": "13-1081.00",
+   "values": {
+    "C": 74,
+    "E": 67,
+    "I": 47,
+    "R": 23,
+    "S": 22,
+    "A": 2
+   },
+   "onetTitle": "13-1081.00 - Logisticians"
+  },
+  "mar-4": {
+   "field": "mar",
+   "title": "Supply Chain Manager",
+   "soc": "11-3071.00",
+   "values": {
+    "E": 83,
+    "C": 79,
+    "R": 43,
+    "I": 27,
+    "S": 23,
+    "A": 0
+   },
+   "onetTitle": "11-3071.00 - Transportation, Storage, and Distribution Managers"
+  },
+  "spo-1": {
+   "field": "spo",
+   "title": "Professional Athlete",
+   "soc": "27-2021.00",
+   "values": {
+    "R": 70,
+    "E": 59,
+    "S": 55,
+    "C": 34,
+    "A": 19,
+    "I": 7
+   },
+   "onetTitle": "27-2021.00 - Athletes and Sports Competitors"
+  },
+  "spo-2": {
+   "field": "spo",
+   "title": "Coach or Sports Trainer",
+   "soc": "27-2022.00",
+   "values": {
+    "S": 72,
+    "E": 69,
+    "R": 54,
+    "C": 41,
+    "A": 24,
+    "I": 19
+   },
+   "onetTitle": "27-2022.00 - Coaches and Scouts"
+  },
+  "spo-3": {
+   "field": "spo",
+   "title": "Fitness Trainer",
+   "soc": "39-9031.00",
+   "values": {
+    "S": 77,
+    "R": 71,
+    "E": 42,
+    "C": 33,
+    "I": 29,
+    "A": 23
+   },
+   "onetTitle": "39-9031.00 - Exercise Trainers and Group Fitness Instructors"
+  },
+  "pub-5": {
+   "field": "pub",
+   "title": "Civil Services Officer (administration)",
+   "soc": "11-3012.00",
+   "values": {
+    "E": 91,
+    "C": 88,
+    "S": 46,
+    "I": 19,
+    "R": 7,
+    "A": 2
+   },
+   "onetTitle": "11-3012.00 - Administrative Services Managers"
+  },
+  "com-9": {
+   "field": "com",
+   "title": "Compliance or Company Secretary",
+   "soc": "13-1041.00",
+   "values": {
+    "C": 89,
+    "E": 51,
+    "I": 35,
+    "S": 33,
+    "R": 25,
+    "A": 0
+   },
+   "onetTitle": "13-1041.00 - Compliance Officers"
+  },
+  "doc-7": {
+   "field": "health",
+   "title": "Medical Laboratory Technologist",
+   "soc": "29-2011.00",
+   "values": {
+    "I": 86,
+    "R": 80,
+    "C": 67,
+    "S": 30,
+    "E": 9,
+    "A": 2
+   },
+   "onetTitle": "29-2011.00 - Medical and Clinical Laboratory Technologists"
+  },
+  "doc-8": {
+   "field": "health",
+   "title": "Radiologic Technologist",
+   "soc": "29-2034.00",
+   "values": {
+    "R": 82,
+    "C": 68,
+    "I": 65,
+    "S": 40,
+    "A": 0,
+    "E": 0
+   },
+   "onetTitle": "29-2034.00 - Radiologic Technologists and Technicians"
+  },
+  "law-3": {
+   "field": "law",
+   "title": "Forensic Science Technician",
+   "soc": "19-4092.00",
+   "values": {
+    "I": 82,
+    "R": 70,
+    "C": 66,
+    "A": 13,
+    "E": 10,
+    "S": 8
+   },
+   "onetTitle": "19-4092.00 - Forensic Science Technicians"
+  }
+ }
+}

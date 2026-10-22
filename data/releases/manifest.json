@@ -1,0 +1,20 @@
+{
+ "accepted_at": "2026-10-22T03:29:11+00:00",
+ "python": "3.13.16",
+ "files": {
+  "latest.json": "7291a24cf34cb6af91c3aa2e559ebb2d9238cf6adfa0880b07e3b4092430d354",
+  "abroad.json": "a5485147963325efd22c671c6d3a67f45e37ffde5636f7d79b2cf5b22f4db8a8",
+  "story2.json": "3d1ea97a1f33027111e4526e3e6db4c998884c12a86ac6c236dee836b5fa0c0a"
+ },
+ "raw": {
+  "ai/bls_ai_exposure.csv": "776ea35b72bdcc4e19659e1438983ad10d8cf5b213cad5383846008dc623f7b1",
+  "ai/job_exposure.csv": "4f0a3adf5feeb2ec5f5d02ab18cc5e851a2a4b8470bde84c0c9335017be12d68",
+  "ai/task_pen.csv": "85bee872db1d55d3e9a7f4e89da5ae4a5d59aa8ec875d728fbf4b7d820984616",
+  "ai/tasks.json": "cdfb000cc5bf477888ffbe445a34a8da2c9217d96f2b3e2cc39c04634a103599",
+  "onet/careers.json": "62d8e7f133fe08acafcf8913b2c7fe01d15dccc809cb513151dc1481be7e918f",
+  "onet/wages.json": "9df29d6d4f103bbc40efbcce28c3dc7b3aada0e102d94cbf99b8969043eac39d",
+  "plfs_2025.json": "d6335933918ff303f667603f8f30d2245e90838b3f4c4fd967b1673b6cd0fcbc",
+  "refcal.json": "f15741fdeed7e090a389dfa3f8090d7e80ee848e5780091153e1ec6c014c1de1"
+ },
+ "release_id": "6eb66f80dabc"
+}

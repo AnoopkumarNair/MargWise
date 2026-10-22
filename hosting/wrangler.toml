@@ -1,0 +1,8 @@
+name = "margwise"
+pages_build_output_dir = "public"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "margwise-test"
+database_id = "638e0a4f-cfbc-495d-b1a5-ffa3559efcd9"

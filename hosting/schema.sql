@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS testers (id TEXT PRIMARY KEY, name TEXT NOT NULL, created_at INTEGER NOT NULL, ua TEXT);
+CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, tester_id TEXT NOT NULL, session_id TEXT, ts INTEGER NOT NULL, type TEXT NOT NULL, data TEXT);
+CREATE INDEX IF NOT EXISTS idx_events_tester ON events(tester_id, ts);
+CREATE INDEX IF NOT EXISTS idx_events_type ON events(type);

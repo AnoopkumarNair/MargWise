@@ -1,0 +1,30 @@
+{
+ "year": 2025,
+ "retrieved": "2026-10-21",
+ "note": "Average monthly earnings of salaried (regular wage) employees in India, by broad occupation group (NCO-2015 division). All ages and experience; self-employed people are not included.",
+ "groups": {
+  "Managers": 50408,
+  "Professionals": 38466,
+  "Technicians and associate professionals": 26175,
+  "Clerical support workers": 24289,
+  "Service and sales workers": 15541,
+  "Craft and related trades workers": 16773,
+  "Plant and machine operators and assemblers": 17301
+ },
+ "education": {
+  "Diploma or certificate": 25722,
+  "Graduate": 32683,
+  "Postgraduate and above": 45430,
+  "Higher secondary": 18539
+ },
+ "age": {
+  "20-24": 14779,
+  "25-29": 20860
+ },
+ "conf": "secondary",
+ "src": [
+  "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2246009&lang=1&reg=3",
+  "https://indialabourobservatory.com/data/plfs-2025/earnings/"
+ ],
+ "verify": "Only the headline averages (male 24,217 and female 18,353 a month) were checked against the MoSPI press note. The education, age and occupation figures come from the India Labour Observatory, which computes them from MoSPI unit-level records."
+}

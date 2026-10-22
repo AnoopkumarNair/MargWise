@@ -1,0 +1,4 @@
+ALTER TABLE events ADD COLUMN eid TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS uq_events_eid ON events(tester_id, eid);
+CREATE TABLE IF NOT EXISTS joins (ip TEXT NOT NULL, ts INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS idx_joins ON joins(ip, ts);
