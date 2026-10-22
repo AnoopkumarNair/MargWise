@@ -52,10 +52,10 @@ The match count only tests the field ranking. The depth (subjects, exams, colleg
 - The founder sees all reviews, average overlap, "would use" counts, flagged facts and the fields most often missed in Admin > Counsellor reviews, with a CSV.
 
 ## Setup and teardown checklist
-- **Database:** apply `hosting/schema.sql`, then `schema2.sql` to `schema9.sql` once each, in order (the `ALTER` lines fail if run twice).
+- **Database:** apply `hosting/schema.sql`, then `schema2.sql` to `schema10.sql` once each, in order (the `ALTER` lines fail if run twice).
 - **Privacy notice:** the student notice says the school counsellor can see name, completion and results. The parent consent sheet must say the same. Get it checked before minors take part.
 - **End of pilot:** run `POST /api/admin?endpilot=1`. It deletes every student's game data and counsellor review, and deletes students without follow-up consent completely. Students whose consent sheet covers follow-ups keep only first name, class, consent date and follow-up notes, as the student notice says. Counsellor keys stay active until the last follow-up, then turn them off. A single student's data can be removed any time in Admin > Testers ("Delete this tester's data") or by the counsellor ("Remove"). Check the result in the audit log (`?audit=1`). The student notice promises deletion by a stated date, so diarise it and check the audit log (`?audit=1`). Turn off every counsellor key.
-- **Lockout:** counsellor and admin wrong-key attempts share one counter per network address, so several typos at one school can lock that address for 15 minutes.
+- **Lockout:** admin and counsellor wrong-key attempts have separate counters per network address (30 wrong keys in 15 minutes locks that address out of that area only).
 
 ## What the student sees on each field page (explanation panel)
 For each suggested field the page shows: the three choices that pointed there (with the stop name and the card), one choice that pointed elsewhere, how the field lines up with the student's types, what is still uncertain (a close neighbour, thin evidence, spread-out choices, interest not ability, US-based data) and what to try next. The effect of each choice is measured by leaving it out and re-scoring the field. The question bank is documented card by card in `docs/QUESTION_MAP.md` (generated, kept current by CI) and the wording audit in `docs/CARD_AUDIT.md`.

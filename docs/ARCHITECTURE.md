@@ -96,7 +96,7 @@ Run `python3 pipeline/run.py` (offline, from committed snapshots) or `--fetch` (
 | 4 | Plan B, colleges, field reference table | `extras.py`, `refcal.json` | fields and `fieldRef` | Yes |
 | 5 | Attach AI exposure | BLS categories, Anthropic, O*NET tasks | `careers[].ai`, `careers[].us.growthPct` | Yes; Anthropic and O*NET with `--refresh`, BLS by saving its xlsx by hand |
 | 6 | Validate | all data files | pass or fail, warnings for stale data | Yes |
-| 7 | Build reviewer fact checks | `content.json`, `abroad.json` | `hosting/public/admin/claims.json` (322 tasks) | Yes |
+| 7 | Build reviewer fact checks | `content.json`, `abroad.json` | `hosting/functions/api/_claims.json` (239 tasks, bundled with the admin function, not served publicly) | Yes |
 | 8 | Change report | previous release vs new build | `data/releases/CHANGES.md` | Yes |
 | 9 | Human review and `--accept` | change report, reviewer answers | `data/releases/` (latest.json, abroad.json, story2.json, manifest.json with SHA-256 hashes and a release id) | **Manual by design** |
 | 10 | Build and deploy the game | the accepted release only, art, vendored fonts and GSAP | `app/dist`, `hosting/public`, `hosting/public/manifest.json` | `python3 app/build.py` fails if there is no accepted release or a hash does not match (`--dev` makes a local-only build); deploy is manual |
@@ -207,10 +207,13 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 - School counsellors see their own school's students (name, completion, results after they lock their picks). The student notice says so. A counsellor key is personal and school-scoped; only its SHA-256 is stored.
 - Counsellor reviews are deleted with the tester (admin delete and the purge). Reviews record whether the picks were locked before the student reached the results ("blind"); only blind reviews feed the headline match rate.
 - Counsellor and admin wrong-key attempts share one lockout counter per network address.
-- Apply `hosting/schema.sql`, then `schema2.sql` to `schema9.sql`, once each in order.
+- Apply `hosting/schema.sql`, then `schema2.sql` to `schema10.sql`, once each in order.
 
 ### Counsellor-led mode
 A counsellor adds a student (consent sheet ticked and dated), locks their own top 3, then `start` returns a tester token that the counsellor page writes into the browser's own storage (it is never put in a URL), wiping an earlier student's saved result and walk, and opens the game. A counsellor-led sign-in lasts 6 hours; after 30 idle minutes the game asks "Is this still <name>?" before anything is recorded. The walk is saved after each step and replayed on "Continue your walk". Counsellors see their school's self-signed students plus the students they added; `remove` deletes a student's events, review and follow-ups and writes an audit row.
 
 ### Question bank documentation and checks (added)
 `engine/tools/question_map.mjs` generates `docs/QUESTION_MAP.md` (constructs, every card with its main and related type, coverage, independence); CI fails if it is stale. `engine/tests/design.test.mjs` checks the bank's balance and that no single stop changes the top field in more than 25 percent of simulated journeys (currently about 20 percent at worst). Card wording was audited for social desirability (`docs/CARD_AUDIT.md`); three rounds of card rewrites (trade-offs, then single-activity wording) changed most of the 60 cards. The audit is one rater and unvalidated.
+
+### Security status (red team, local instance)
+`docs/reviews/redteam_report.md` records an attacker-style assessment: no critical or high findings; parameterised queries, escaped output, fail-closed auth, atomic invite claims and school scoping all held. Fixed since: admin and counsellor lockouts are separate counters with a higher threshold (keys carry about 74 bits, so lockout is a deterrent only); student identifiers are no longer written to the audit log (`schema10.sql` scrubs old rows); the fact-check corpus is bundled with the function instead of served from `/admin/claims.json`; consent dates older than two years are refused; `build-check` has read-only permissions. **Still open:** the game page's CSP keeps `unsafe-inline` for its own bootstrap script; tester tokens do not expire; GitHub Actions are pinned to version tags, not commit SHAs; and production-only controls were not tested (confirm on the live site that Cloudflare overwrites `cf-connecting-ip`, check the WAF and rate limits, the strength of the real `ADMIN_KEY` and `SIGN_KEY`, and the repository's Actions permission settings).

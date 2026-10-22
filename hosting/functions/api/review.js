@@ -9,11 +9,11 @@ const csvCell = v => { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v
 const codeOf = id => id.replace(/-/g, '').slice(0, 6).toUpperCase();
 async function authed(request, env) {
   const key = (request.headers.get('x-counsellor-key') || '').trim(), now = Date.now(), ip = keyOk(env.SIGN_KEY) ? await ipHash(request, env.SIGN_KEY) : 'x';
-  const f = await env.DB.prepare('SELECT COUNT(*) AS n FROM admin_fail WHERE ip = ? AND ts > ?').bind(ip, now - 900000).first();
-  if (f && f.n >= 8) return { status: 429 };
+  const f = await env.DB.prepare('SELECT COUNT(*) AS n FROM admin_fail WHERE ip = ? AND ts > ?').bind('c:' + ip, now - 900000).first();
+  if (f && f.n >= 30) return { status: 429 };
   if (keyOk(env.ADMIN_KEY) && safeEq(key, env.ADMIN_KEY)) return { status: 200, admin: true, id: null, name: 'admin', invite_id: null };
   const c = key.length >= 12 ? await env.DB.prepare('SELECT id, name, invite_id FROM counsellors WHERE key_hash = ? AND active = 1').bind(await sha(key)).first() : null;
-  if (!c) { await env.DB.prepare('INSERT INTO admin_fail (ip, ts) VALUES (?, ?)').bind(ip, now).run(); return { status: 403 }; }
+  if (!c) { await env.DB.prepare('INSERT INTO admin_fail (ip, ts) VALUES (?, ?)').bind('c:' + ip, now).run(); return { status: 403 }; }
   await env.DB.prepare('UPDATE counsellors SET last_used = ? WHERE id = ?').bind(now, c.id).run();
   return { status: 200, admin: false, ...c };
 }
@@ -63,10 +63,10 @@ export async function onRequest({ request, env }) {
     if (me.admin) return json({ error: 'Use a counsellor key to add students.' }, 400);
     const name = clean(b.name, 40), klass = clean(b.klass, 10), on = clean(b.consent_on, 10), fup = b.followup === true ? 1 : 0;
     if (!name) return json({ error: 'Add the student\'s first name.' }, 400);
-    if (b.consent !== true || !DATE.test(on) || Number.isNaN(Date.parse(on)) || new Date(on + 'T00:00:00Z').toISOString().slice(0, 10) !== on || Date.parse(on) > now + 86400000) return json({ error: 'Tick that a signed parent consent sheet is on file, and give its date.' }, 400);
+    if (b.consent !== true || !DATE.test(on) || Number.isNaN(Date.parse(on)) || new Date(on + 'T00:00:00Z').toISOString().slice(0, 10) !== on || Date.parse(on) > now + 86400000 || Date.parse(on) < now - 730 * 86400000) return json({ error: 'Tick that a signed parent consent sheet is on file, and give its date.' }, 400);
     const cnt = await env.DB.prepare('SELECT COUNT(*) AS n FROM testers WHERE counsellor_id = ? AND created_at > ?').bind(me.id, now - 86400000).first(); if (cnt && cnt.n >= 60) return json({ error: 'Daily limit reached.' }, 429);
     const id = crypto.randomUUID();
-    await env.DB.batch([env.DB.prepare('INSERT INTO testers (id, name, created_at, ua, invite_id, source, counsellor_id, klass, consent_on, followup_ok) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?)').bind(id, name, now, me.invite_id, 'counsellor', me.id, klass, on, fup), env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'student_added', JSON.stringify({ code: codeOf(id), counsellor_id: me.id, consent_on: on }))]);
+    await env.DB.batch([env.DB.prepare('INSERT INTO testers (id, name, created_at, ua, invite_id, source, counsellor_id, klass, consent_on, followup_ok) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?)').bind(id, name, now, me.invite_id, 'counsellor', me.id, klass, on, fup), env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'student_added', JSON.stringify({ counsellor_id: me.id }))]);
     return json({ ok: true, code: codeOf(id) });
   }
   const code = clean(b.code, 8).toUpperCase(); if (!CODE.test(code)) return json({ error: 'Bad student code.' }, 400);
@@ -80,7 +80,7 @@ export async function onRequest({ request, env }) {
   }
   if ((b.action === 'remove' || b.action === 'followup') && ex && !me.admin && ex.counsellor_id !== me.id) return json({ error: 'Another counsellor reviewed this student.' }, 403);
   if (b.action === 'remove') {   // withdrawal: everything about the student goes, and the removal is logged without the name
-    await env.DB.batch([env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(t.id), env.DB.prepare('DELETE FROM reviews WHERE tester_id = ?').bind(t.id), env.DB.prepare('DELETE FROM followups WHERE tester_id = ?').bind(t.id), env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(t.id), env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'student_removed', JSON.stringify({ code, by: me.name }))]);
+    await env.DB.batch([env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(t.id), env.DB.prepare('DELETE FROM reviews WHERE tester_id = ?').bind(t.id), env.DB.prepare('DELETE FROM followups WHERE tester_id = ?').bind(t.id), env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(t.id), env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'student_removed', JSON.stringify({ by: me.name }))]);
     return json({ ok: true });
   }
   if (b.action === 'followup') {

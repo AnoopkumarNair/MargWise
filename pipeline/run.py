@@ -26,7 +26,7 @@ run('3  attach India pay (PLFS)', ['plfs.py'])
 run('4  plan B, colleges, field refs', ['extras.py'])
 run('5  attach AI exposure', ['ai_exposure.py', '--content', 'content.json', '--cache', 'ai'] + (['--refresh'] if a.fetch else []))
 run('6  validate (quality gate)', [os.path.join(ROOT, 'pipeline', 'validate.py'), DATA], cwd=ROOT)
-run('7  build reviewer fact checks', ['claims_json.py'], env={'CLAIMS_OUT': os.path.join(ROOT, 'hosting', 'public', 'admin', 'claims.json')})
+run('7  build reviewer fact checks', ['claims_json.py'], env={'CLAIMS_OUT': os.path.join(ROOT, 'hosting', 'functions', 'api', '_claims.json')})
 if os.path.exists(prev):
     out = subprocess.run([sys.executable, os.path.join(ROOT, 'pipeline', 'diff.py'), prev, os.path.join(DATA, 'content.json')], capture_output=True, text=True).stdout
     open(os.path.join(DATA, 'releases', 'CHANGES.md'), 'w', encoding='utf8').write(out); print('8  change report                    ok    ', out.count('\n- '), 'changes -> data/releases/CHANGES.md')
