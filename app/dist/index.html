@@ -125,8 +125,6 @@
   .grp .chips.row3 { grid-template-columns: 1fr 1fr 1fr; }
   .radarwrap { display: grid; place-items: center; background: rgba(255,255,255,.06); border-radius: 20px; padding: 6px 4px 2px; }
   .radarwrap svg { width: min(100%, 360px); height: auto; display: block; }
-  .rpoly { transform-origin: 160px 140px; animation: rgrow .9s cubic-bezier(.2,.8,.2,1) .2s both; }
-  @keyframes rgrow { from { transform: scale(.05); opacity: 0; } to { transform: none; opacity: 1; } }
   .artbg { background-image: var(--art); background-position: center top; background-size: cover; background-repeat: no-repeat; background-color: #070a22; }
   @media (min-aspect-ratio: 1/1) { .artbg { background-image: var(--art), linear-gradient(rgba(7,10,34,.86), rgba(7,10,34,.86)), var(--art); background-size: auto 100%, cover, cover; background-position: center, center, center; } }
   #intro .bg { position: absolute; inset: 0; } #intro .actions { position: absolute; left: 16px; right: 16px; bottom: calc(var(--safe-bot, 0px) + 22px); max-width: 520px; margin: 0 auto; display: grid; gap: 10px; } #intro .introfade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,10,34,0) 40%, rgba(7,10,34,.78) 100%); pointer-events: none; }
@@ -136,16 +134,6 @@
   .beatart { height: 160px; border-radius: 14px; background: center 30% / cover no-repeat; margin-bottom: 10px; }
   .clue { display: block; margin-top: 4px; font-weight: 600; opacity: .9; } .clue i { font-style: normal; font-size: .85em; color: #7a5a1a; }
   .howto { font-size: 14px; color: rgba(255,243,214,.85); text-align: center; padding: 0 10px 8px; }
-  .ranked { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
-  .ranked li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; background: rgba(255,255,255,.08); border-radius: 14px; padding: 10px 12px; }
-  .ranked li.dim { background: rgba(255,255,255,.04); opacity: .85; }
-  .ranked .rk { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 800; background: var(--glow); color: var(--ink); }
-  .ranked li.dim .rk { background: rgba(255,243,214,.2); color: var(--cream); }
-  .ranked .nm { font-weight: 800; font-size: 16px; }
-  .ranked .nm span { font-weight: 700; color: rgba(255,243,214,.8); font-size: 14.5px; }
-  .ranked .bar { display: block; height: 7px; border-radius: 9px; background: rgba(255,243,214,.15); margin: 6px 0 4px; overflow: hidden; }
-  .ranked .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--glow-deep), var(--glow)); border-radius: 9px; }
-  .ranked .sch { font-size: 14px; color: var(--cream-2); }
   .pill { display: inline-block; font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 99px; border: 2px solid var(--ink); background: var(--cream-2); color: var(--ink); white-space: nowrap; }
   .pill.strong { background: var(--glow); } .pill.mixed { background: #bfe5e2; } .pill.weak { background: #e9dfe8; }
   .fcard { width: 100%; text-align: left; display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; background: var(--cream); color: var(--ink); border: 0; border-radius: 20px; padding: 14px; box-shadow: 0 5px 0 #b9955a; }
@@ -205,10 +193,6 @@
   .progwrap { background: rgba(14,16,40,.62); border-radius: 12px; padding: 4px 10px 5px; }
   .prog span { color: #ffe08a; }
   .bubble .thread { color: #3e3354; }
-  .ranked li.dim { opacity: 1; background: rgba(255,255,255,.07); }
-  .ranked li.dim .nm, .ranked li.dim .nm span { color: #f3ecd8; }
-  .ranked li.dim .sch { color: #e6dfcc; }
-  .ranked .nm span { color: #f3ecd8; }
   .note { background: rgba(20,22,52,.72); border-color: #ffcf6b; color: #fff3d6; }
   .howto { color: #efe7d2; }
   .cchips button, .rcards button, .chip { background: rgba(20,22,52,.55); border-color: rgba(255,243,214,.6); color: #fff3d6; }
@@ -237,7 +221,7 @@
     #app > *:not(#parent):not(#how), #hud, #gate, #beat, .sheet, #loader { display: none !important; }
     #parent, #how { position: static !important; overflow: visible !important; height: auto !important; padding: 0 !important; display: none !important; }
     #parent.on, #how.on { display: block !important; }
-    #parent .head, #parent .actions, #parent .pnoprint, #how .head, #how .actions { display: none !important; }
+    #parent .head, #parent .actions, #parent .pnoprint, #how .head, #how .actions, .stepbar { display: none !important; }
     #parent .pgcard, #how .pgcard { background: #fff !important; color: #000 !important; border: 1px solid #999; border-radius: 0; max-width: none !important; width: auto !important; }
     #parent .pgcard *, #how .pgcard * { color: #000 !important; }
     #parent .pnm { border: 0; padding: 0; font-size: 22px; }
@@ -262,6 +246,7 @@
   #lock .lkopts button.fig { min-height: 96px; } #lock .lkopts button.fig svg { max-height: 74px; max-width: 100%; }
   #lock .lkopts button[aria-pressed="true"] { background: #ffe9a8; color: #2a2038; border-color: #ffcf6b; }
   #lock .lkopts button:disabled { opacity: 1; }
+  #lkTry:disabled { opacity: .45; box-shadow: none; }
   #lock .lkfb { min-height: 2.6em; font-weight: 700; color: #ffe9a8; font-family: var(--hand); font-size: 16px; }
   #lock .gate svg { width: 70px; height: 70px; } #lock .shackle { transform-origin: 40px 30px; transition: transform .6s cubic-bezier(.2,.9,.3,1.3); }
   #lock.open .shackle { transform: translateY(-8px) rotate(-28deg); } #lock.open .keyglow { opacity: 1; }
@@ -291,7 +276,47 @@
   #finale .fnnote { font-family: var(--hand); font-weight: 700; font-size: 16.5px; line-height: 1.35; color: #f6eccf; max-width: 34ch; opacity: 0; transition: opacity 1s; }
   #finale .go { max-width: 340px; opacity: 0; transition: opacity .6s; } #finale .go.show { opacity: 1; }
   #finale .fnskip { position: absolute; top: calc(var(--safe-top) + 10px); right: 12px; background: rgba(14,16,40,.6); color: #fff3d6; border: 1.5px solid rgba(255,243,214,.4); border-radius: 999px; padding: 8px 14px; font-weight: 700; min-height: 40px; }
-  @media (prefers-reduced-motion: reduce) { #finale .fnbg, #finale .fnjyo, #finale .fnt, #finale .fnchip { transition: none; } #finale.lit .fnflash { animation: none; } }
+  /* results: a step bar on every result screen, pictures before words */
+  .stepbar ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; position: relative; }
+  .stepbar ol::before { content: ''; position: absolute; left: 12.5%; right: 12.5%; top: 14px; height: 2px; background: rgba(255,243,214,.2); }
+  .stepbar button { position: relative; width: 100%; background: none; border: 0; color: inherit; font: inherit; display: grid; justify-items: center; gap: 3px; padding: 0 0 2px; min-height: 44px; cursor: pointer; }
+  .stepbar .n { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 13px; background: #1c2050; border: 2px solid rgba(255,243,214,.35); color: rgba(255,243,214,.8); }
+  .stepbar .l { font-size: 11.5px; font-weight: 800; line-height: 1.15; text-align: center; color: rgba(255,243,214,.7); }
+  .stepbar li.done .n { background: rgba(255,207,107,.25); border-color: var(--glow); color: var(--glow); }
+  .stepbar li.on .n { background: var(--glow); border-color: var(--glow); color: var(--ink); box-shadow: 0 0 12px rgba(255,207,107,.7); }
+  .stepbar li.on .l { color: var(--cream); }
+  .top3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .t3 { position: relative; display: grid; justify-items: center; text-align: center; gap: 2px; background: rgba(255,255,255,.08); border: 2px solid var(--rc); border-radius: 16px; padding: 14px 6px 10px; opacity: 0; animation: cardin .5s ease forwards; }
+  .t3 .rk { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--rc); color: var(--ink); font-family: var(--display); font-weight: 800; font-size: 14px; border: 2px solid #2a2038; }
+  .t3 .ic { font-size: 30px; line-height: 1.2; }
+  .t3 b { font-size: 16px; font-weight: 800; } .t3 small { font-size: 12.5px; font-weight: 700; line-height: 1.2; color: var(--cream-2); min-height: 2.4em; }
+  .t3 .bar { width: 100%; height: 6px; border-radius: 9px; background: rgba(255,243,214,.15); overflow: hidden; margin-top: 4px; } .t3 .bar i { display: block; height: 100%; background: var(--rc); border-radius: 9px; }
+  .subjline { font-size: 14px; font-weight: 600; color: var(--cream-2); margin: 10px 2px 0; }
+  .rest { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; } .rest small { font-size: 13px; font-weight: 800; opacity: .75; margin-right: 2px; }
+  .rc { font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,243,214,.25); }
+  .sure { background: rgba(255,255,255,.07); border-radius: 14px; padding: 8px 12px; } .sure details summary { cursor: pointer; font-weight: 800; font-size: 14px; color: #ffe08a; min-height: 32px; display: flex; align-items: center; } .sure details p { font-size: 14px; font-weight: 600; margin: 2px 0 4px; }
+  .sure .sureRow::before { content: 'How sure is this?'; font-size: 13.5px; font-weight: 700; opacity: .8; }
+  #saveBtn { align-self: center; width: auto; min-width: 0; padding: 8px 18px; font-size: 15px; }
+  .nextbar { position: sticky; bottom: calc(-1 * (var(--safe-bot) + 14px)); margin: 0 -14px calc(-1 * (var(--safe-bot) + 14px)); padding: 18px 14px calc(var(--safe-bot) + 14px); background: linear-gradient(180deg, rgba(20,26,58,0), rgba(20,26,58,.94) 34%); z-index: 3; }
+  .nexthint { text-align: center; font-size: 13px; font-weight: 800; color: var(--cream-2); }
+  .fcard .why { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-top: 6px; } .fcard .why small { font-size: 13px; font-weight: 800; color: #4a3f5c; } .fcard .why .tc { color: var(--ink); background: #fff3d6; font-size: 12.5px; padding: 2px 9px; }
+  .minor { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; } .minor .linkbtn { text-align: center; font-size: 14.5px; }
+  .cstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .cs { display: grid; justify-items: start; gap: 1px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 6px 8px; } .cs small { font-size: 10.5px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; opacity: .75; white-space: nowrap; } .cs b { font-size: 16px; font-weight: 900; white-space: nowrap; } .cs > span:last-child { font-size: 11.5px; font-weight: 700; opacity: .8; }
+  .cs.up b { color: #7fe0b0; } .cs.dn b { color: #ff9a9a; } .cs.fl b { color: #ffe08a; }
+  .aim { display: inline-flex; gap: 3px; align-items: flex-end; height: 20px; margin: 2px 0; } .aim i { width: 7px; border-radius: 2px; background: rgba(255,243,214,.22); } .aim i:nth-child(1) { height: 6px; } .aim i:nth-child(2) { height: 10px; } .aim i:nth-child(3) { height: 15px; } .aim i:nth-child(4) { height: 20px; }
+  .aim i.on { background: #ffe08a; } .aim.w i.on { background: #ffb347; }
+  .road { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 2px; position: relative; margin-top: 4px; }
+  .road::before { content: ''; position: absolute; left: 10%; right: 10%; top: 21px; height: 3px; border-radius: 3px; background: repeating-linear-gradient(90deg, rgba(255,207,107,.7) 0 8px, transparent 8px 14px); }
+  .road button { position: relative; background: none; border: 0; color: inherit; font: inherit; display: grid; justify-items: center; gap: 4px; padding: 0; min-height: 64px; cursor: pointer; }
+  .road .sic { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 21px; background: #23285e; border: 2px solid rgba(255,207,107,.45); transition: transform .2s, box-shadow .2s; }
+  .road small { font-size: 12px; font-weight: 800; text-align: center; line-height: 1.15; opacity: .8; }
+  .road button.done .sic { background: #3a3470; border-color: var(--glow); }
+  .road button[aria-selected="true"] .sic { background: #ffe9a8; border-color: var(--glow); box-shadow: 0 0 16px rgba(255,207,107,.8); transform: scale(1.1); }
+  .road button[aria-selected="true"] small { opacity: 1; color: var(--glow); }
+  .roadpanel { background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,207,107,.45); border-radius: 16px; padding: 12px 14px 4px; animation: cardin .35s ease both; }
+  .roadpanel small { display: block; font-weight: 800; font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--glow); } .roadpanel p { font-size: 15.5px; font-weight: 600; margin: 4px 0; } .roadpanel a { color: var(--glow); }
+  .tlwrap .xplain { margin: 8px 0 0; } .tlwrap .tl { margin-top: 6px; }
   .aptcard { background: rgba(20,22,52,.72); border: 1.5px solid rgba(255,243,214,.35); border-radius: 14px; padding: 10px 12px; display: grid; gap: 6px; font-size: 14.5px; font-weight: 600; color: #fff3d6; }
   .aptcard b.t { font-size: 16px; } .aptcard .ar { display: flex; justify-content: space-between; gap: 10px; } .aptcard .ar span:last-child { color: #ffe9a8; font-weight: 800; }
   /* ----- tester pack: gate, ratings, feedback ----- */
@@ -435,7 +460,6 @@
   @keyframes cardin { from { opacity: 0; transform: translateX(26px) scale(.96); } to { opacity: 1; transform: none; } }
   .legend .rank { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--glow); color: var(--ink); font-family: var(--display); font-weight: 800; }
   .legend span span { color: rgba(255,243,214,.8); font-weight: 600; }
-  .outro { font-family: var(--hand); font-weight: 700; font-size: 16px; line-height: 1.35; color: var(--cream-2); }
   .note { background: rgba(255,207,107,.14); border: 1.5px dashed var(--glow-deep); border-radius: 14px; padding: 8px 12px; font-size: 14.5px; }
 
   /* ----- doors ----- */
@@ -522,7 +546,53 @@
   }
   @media (min-width: 700px) { #fields { display: grid !important; } }
   @media (min-width: 1100px) { #allFields { grid-template-columns: 1fr 1fr 1fr; } }
-  @media (prefers-reduced-motion: reduce) { * { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; } .obj { animation: none !important; opacity: 1; } }
+  /* motion with a meaning: values grow to their size, things arrive in order, the next step glows. All one-off; reduced motion freezes them on the last frame */
+  @keyframes popin { 0% { opacity: 0; transform: scale(.3); } 70% { opacity: 1; transform: scale(1.15); } 100% { opacity: 1; transform: none; } }
+  @keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-12deg) scale(1.1); } 60% { transform: rotate(9deg) scale(1.05); } }
+  @keyframes fillw { from { width: 0; } }
+  @keyframes growx { from { transform: scaleX(0); } }
+  @keyframes growy { from { transform: scaleY(0); } }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(255,207,107,.75); } 100% { box-shadow: 0 0 0 12px rgba(255,207,107,0); } }
+  @keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @keyframes btnglow { 0%, 100% { box-shadow: 0 5px 0 #b9812e, 0 0 0 0 rgba(255,207,107,0); } 50% { box-shadow: 0 5px 0 #b9812e, 0 0 22px 6px rgba(255,207,107,.6); } }
+  .rbadge { transform-box: fill-box; transform-origin: center; animation: popin .45s cubic-bezier(.2,.8,.2,1) both; }
+  .stepbar ol::after { content: ''; position: absolute; left: 12.5%; top: 14px; height: 2px; width: calc(75% * var(--p, 0)); background: var(--glow); box-shadow: 0 0 6px rgba(255,207,107,.8); transform-origin: left; animation: growx .7s cubic-bezier(.2,.8,.2,1) .15s both; }
+  .stepbar li { position: relative; z-index: 1; }
+  .stepbar li.on .n { animation: popin .45s ease both, ping 1.3s ease-out .6s 3; }
+  .t3 .ic { display: inline-block; animation: popin .5s cubic-bezier(.2,.8,.2,1) both, wiggle .7s ease; }
+  .t3:nth-child(1) .ic { animation-delay: .35s, 1.4s; } .t3:nth-child(2) .ic { animation-delay: .5s, 1.6s; } .t3:nth-child(3) .ic { animation-delay: .65s, 1.8s; }
+  .t3 .bar i { animation: fillw 1s cubic-bezier(.2,.8,.2,1) both; } .t3:nth-child(1) .bar i { animation-delay: .5s; } .t3:nth-child(2) .bar i { animation-delay: .65s; } .t3:nth-child(3) .bar i { animation-delay: .8s; }
+  .t3 .rk { animation: popin .4s ease both; } .t3:nth-child(1) .rk { animation-delay: .3s; } .t3:nth-child(2) .rk { animation-delay: .45s; } .t3:nth-child(3) .rk { animation-delay: .6s; }
+  .subjline, .rest { animation: slidein .5s ease 1s both; }
+  .sure { animation: slidein .5s ease 1.2s both; } .sure .meter i { animation: popin .35s ease both; } .sure .meter i:nth-child(1) { animation-delay: 1.4s; } .sure .meter i:nth-child(2) { animation-delay: 1.55s; } .sure .meter i:nth-child(3) { animation-delay: 1.7s; }
+  #openDoors { animation: btnglow 1.8s ease-in-out 2.4s 3; }
+  .fcard .why .tc { animation: popin .4s ease both; } .fcard .why .tc:nth-of-type(1) { animation-delay: .5s; } .fcard .why .tc:nth-of-type(2) { animation-delay: .62s; }
+  .fhero .gl { animation: popin .5s cubic-bezier(.2,.8,.2,1) .1s both, wiggle .7s ease .8s; }
+  .ftry .ico { display: inline-block; animation: wiggle .8s ease 1.1s 2; }
+  .ccard { animation: cardin .45s ease both; } .ccard:nth-child(2) { animation-delay: .08s; } .ccard:nth-child(3) { animation-delay: .16s; } .ccard:nth-child(n+4) { animation-delay: .24s; }
+  .aim i { transform-origin: bottom; animation: growy .35s ease both; } .aim i:nth-child(1) { animation-delay: .5s; } .aim i:nth-child(2) { animation-delay: .6s; } .aim i:nth-child(3) { animation-delay: .7s; } .aim i:nth-child(4) { animation-delay: .8s; }
+  .cs .arr { display: inline-block; font-style: normal; } .cs.up .arr, .cs.dn .arr { animation: nudge .6s ease 1s 2; }
+  .road button { z-index: 1; animation: popin .4s ease both; animation-delay: var(--d, 0s); }
+  .road::after { content: ''; position: absolute; left: 10%; top: 21px; height: 3px; border-radius: 3px; width: calc(80% * var(--p, 0)); background: var(--glow); box-shadow: 0 0 8px rgba(255,207,107,.9); transition: width .45s cubic-bezier(.2,.8,.2,1); }
+  .road button[aria-selected="true"] .sic { animation: ping 1.2s ease-out .2s 2; }
+  /* radar: web, spokes, points springing out (JS), a spark round the outline, one lighthouse sweep; tap to explain */
+  #reveal.hold, #reveal.hold *, #reveal.hold *::after { animation-play-state: paused !important; }
+  @keyframes ringin { from { transform: scale(.2); opacity: 0; } }
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes trace { 0% { stroke-dashoffset: 1; opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+  @keyframes sweep { 0% { transform: rotate(0); opacity: 0; } 12% { opacity: 1; } 85% { opacity: .8; } 100% { transform: rotate(360deg); opacity: 0; } }
+  @keyframes labhit { 0% { transform: scale(1); } 40% { transform: scale(1.25); fill: #ffcf6b; } 100% { transform: scale(1); } }
+  .rring { transform-origin: 160px 140px; animation: ringin .55s cubic-bezier(.2,.8,.2,1) both; }
+  .rspoke { stroke-dasharray: 1; animation: draw .5s ease-out both; transition: stroke .25s, stroke-width .25s; }
+  .rtrace { stroke-dasharray: .12 .88; animation: trace 1.3s ease-in-out 1.6s both; pointer-events: none; filter: drop-shadow(0 0 4px #ffcf6b); }
+  .rbeam { transform-origin: 160px 140px; animation: sweep 1.9s cubic-bezier(.45,0,.35,1) 2.3s both; pointer-events: none; mix-blend-mode: screen; }
+  .rlab { transform-box: fill-box; transform-origin: center; } .rlab.hit { animation: labhit .5s ease; }
+  .rdot { transform-box: fill-box; transform-origin: center; transition: transform .25s; }
+  .rhit { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .rspoke.sel { stroke: #ffcf6b; stroke-width: 3; } .rdot.sel { transform: scale(1.9); } .rlab.sel { fill: #ffcf6b !important; }
+  .rinfo { display: flex; gap: 10px; align-items: center; margin: 2px 8px 8px; font-size: 14.5px; font-weight: 600; text-align: left; background: rgba(255,207,107,.12); border: 1.5px solid rgba(255,207,107,.5); border-radius: 12px; padding: 8px 10px; animation: cardin .3s ease both; } .rinfo .ric { font-size: 26px; } .rinfo small { font-size: 13px; opacity: .85; }
+  .t3 { cursor: pointer; } .t3[aria-pressed="true"] { background: rgba(255,207,107,.18); box-shadow: 0 0 14px var(--rc); }
+  button.rc { font: inherit; font-size: 13px; font-weight: 700; color: inherit; cursor: pointer; min-height: 32px; } .rc[aria-pressed="true"] { border-color: var(--glow); background: rgba(255,207,107,.2); }
 </style>
 
 <div id="app">
@@ -630,32 +700,36 @@
   </section>
 
   <section class="screen pad res" id="reveal">
+    <div class="stepbar" data-s="1"></div>
     <div class="head"><h2>Your interest shape</h2><p id="revealLine"></p></div>
-    <div class="radarwrap"><svg id="compass" viewBox="-10 0 340 290" role="img" aria-label="Radar chart of your six interest areas"></svg><p class="howto">The further a point is from the middle, the more you enjoyed that kind of activity, compared with your own other choices.</p></div>
-    <ol class="ranked" id="legend"></ol>
+    <div class="radarwrap"><svg id="compass" viewBox="-10 0 340 290" role="img" aria-label="Radar chart of your six interest areas"></svg><p class="howto">Further from the middle means you enjoyed it more, compared with your own other choices. Tap an area to see what it means.</p><p class="rinfo" id="rInfo" aria-live="polite" hidden></p></div>
+    <div id="legend"></div>
+    <div class="sure" id="sure" hidden></div>
     <p class="note" id="notes" hidden></p><p class="note" id="retLine" hidden></p><button class="go quiet logout" type="button" hidden>Log out</button>
-    <p class="outro" id="outro"></p>
     <div id="selfq" hidden><b>Does this shape sound like you?</b><div class="rate" data-k="self"></div><div class="rl"><span>Not me</span><span>Very me</span></div><button class="go quiet" id="chkOpen" type="button">Rate each area yourself</button></div>
-    <div class="actions" style="margin-top:auto"><button class="go quiet" id="saveBtn">Save your lighthouse</button><button class="go" id="openDoors">See where this can lead</button></div>
+    <button class="go quiet" id="saveBtn">Save your lighthouse</button>
+    <div class="actions nextbar" style="margin-top:auto"><small class="nexthint">Next: the fields that fit this shape</small><button class="go" id="openDoors">See where this can lead</button></div>
   </section>
 
   <section class="screen pad res" id="doors">
-    <div class="head"><h2>Where this can lead</h2><p>Areas to explore. These fields fit your answers best so far, and close ones can swap places. Tap one to see careers and the school path.</p></div>
+    <div class="stepbar" data-s="2"></div>
+    <div class="head"><h2>Where this can lead</h2><p>Your three closest fields. Start with the first: tap it to see careers and the school path.</p></div>
     <div class="lean" id="leanNote" hidden></div><p class="fineprint" id="aptNote" hidden></p>
     <div style="display:grid; gap:12px" id="fields"></div>
     <details class="allf"><summary id="allSum">All fields, by stream</summary><div id="allFields"></div></details>
     <p class="fineprint">Prototype content. Careers and school paths are drafts for counsellor review. Check official sites for current rules.<span id="scLine"></span></p>
-    <div class="actions"><button class="go" id="dParent" type="button">Summary for parents</button><button class="go quiet" id="dHow" type="button">How we got this result</button><button class="go quiet logout" type="button" hidden>Log out</button><button class="go" id="fbOpen" type="button" hidden>Share your feedback</button><button class="go quiet" id="again">Walk the road again</button></div>
+    <div class="actions"><button class="go" id="dParent" type="button">Summary for parents</button><button class="go quiet" id="fbOpen" type="button" hidden>Share your feedback</button><div class="minor"><button class="linkbtn" id="dHow" type="button">How we got this result</button><button class="linkbtn" id="again">Walk the road again</button><button class="linkbtn logout" type="button" hidden>Log out</button></div></div>
   </section>
 
   <section class="screen pad res" id="lock">
     <div class="head"><h2 id="lkName"></h2><p id="lkLead"></p></div>
     <div class="gate" aria-hidden="true"><svg viewBox="0 0 80 80"><path class="shackle" d="M24 36V26a16 16 0 0 1 32 0v10" fill="none" stroke="#fff3d6" stroke-width="6" stroke-linecap="round"/><rect x="16" y="34" width="48" height="36" rx="8" fill="#5a4a86" stroke="#fff3d6" stroke-width="3"/><circle class="keyglow" cx="40" cy="50" r="7" fill="#ffd978"/><rect x="38" y="52" width="4" height="10" rx="2" fill="#2a2038"/></svg></div>
     <div class="lkcard"><div class="lkq" id="lkQ"></div><div class="lkfig" id="lkFig"></div><div class="lkopts" id="lkOpts"></div><div class="lkfb" id="lkFb" role="status" aria-live="polite"></div></div>
-    <div class="actions"><button class="go" id="lkNext" type="button" hidden>Next lock</button><button class="go quiet" id="lkSkip" type="button">Skip this lock</button></div>
+    <div class="actions"><button class="go" id="lkTry" type="button" disabled>Pick a key</button><button class="go" id="lkNext" type="button" hidden>Next lock</button><button class="go quiet" id="lkSkip" type="button">Skip this lock</button></div>
   </section>
 
   <section class="screen pad res" id="parent">
+    <div class="stepbar" data-s="4"></div>
     <div class="head"><h2>Summary for parents</h2><p>One page you can read together, save or print.</p></div>
     <div class="pgcard" id="pgcard"></div>
     <div class="actions"><button class="go" id="pPrint" type="button">Print or save as PDF</button><button class="go quiet" id="pBack" type="button">Back</button></div>
@@ -678,12 +752,13 @@
   </section>
 
   <section class="screen pad res" id="field">
+    <div class="stepbar" data-s="3"></div>
     <div class="fhero" id="fHero"></div>
     <div class="ftry" id="fTry" hidden></div>
     <div class="whystrip" id="fWhyStrip"></div>
     <details class="xplain" id="fExplain"><summary>See which choices pointed here</summary><div id="fExplainBody"></div></details>
     <div class="grp"><h3>Careers in this field <small class="swipe">swipe &rarr;</small></h3><p class="fineprint" id="fAiNote"></p><div class="cscroll" id="fCareers"></div></div>
-    <div class="grp"><h3>Your school path</h3><div class="seg" id="fBoard" role="group" aria-label="Board"></div><ol class="tl" id="fPath"></ol><button class="linkbtn" id="fAbroad" type="button">Thinking of studying or working abroad? See how it works for this field.</button></div>
+    <div class="grp"><h3>Your school path <small class="swipe">tap a step</small></h3><div class="seg" id="fBoard" role="group" aria-label="Board"></div><div id="fPath"></div><div class="tlwrap" id="fMore"></div><button class="linkbtn" id="fAbroad" type="button">Thinking of studying or working abroad? See how it works for this field.</button></div>
     <details class="xplain" id="fChk"><summary>Check before relying on this</summary><div class="fineprint" id="fSrc"></div></details>
     <div class="actions"><button class="go quiet" id="fBack">Back to all fields</button></div>
   </section>
@@ -838,7 +913,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 
   var NS = 'http://www.w3.org/2000/svg';
   var $ = function (id) { return document.getElementById(id); };
-  var state = { choices: [], scene: null, echo: false, spent: {}, view: 'welcome', busy: false, dreams: [], result: null, reduce: matchMedia('(prefers-reduced-motion: reduce)').matches };
+  var state = { choices: [], scene: null, echo: false, spent: {}, view: 'welcome', busy: false, dreams: [], result: null, reduce: false };   // motion is part of the game, so it stays on whatever the phone's reduce-motion setting says
 
   // ---------- painted scenes. These are PLACEHOLDERS drawn in code; generated art (window.LAMP_ART.bg) replaces them.
   // Palette per place: sky top, sky middle, horizon glow, tint for the hills.
@@ -1088,7 +1163,24 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     ['welcome', 'intro', 'stop', 'dreams', 'reveal', 'doors', 'field', 'abroad', 'parent', 'how', 'lock'].forEach(function (v) { $(v).classList.toggle('on', v === view); });
     $('hud').hidden = view === 'welcome' || view === 'intro'; $('hud').classList.toggle('solid', view !== 'stop');
     document.body.classList.remove('busy'); state.busy = false;
+    if (STEP_OF[view]) paintSteps(view);
   }
+  // ---------- result steps: one bar on every result screen says where you are and what comes next
+  var STEPS = [['reveal', 'Your shape'], ['doors', 'Fields'], ['field', 'Careers and path'], ['parent', 'Talk it over']], STEP_OF = { reveal: 1, doors: 2, field: 3, parent: 4 };
+  function paintSteps(view) {
+    var cur = STEP_OF[view], seen = state.seen || (state.seen = {}); seen[view] = 1;
+    Array.prototype.forEach.call(document.querySelectorAll('.stepbar'), function (el) {
+      el.innerHTML = '<ol style="--p:' + (cur - 1) / 3 + '" aria-label="Your results, step ' + cur + ' of 4">' + STEPS.map(function (t, i) { var on = i + 1 === cur; return '<li class="' + (on ? 'on' : seen[t[0]] ? 'done' : '') + '"><button type="button" data-v="' + t[0] + '"' + (on ? ' aria-current="step"' : '') + '><span class="n" aria-hidden="true">' + (seen[t[0]] && !on ? '\u2713' : i + 1) + '</span><span class="l">' + t[1] + '</span></button></li>'; }).join('') + '</ol>';
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.stepbar button'); if (!b || !state.result || b.getAttribute('aria-current')) return;
+    var v = b.dataset.v;
+    if (v === 'reveal') { show('reveal'); $('reveal').scrollTop = 0; }
+    else if (v === 'doors') { if (state.fits) show('doors'); else toDoors(); }
+    else if (v === 'field') { if (!state.fits) toDoors(); toField(state.fieldId || state.fits[0].f.id); }
+    else toParent();
+  });
 
   var beatCb = null;
   function showBeat(who, title, text, cb) {
@@ -1299,29 +1391,70 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   $('dreamGo').addEventListener('click', function () { track('context', state.ctx); toReveal(); trackApt(); paintApt(); if (!state.result.noSignal) playFinale(); });
 
   // ---------- reveal
+  var AREA_ICON = { R: '\ud83d\udd27', I: '\ud83d\udd0d', A: '\ud83c\udfa8', S: '\ud83e\udd1d', E: '\ud83d\udce3', C: '\ud83d\uddc2\ufe0f' };
   var AREA_SCHOOL = { R: 'Physics, workshops, technical drawing', I: 'Maths, Science, Computer Science', A: 'Art, languages, design, literature', S: 'Psychology, Biology, languages', E: 'Economics, Business Studies, debate', C: 'Accountancy, Maths, Computer Science' };
   function zv(z) { return Math.max(.08, Math.min(1, (z + 1.6) / 3.2)); }
+  // the radar is drawn in layers so it can be played: web, spokes, then each point grows out along its spoke (playRadar)
+  var RCX = 160, RCY = 140;
   function radar(profile, code) {
-    var cx = 160, cy = 140, R = 86, h = '', pt = function (i, k) { var a = -Math.PI / 2 + i * Math.PI / 3; return [cx + Math.cos(a) * R * k, cy + Math.sin(a) * R * k]; };
-    [1, .66, .33].forEach(function (k) { h += '<polygon points="' + AREAS.map(function (_, i) { return pt(i, k).join(','); }).join(' ') + '" fill="' + (k === 1 ? 'rgba(255,255,255,.04)' : 'none') + '" stroke="rgba(255,243,214,.28)" stroke-width="1.2"/>'; });
-    AREAS.forEach(function (_, i) { var p = pt(i, 1); h += '<line x1="' + cx + '" y1="' + cy + '" x2="' + p[0] + '" y2="' + p[1] + '" stroke="rgba(255,243,214,.2)" stroke-width="1"/>'; });
-    var pts = AREAS.map(function (a, i) { return pt(i, zv(profile[a])); });
-    h += '<g class="rpoly"><polygon points="' + pts.map(function (p) { return p.join(','); }).join(' ') + '" fill="rgba(255,207,107,.38)" stroke="#ffcf6b" stroke-width="3" stroke-linejoin="round"/>';
-    pts.forEach(function (p) { h += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="4" fill="#fff3d6"/>'; });
-    code.forEach(function (a, r) { var p = pts[AREAS.indexOf(a)], col = r === 0 ? '#ffcf6b' : r === 1 ? '#46b3b0' : '#e8708a'; h += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="12" fill="' + col + '" stroke="#2a2038" stroke-width="2"/><text x="' + p[0] + '" y="' + (p[1] + 5) + '" text-anchor="middle" style="font-family:var(--display);font-weight:800;font-size:14px;fill:#2a2038">' + (r + 1) + '</text>'; });
+    var cx = RCX, cy = RCY, R = 86, h = '', pt = function (i, k) { var a = -Math.PI / 2 + i * Math.PI / 3; return [cx + Math.cos(a) * R * k, cy + Math.sin(a) * R * k]; };
+    h += '<defs><radialGradient id="rbg" gradientUnits="userSpaceOnUse" cx="' + cx + '" cy="' + cy + '" r="130"><stop offset="0" stop-color="#fff2b0" stop-opacity=".6"/><stop offset="1" stop-color="#ffcf6b" stop-opacity="0"/></radialGradient></defs>';
+    [1, .66, .33].forEach(function (k, j) { h += '<polygon class="rring" style="animation-delay:' + (j * .08) + 's" points="' + AREAS.map(function (_, i) { return pt(i, k).join(','); }).join(' ') + '" fill="' + (k === 1 ? 'rgba(255,255,255,.04)' : 'none') + '" stroke="rgba(255,243,214,.28)" stroke-width="1.2"/>'; });
+    AREAS.forEach(function (_, i) { var p = pt(i, 1); h += '<line class="rspoke" data-i="' + i + '" pathLength="1" style="animation-delay:' + (.1 + i * .05) + 's" x1="' + cx + '" y1="' + cy + '" x2="' + p[0] + '" y2="' + p[1] + '" stroke="rgba(255,243,214,.2)" stroke-width="1"/>'; });
+    var b2 = [cx + Math.cos(-Math.PI / 2 + .2) * R * 1.5, cy + Math.sin(-Math.PI / 2 + .2) * R * 1.5], b0 = [cx + Math.cos(-Math.PI / 2 - .2) * R * 1.5, cy + Math.sin(-Math.PI / 2 - .2) * R * 1.5];
+    h += '<path class="rbeam" d="M' + cx + ' ' + cy + 'L' + b0.join(' ') + 'A' + R * 1.5 + ' ' + R * 1.5 + ' 0 0 1 ' + b2.join(' ') + 'Z" fill="url(#rbg)"/>';
+    var pts = AREAS.map(function (a, i) { return pt(i, zv(profile[a])); }), ps = pts.map(function (p) { return p.join(','); }).join(' ');
+    h += '<g class="rpoly"><polygon class="rshape" points="' + ps + '" fill="rgba(255,207,107,.38)" stroke="#ffcf6b" stroke-width="3" stroke-linejoin="round"/><polygon class="rtrace" pathLength="1" points="' + ps + '" fill="none" stroke="#fff6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+    pts.forEach(function (p, i) { h += '<circle class="rdot" data-i="' + i + '" cx="' + p[0] + '" cy="' + p[1] + '" r="4" fill="#fff3d6"/>'; });
+    code.forEach(function (a, r) { var p = pts[AREAS.indexOf(a)], col = r === 0 ? '#ffcf6b' : r === 1 ? '#46b3b0' : '#e8708a'; h += '<g class="rbadge" style="animation-delay:' + (1.7 + r * .18) + 's"><circle cx="' + p[0] + '" cy="' + p[1] + '" r="12" fill="' + col + '" stroke="#2a2038" stroke-width="2"/><text x="' + p[0] + '" y="' + (p[1] + 5) + '" text-anchor="middle" style="font-family:var(--display);font-weight:800;font-size:14px;fill:#2a2038">' + (r + 1) + '</text></g>'; });
     h += '</g>';
     AREAS.forEach(function (a, i) {
-      var p = pt(i, 1.0), ang = -Math.PI / 2 + i * Math.PI / 3, lx = cx + Math.cos(ang) * (R + 16), ly = cy + Math.sin(ang) * (R + 16) + (Math.sin(ang) > .5 ? 14 : Math.sin(ang) < -.5 ? -4 : 5), c = Math.cos(ang);
-      h += '<text x="' + lx + '" y="' + ly + '" text-anchor="' + (c > .3 ? 'start' : c < -.3 ? 'end' : 'middle') + '" style="font-family:var(--body);font-weight:800;font-size:15px;fill:' + (code.indexOf(a) >= 0 ? '#fff3d6' : '#ddd6f2') + '">' + NAME[a] + '</text>';
+      var ang = -Math.PI / 2 + i * Math.PI / 3, lx = cx + Math.cos(ang) * (R + 16), ly = cy + Math.sin(ang) * (R + 16) + (Math.sin(ang) > .5 ? 14 : Math.sin(ang) < -.5 ? -4 : 5), c = Math.cos(ang);
+      h += '<text class="rlab" data-i="' + i + '" x="' + lx + '" y="' + ly + '" text-anchor="' + (c > .3 ? 'start' : c < -.3 ? 'end' : 'middle') + '" style="font-family:var(--body);font-weight:800;font-size:15px;fill:' + (code.indexOf(a) >= 0 ? '#fff3d6' : '#ddd6f2') + '">' + NAME[a] + '</text>';
     });
+    AREAS.forEach(function (a, i) { var p = pt(i, 1.12); h += '<circle class="rhit" data-a="' + a + '" cx="' + p[0] + '" cy="' + p[1] + '" r="30" fill="transparent"/>'; });
+    state.radarPts = pts;
     return h;
   }
+  // each point springs out from the middle along its own spoke, clockwise, and its label lights as it lands
+  function playRadar() {
+    var svg = $('compass'), poly = svg.querySelector('.rshape'), dots = svg.querySelectorAll('.rdot'), labs = svg.querySelectorAll('.rlab'), fin = state.radarPts;
+    if (!poly || !fin || state.reduce || !window.requestAnimationFrame) return;
+    var t0 = null, D = 650, GAP = 110, START = 350, hit = [];
+    function back(x) { var c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); }
+    function frame(t) {
+      if (t0 === null) t0 = t;
+      var done = true, cur = fin.map(function (p, i) {
+        var x = Math.max(0, Math.min(1, (t - t0 - START - i * GAP) / D)), e = x ? back(x) : 0; if (x < 1) done = false;
+        if (x >= 1 && !hit[i]) { hit[i] = 1; labs[i].classList.add('hit'); }
+        return [RCX + (p[0] - RCX) * e, RCY + (p[1] - RCY) * e];
+      });
+      poly.setAttribute('points', cur.map(function (p) { return p.join(','); }).join(' '));
+      cur.forEach(function (p, i) { dots[i].setAttribute('cx', p[0]); dots[i].setAttribute('cy', p[1]); });
+      if (!done && svg.isConnected) requestAnimationFrame(frame);
+    }
+    frame(performance.now());
+  }
+  // the reveal screen waits behind the lighthouse finale, then plays when it is uncovered
+  function startReveal() { $('reveal').classList.remove('hold'); playRadar(); }
+  // tap an area on the radar, a tile or a chip: its spoke lights and a line says what it means
+  function pickArea(a) {
+    var svg = $('compass'), i = AREAS.indexOf(a), same = svg.dataset.sel === a, r = state.result, rk = r ? r.code.code.indexOf(a) : -1, info = $('rInfo');
+    svg.dataset.sel = same ? '' : a;
+    svg.querySelectorAll('.rspoke, .rdot, .rlab').forEach(function (el) { el.classList.toggle('sel', !same && +el.dataset.i === i); });
+    document.querySelectorAll('#legend [data-a]').forEach(function (el) { el.setAttribute('aria-pressed', String(!same && el.dataset.a === a)); });
+    info.hidden = same; info.previousElementSibling.hidden = !same;
+    if (!same) info.innerHTML = '<span class="ric" aria-hidden="true">' + AREA_ICON[a] + '</span><span><b>' + NAME[a] + '</b>: ' + BLURB[a] + '. ' + (rk >= 0 ? 'Your number ' + (rk + 1) + ' area.' : 'Less strong for now.') + '<br><small>In school: ' + esc(AREA_SCHOOL[a]) + '.</small></span>';
+  }
+  $('compass').addEventListener('click', function (e) { var h = e.target.closest('.rhit'); if (h) pickArea(h.dataset.a); });
+  $('legend').addEventListener('click', function (e) { var t = e.target.closest('[data-a]'); if (t) pickArea(t.dataset.a); });
+  $('legend').addEventListener('keydown', function (e) { var t = e.target.closest('.t3[data-a]'); if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pickArea(t.dataset.a); } });
   function list(arr) { return arr.map(function (a) { return NAME[a]; }).join(' and '); }
   function titles(ids) { return ids.map(function (i) { return BYID[i].title; }).join(', '); }
 
   var ME = null, CONFIRMED = false;   // saved attempts from the server, newest first
   function toReveal(restored) {
-    clearWalk();
+    clearWalk(); state.fits = null; state.fieldId = null; state.seen = {};
     var r = state.result = M.journeyResult(bank, state.choices);
     var code = r.code.code, pr = r.profile;
     var vs = AREAS.map(function (a) { return pr[a]; }), mu = vs.reduce(function (a, b) { return a + b; }, 0) / 6, sd = Math.sqrt(vs.reduce(function (a, b) { return a + (b - mu) * (b - mu); }, 0) / 6);
@@ -1331,24 +1464,28 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     if (!restored) { track('result', { code: code, alts: r.code.alternatives, profile: pr, scores: r.scores, confidence: r.confidence, noSignal: r.noSignal, cautious: r.cautious, biased: biased, sd: +sd.toFixed(3), stops: r.stopsPlayed, mixed: r.consistency && r.consistency.mixed, lowEngagement: !!r.lowEngagement, slots: state.slots }); saveSnapshot(r); }
     $('selfq').hidden = !MWC || !TK || !!restored; Array.prototype.forEach.call($('selfq').children, function (c) { if (c.id !== 'chkOpen') c.hidden = r.noSignal; }); $('selfq').querySelectorAll('.rate button').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); }); $('chkOpen').hidden = !MWC;
     show('reveal'); if (r.noSignal) Snd.reveal(); $('reveal').scrollTop = 0;
-    $('compass').innerHTML = radar(pr, code);
+    $('compass').innerHTML = radar(pr, code); $('compass').dataset.sel = ''; $('rInfo').hidden = true; $('rInfo').previousElementSibling.hidden = false;
+    $('reveal').classList.add('hold'); if (restored || r.noSignal) startReveal();
     $('compass').setAttribute('aria-label', 'Radar chart. Your strongest areas: ' + code.map(function (a) { return NAME[a]; }).join(', ') + '.');
-    $('outro').textContent = STORY.outro;
     var tied = r.code.alternatives.length > 1;
     $('revealLine').textContent = 'Your top three: ' + code.map(function (a) { return NAME[a]; }).join(', ') + '.';
     var order = AREAS.slice().sort(function (a, b) { return pr[b] - pr[a]; });
-    $('legend').innerHTML = order.map(function (a, i) {
-      var top = code.indexOf(a) >= 0, rk = top ? code.indexOf(a) + 1 : '';
-      return '<li class="' + (top ? '' : 'dim') + '" style="animation-delay:' + (i * 120) + 'ms"><span class="rk">' + (rk || '·') + '</span><div><div class="nm">' + NAME[a] + ' <span>' + BLURB[a] + '</span></div><span class="bar"><i style="width:' + Math.round(zv(pr[a]) * 100) + '%"></i></span>' + (top ? '<div class="sch">In school this often shows up in: ' + AREA_SCHOOL[a] + '.</div>' : '') + '</div></li>';
-    }).join('');
+    var RCOL = ['#ffcf6b', '#46b3b0', '#e8708a'], subj = [];
+    code.forEach(function (a) { AREA_SCHOOL[a].split(', ').forEach(function (x) { if (subj.indexOf(x) < 0) subj.push(x); }); });
+    $('legend').innerHTML = '<div class="top3">' + code.map(function (a, i) {
+      return '<div class="t3 t' + a + '" data-a="' + a + '" role="button" tabindex="0" aria-pressed="false" style="--rc:' + RCOL[i] + ';animation-delay:' + (i * 140) + 'ms"><span class="rk">' + (i + 1) + '</span><span class="ic" aria-hidden="true">' + AREA_ICON[a] + '</span><b>' + NAME[a] + '</b><small>' + BLURB[a] + '</small><span class="bar" aria-hidden="true"><i style="width:' + Math.round(zv(pr[a]) * 100) + '%"></i></span></div>';
+    }).join('') + '</div><p class="subjline"><span aria-hidden="true">\ud83d\udcda</span> In school this often shows up in: ' + esc(subj.slice(0, 6).join(', ')) + '.</p>'
+      + '<div class="rest"><small>Less strong for now</small>' + order.filter(function (a) { return code.indexOf(a) < 0; }).map(function (a) { return '<button type="button" class="rc" data-a="' + a + '" aria-pressed="false"><span aria-hidden="true">' + AREA_ICON[a] + '</span> ' + NAME[a] + '</button>'; }).join('') + '</div>';
     var notes = [r.cautious && r.confidence === 'clear' ? 'Your top area stood out, but treat the rest of the order as a rough guide.' : r.confidence === 'clear' ? 'Your top three stood out clearly.' : r.confidence === 'close' ? 'Some areas were close, so the order could swap on another day.' : 'You liked many kinds of things, so these are close calls. Nothing is wrong, and another walk on another day will sharpen it.'];
     if (r.consistency.mixed) notes.push('When a lamp flickered back, your choice changed. People change their minds. Treat this as a first draft.');
     if (r.lowEngagement) notes.push('Not much caught your eye on this walk. Try again when you feel like it.');
     if (r.oneNote) notes.unshift('Most of your oil went to one kind of activity, so only your top area is a reliable signal. Try another walk and spread your oil over what you would enjoy most.');
     if (r.biased) notes.unshift('Most of your oil went to the same position on the screen, so this may say more about where you tapped than what you like.');
     if (r.code.alternatives.length > 1) notes.push('Some of your top areas were tied, so the order of the top three is not fixed.');
-    $('notes').hidden = false; $('notes').textContent = notes.join(' ');
-    var none = r.noSignal; $('compass').parentNode.hidden = none; $('legend').hidden = none; $('openDoors').hidden = none; $('revealLine').hidden = none;
+    var lvl = r.cautious || r.consistency.mixed ? 1 : r.confidence === 'clear' ? 3 : 2, warn = r.biased || r.oneNote || r.lowEngagement;
+    $('sure').hidden = false; $('sure').innerHTML = '<div class="sureRow"><span class="meter m' + lvl + '" aria-hidden="true"><i></i><i></i><i></i></span><b>' + ['', 'A rough first draft', 'Fairly clear', 'Clear'][lvl] + '</b></div><details><summary>Why?</summary><p>' + esc(notes.join(' ')) + '</p></details>';
+    $('notes').hidden = !warn; $('notes').textContent = notes.filter(function (t) { return /^Most of your oil|^Not much caught/.test(t); }).join(' ');
+    var none = r.noSignal; document.querySelector('#reveal .stepbar').hidden = none; $('compass').parentNode.hidden = none; $('legend').hidden = none; if (none) { $('sure').hidden = true; $('notes').hidden = false; } $('openDoors').hidden = none; $('revealLine').hidden = none;
     if (none) { $('notes').textContent = 'There is not enough here to show a shape. That happens when almost no oil is spent or everything feels the same. It does not mean anything is wrong. Try the walk again and spend your oil on what you would enjoy most.'; $('revealLine').hidden = true; }
     var na = $('noSigAgain'); if (!na) { na = document.createElement('button'); na.type = 'button'; na.id = 'noSigAgain'; na.className = 'go'; na.textContent = 'Walk the road again'; na.addEventListener('click', function () { show('welcome'); }); $('notes').parentNode.appendChild(na); } na.hidden = !none;
     var rl = $('retLine'); rl.hidden = !(MWC && TK && RET) || none; rl.textContent = RET ? 'Your return code: ' + RET + '. Keep it. Enter it on "I have been here before" to see these results again on any phone or laptop.' : '';
@@ -1466,7 +1603,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     var code3 = state.result.code.code;
     $('fields').innerHTML = fits.slice(0, 3).map(function (x, i) {
       var sh = x.f.areas.filter(function (a) { return code3.indexOf(a) >= 0; }), nxt = fits[i + 1], close = nxt && Math.abs(x.score - nxt.score) < .05;
-      return '<button type="button" class="fcard" data-id="' + x.f.id + '"><span class="gl" aria-hidden="true">' + x.f.icon + '</span><span><h3>' + x.f.name + '</h3><p>' + x.f.blurb + '</p><span class="meta"><span class="pill">' + x.f.group + '</span>' + (close ? '<span class="pill">Close to the next one</span>' : '') + '</span><small class="why">' + (sh.length ? 'Matches your ' + sh.map(function (a) { return NAME[a]; }).join(' and ') + ' side.' : 'Worth a look beyond your top three areas.') + '</small><span class="tap">Tap to open <i aria-hidden="true">\u203a</i></span></span><span class="chev" aria-hidden="true">\u203a</span></button>';
+      return '<button type="button" class="fcard" data-id="' + x.f.id + '"><span class="gl" aria-hidden="true">' + x.f.icon + '</span><span><h3>' + x.f.name + '</h3><p>' + x.f.blurb + '</p><span class="meta"><span class="pill">' + x.f.group + '</span>' + (close ? '<span class="pill">Close to the next one</span>' : '') + '</span>' + (sh.length ? '<span class="why"><small>Fits your</small>' + sh.map(function (a) { return '<span class="tc t' + a + '"><span aria-hidden="true">' + AREA_ICON[a] + '</span> ' + NAME[a] + '</span>'; }).join('') + '</span>' : '<small class="why">Worth a look beyond your top three areas.</small>') + (i === 0 ? '<span class="tap">Start here <i aria-hidden="true">\u203a</i></span>' : '') + '</span><span class="chev" aria-hidden="true">\u203a</span></button>';
     }).join('');
     $('allSum').textContent = 'All ' + fits.length + ' fields, by stream';
     $('allFields').innerHTML = GROUPS.map(function (g) {
@@ -1503,9 +1640,9 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     var level = w.supporters < 3 ? 1 : close ? 2 : 3, lab = ['', 'Thin evidence', 'Close call', 'Clear signal'][level];
     var near = state.fits.filter(function (y) { return y.f.id !== id && y.f.areas.some(function (a) { return f.areas.indexOf(a) >= 0; }); }).slice(0, 2);
     var strip = '<div class="sureRow"><span class="meter m' + level + '" aria-hidden="true"><i></i><i></i><i></i></span><b>' + lab + '</b><span class="sureWhy">' + (level === 3 ? 'several of your choices agree' : level === 2 ? 'a neighbouring area is almost as close' : 'only a few choices point here') + '</span></div>';
-    if (w.up.length) strip += '<div class="evrow"><small>Your choices at</small>' + w.up.slice(0, 4).map(function (o) { return '<span class="ev">' + esc(o.place) + '</span>'; }).join('') + '</div>';
     if (near.length) strip += '<div class="evrow"><small>Also look at</small>' + near.map(function (y) { return '<button type="button" class="near" data-id="' + y.f.id + '">' + y.f.icon + ' ' + esc(y.f.name) + '</button>'; }).join('') + '</div>';
     $('fWhyStrip').innerHTML = strip;
+    if (w.up.length) h += '<div class="evrow"><small>Your choices at</small>' + w.up.slice(0, 4).map(function (o) { return '<span class="ev">' + esc(o.place) + '</span>'; }).join('') + '</div>';
     h += '<h4>Choices that pointed here</h4>' + (w.up.length ? '<ul>' + w.up.slice(0, 3).map(function (o) { return line(o, false); }).join('') + '</ul>' : '<p>No single choice stands out; this comes from the overall shape of your choices.</p>');
     if (w.down.length) h += '<h4>A choice that pointed somewhere else</h4><ul>' + w.down.map(function (o) { return line(o, true); }).join('') + '</ul><p class="fineprint">Mixed signals are normal. It is a reason to look at more than one area.</p>';
     var u = [];
@@ -1523,14 +1660,15 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   $('field').addEventListener('click', function (e) { var b = e.target.closest('.near'); if (b) toField(b.dataset.id); });
   function toField(id) {
     var x = state.fits.filter(function (y) { return y.f.id === id; })[0], f = x.f, code = state.result.code.code;
-    show('field'); Snd.door(); $('field').scrollTop = 0; state.fieldId = id; track('field_open', { id: id });
+    show('field'); Snd.door(); $('field').scrollTop = 0; state.fieldId = id; state.roadAt = 0; track('field_open', { id: id });
     var pr = state.result.profile;
     function dots(a) { var z = pr[a], n = z > .5 ? 3 : z > -.2 ? 2 : 1; return '\u25cf\u25cf\u25cf'.slice(0, n) + '\u25cb\u25cb\u25cb'.slice(0, 3 - n); }
     $('fHero').innerHTML = '<span class="gl" aria-hidden="true">' + f.icon + '</span><div><h2 id="fTitle">' + esc(f.name) + '</h2><p>' + esc(f.blurb) + '</p><div class="tchips" aria-label="Interest types this area leans on">' + f.areas.map(function (a) { return '<span class="tc t' + a + '">' + NAME[a] + ' <b aria-hidden="true">' + dots(a) + '</b></span>'; }).join('') + '</div></div>';
     $('fTry').hidden = !f.early; $('fTry').innerHTML = f.early ? '<span class="ico" aria-hidden="true">\u2728</span><div><small>Try this week</small><span>' + esc(f.early) + '</span></div>' : '';
     var hi = x.ms.filter(function (m) { var a = BYID[m.careerId].ai; return a && a.watch; }).length;
     $('fAiNote').textContent = hi ? hi + ' of the ' + x.ms.length + ' careers below ' + (hi === 1 ? 'has' : 'have') + ' very high AI exposure with AI already in use.' : '';
-    $('fCareers').innerHTML = x.ms.map(function (m) { var c = BYID[m.careerId], a = c.ai, tag = a ? '<span class="aitag ai-' + a.tier + (a.watch ? ' ai-watch' : '') + '">' + AI_TXT[a.tier] + (a.watch ? ', in use now' : '') + '</span>' : '', more = usPay(c) + aiLine(c); return '<div class="ccard"><b>' + esc(c.title) + '</b><p>' + esc(c.line) + '</p><div class="tags">' + tag + '</div>' + (more ? '<details><summary>Pay, outlook and AI</summary>' + more + '</details>' : '') + '</div>'; }).join('');
+    $('fCareers').innerHTML = x.ms.map(function (m) { var c = BYID[m.careerId], more = usPay(c) + aiLine(c); return '<div class="ccard"><b>' + esc(c.title) + '</b><p>' + esc(c.line) + '</p>' + cstats(c) + (more ? '<details><summary>What these mean</summary>' + more + '</details>' : '') + '</div>'; }).join('');
+    countUp($('fCareers'));
     $('fSrc').innerHTML = (f.verify.length ? '<ul class="chk-list">' + f.verify.map(function (v) { return '<li>' + esc(v) + '</li>'; }).join('') + '</ul>' : '') + '<p class="src" style="margin-top:8px"><b>Where to check:</b> ' + f.sources.map(function (z) { return '<a href="' + z.url + '" target="_blank" rel="noopener noreferrer">' + esc(z.name) + '</a>'; }).join(', ') + '. Career fit uses O*NET interest profiles, which come from US jobs and are only a rough guide for India.</p>';
     $('fExplain').open = false; $('fChk').open = false;
     renderExplain(id, x); renderPath();
@@ -1550,6 +1688,25 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     det += '<p class="aisrc">The level is relative: the US Bureau of Labor Statistics (Aug 2026) compares jobs with each other using five studies, two of them based on real AI use. It is not a forecast of job loss, wages or hiring. Based on US jobs. Also used: Anthropic Economic Index (CC BY) and O*NET tasks. Data from ' + esc(CONTENT.aiMeta.retrieved) + '.</p>';
     return '<div class="aiblk"><span class="aitag ai-' + a.tier + (a.watch ? ' ai-watch' : '') + '">' + AI_TXT[a.tier] + (a.watch ? ', in use now' : '') + '</span><span>' + body + '</span><details><summary>How AI is used in this job today</summary>' + det + '</details></div>';
   }
+  // a career at a glance: US pay, projected job change and AI exposure as small pictures; the details stay one tap away
+  var AI_N = { low: 1, moderate: 2, high: 3, veryhigh: 4 };
+  function cstats(c) {
+    var h = '', u = c.us, a = c.ai;
+    if (u && (u.annual || u.hourly)) { var yr = u.annual || u.hourly * 2080; h += '<span class="cs"><small>US pay</small><b data-n="' + Math.round(yr / 1000) + '" data-pre="$" data-suf="k">$' + Math.round(yr / 1000) + 'k</b><span>a year</span></span>'; }
+    if (u && u.growthPct != null) { var g = u.growthPct; h += '<span class="cs ' + (g >= 3 ? 'up' : g <= -1 ? 'dn' : 'fl') + '"><small>Jobs 2035</small><b><i class="arr" aria-hidden="true">' + (g >= 3 ? '\u25b2' : g <= -1 ? '\u25bc' : '\u25b6') + '</i> <span data-n="' + g + '" data-pre="' + (g > 0 ? '+' : '') + '" data-suf="%" data-dp="' + (String(g).split('.')[1] || '').length + '">' + (g > 0 ? '+' : '') + g + '%</span></b><span>in the US</span></span>'; }
+    if (a && AI_N[a.tier]) { var n = AI_N[a.tier]; h += '<span class="cs"><small>AI exposure</small><span class="aim' + (a.watch ? ' w' : '') + '" role="img" aria-label="' + AI_TXT[a.tier] + (a.watch ? ', in use now' : '') + '">' + [1, 2, 3, 4].map(function (k) { return '<i' + (k <= n ? ' class="on"' : '') + '></i>'; }).join('') + '</span><span>' + ['', 'low', 'moderate', 'high', 'very high'][n] + (a.watch ? ', in use' : '') + '</span></span>'; }
+    return h ? '<div class="cstats">' + h + '</div>' : '';
+  }
+  // numbers run up from zero once, so the eye lands on them; skipped when motion is reduced
+  function countUp(root) {
+    if (state.reduce || !window.requestAnimationFrame) return;
+    Array.prototype.forEach.call(root.querySelectorAll('[data-n]'), function (el, k) {
+      var to = +el.dataset.n, dp = +(el.dataset.dp || 0), pre = el.dataset.pre || '', suf = el.dataset.suf || '', t0 = null, dur = 700, wait = 250 + Math.min(k, 6) * 60;
+      el.textContent = pre + (0).toFixed(dp) + suf;
+      function step(t) { if (t0 === null) t0 = t + wait; var x = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - Math.pow(1 - x, 3); el.textContent = pre + (to * e).toFixed(dp) + suf; if (x < 1) requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    });
+  }
   function usPay(c) {
     if (!c.us) return '';
     var p = c.us.annual ? 'US$' + c.us.annual.toLocaleString('en-US') + ' a year' : c.us.hourly ? 'US$' + c.us.hourly.toFixed(2) + ' an hour' : ''; if (!p) return '';
@@ -1564,10 +1721,23 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     var steps = [['now', 'Now', now + note], ['', 'Class 11 to 12 subjects', f.subjects[bk]], ['', 'Entrance exams', f.exams], ['', 'Degree', f.degree], ['', 'Roles to look at first', roles ? esc(roles) + '.' : ''], ['', 'India salary context (national, not these roles)', plfsText() + ' Pay for a specific job can be very different, so ask people who do it.'], ['', 'If plan A does not work', f.backup || ''], ['', 'Compare colleges', f.compare || ''], ['', 'Try it early', f.early]];
     if (f.note) steps.push(['', 'Good to know', f.note]);
     steps = steps.filter(function (t) { return t[2]; });
-    var IC = { 'Now': '\ud83d\udccd', 'Class 11 to 12 subjects': '\ud83d\udcda', 'Entrance exams': '\ud83d\udcdd', 'Degree': '\ud83c\udf93', 'Roles to look at first': '\ud83d\udcbc', 'India salary context (national, not these roles)': '\ud83d\udcb0', 'If plan A does not work': '\ud83d\udd01', 'Good to know': '\ud83d\udca1' };
+    var IC = { 'Now': '\ud83d\udccd', 'Class 11 to 12 subjects': '\ud83d\udcda', 'Entrance exams': '\ud83d\udcdd', 'Degree': '\ud83c\udf93', 'Roles to look at first': '\ud83d\udcbc', 'India salary context (national, not these roles)': '\ud83d\udcb0', 'If plan A does not work': '\ud83d\udd01', 'Good to know': '\ud83d\udca1', 'Compare colleges': '\ud83c\udfdb\ufe0f', 'Try it early': '\u2728' };
     function peek(t) { var p = String(t).replace(/<[^>]+>/g, ''); var q = p.split(/(?<=[.!?])\s/)[0] || p; return q.length > 90 ? q.slice(0, 87) + '\u2026' : q; }
-    $('fPath').innerHTML = steps.map(function (t, i) { return '<li class="' + t[0] + '"><details' + (i < 2 ? ' open' : '') + '><summary><span class="sic" aria-hidden="true">' + (IC[t[1]] || '\u2022') + '</span><span class="stt"><small>' + t[1] + '</small><em>' + esc(peek(t[2])) + '</em></span></summary><span class="stx">' + t[2] + '</span></details></li>'; }).join('');
+    var MAIN = ['Now', 'Class 11 to 12 subjects', 'Entrance exams', 'Degree', 'Roles to look at first'], SHORT = { 'Now': 'Now', 'Class 11 to 12 subjects': 'Class 11\u201312', 'Entrance exams': 'Exams', 'Degree': 'Degree', 'Roles to look at first': 'Work' }, MORE = { 'India salary context (national, not these roles)': 'pay in India', 'If plan A does not work': 'plan B', 'Compare colleges': 'colleges', 'Try it early': 'try it early', 'Good to know': 'good to know' };
+    var road = steps.filter(function (t) { return MAIN.indexOf(t[1]) >= 0; }), more = steps.filter(function (t) { return MAIN.indexOf(t[1]) < 0 && !(t[1] === 'Try it early' && f.early); });
+    state.road = road; if (!(state.roadAt < road.length)) state.roadAt = 0;
+    $('fPath').innerHTML = '<div class="road" role="tablist" aria-label="Steps on the path">' + road.map(function (t, i) { return '<button type="button" role="tab" id="rd' + i + '" aria-controls="rdPanel" data-i="' + i + '" aria-selected="' + (i === state.roadAt) + '" style="--d:' + i * .09 + 's"><span class="sic" aria-hidden="true">' + IC[t[1]] + '</span><small>' + SHORT[t[1]] + '</small></button>'; }).join('') + '</div><div class="roadpanel" id="rdPanel" role="tabpanel" aria-live="polite"></div>';
+    paintRoad();
+    $('fMore').innerHTML = more.length ? '<details class="xplain"><summary>More: ' + more.map(function (t) { return MORE[t[1]] || t[1]; }).join(', ') + '</summary><ol class="tl">' + more.map(function (t) { return '<li><details><summary><span class="sic" aria-hidden="true">' + (IC[t[1]] || '\u2022') + '</span><span class="stt"><small>' + t[1] + '</small><em>' + esc(peek(t[2])) + '</em></span></summary><span class="stx">' + t[2] + '</span></details></li>'; }).join('') + '</ol></details>' : '';
   }
+  function paintRoad() {
+    var i = state.roadAt, t = state.road[i]; if (!t) return;
+    $('fPath').querySelector('.road').style.setProperty('--p', state.road.length > 1 ? i / (state.road.length - 1) : 0);
+    Array.prototype.forEach.call($('fPath').querySelectorAll('.road button'), function (b, k) { b.setAttribute('aria-selected', String(k === i)); b.classList.toggle('done', k < i); });
+    $('rdPanel').setAttribute('aria-labelledby', 'rd' + i);
+    $('rdPanel').innerHTML = '<small>' + t[1] + '</small><p>' + t[2] + '</p>' + (i < state.road.length - 1 ? '<button type="button" class="linkbtn" data-next="1">Next: ' + state.road[i + 1][1] + ' \u203a</button>' : '');
+  }
+  $('fPath').addEventListener('click', function (e) { var b = e.target.closest('.road button, [data-next]'); if (!b) return; state.roadAt = b.dataset.next ? state.roadAt + 1 : +b.dataset.i; paintRoad(); });
   $('fBoard').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; state.ctx.board = b.dataset.b === 'state' ? 'state' : b.dataset.b; renderPath(); });
   $('fBack').addEventListener('click', function () { show('doors'); });
   $('again').addEventListener('click', function () { show('welcome'); });
@@ -1625,7 +1795,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   }
   function paintLock() {
     var dom = lk.items[lk.i], L = LOCKS[dom], lvl = nextLevel(dom), it, opts, fig = '';
-    $('lock').classList.remove('open', 'held'); lk.locked = false; $('lkNext').hidden = true; $('lkFb').textContent = ''; $('lkSkip').hidden = false;
+    $('lock').classList.remove('open', 'held'); lk.locked = false; lk.sel = null; $('lkTry').hidden = false; $('lkTry').disabled = true; $('lkTry').textContent = 'Pick a key'; $('lkNext').hidden = true; $('lkFb').textContent = ''; $('lkSkip').hidden = false;
     $('lkName').textContent = 'Lock ' + (lk.i + 1) + ' of 2: ' + L.name.replace('The Lock of ', '');
     if (L.spatial) { var sp = spatialItem(lvl); $('lkQ').textContent = 'Which one is the same shape, just turned around? A flipped copy does not count.'; fig = figSVG(sp.fig); opts = sp.opts.map(function (o) { return { h: figSVG(o.c), ok: !!o.ok }; }); it = { id: 'S' + lvl, l: lvl }; }
     else { var base = L.items.filter(function (x) { return x.l === lvl; })[0], order = shuffle(base.o.map(function (t, i) { return { t: t, ok: i === base.a }; })); $('lkQ').textContent = base.q; opts = order.map(function (o) { return { h: esc(o.t), ok: o.ok }; }); it = { id: dom + lvl, l: lvl }; }
@@ -1635,11 +1805,17 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   function endLockItem(ok, skipped) {
     var dom = lk.items[lk.i];
     state.apt[dom].push({ id: lk.cur.id, l: lk.cur.l, ok: !!ok, skip: !!skipped, ms: Math.min(600000, Date.now() - lk.t0) });
-    $('lkSkip').hidden = true; $('lkNext').hidden = false; $('lkNext').textContent = lk.i === 0 ? 'Next lock' : 'Walk on';
+    $('lkSkip').hidden = true; $('lkTry').hidden = true; $('lkNext').hidden = false; $('lkNext').textContent = lk.i === 0 ? 'Next lock' : 'Walk on';
   }
+  // a tap only picks a key, and you can change your mind; "Turn the key" is what answers
   $('lkOpts').addEventListener('click', function (e) {
-    var b = e.target.closest('button'); if (!b || lk.locked) return; lk.locked = true;
-    Array.prototype.forEach.call($('lkOpts').children, function (x) { x.disabled = true; x.setAttribute('aria-pressed', String(x === b)); });
+    var b = e.target.closest('button'); if (!b || lk.locked) return; lk.sel = b;
+    Array.prototype.forEach.call($('lkOpts').children, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    $('lkTry').disabled = false; $('lkTry').textContent = 'Turn the key';
+  });
+  $('lkTry').addEventListener('click', function () {
+    var b = lk.sel; if (!b || lk.locked) return; lk.locked = true;
+    Array.prototype.forEach.call($('lkOpts').children, function (x) { x.disabled = true; });
     var ok = b.dataset.ok === '1'; $('lock').classList.add(ok ? 'open' : 'held');
     $('lkFb').textContent = ok ? 'Click. The lock turns and the gate swings open.' : 'The lock holds this time, so Jyo guides you round the side.';
     if (ok) Snd.lamp(litCount()); endLockItem(ok, false);
@@ -1687,7 +1863,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
       $('fnChips').innerHTML = code.map(function (a, i) { return '<span class="fnchip show" style="--c:' + COL[i] + '"><b>' + (i + 1) + '</b>' + NAME[a] + '</span>'; }).join('');
       $('fnNote').classList.add('show'); $('fnGo').classList.add('show'); $('fnGo').disabled = false; $('fnGo').focus();
     }
-    function leave() { fnTimers.forEach(clearTimeout); $('reveal').scrollTop = 0; var done = function () { f.classList.remove('on', 'lit'); f.style.opacity = ''; try { $('openDoors').focus({ preventScroll: true }); } catch (e) { /* focus */ } }; if (state.reduce || !f.animate) return done(); f.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: 'ease-in-out', fill: 'forwards' }).onfinish = done; }
+    function leave() { fnTimers.forEach(clearTimeout); $('reveal').scrollTop = 0; startReveal(); var done = function () { f.classList.remove('on', 'lit'); f.style.opacity = ''; try { $('openDoors').focus({ preventScroll: true }); } catch (e) { /* focus */ } }; if (state.reduce || !f.animate) return done(); f.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: 'ease-in-out', fill: 'forwards' }).onfinish = done; }
     $('fnGo').onclick = leave; $('fnSkip').onclick = finish;
     if (state.reduce) { finish(); return; }
     fnAfter(500, function () { $('fnL1').classList.add('show'); $('fnL1').textContent = 'Every lamp you lit is still burning.'; });
