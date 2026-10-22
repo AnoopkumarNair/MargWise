@@ -7,5 +7,7 @@ export async function onRequestPost({ request, env }) {
   const t = await env.DB.prepare('SELECT 1 AS x FROM testers WHERE id = ?').bind(id).first(); if (!t) return json({ error: 'Not allowed.' }, 403);
   const rows = await env.DB.prepare("SELECT ts, data FROM events WHERE tester_id = ? AND type = 'snapshot' ORDER BY ts DESC LIMIT 5").bind(id).all();
   const attempts = []; for (const x of rows.results || []) { try { attempts.push({ ts: x.ts, ...JSON.parse(x.data) }); } catch { /* skip a damaged row */ } }
-  return json({ attempts });
+  const pr = await env.DB.prepare("SELECT ts, data FROM events WHERE tester_id = ? AND type = 'progress' ORDER BY ts DESC LIMIT 1").bind(id).first();
+  let progress = null; if (pr) { try { progress = { ts: pr.ts, ...JSON.parse(pr.data) }; } catch { /* damaged row */ } }
+  return json({ attempts, progress });
 }

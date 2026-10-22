@@ -13,7 +13,7 @@ async function hmac(msg, key) {
 export const sign = (id, key) => hmac(id, key);
 export const retHash = (code, key) => hmac('ret:' + String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, ''), key);
 const RET_ALPHA = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-export function newRetCode() { const b = crypto.getRandomValues(new Uint8Array(8)); let c = ''; for (const x of b) c += RET_ALPHA[x % RET_ALPHA.length]; return c.slice(0, 4) + '-' + c.slice(4); }
+export function newRetCode() { let c = ''; while (c.length < 8) for (const x of crypto.getRandomValues(new Uint8Array(16))) if (x < 248 && c.length < 8) c += RET_ALPHA[x % 31]; return c.slice(0, 4) + '-' + c.slice(4); }
 export const ipHash = async (request, key) => (await hmac('ip:' + (request.headers.get('cf-connecting-ip') || 'x'), key)).slice(0, 16);
 export async function readJson(request, max = 120000) {
   const raw = await request.text(); if (raw.length > max) return { err: 'Too large.', status: 413 };
@@ -34,6 +34,7 @@ export async function purgeOld(env, now, force = false, everything = false) {
     env.DB.prepare('DELETE FROM events WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ?)').bind(cut),
     env.DB.prepare('DELETE FROM reviews WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ?)').bind(cut),
     env.DB.prepare('DELETE FROM followups WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ? AND COALESCE(followup_ok, 0) = 0)').bind(cut),
+    env.DB.prepare('UPDATE testers SET ret_hash = NULL WHERE created_at < ? AND COALESCE(followup_ok, 0) = 1').bind(cut),   // kept-for-follow-up students can no longer sign back in
     env.DB.prepare('DELETE FROM testers WHERE created_at < ? AND COALESCE(followup_ok, 0) = 0').bind(cut),
     env.DB.prepare("INSERT INTO meta (k, v) VALUES ('last_purge', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind(String(now)),
     env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, everything ? 'end_of_pilot' : 'purge', JSON.stringify({ deleted: gone ? gone.n : 0, keptForFollowUp: kept ? kept.n : 0, retentionDays: days, forced: !!force })),
