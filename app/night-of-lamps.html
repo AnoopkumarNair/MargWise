@@ -123,6 +123,12 @@
   .radarwrap svg { width: min(100%, 360px); height: auto; display: block; }
   .rpoly { transform-origin: 160px 140px; animation: rgrow .9s cubic-bezier(.2,.8,.2,1) .2s both; }
   @keyframes rgrow { from { transform: scale(.05); opacity: 0; } to { transform: none; opacity: 1; } }
+  .artbg { background-image: var(--art); background-position: center top; background-size: cover; background-repeat: no-repeat; background-color: #070a22; }
+  @media (min-aspect-ratio: 1/1) { .artbg { background-image: var(--art), linear-gradient(rgba(7,10,34,.86), rgba(7,10,34,.86)), var(--art); background-size: auto 100%, cover, cover; background-position: center, center, center; } }
+  #intro .bg { position: absolute; inset: 0; } #intro .actions { position: absolute; left: 16px; right: 16px; bottom: calc(var(--safe-bot, 0px) + 22px); max-width: 520px; margin: 0 auto; display: grid; gap: 10px; } #intro .introfade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,10,34,0) 40%, rgba(7,10,34,.78) 100%); pointer-events: none; }
+  #intro .introBox { position: absolute; left: 16px; right: 16px; bottom: calc(var(--safe-bot, 0px) + 150px); max-width: 560px; margin: 0 auto; background: rgba(7,10,34,.72); border: 1px solid rgba(255,224,138,.35); border-radius: 18px; padding: 16px 18px; color: #fff3d6; }
+  #intro #introText { margin: 0; font-size: 18px; line-height: 1.5; font-weight: 700; animation: introIn .6s ease both; } @keyframes introIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  #intro .idots { display: flex; gap: 6px; justify-content: center; margin-top: 12px; } #intro .idots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,243,214,.3); } #intro .idots i.on { background: #ffcf6b; }
   .howto { font-size: 14px; color: rgba(255,243,214,.85); text-align: center; padding: 0 10px 8px; }
   .ranked { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
   .ranked li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; background: rgba(255,255,255,.08); border-radius: 14px; padding: 10px 12px; }
@@ -278,10 +284,10 @@
   .aptcard b.t { font-size: 16px; } .aptcard .ar { display: flex; justify-content: space-between; gap: 10px; } .aptcard .ar span:last-child { color: #ffe9a8; font-weight: 800; }
   /* ----- tester pack: gate, ratings, feedback ----- */
   #gate { position: absolute; inset: 0; z-index: 55; overflow-y: auto; background: #070a22; -webkit-overflow-scrolling: touch; }
-  #gate .gscene { position: fixed; inset: 0; background: #070a22 center 18% / cover no-repeat; filter: brightness(.8) saturate(.95); }
+  #gate .gscene { position: fixed; inset: 0; background-color: #070a22; background-image: var(--art); background-position: center 18%; background-size: cover; background-repeat: no-repeat; filter: brightness(.8) saturate(.95); } @media (min-aspect-ratio: 1/1) { #gate .gscene { background-image: var(--art), linear-gradient(rgba(7,10,34,.86), rgba(7,10,34,.86)), var(--art); background-size: auto 100%, cover, cover; background-position: center, center, center; } }
   #gate .gcover { display: none; }
   #gate.cover .gwrap { display: none; }
-  #gate.cover .gscene { filter: none; background-position: center top; }
+  #gate.cover .gscene { filter: none; background-position: center top; } @media (min-aspect-ratio: 1/1) { #gate.cover .gscene { background-position: center, center, center; } }
   #gate.cover .gscene::after { background: linear-gradient(180deg, rgba(7,10,34,.55) 0%, rgba(7,10,34,0) 28%, rgba(7,10,34,0) 62%, rgba(7,10,34,.88) 100%); }
   #gate.cover .gcover { position: relative; min-height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: calc(var(--safe-top) + 34px) 22px calc(var(--safe-bot) + 26px); max-width: 520px; margin: 0 auto; text-align: center; }
   #gate .gk { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 13vw, 56px); color: #fff3d6; text-shadow: 0 3px 18px rgba(0,0,0,.65); line-height: 1; }
@@ -380,7 +386,7 @@
   .go:active { transform: translateY(4px); box-shadow: 0 1px 0 #a8661d; }
   .go.quiet { background: rgba(14,16,40,.6); color: var(--cream); box-shadow: 0 4px 0 rgba(0,0,0,.25); border: 1.5px solid rgba(255,243,214,.3); }
   .tiny { text-align: center; font-size: 14px; color: rgba(255,243,214,.8); }
-  .busy .obj, .busy .go { pointer-events: none; }
+  .busy .obj, .busy .go { pointer-events: none; } .busy #nextBtn { pointer-events: auto; } body.awaiting #light { display: none; }
 
   /* ----- welcome ----- */
   #welcome { padding: calc(var(--safe-top) + 14px) 16px calc(var(--safe-bot) + 12px); gap: 10px; overflow-y: auto; }
@@ -527,6 +533,12 @@
     <div class="foot"><span>Prototype. Places and words are drafts.</span><button id="aboutBtn">About</button></div>
   </section>
 
+  <section class="screen" id="intro">
+    <div class="bg artbg" id="introBg"></div><div class="introfade"></div>
+    <div class="introBox"><p id="introText" aria-live="polite"></p><div class="idots" id="introDots" aria-hidden="true"></div></div>
+    <div class="actions"><button class="go" id="introNext" type="button">Next</button><button class="go quiet" id="introSkip" type="button">Skip the story</button></div>
+  </section>
+
   <section class="screen" id="stop">
     <div class="bg" id="stopBg"><div class="layer" id="artA"></div><div class="layer" id="artB"></div><div class="shade"></div><div class="dusk"></div><div class="warmglow"></div><div class="embers" id="embers"></div><div class="fore" id="fore"></div></div>
     <div id="beam"></div><div id="arrive" aria-hidden="true"><small id="arrN"></small><b id="arrP"></b></div>
@@ -537,7 +549,7 @@
     </div>
     <div class="objs" id="options"></div>
     <p class="howto" id="howto" hidden>You have two flasks of oil. Spend them on the two things you would most enjoy: both on one if you love it, or one on each. There are no right answers and nothing is marked.</p>
-    <div class="actions"><button class="go" id="light" aria-label="Light the lamp"><span class="lbl">Light the lamp</span></button></div>
+    <div class="actions"><button class="go" id="light" aria-label="Light the lamp"><span class="lbl">Light the lamp</span></button><button class="go" id="nextBtn" type="button" hidden><span class="lbl">Next</span></button></div>
   </section>
 
   <section class="screen pad res" id="dreams">
@@ -946,8 +958,8 @@
   function show(view) {
     var prev = state.view; if (prev && prev !== view) veilGo();
     state.view = view;
-    ['welcome', 'stop', 'dreams', 'reveal', 'doors', 'field', 'abroad', 'parent', 'how', 'lock'].forEach(function (v) { $(v).classList.toggle('on', v === view); });
-    $('hud').hidden = view === 'welcome'; $('hud').classList.toggle('solid', view !== 'stop');
+    ['welcome', 'intro', 'stop', 'dreams', 'reveal', 'doors', 'field', 'abroad', 'parent', 'how', 'lock'].forEach(function (v) { $(v).classList.toggle('on', v === view); });
+    $('hud').hidden = view === 'welcome' || view === 'intro'; $('hud').classList.toggle('solid', view !== 'stop');
     document.body.classList.remove('busy'); state.busy = false;
   }
 
@@ -967,7 +979,7 @@
 
   var advTimer = null;
   function advance(first) {
-    clearTimeout(advTimer);
+    clearTimeout(advTimer); state.cont = null; $('nextBtn').hidden = true; document.body.classList.remove('awaiting');
     state.lit = false;
     var s;
     try { s = M.step(bank, state.choices); } catch (e) { console.error(e); state.busy = false; document.body.classList.remove('busy'); return; }
@@ -1095,11 +1107,13 @@
       if (META.ila[n]) beat = ['Ila', '', META.ila[n]];
       else META.chapters.forEach(function (c) { if (c.at === n && n > 0) beat = [c.roman, c.title, c.line]; });
     }
-    if (beat) advTimer = setTimeout(function () { showBeat(beat[0], beat[1], beat[2], function () { advance(false); }); }, state.reduce ? 2600 : 2100);
-    else advTimer = setTimeout(function () { advance(false); }, state.reduce ? 3600 : 2300);
+    // No timer: the student reads at their own pace and taps Next.
+    state.cont = beat ? function () { showBeat(beat[0], beat[1], beat[2], function () { advance(false); }); } : function () { advance(false); };
+    advTimer = setTimeout(function () { document.body.classList.add('awaiting'); $('nextBtn').hidden = false; $('nextBtn').focus(); }, state.reduce ? 0 : 1100);
     if (!echoing && (n === 4 || n === 8 || n === 12)) setTimeout(beamSweep, 500);
   }
   $('light').addEventListener('click', function () { doLight(); });
+  $('nextBtn').addEventListener('click', function () { var f = state.cont; if (!f) return; state.cont = null; $('nextBtn').hidden = true; document.body.classList.remove('awaiting'); f(); });
   var trapped = false;
   function trapBack() { if (trapped) return; trapped = true; try { history.pushState({ mw: 1 }, ''); } catch (e) { /* no history */ } }
   addEventListener('popstate', function () { if (state.view !== 'welcome') { try { history.pushState({ mw: 1 }, ''); } catch (e) { /* no history */ } $('back').click(); } else { trapped = false; } });
@@ -1520,9 +1534,21 @@
     toDreams();
   });
 
+  var introI = 0, INTRO = (META && META.intro) || [];
+  function paintIntro() {
+    var p = INTRO[introI]; if (!p) { endIntro(); return; }
+    $('introBg').style.setProperty('--art', 'url(' + ((ART.bg && ART.bg[p.img]) || 'art/bg-' + p.img + '.webp') + ')');
+    var t = $('introText'); t.style.animation = 'none'; void t.offsetWidth; t.style.animation = ''; t.textContent = p.text;
+    $('introDots').innerHTML = INTRO.map(function (x, i) { return '<i class="' + (i === introI ? 'on' : '') + '"></i>'; }).join('');
+    $('introNext').textContent = introI === INTRO.length - 1 ? 'Take the lantern' : 'Next'; $('introSkip').hidden = introI === INTRO.length - 1; $('introNext').focus();
+    track('intro', { n: introI + 1 });
+  }
+  function endIntro() { startWalk(); }
+  $('introNext').addEventListener('click', function () { introI++; if (introI >= INTRO.length) endIntro(); else paintIntro(); });
+  $('introSkip').addEventListener('click', endIntro);
   $('begin').addEventListener('click', function () {
     try { if (localStorage.getItem('margwise.mute') !== '1' && Snd.available() && !Snd.isOn()) { Snd.set(true); paintSound(); } } catch (e) { /* storage blocked: stay silent */ }
-    startWalk();
+    if (INTRO.length) { introI = 0; trapBack(); show('intro'); paintIntro(); } else startWalk();
   });
   $('aboutBtn').addEventListener('click', function () { $('about').hidden = false; $('aboutClose').focus(); });
   $('aboutClose').addEventListener('click', function () { $('about').hidden = true; });
@@ -1795,7 +1821,7 @@
     if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } var rw = readWalk(); if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + rw.choices.filter(function (c) { return !c.echoOf; }).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
   }
   if (MWC) {
-    try { $('gScene').style.backgroundImage = 'url(' + ((ART.bg && (ART.bg.gate || ART.bg.lighthouse)) || 'art/bg-gate.webp') + ')'; } catch (e) { /* plain dark gate */ }
+    try { $('gScene').style.setProperty('--art', 'url(' + ((ART.bg && (ART.bg.gate || ART.bg.lighthouse)) || 'art/bg-gate.webp') + ')'); } catch (e) { /* plain dark gate */ }
     (function () { var pe = $('personas'), x = pe.previousElementSibling; pe.hidden = true; while (x && (x.tagName === 'P' || x.tagName === 'H3')) { var p = x.previousElementSibling; if (/Reviewer|Fill the road/.test(x.textContent)) x.hidden = true; x = p && p.tagName !== 'BUTTON' ? p : null; } })();
     $('saveBtn').hidden = true;
     if (!TK) { $('gate').classList.add('cover'); $('gate').hidden = false; $('gStart').addEventListener('click', function () { $('gate').classList.remove('cover'); $('gName').focus(); }); }
