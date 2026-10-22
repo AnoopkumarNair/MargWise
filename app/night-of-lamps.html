@@ -147,6 +147,8 @@
   .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .seg button { border: 2px solid rgba(255,243,214,.35); background: rgba(255,255,255,.07); border-radius: 12px; padding: 8px 6px; min-height: 44px; font-weight: 800; font-size: 14px; }
   .seg button[aria-pressed="true"] { background: #ffe9a8; color: var(--ink); border-color: var(--glow-deep); }
+  .xplain { background: rgba(255,255,255,.08); border-radius: 14px; padding: 10px 12px; margin: 0 0 12px; } .xplain summary { cursor: pointer; font-weight: 800; min-height: 40px; display: flex; align-items: center; }
+  .xplain h4 { margin: 10px 0 4px; font-size: 14px; letter-spacing: .02em; color: #ffe08a; } .xplain ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; line-height: 1.4; } .xplain .q { font-style: italic; }
   .crow { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; background: rgba(255,255,255,.08); border-radius: 14px; padding: 10px 12px; }
   .crow b { font-size: 16px; } .crow p { grid-column: 1 / -1; font-size: 14.5px; color: rgba(255,243,214,.88); font-weight: 600; }
   .tl { list-style: none; margin: 0; padding: 0 0 0 16px; border-left: 3px solid rgba(255,207,107,.5); display: grid; gap: 14px; }
@@ -477,7 +479,7 @@
         <details class="gdata"><summary>What we keep, and who sees it</summary>
           <p>We keep your name, the choices you make in the game and how long each place takes, your puzzle answers, the class, board and stream you pick, your results, your screen size and any feedback you write. We never ask for your phone number, email or address. A scrambled version of your connection address is kept for 24 hours only, to stop abuse.</p>
           <p>The Margwise team can see it. If you joined through a school, the counsellor at that school can also see your name, whether you finished, and your results. Nobody else can. We use it to improve the game and to check how well it measures interests.</p>
-          <p>We keep it until the test ends, about 31 January 2027, then delete it. To have yours deleted sooner, tell the person who invited you.</p>
+          <p>We keep it until the test ends, about 31 January 2027, then delete it. If your parent also agreed to follow-up checks, the school counsellor keeps your first name, class and their later notes for up to 12 months after the test, and nothing else. To have yours deleted sooner, tell the person who invited you.</p>
         </details>
         <p class="gfine">Early test version. This is an interest guide, not a test of ability. Career information is still a draft.</p>
       </div>
@@ -587,6 +589,7 @@
 
   <section class="screen pad res" id="field">
     <div class="head"><h2 id="fTitle"></h2><p id="fWhy"></p></div>
+    <details class="xplain" id="fExplain" open><summary>Why this showed up, and what is still uncertain</summary><div id="fExplainBody"></div></details>
     <div class="grp"><h3>Careers in this field</h3><div style="display:grid; gap:8px" id="fCareers"></div></div>
     <div class="grp"><h3>Your school path</h3><div class="seg" id="fBoard" role="group" aria-label="Board"></div><ol class="tl" id="fPath"></ol><button class="linkbtn" id="fAbroad" type="button">Thinking of studying or working abroad? See how it works for this field.</button></div>
     <div class="fineprint" id="fSrc"></div>
@@ -656,11 +659,8 @@
   var bank = applyStory(M.JOURNEY_BANK), STORY = bank.story;
   // ---------- tester mode: only active when the host page sets window.MW_CONFIG (the hosted test build)
   var MWC = window.MW_CONFIG || null, TK = null, SESSION = Math.random().toString(36).slice(2, 10), evq = [], flushT = null;
-  // counsellor-led start: /?t=<tester>&k=<token>&n=<first name>. Replaces whoever was signed in on this device and wipes their saved result and walk,
-  // then removes the credentials from the address bar.
-  try { var sp = new URLSearchParams(location.search); if (MWC && sp.get('t') && sp.get('k')) { localStorage.setItem('margwise.tester', JSON.stringify({ id: sp.get('t'), token: sp.get('k'), name: String(sp.get('n') || '').slice(0, 40), at: Date.now(), led: true })); ['margwise.save', 'margwise.walk'].forEach(function (k) { localStorage.removeItem(k); }); history.replaceState(null, '', location.pathname); } } catch (e) { /* storage blocked */ }
-  try { TK = JSON.parse(localStorage.getItem('margwise.tester') || 'null'); if (TK && (!TK.at || Date.now() - TK.at > (TK.led ? 1800000 : 5400000))) { TK = null; localStorage.removeItem('margwise.tester'); } } catch (e) { TK = null; }
-  var EID = 0, failN = 0;
+  try { TK = JSON.parse(localStorage.getItem('margwise.tester') || 'null'); if (TK && (!TK.at || Date.now() - TK.at > (TK.led ? 21600000 : 5400000))) { TK = null; localStorage.removeItem('margwise.tester'); } } catch (e) { TK = null; }
+  var EID = 0, failN = 0, STALE_LED = !!(TK && TK.led && Date.now() - TK.at > 1800000);
   function flush(useBeacon) {
     if (!MWC || !TK || !evq.length) return;
     var batch = evq.splice(0, 40), body = JSON.stringify({ testerId: TK.id, token: TK.token, session: SESSION, events: batch }), url = MWC.api + '/event';
@@ -1101,7 +1101,7 @@
     if (state.view === 'stop') {
       if (!state.choices.length) { show('welcome'); return; }
       var last = state.choices[state.choices.length - 1];
-      state.choices = M.undo(state.choices);
+      state.choices = M.undo(state.choices); saveWalk();
       var again = M.step(bank, state.choices);
       state.scene = again.scene || bank.scenes.filter(function (s) { return s.id === (last.echoOf || last.sceneId); })[0];
       state.echo = !!last.echoOf; state.spent = {};
@@ -1109,7 +1109,7 @@
       setScene(state.scene.id); renderStop(); refreshCards();
     } else if (state.view === 'dreams') {
       var l2 = state.choices[state.choices.length - 1];
-      state.choices = M.undo(state.choices);
+      state.choices = M.undo(state.choices); saveWalk();
       state.scene = bank.scenes.filter(function (s) { return s.id === (l2.echoOf || l2.sceneId); })[0]; state.echo = !!l2.echoOf; state.spent = {};
       Object.keys(l2.spent).forEach(function (k) { state.spent[k] = l2.spent[k]; });
       show('stop'); setScene(state.scene.id, true); renderStop(); refreshCards();
@@ -1129,7 +1129,6 @@
   };
   state.ctx = { cls: '', board: '', lean: '' }; state.slots = [0, 0, 0, 0];
   function toDreams() {
-    clearWalk();
     show('dreams'); paintHud();
     [['cClass', 'cls'], ['cBoard', 'board'], ['cLean', 'lean']].forEach(function (g) {
       $(g[0]).innerHTML = CTX[g[1]].map(function (o) { return '<button type="button" class="chip" data-k="' + g[1] + '" data-v="' + o[0] + '" aria-pressed="' + (state.ctx[g[1]] === o[0]) + '">' + o[1] + '</button>'; }).join('');
@@ -1166,6 +1165,7 @@
   function titles(ids) { return ids.map(function (i) { return BYID[i].title; }).join(', '); }
 
   function toReveal() {
+    clearWalk();
     var r = state.result = M.journeyResult(bank, state.choices);
     var code = r.code.code, pr = r.profile;
     var vs = AREAS.map(function (a) { return pr[a]; }), mu = vs.reduce(function (a, b) { return a + b; }, 0) / 6, sd = Math.sqrt(vs.reduce(function (a, b) { return a + (b - mu) * (b - mu); }, 0) / 6);
@@ -1252,8 +1252,8 @@
     NULLF = {}; FIELDS.forEach(function (f) { var v = vals[f.id], m = v.reduce(function (a, b) { return a + b; }, 0) / N, sd = Math.sqrt(v.reduce(function (a, b) { return a + (b - m) * (b - m); }, 0) / N) || 1; NULLF[f.id] = { m: m, sd: sd }; });
     return NULLF;
   }
-  function fieldFits() {
-    var r = state.result, matches = M.careerPaths(r.profile, CAREERS.map(function (c) { return { careerId: c.id, values: c.values }; })), by = {};
+  function fieldFits(profile) {
+    var r = state.result, matches = M.careerPaths(profile || r.profile, CAREERS.map(function (c) { return { careerId: c.id, values: c.values }; })), by = {};
     matches.forEach(function (m) { by[m.careerId] = m; });
     return FIELDS.map(function (f) {
       var ms = CAREERS.filter(function (c) { return c.field === f.id; }).map(function (c) { return by[c.id]; }).sort(function (a, b) { return b.r - a.r; });
@@ -1286,6 +1286,42 @@
   $('allFields').addEventListener('click', function (e) { var b = e.target.closest('.frow'); if (b) toField(b.dataset.id); });
   $('fields').addEventListener('click', function (e) { var b = e.target.closest('.fcard'); if (b) toField(b.dataset.id); });
   function boardKey() { var b = state.ctx.board; return b === 'cbse' ? 'cbse' : b === 'isc' ? 'isc' : 'state'; }
+  // ---------- explain a suggestion: which choices pointed here, which pointed away, what is uncertain, what to try next.
+  // Each choice's effect is measured by leaving it out (and its repeat) and re-scoring the field.
+  function choiceCards(c) {
+    var sc = bank.scenes.filter(function (x) { return x.id === c.sceneId; })[0]; if (!sc) return [];
+    return Object.keys(c.spent || {}).map(function (id) { var o = sc.options.filter(function (y) { return y.id === id; })[0]; return o ? { text: o.text, trait: Object.keys(o.loads).sort(function (a, b) { return o.loads[b] - o.loads[a]; })[0] } : null; }).filter(Boolean);
+  }
+  function whyField(id) {
+    var full = state.fits.filter(function (y) { return y.f.id === id; })[0], out = [];
+    state.choices.forEach(function (c) {
+      if (c.echoOf) return;
+      var rest = state.choices.filter(function (x) { return x !== c && x.echoOf !== c.sceneId; }); if (rest.length < 4) return;
+      var prof; try { prof = M.journeyResult(bank, rest).profile; } catch (e) { return; }
+      var f2 = fieldFits(prof).filter(function (y) { return y.f.id === id; })[0], sc = bank.scenes.filter(function (x) { return x.id === c.sceneId; })[0];
+      out.push({ place: sc ? sc.place : '', cards: choiceCards(c), d: full.score - f2.score });
+    });
+    out.sort(function (a, b) { return b.d - a.d; });
+    return { up: out.filter(function (o) { return o.d > .012; }).slice(0, 3), down: out.filter(function (o) { return o.d < -.012; }).slice(-1), n: out.length, supporters: out.filter(function (o) { return o.d > .012; }).length };
+  }
+  function renderExplain(id, x) {
+    var w = whyField(id), r = state.result, f = x.f, code = r.code.code, h = '', pr = r.profile;
+    function line(o, away) { var mine = o.cards.filter(function (c) { return (f.areas.indexOf(c.trait) >= 0) !== !!away; }); if (!mine.length) mine = o.cards; return '<li><b>' + esc(o.place) + ':</b> you picked ' + mine.map(function (c) { return '<span class="q">\u201c' + esc(c.text) + '\u201d</span> (' + NAME[c.trait] + ')'; }).join(' and ') + '.</li>'; }
+    h += '<h4>Choices that pointed here</h4>' + (w.up.length ? '<ul>' + w.up.map(function (o) { return line(o, false); }).join('') + '</ul>' : '<p>No single choice stands out; this comes from the overall shape of your choices.</p>');
+    if (w.down.length) h += '<h4>A choice that pointed somewhere else</h4><ul>' + w.down.map(function (o) { return line(o, true); }).join('') + '</ul><p class="fineprint">Mixed signals are normal. It is a reason to look at more than one area.</p>';
+    var lean = f.areas.map(function (a) { return NAME[a] + ' (' + (pr[a] > .5 ? 'strong in your choices' : pr[a] > -.2 ? 'middling' : 'lower in your choices') + ')'; }).join(' and ');
+    h += '<h4>How it lines up with you</h4><p>This area leans on ' + lean + '.</p>';
+    var u = [], nxt = state.fits[state.fits.map(function (y) { return y.f.id; }).indexOf(id) + 1], prv = state.fits[state.fits.map(function (y) { return y.f.id; }).indexOf(id) - 1];
+    if ((nxt && Math.abs(x.score - nxt.score) < .05) || (prv && Math.abs(x.score - prv.score) < .05)) u.push('It is very close to a neighbouring area in your list. On another day the order could swap.');
+    if (w.supporters < 3) u.push('Only ' + (w.supporters || 'a couple of') + ' of your ' + w.n + ' choices pointed here, so this rests on a small amount of evidence.');
+    if (r.cautious || r.noSignal) u.push('Your choices were spread out, so the whole shape is rough.');
+    u.push('This is about what you enjoy, not what you are good at. The puzzle results are shown separately and do not change this order.');
+    u.push('Matches come from US job profiles. Indian courses, exams and pay can differ, so check the official pages listed below.');
+    h += '<h4>What is still uncertain</h4><ul>' + u.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>';
+    var nx = ['Open two of the careers below that you had not thought about and read what the work involves.', f.early, 'Talk to one person who works in this area and ask what a normal week looks like.'].filter(Boolean);
+    h += '<h4>What you could try next</h4><ul>' + nx.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>';
+    $('fExplainBody').innerHTML = h; track('why_open', { id: id });
+  }
   function toField(id) {
     var x = state.fits.filter(function (y) { return y.f.id === id; })[0], f = x.f, code = state.result.code.code;
     show('field'); Snd.door(); $('field').scrollTop = 0; state.fieldId = id; track('field_open', { id: id });
@@ -1295,7 +1331,7 @@
     var hi = x.ms.filter(function (m) { var a = BYID[m.careerId].ai; return a && a.watch; }).length; if (hi) $('fWhy').textContent += ' ' + hi + ' of the ' + x.ms.length + ' careers below ' + (hi === 1 ? 'has' : 'have') + ' very high AI exposure with AI already in use.';
     $('fCareers').innerHTML = x.ms.map(function (m) { var c = BYID[m.careerId]; return '<div class="crow"><b>' + c.title + '</b><p>' + c.line + '</p>' + usPay(c) + aiLine(c) + '</div>'; }).join('');
     $('fSrc').innerHTML = (f.verify.length ? '<b>Check before relying on this:</b><ul class="chk-list">' + f.verify.map(function (v) { return '<li>' + esc(v) + '</li>'; }).join('') + '</ul>' : '') + '<p class="src" style="margin-top:8px"><b>Where to check:</b> ' + f.sources.map(function (z) { return '<a href="' + z.url + '" target="_blank" rel="noopener noreferrer">' + esc(z.name) + '</a>'; }).join(', ') + '. Career fit uses O*NET interest profiles, which come from US jobs and are only a rough guide for India.</p>';
-    renderPath();
+    renderExplain(id, x); renderPath();
   }
   function plfsText() {
     var p = CONTENT.plfs; if (!p) return '';
@@ -1714,7 +1750,8 @@
   function paintCode() { var e = $('scLine'); if (e && MWC && TK) e.textContent = ' Your student code: ' + studentCode() + '.'; }
   function paintTester() {
     var el = $('welcomeBack');
-    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); var rw = readWalk(); if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + rw.choices.filter(function (c) { return !c.echoOf; }).length + ' lamps lit)'; rb.addEventListener('click', function () { resumeWalk(rw); }); el.appendChild(rb); } }
+    if (STALE_LED && !(TK && TK.led)) { STALE_LED = false; $('begin').hidden = false; }
+    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } var rw = readWalk(); if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + rw.choices.filter(function (c) { return !c.echoOf; }).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
   }
   if (MWC) {
     try { $('gScene').style.backgroundImage = 'url(' + ((ART.bg && (ART.bg.gate || ART.bg.lighthouse)) || 'art/bg-gate.webp') + ')'; } catch (e) { /* plain dark gate */ }

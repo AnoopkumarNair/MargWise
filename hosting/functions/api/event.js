@@ -13,6 +13,7 @@ const V = {
   join: d => ({ vw: int(d.vw, 0, 10000), vh: int(d.vh, 0, 10000) }),
   walk_start: d => ({ seed: int(d.seed, 0, 1e9), vw: int(d.vw, 0, 10000), vh: int(d.vh, 0, 10000) }),
   place_done: d => { const spent = {}; if (d.spent && typeof d.spent === 'object') for (const k of Object.keys(d.spent).slice(0, 8)) { const n = int(d.spent[k], 0, 2); if (optId.test(k) && n !== null) spent[k] = n; } return { scene: sceneId.test(String(d.scene)) ? d.scene : null, echo: bool(d.echo), spent, order: arr(d.order, 4, x => (optId.test(String(x)) ? x : null)), ms: int(d.ms, 0, 3600000), n: int(d.n, 0, 30) }; },
+  why_open: d => ({ id: str(d.id, 12) }),
   walk_resume: d => ({ n: int(d.n, 0, 40) }),
   beat: d => ({ who: str(d.who, 30) }),
   context: d => ({ cls: str(d.cls, 8), board: str(d.board, 8), lean: str(d.lean, 12) }),

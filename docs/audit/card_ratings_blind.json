@@ -1,0 +1,160 @@
+{
+  "_meta": {
+    "rater": "single AI reviewer, blind to trait key",
+    "scale": "desirability 1-5 = social desirability (looks kind/clever/brave/good), not enjoyment",
+    "cross_scene_notes": [
+      "Recurring stems act as cues across scenes: 'Welcome the visitors/travellers' (s05, s11, s15), 'persuade' (s04, s06, s11), 'unlike any' (s02, s07), 'every ... in order' (s08, s10, s12, s13, s14, s15). A student who notices the pattern can pick by template, not by activity.",
+      "Cards that keep records, count or sort ('every', 'in order', 'perfect order', 'permits') are rated lowest almost everywhere; cards that rescue, comfort or solve the scene's crisis are rated highest."
+    ]
+  },
+  "s01": {
+    "cards": {
+      "s01-1": {"desirability": 5, "flags": ["emotive framing ('worried children') makes it the kind answer"]},
+      "s01-2": {"desirability": 4, "flags": []},
+      "s01-3": {"desirability": 4, "flags": []},
+      "s01-4": {"desirability": 3, "flags": ["does not address the stalled ferry; may read as decorative/frivolous"]}
+    },
+    "dominant": true,
+    "reason": "Comforting worried children is the morally 'correct' answer; the welcome board looks trivial next to it."
+  },
+  "s02": {
+    "cards": {
+      "s02-1": {"desirability": 4, "flags": []},
+      "s02-2": {"desirability": 3, "flags": ["vague: imagining a shape does not help anyone cross before midnight"]},
+      "s02-3": {"desirability": 3, "flags": ["'budget' is adult/work-coded"]},
+      "s02-4": {"desirability": 2, "flags": ["'exactly as the plan shows' sounds like following orders, low agency"]}
+    },
+    "dominant": false,
+    "reason": "No single obvious winner, but range is 2: the plank-fitting card reads as passive."
+  },
+  "s03": {
+    "cards": {
+      "s03-1": {"desirability": 4, "flags": []},
+      "s03-2": {"desirability": 4, "flags": []},
+      "s03-3": {"desirability": 2, "flags": ["paperwork while the clock is broken; reads as bossy/dull"]},
+      "s03-4": {"desirability": 3, "flags": ["off-task: decorating a broken clock"]}
+    },
+    "dominant": false,
+    "reason": "Two strong problem-solving cards; repair log is the weak card (range 2) but not glaringly so."
+  },
+  "s04": {
+    "cards": {
+      "s04-1": {"desirability": 3, "flags": ["'strike a good deal' can read as pushy"]},
+      "s04-2": {"desirability": 4, "flags": []},
+      "s04-3": {"desirability": 3, "flags": []},
+      "s04-4": {"desirability": 4, "flags": ["long (72 chars), two clauses"]}
+    },
+    "dominant": false,
+    "reason": "Reasonably balanced; range 1."
+  },
+  "s05": {
+    "cards": {
+      "s05-1": {"desirability": 4, "flags": []},
+      "s05-2": {"desirability": 5, "flags": ["directly solves the scene's crisis (dim lamp in fog)"]},
+      "s05-3": {"desirability": 3, "flags": ["mapping fog doesn't help travellers now"]},
+      "s05-4": {"desirability": 3, "flags": []}
+    },
+    "dominant": true,
+    "reason": "Mending the signal lamp is the obvious fix the setup points at; other cards look secondary."
+  },
+  "s06": {
+    "cards": {
+      "s06-1": {"desirability": 3, "flags": ["long (70 chars)", "'persuade each visitor' can read as pushy"]},
+      "s06-2": {"desirability": 2, "flags": ["chore-like; 'label every shelf'"]},
+      "s06-3": {"desirability": 3, "flags": []},
+      "s06-4": {"desirability": 4, "flags": ["setup spotlights the strange machine, priming this card"]}
+    },
+    "dominant": true,
+    "reason": "The setup itself advertises the mysterious machine, so examining it is the hook; sorting stock is the odd one out."
+  },
+  "s07": {
+    "cards": {
+      "s07-1": {"desirability": 3, "flags": ["'unlike any' template repeats s02", "doesn't help tired people or cross river"]},
+      "s07-2": {"desirability": 4, "flags": []},
+      "s07-3": {"desirability": 5, "flags": ["most virtuous card in the scene"]},
+      "s07-4": {"desirability": 4, "flags": ["mixes two activities (building + testing)"]}
+    },
+    "dominant": false,
+    "reason": "Care card is most virtuous but the raft and meeting compete; range 2."
+  },
+  "s08": {
+    "cards": {
+      "s08-1": {"desirability": 2, "flags": ["chore-like"]},
+      "s08-2": {"desirability": 4, "flags": []},
+      "s08-3": {"desirability": 5, "flags": ["'shy weaver ... with pride' is strongly virtue-coded"]},
+      "s08-4": {"desirability": 4, "flags": []}
+    },
+    "dominant": true,
+    "reason": "Coaching the shy weaver is the 'good person' answer; checking cloth rolls is the obvious odd one out (range 3)."
+  },
+  "s09": {
+    "cards": {
+      "s09-1": {"desirability": 2, "flags": ["'Sit and watch' reads idle while group needs to climb", "long (65 chars)"]},
+      "s09-2": {"desirability": 3, "flags": []},
+      "s09-3": {"desirability": 5, "flags": ["brave/adventurous framing"]},
+      "s09-4": {"desirability": 4, "flags": ["long (73 chars)", "safety = responsible, socially approved"]}
+    },
+    "dominant": true,
+    "reason": "Roping down the cliff is the brave hero card; sitting and drawing is the odd one out (range 3)."
+  },
+  "s10": {
+    "cards": {
+      "s10-1": {"desirability": 5, "flags": ["not in the setup (no lost trader mentioned)", "rescue-of-family framing is strongly virtuous"]},
+      "s10-2": {"desirability": 2, "flags": ["chore-like"]},
+      "s10-3": {"desirability": 4, "flags": []},
+      "s10-4": {"desirability": 3, "flags": ["'barrels' inconsistent with spilled salt sacks"]}
+    },
+    "dominant": true,
+    "reason": "Reuniting a lost trader with family is the obviously kind answer, and it is not even part of the setup; weighing sacks is the odd one out."
+  },
+  "s11": {
+    "cards": {
+      "s11-1": {"desirability": 3, "flags": ["'club night' not introduced in setup"]},
+      "s11-2": {"desirability": 4, "flags": []},
+      "s11-3": {"desirability": 3, "flags": ["structure mirrors s11-2 ('X the stars/sky and Y')"]},
+      "s11-4": {"desirability": 4, "flags": ["'Welcome the visitors' template repeats s15"]}
+    },
+    "dominant": false,
+    "reason": "Fairly balanced; range 1."
+  },
+  "s12": {
+    "cards": {
+      "s12-1": {"desirability": 3, "flags": []},
+      "s12-2": {"desirability": 3, "flags": []},
+      "s12-3": {"desirability": 4, "flags": []},
+      "s12-4": {"desirability": 4, "flags": []}
+    },
+    "dominant": false,
+    "reason": "Balanced; range 1."
+  },
+  "s13": {
+    "cards": {
+      "s13-1": {"desirability": 2, "flags": ["chore-like"]},
+      "s13-2": {"desirability": 3, "flags": ["'Pitch' is business jargon for a 14-year-old"]},
+      "s13-3": {"desirability": 4, "flags": ["'makes its mark' is slightly figurative/vague"]},
+      "s13-4": {"desirability": 3, "flags": []}
+    },
+    "dominant": false,
+    "reason": "No obvious winner, but proofreading is weakest (range 2). Note no card actually gets the press working, which the setup asks for."
+  },
+  "s14": {
+    "cards": {
+      "s14-1": {"desirability": 5, "flags": ["compassion-coded"]},
+      "s14-2": {"desirability": 2, "flags": ["'perfect order' sounds obsessive/fussy"]},
+      "s14-3": {"desirability": 5, "flags": ["detective/hero framing"]},
+      "s14-4": {"desirability": 4, "flags": ["'decide who is seen first' is heavy for a teen"]}
+    },
+    "dominant": true,
+    "reason": "Counting medicine is the clear odd one out next to comforting patients and finding the cause of illness (range 3)."
+  },
+  "s15": {
+    "cards": {
+      "s15-1": {"desirability": 4, "flags": ["'help the shy ones' virtue-coded; 'Welcome the visitors' template"]},
+      "s15-2": {"desirability": 2, "flags": ["'permits' is adult/bureaucratic jargon", "list of nouns, no action"]},
+      "s15-3": {"desirability": 4, "flags": []},
+      "s15-4": {"desirability": 3, "flags": []}
+    },
+    "dominant": false,
+    "reason": "No single virtuous winner, but the permits card is clearly the least appealing (range 2)."
+  }
+}

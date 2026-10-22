@@ -7,10 +7,10 @@
    "line": "That engine has not purred like that in years.",
    "lit": "The oil is ashore and the harbour lamp catches. The water glows back.",
    "o": {
-    "R": "Open the ferry's engine and fix what is broken",
-    "I": "Track the tides and wind to work out why it stalled",
-    "A": "Paint a bright welcome board for the waiting crowd",
-    "S": "Stay with the worried children and help them feel safe while they wait"
+    "R": "Open the engine and fix it, with oily hands and no one to ask for help",
+    "I": "Work out from tides and wind why it stalled, though the answer may come too late",
+    "A": "Paint a big board so the crowd knows what is happening, with an hour to finish",
+    "S": "Keep the waiting children calm and busy, even if you miss the repair"
    }
   },
   "s02": {
@@ -20,10 +20,10 @@
    "line": "My father laid that arch. It is good to see it lit again.",
    "lit": "Lantern-bearers stream across, and the old arch glows.",
    "o": {
-    "R": "Fit the new planks exactly as the plan shows",
-    "I": "Find out how old arches stay up, and why this one cracked",
-    "A": "Imagine a bridge shape unlike any other",
-    "E": "Take charge of the budget and the team for the repair"
+    "R": "Fit the new planks by hand in the cold, getting every joint tight before midnight",
+    "I": "Find out why this arch cracked, even if it takes all night of measuring",
+    "A": "Sketch a new arch shape that might be safer, though most first ideas get thrown out",
+    "E": "Take charge of the repair team and the money, and face the blame if it goes wrong"
    }
   },
   "s03": {
@@ -33,10 +33,10 @@
    "line": "Right on dusk, and the whole lane is ready.",
    "lit": "The tower strikes dusk. Every window in the lane lights at once.",
    "o": {
-    "R": "Climb the tower and follow the broken gear by hand",
-    "I": "Study the pattern of missed chimes to find the cause",
-    "A": "Decorate the clock face with something that makes people smile",
-    "C": "Start a repair log and list who does which job"
+    "R": "Climb the tower and follow the broken gear by hand, in a dusty, cramped space",
+    "I": "Study the pattern of missed chimes, though it may take days to spot the cause",
+    "A": "Repaint the clock face so it is easier to read, even if some liked the old one",
+    "C": "Plan the repair step by step so nothing is missed, while others do the climbing"
    }
   },
   "s04": {
@@ -59,10 +59,10 @@
    "line": "Nobody was left behind in my pass tonight.",
    "lit": "A thin gold line cuts the fog. The pass has its light, and the way is clear.",
    "o": {
-    "R": "Mend the signal lamp so travellers can see it",
-    "I": "Map where the fog is thickest and find out why",
-    "S": "Welcome the lost travellers and get them moving together",
-    "C": "Count everyone through the pass and keep the line in order"
+    "R": "Mend the dim signal lamp alone on the ridge, in freezing wind",
+    "I": "Map where the fog is thickest to find a safer path, standing still in the cold",
+    "S": "Gather the lost travellers and keep their spirits up on a long, cold walk",
+    "C": "Count everyone through the pass so no one is left behind, even as people grow impatient"
    }
   },
   "s06": {
@@ -72,10 +72,10 @@
    "line": "A lit lamp is the best sign a stall can have.",
    "lit": "The bazaar glows, and a lamp hangs overhead, warm as a cup of tea.",
    "o": {
-    "R": "Build a sturdy stall frame from the plan",
-    "I": "Examine the strange old machine and work out what it was for",
-    "E": "Set your prices and persuade each visitor to take home your best item",
-    "C": "Sort the stock by size and label every shelf"
+    "R": "Build a sturdy stall frame from the plan, working fast as the light fades",
+    "I": "Examine the old machine to learn its use, even if the stall opens without you",
+    "E": "Set prices and win over buyers, knowing some will walk away",
+    "C": "Sort the stock and label shelves so buyers find things fast, before the doors open"
    }
   },
   "s07": {
@@ -85,10 +85,10 @@
    "line": "The river will carry your lamp's light all the way to the sea.",
    "lit": "The group is rested and ready for the crossing. The lamp's reflection drifts downstream.",
    "o": {
-    "R": "Build a raft and test which wood floats best",
-    "A": "Sketch a boat unlike any you have seen",
-    "S": "Look after the tired travellers and help them get going again",
-    "E": "Lead the camp meeting and make sure everyone is heard"
+    "R": "Build a raft from whatever wood is nearby, with sore arms and wet feet",
+    "A": "Draw up a boat for the crossing that may not float the first time",
+    "S": "Care for the tired travellers through the night while others plan the crossing",
+    "E": "Run the camp meeting and push for a decision, even if some people are unhappy"
    }
   },
   "s08": {
@@ -98,10 +98,10 @@
    "line": "Every banner in town will glow a little brighter tomorrow.",
    "lit": "Banners hang above the street, and a lamp lights behind them.",
    "o": {
-    "R": "Repair the loom so it runs smoothly again",
-    "A": "Design a pattern that tells the town's story",
-    "S": "Coach a shy weaver to show their work with pride",
-    "C": "Check every roll of cloth and store it in order"
+    "R": "Repair the creaking loom, crawling under it with tools for hours",
+    "A": "Design a banner pattern for the town, knowing not everyone will like it",
+    "S": "Coach a nervous new weaver, even though progress is slow and they may give up",
+    "C": "Track the cloth rolls so none go missing before market day, a slow, careful job"
    }
   },
   "s09": {
@@ -111,10 +111,10 @@
    "line": "From up here the whole road looks like a string of stars.",
    "lit": "The highest lamp is lit. The cliffs shine like glass for miles.",
    "o": {
-    "R": "Rope down the cliff and test the rock as you go",
-    "A": "Sit and watch the cliff light shift, and capture it in a drawing",
-    "E": "Split the climbers into teams and set the timetable",
-    "C": "Go through the safety checklist, harness by harness, before anyone climbs"
+    "R": "Rope down a short stretch to test the rock, which is slow, tiring work",
+    "A": "Capture the cliff's changing light in drawings, even if it means climbing last",
+    "E": "Split the climbers into teams and set the pace, taking the blame if anyone is late",
+    "C": "Check every harness against the safety list while others start climbing first"
    }
   },
   "s10": {
@@ -124,10 +124,10 @@
    "line": "Quiet market, warm lamp. The best kind of night.",
    "lit": "The market hums, and its lamp is lit above the stalls.",
    "o": {
-    "R": "Haul the barrels and stack them so they stay put",
-    "S": "Help a lost trader find their family",
-    "E": "Settle the argument with a deal both traders accept",
-    "C": "Weigh and record every sack, then pack the cart"
+    "R": "Haul the salt sacks off the road and stack them, heavy work in the heat",
+    "S": "Calm the gathering crowd and listen to each person's worry, which takes a while",
+    "E": "Settle the argument with a deal both traders accept, though neither is fully happy",
+    "C": "Weigh and record what salt is left, a fiddly job with the crowd shouting nearby"
    }
   },
   "s11": {
@@ -163,10 +163,10 @@
    "line": "Ink and light. They go together.",
    "lit": "Ink and paper fill the quarter, and a lamp lights above the cellar door.",
    "o": {
-    "I": "Investigate how the old press makes its mark",
-    "A": "Design a new letter style and see if people can read it",
-    "E": "Pitch a new newspaper, with a plan and a price",
-    "C": "Proofread every page and keep the print run on time"
+    "I": "Investigate how the old press works, reading faded notes that may lead nowhere",
+    "A": "Design a new letter style for the press, then redo it if people can't read it",
+    "E": "Start a new newspaper and find people to pay for it, at the risk it does not sell",
+    "C": "Proofread each page and keep the print run on time, with little praise if it goes well"
    }
   },
   "s14": {
@@ -176,10 +176,10 @@
    "line": "Steady light. They can rest now.",
    "lit": "The house settles into calm. A steady lamp burns in the window.",
    "o": {
-    "I": "Test the water supply to find what is making people ill",
-    "S": "Sit with the patients and comfort them through the night",
-    "E": "Lead the clinic team and decide who is seen first",
-    "C": "Count the medicine store and put it in perfect order"
+    "I": "Test the water to find what is making people ill, with many tests that show nothing",
+    "S": "Sit up with the sick travellers and comfort them, missing a night's sleep",
+    "E": "Lead the clinic team and choose who is seen first, even when someone has to wait",
+    "C": "Sort the medicine store so the right dose is quick to find, checking label after label"
    }
   },
   "s15": {
@@ -189,10 +189,10 @@
    "line": "All the lamps are lit. Let the festival begin!",
    "lit": "The square is ready, and its lamp glows over the cobbles.",
    "o": {
-    "A": "Create the welcome arch with a story in its design",
-    "S": "Welcome the visitors and help the shy ones join in",
-    "E": "Run the festival: the stalls, the prices and the plan",
-    "C": "Keep the permits, timings and checklists in order"
+    "A": "Create the welcome arch, though you may still be painting it as the lamps arrive",
+    "S": "Greet newcomers and help them join in, staying by the gate while the fun starts",
+    "E": "Run the stalls and set the prices, then face the stallholders if sales are slow",
+    "C": "Keep the timetable so every act starts on time, working out of sight all evening"
    }
   }
  },

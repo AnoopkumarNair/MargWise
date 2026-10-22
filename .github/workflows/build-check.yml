@@ -23,4 +23,6 @@ jobs:
       - name: Engine - independent Python reference agrees with the shipped bundle
         run: python3 engine/reference.py
       - name: Engine - golden, determinism and ranking-guard tests
-        run: node --test engine/tests/engine.test.mjs
+        run: node --test engine/tests/engine.test.mjs engine/tests/design.test.mjs
+      - name: Question map is current
+        run: node engine/tools/question_map.mjs --check

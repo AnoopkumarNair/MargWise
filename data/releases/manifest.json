@@ -1,10 +1,10 @@
 {
- "accepted_at": "2026-10-22T04:08:53+00:00",
+ "accepted_at": "2026-10-22T06:22:00+00:00",
  "python": "3.13.16",
  "files": {
   "latest.json": "5bfd29d362c5ac15e0c29878dce4f313fdca09600556427fd158f0dc6bf06ebc",
   "abroad.json": "a5485147963325efd22c671c6d3a67f45e37ffde5636f7d79b2cf5b22f4db8a8",
-  "story2.json": "3d1ea97a1f33027111e4526e3e6db4c998884c12a86ac6c236dee836b5fa0c0a"
+  "story2.json": "c236075030f81bd9aa81b33c6a737a0825d335b5640a931062eae97736b1e052"
  },
  "raw": {
   "ai/bls_ai_exposure.csv": "776ea35b72bdcc4e19659e1438983ad10d8cf5b213cad5383846008dc623f7b1",
@@ -16,5 +16,5 @@
   "plfs_2025.json": "d6335933918ff303f667603f8f30d2245e90838b3f4c4fd967b1673b6cd0fcbc",
   "refcal.json": "f15741fdeed7e090a389dfa3f8090d7e80ee848e5780091153e1ec6c014c1de1"
  },
- "release_id": "4ba7cfaf6418"
+ "release_id": "426cb2f768a2"
 }
