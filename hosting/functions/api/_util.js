@@ -11,6 +11,9 @@ async function hmac(msg, key) {
   return [...new Uint8Array(sig)].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 export const sign = (id, key) => hmac(id, key);
+export const retHash = (code, key) => hmac('ret:' + String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, ''), key);
+const RET_ALPHA = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+export function newRetCode() { const b = crypto.getRandomValues(new Uint8Array(8)); let c = ''; for (const x of b) c += RET_ALPHA[x % RET_ALPHA.length]; return c.slice(0, 4) + '-' + c.slice(4); }
 export const ipHash = async (request, key) => (await hmac('ip:' + (request.headers.get('cf-connecting-ip') || 'x'), key)).slice(0, 16);
 export async function readJson(request, max = 120000) {
   const raw = await request.text(); if (raw.length > max) return { err: 'Too large.', status: 413 };
