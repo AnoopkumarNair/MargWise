@@ -10,11 +10,27 @@ async function hmac(msg, key) {
   const sig = await crypto.subtle.sign('HMAC', k, new TextEncoder().encode(msg));
   return [...new Uint8Array(sig)].map(x => x.toString(16).padStart(2, '0')).join('');
 }
-export const sign = (id, key) => hmac(id, key);
+export const sign = (id, key) => hmac(id, key);   // legacy token format, still accepted for recent testers (see checkToken)
+// Tokens are `<issued-at-ms>.<hmac(id|issued-at)>`. Self-signup tokens last 31 days, counsellor-led ones 7 hours; an admin revoke (testers.tok_after) kills older tokens.
+export async function mintToken(id, key, now = Date.now()) { return now + '.' + await hmac(id + '|' + now, key); }
+export async function checkToken(env, id, token, now = Date.now()) {
+  const t = await env.DB.prepare('SELECT id, name, source, created_at, tok_after FROM testers WHERE id = ?').bind(id).first(); if (!t) return null;
+  const maxAge = t.source === 'counsellor' ? 7 * 3600000 : 31 * 86400000; token = String(token || '');
+  const dot = token.indexOf('.'); let iat;
+  if (dot > 0) { iat = Number(token.slice(0, dot)); if (!Number.isFinite(iat) || iat > now + 60000 || !safeEq(token.slice(dot + 1), await hmac(id + '|' + iat, env.SIGN_KEY))) return null; }
+  else { if (!safeEq(token, await hmac(id, env.SIGN_KEY))) return null; iat = t.created_at; }   // legacy token: valid only while the tester is within the normal lifetime
+  if (now - iat > maxAge || (t.tok_after && iat < t.tok_after)) return null;
+  return t;
+}
 export const retHash = (code, key) => hmac('ret:' + String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, ''), key);
 const RET_ALPHA = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 export function newRetCode() { let c = ''; while (c.length < 8) for (const x of crypto.getRandomValues(new Uint8Array(16))) if (x < 248 && c.length < 8) c += RET_ALPHA[x % 31]; return c.slice(0, 4) + '-' + c.slice(4); }
-export const ipHash = async (request, key) => (await hmac('ip:' + (request.headers.get('cf-connecting-ip') || 'x'), key)).slice(0, 16);
+export function ipBucket(ip) {   // IPv6 addresses are bucketed by /64 so rotating inside a prefix does not dodge the limits
+  ip = String(ip || 'x'); if (!ip.includes(':')) return ip;
+  const [a, b = ''] = ip.split('::'); const head = a ? a.split(':') : [], tail = b ? b.split(':') : []; const full = ip.includes('::') ? head.concat(Array(Math.max(0, 8 - head.length - tail.length)).fill('0'), tail) : head;
+  return full.slice(0, 4).map(g => g.padStart(4, '0')).join(':');
+}
+export const ipHash = async (request, key) => (await hmac('ip:' + ipBucket(request.headers.get('cf-connecting-ip')), key)).slice(0, 16);
 export async function readJson(request, max = 120000) {
   const raw = await request.text(); if (raw.length > max) return { err: 'Too large.', status: 413 };
   try { const b = JSON.parse(raw); if (!b || typeof b !== 'object' || Array.isArray(b)) return { err: 'Bad request.', status: 400 }; return { b }; } catch { return { err: 'Bad request.', status: 400 }; }

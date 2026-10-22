@@ -595,7 +595,7 @@
       <p id="mission"></p>
     </div>
     <div class="actions"><div class="lastres" id="lastRes" hidden></div><button class="go" id="begin">Take the lantern</button><p class="tiny" id="welcomeBack" hidden></p><p class="tiny">About 15 minutes. Nothing is marked.</p></div>
-    <div class="foot"><span>Prototype. Places and words are drafts.</span><button id="aboutBtn">About</button></div>
+    <div class="foot"><span>Prototype. Places and words are drafts.</span><button id="logoutBtn" class="logout" type="button" hidden>Log out</button><button id="aboutBtn">About</button></div>
   </section>
 
   <section class="screen" id="intro">
@@ -629,7 +629,7 @@
     <div class="head"><h2>Your interest shape</h2><p id="revealLine"></p></div>
     <div class="radarwrap"><svg id="compass" viewBox="-10 0 340 290" role="img" aria-label="Radar chart of your six interest areas"></svg><p class="howto">The further a point is from the middle, the more you enjoyed that kind of activity, compared with your own other choices.</p></div>
     <ol class="ranked" id="legend"></ol>
-    <p class="note" id="notes" hidden></p><p class="note" id="retLine" hidden></p>
+    <p class="note" id="notes" hidden></p><p class="note" id="retLine" hidden></p><button class="go quiet logout" type="button" hidden>Log out</button>
     <p class="outro" id="outro"></p>
     <div id="selfq" hidden><b>Does this shape sound like you?</b><div class="rate" data-k="self"></div><div class="rl"><span>Not me</span><span>Very me</span></div><button class="go quiet" id="chkOpen" type="button">Rate each area yourself</button></div>
     <div class="actions" style="margin-top:auto"><button class="go quiet" id="saveBtn">Save your lighthouse</button><button class="go" id="openDoors">See where this can lead</button></div>
@@ -641,7 +641,7 @@
     <div style="display:grid; gap:12px" id="fields"></div>
     <details class="allf"><summary id="allSum">All fields, by stream</summary><div id="allFields"></div></details>
     <p class="fineprint">Prototype content. Careers and school paths are drafts for counsellor review. Check official sites for current rules.<span id="scLine"></span></p>
-    <div class="actions"><button class="go" id="dParent" type="button">Summary for parents</button><button class="go quiet" id="dHow" type="button">How we got this result</button><button class="go" id="fbOpen" type="button" hidden>Share your feedback</button><button class="go quiet" id="again">Walk the road again</button></div>
+    <div class="actions"><button class="go" id="dParent" type="button">Summary for parents</button><button class="go quiet" id="dHow" type="button">How we got this result</button><button class="go quiet logout" type="button" hidden>Log out</button><button class="go" id="fbOpen" type="button" hidden>Share your feedback</button><button class="go quiet" id="again">Walk the road again</button></div>
   </section>
 
   <section class="screen pad res" id="lock">
@@ -1934,8 +1934,17 @@
   $('consentNo').addEventListener('click', function () { $('consent').hidden = true; consentGo = null; });
   // ---- gate
   function paintCode() { var e = $('scLine'); if (e && MWC && TK) e.textContent = ' Your student code: ' + studentCode() + '.'; }
+  function doLogout() {
+    var msg = 'Log out of Margwise on this device?' + (RET ? ' Your progress is saved. To come back, use your return code ' + RET + '.' : ' Your progress is saved.');
+    if (!window.confirm(msg)) return;
+    flush(true); evq = [];
+    try { localStorage.removeItem('margwise.tester'); localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ }
+    try { sessionStorage.removeItem('margwise.ret'); } catch (e) { /* storage blocked */ }
+    TK = null; ME = null; SRVWALK = null; RET = ''; location.reload();
+  }
+  document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.logout')) doLogout(); });
   function paintTester() {
-    var el = $('welcomeBack');
+    var el = $('welcomeBack'); Array.prototype.forEach.call(document.querySelectorAll('.logout'), function (b) { b.hidden = !(MWC && TK); });
     if (STALE_LED && !(TK && TK.led)) { STALE_LED = false; $('begin').hidden = false; }
     if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } var rw = readWalk() || SRVWALK; if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + rw.choices.filter(function (c) { return !c.echoOf; }).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
   }
