@@ -209,6 +209,7 @@
   #consent { position: absolute; inset: 0; z-index: 60; display: grid; place-items: center; padding: 18px; background: rgba(10,12,30,.78); }
   #consent .beatcard { gap: 12px; } #consent .go.quiet { margin-top: 0; }
   /* ----- parent summary ----- */
+  #how { overflow-y: auto; } #how .pgcard { background: #fff8e6; color: #2a2038; border-radius: 18px; padding: 16px; display: grid; gap: 12px; } #how h3 { margin: 8px 0 2px; font-size: 16px; } #how p, #how li { font-size: 14.5px; line-height: 1.45; margin: 0; } #how ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; } #how .brow { display: grid; grid-template-columns: 92px 1fr 64px; gap: 8px; align-items: center; font-size: 14px; } #how .bar { height: 10px; border-radius: 6px; background: rgba(0,0,0,.12); overflow: hidden; } #how .bar i { display: block; height: 100%; background: #e0a526; } #how .tag { display: inline-block; padding: 1px 8px; border-radius: 99px; background: #efe3c0; font-size: 12.5px; font-weight: 800; } #how .q { font-style: italic; }
   #parent { overflow-y: auto; } #parent .pgcard { background: #fff8e6; color: #2a2038; border-radius: 18px; padding: 16px; display: grid; gap: 12px; }
   #parent h3 { font-size: 17px; margin: 0; color: #2a2038; } #parent .pnm { font: inherit; font-weight: 800; font-size: 18px; padding: 8px 10px; border-radius: 10px; border: 2px solid #8a7a98; background: #fff; color: #2a2038; width: 100%; }
   #parent .pmeta { font-size: 14px; color: #4a3f5c; font-weight: 600; }
@@ -563,7 +564,7 @@
     <div style="display:grid; gap:12px" id="fields"></div>
     <details class="allf"><summary id="allSum">All fields, by stream</summary><div id="allFields"></div></details>
     <p class="fineprint">Prototype content. Careers and school paths are drafts for counsellor review. Check official sites for current rules.<span id="scLine"></span></p>
-    <div class="actions"><button class="go" id="dParent" type="button">Summary for parents</button><button class="go" id="fbOpen" type="button" hidden>Share your feedback</button><button class="go quiet" id="again">Walk the road again</button></div>
+    <div class="actions"><button class="go" id="dParent" type="button">Summary for parents</button><button class="go quiet" id="dHow" type="button">How we got this result</button><button class="go" id="fbOpen" type="button" hidden>Share your feedback</button><button class="go quiet" id="again">Walk the road again</button></div>
   </section>
 
   <section class="screen pad res" id="lock">
@@ -577,6 +578,12 @@
     <div class="head"><h2>Summary for parents</h2><p>One page you can read together, save or print.</p></div>
     <div class="pgcard" id="pgcard"></div>
     <div class="actions"><button class="go" id="pPrint" type="button">Print or save as PDF</button><button class="go quiet" id="pBack" type="button">Back</button></div>
+  </section>
+
+  <section class="screen pad res" id="how">
+    <div class="head"><h2>How we got this result</h2><p>Every step, so you can check it and a counsellor can too.</p></div>
+    <div class="pgcard" id="howCard"></div>
+    <div class="actions"><button class="go quiet" id="howBack" type="button">Back</button></div>
   </section>
 
   <section class="screen pad res" id="abroad">
@@ -717,6 +724,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   var MWC = window.MW_CONFIG || null, TK = null, SESSION = Math.random().toString(36).slice(2, 10), evq = [], flushT = null;
   try { TK = JSON.parse(localStorage.getItem('margwise.tester') || 'null'); if (TK && (!TK.at || Date.now() - TK.at > (TK.led ? 21600000 : 5400000))) { TK = null; localStorage.removeItem('margwise.tester'); } } catch (e) { TK = null; }
   var EID = 0, failN = 0, STALE_LED = !!(TK && TK.led && Date.now() - TK.at > 1800000);
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && TK && TK.led && Date.now() - TK.at > 1800000) location.reload(); });   // a counsellor-led tab left idle re-asks who is playing
   function flush(useBeacon) {
     if (!MWC || !TK || !evq.length) return;
     var batch = evq.splice(0, 40), body = JSON.stringify({ testerId: TK.id, token: TK.token, session: SESSION, events: batch }), url = MWC.api + '/event';
@@ -992,7 +1000,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   function show(view) {
     var prev = state.view; if (prev && prev !== view) veilGo();
     state.view = view;
-    ['welcome', 'stop', 'dreams', 'reveal', 'doors', 'field', 'abroad', 'parent', 'lock'].forEach(function (v) { $(v).classList.toggle('on', v === view); });
+    ['welcome', 'stop', 'dreams', 'reveal', 'doors', 'field', 'abroad', 'parent', 'how', 'lock'].forEach(function (v) { $(v).classList.toggle('on', v === view); });
     $('hud').hidden = view === 'welcome'; $('hud').classList.toggle('solid', view !== 'stop');
     document.body.classList.remove('busy'); state.busy = false;
   }
@@ -1796,6 +1804,34 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     $('pgcard').innerHTML = h; $('pNm').value = nm; paintCode();
     $('pNm').addEventListener('input', function () { /* name is local to this page */ });
   }
+  // ---------- the full breakdown: choices, tally per type, closest careers, how fields are scored, limits
+  function paintHow() {
+    var r = state.result; if (!r) return; var h = '', played = state.choices.filter(function (c) { return !c.echoOf; }), tally = {}, shownN = {};
+    AREAS.forEach(function (a) { tally[a] = 0; shownN[a] = 0; });
+    h += '<p>This game measures <b>what you enjoy</b>, not what you are good at. It uses six interest types that career researchers use, and the careers in our list are described in the same six types.</p>';
+    h += '<h3>Step 1. What you chose</h3><ul>';
+    played.forEach(function (c) {
+      var sc = bank.scenes.filter(function (x) { return x.id === c.sceneId; })[0]; if (!sc) return;
+      sc.options.forEach(function (o) { var t = Object.keys(o.loads).sort(function (a, b) { return o.loads[b] - o.loads[a]; })[0]; shownN[t] += 2; });
+      var cards = choiceCards(c); cards.forEach(function (k) { tally[k.trait] += 1; });
+      h += '<li><b>' + esc(sc.place) + ':</b> ' + (cards.length ? cards.map(function (k) { return '<span class="q">\u201c' + esc(k.text) + '\u201d</span> <span class="tag">' + NAME[k.trait] + '</span>'; }).join(' and ') : 'you kept your oil') + '</li>';
+    });
+    h += '</ul><h3>Step 2. Your interest shape</h3><p>Each card stands for one type (and a smaller share of a related one). In every stop you saw four different types and could only spend two flasks, so the result is about what stood out for you compared with the other cards. Flasks you spent on each type, out of the flasks you could have spent on it:</p>';
+    var order = AREAS.slice().sort(function (a, b) { return r.profile[b] - r.profile[a]; });
+    order.forEach(function (a) { var w = Math.round(zv(r.profile[a]) * 100); h += '<div class="brow"><span>' + NAME[a] + '</span><span class="bar"><i style="width:' + w + '%"></i></span><span>' + tally[a] + ' of ' + shownN[a] + '</span></div>'; });
+    var echo = state.choices.filter(function (c) { return c.echoOf; })[0];
+    if (echo) { var orig = state.choices.filter(function (c) { return c.sceneId === echo.echoOf; })[0], same = orig ? Object.keys(echo.spent || {}).filter(function (k) { return (orig.spent || {})[k]; }).length : 0; h += '<p>You also revisited one stop to check consistency: you picked the same card ' + same + ' of ' + Object.keys(echo.spent || {}).length + ' times.</p>'; }
+    h += '<p>The bars come from a statistical estimate over all your choices. ' + (r.noSignal ? 'There was not enough signal for a clear shape.' : r.cautious ? 'Your shape was not sharp, so treat it as rough.' : 'Your shape was fairly clear.') + '</p>';
+    h += '<h3>Step 3. Closest careers</h3><p>We compare your shape with the interest profile of each of ' + CAREERS.length + ' careers (from US job data) and list the closest:</p><ul>';
+    var all = []; state.fits.forEach(function (x) { x.ms.forEach(function (m) { all.push(m); }); }); all.sort(function (a, b) { return b.r - a.r; });
+    all.slice(0, 5).forEach(function (m) { var c = BYID[m.careerId]; h += '<li>' + esc(c.title) + '</li>'; });
+    h += '</ul><h3>Step 4. From careers to areas</h3><p>An area\'s score is the average of its four closest careers, compared with how typical profiles score on that area, and balanced so that no area wins only because it has more careers of one type. Small differences between areas are not meaningful, so close ones are marked.</p>';
+    h += '<h3>What this cannot tell you</h3><ul><li>Whether you would be good at a job, or what you will want in five years.</li><li>The best career. It points to areas worth exploring, and interests change with experience.</li><li>Anything about Indian pay or courses. Those come from separate sources, listed on each page.</li></ul>';
+    h += '<h3>Who checks this</h3><p>A school counsellor can compare it with what they know of you. The question design is documented card by card at <b>/how/</b>. This is an early version and the questions have not yet been validated with students.</p>';
+    $('howCard').innerHTML = h;
+  }
+  $('dHow').addEventListener('click', function () { show('how'); $('how').scrollTop = 0; paintHow(); track('field_open', { id: 'how' }); });
+  $('howBack').addEventListener('click', function () { show('doors'); });
   function toParent() { show('parent'); $('parent').scrollTop = 0; paintParent(); track('field_open', { id: 'parent' }); }
   $('dParent').addEventListener('click', toParent);
   $('pBack').addEventListener('click', function () { show('doors'); });

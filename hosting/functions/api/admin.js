@@ -27,6 +27,13 @@ export async function onRequest({ request, env }) {
       await env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'counsellor_created', JSON.stringify({ name, invite_id: inv })).run();
       return json({ ok: true, key });
     }
+    if (m === 'PUT') {   // hand a deactivated counsellor's students and reviews to another counsellor of the same school
+      const from = Number(b.from), to = Number(b.to); if (!Number.isInteger(from) || !Number.isInteger(to) || from === to) return json({ error: 'Choose two different counsellors.' }, 400);
+      const a = await env.DB.prepare('SELECT invite_id FROM counsellors WHERE id = ?').bind(from).first(), c = await env.DB.prepare('SELECT invite_id FROM counsellors WHERE id = ? AND active = 1').bind(to).first();
+      if (!a || !c || a.invite_id !== c.invite_id) return json({ error: 'The new counsellor must be active and at the same school.' }, 400);
+      await env.DB.batch([env.DB.prepare('UPDATE testers SET counsellor_id = ? WHERE counsellor_id = ?').bind(to, from), env.DB.prepare('UPDATE reviews SET counsellor_id = ?, counsellor = (SELECT name FROM counsellors WHERE id = ?) WHERE counsellor_id = ?').bind(to, to, from), env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'counsellor_reassign', JSON.stringify({ from, to }))]);
+      return json({ ok: true });
+    }
     if (m === 'PATCH') { const id = Number(b.id); if (!Number.isInteger(id)) return json({ error: 'id required' }, 400); await env.DB.prepare('UPDATE counsellors SET active = ? WHERE id = ?').bind(b.active ? 1 : 0, id).run(); await env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'counsellor_active', JSON.stringify({ id, active: !!b.active })).run(); return json({ ok: true }); }
     return json({ error: 'Method not allowed.' }, 405);
   }

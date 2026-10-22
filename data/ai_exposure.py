@@ -30,8 +30,9 @@ def load_bls():
     csvp, xl = os.path.join(a.cache, 'bls_ai_exposure.csv'), os.path.join(a.cache, 'bls_ai_exposure.xlsx')
     if a.refresh and not os.path.exists(xl):
         try:
-            req = urllib.request.Request('https://www.bls.gov/emp/ind-occ-matrix/ai-exposure-categories.xlsx', headers={'User-Agent': UA}); open(xl, 'wb').write(urllib.request.urlopen(req, timeout=60).read())
+            req = urllib.request.Request('https://www.bls.gov/emp/ind-occ-matrix/ai-exposure-categories.xlsx', headers={'User-Agent': UA}); blob = urllib.request.urlopen(req, timeout=60).read(); open(xl, 'wb').write(blob)   # read first, so a blocked download never leaves an empty file behind
         except Exception as e: print('NOTE: BLS download blocked (%s); using the committed copy. Download the xlsx by hand to update.' % e)
+    if os.path.exists(xl) and os.path.getsize(xl) == 0: os.remove(xl)
     if os.path.exists(xl) and (not os.path.exists(csvp) or os.path.getmtime(xl) > os.path.getmtime(csvp)):
         import openpyxl
         ws = openpyxl.load_workbook(xl, read_only=True, data_only=True).active; rows = []

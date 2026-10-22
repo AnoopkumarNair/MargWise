@@ -1,6 +1,7 @@
 # Weekly data refresh. Re-reads the public sources, rebuilds the data, runs the quality gate and opens a pull request
 # with the change report for a human to review. It never publishes anything by itself.
-# Status: written but not yet run on GitHub. Check the first run by hand.
+# Status: first run failed (openpyxl missing, and a blocked BLS download left an empty file); both fixed. Opening the pull request also needs
+# Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests" to be on.
 name: data-refresh
 on:
   schedule:
@@ -16,6 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
+      - run: pip install pillow openpyxl
       - name: Rebuild data from live sources
         run: python3 pipeline/run.py --fetch
       - name: Open a pull request if anything changed

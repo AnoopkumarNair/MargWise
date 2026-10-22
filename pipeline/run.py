@@ -19,6 +19,7 @@ def run(label, args, cwd=DATA, env=None):
 prev = os.path.join(DATA, 'releases', 'latest.json')
 if a.fetch:
     run('1a fetch O*NET interests', ['scrape.py'], cwd=os.path.join(DATA, 'onet'))
+    run('1a2 add later careers (addc.py)', ['addc.py'], cwd=os.path.join(DATA, 'onet'))   # careers added after the first scrape; without this a refresh silently drops them
     run('1b fetch O*NET wages', ['wages.py'], cwd=os.path.join(DATA, 'onet'))
 run('2  build fields and careers', ['content.py'])
 run('3  attach India pay (PLFS)', ['plfs.py'])
