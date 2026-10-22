@@ -11,9 +11,9 @@ button{cursor:pointer;font-weight:700;width:auto}button.p{background:var(--accen
 .row{display:flex;gap:8px;flex-wrap:wrap}.big{font-size:20px;font-weight:700}
 </style></head><body><div class="w">
 <h1>Margwise counsellor review</h1>
-<div class="card"><label>Access key<input id="key" type="password" autocomplete="off"></label><label>Your name<input id="who" maxlength="40" autocomplete="name"></label>
-<label>Student code (6 characters, from the student's summary page)<input id="code" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="e.g. 3F9A2C"></label>
-<div class="row"><button class="p" id="find">Find student</button><span id="msg" class="mute"></span></div></div>
+<div class="card"><label>Your personal key<input id="key" type="password" autocomplete="off"></label><div class="row"><button class="p" id="load">Show my students</button><span id="msg" class="mute"></span></div>
+<div id="list"></div>
+<label>Or type a student code (from the student's summary page)<input id="code" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="e.g. 3F9A2C"></label><div class="row"><button id="find">Open</button></div></div>
 
 <div class="card" id="s1" hidden><h2>Step 1. Your own view, before you see the app's result</h2>
 <p class="mute" id="s1n">After talking with the student, pick the 3 career fields you think fit them best. When you save, these are locked with the time. Only then is the app's result shown.</p>

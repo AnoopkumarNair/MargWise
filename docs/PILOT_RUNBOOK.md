@@ -35,7 +35,7 @@ Until this page exists, use a shared spreadsheet with the same columns.
 | Go, iterate or stop | Founder, using the frozen rules | Week 6 |
 
 ## Counsellor page (built)
-- Page: `/counsellor/`. Key: the counsellor key (a Cloudflare secret `COUNSELLOR_KEY`; the admin key also works). Give the same key to every counsellor; rotate it after the pilot.
-- The student's **student code** (6 characters) shows on the parent summary page and on the results footer. The student reads it to the counsellor.
-- Order is enforced by the server: the counsellor locks their own top 3, and only then is the app's top 3 returned.
-- The founder sees all reviews, the average overlap, the "would use" counts, flagged facts and the fields most often missed in Admin > Counsellor reviews, with a CSV.
+- Page: `/counsellor/`. Each counsellor has a **personal key** (Admin > Counsellor reviews > Create counsellor key; shown once, only its hash is stored) tied to **one school's invite**. They see only that school's students, listed by name with a status, so there is no code typing and no mix-ups. Turn a key off in the admin page at any time. The student invite code is not used for this: it is shared with every student, so it cannot identify a counsellor.
+- The student's **student code** (6 characters) also shows on the parent summary page and the results footer, as a fallback.
+- Order is enforced by the server: the counsellor locks their own top 3, and only then is the app's top 3 returned. The counsellor name on each review comes from the key, not from typing.
+- The founder sees all reviews, average overlap, "would use" counts, flagged facts and the fields most often missed in Admin > Counsellor reviews, with a CSV.
