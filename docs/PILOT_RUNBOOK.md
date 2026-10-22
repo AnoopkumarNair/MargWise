@@ -65,3 +65,6 @@ A counsellor-led sign-in lasts 6 hours. After 30 idle minutes the game asks "Is 
 
 ## Pilot item analysis
 Admin `?itemstats=1` shows how often each card is picked and the share of oil spent on each screen position (about 25 percent each is expected). A strong position effect or a card picked far more or less than the others is a wording problem to review after the pilot, not during it.
+
+## Testing the hosted site on tablets and desktops
+`app/tests/hosted_tablet.mjs` plays the whole game on the live site at five tablet viewports (iPad and Android tablet, portrait and landscape), saves a screenshot of every screen, and flags any control outside the viewport or any horizontal scroll. It needs a valid invite code for the site (create a throw-away code in Admin > Invite codes, and delete the test students afterwards): `SITE=https://margwise.byteheaven.in/ CODE=<code> OUT=/tmp/shots node app/tests/hosted_tablet.mjs`. Layout: phones keep one column; from 700px wide the reading and result screens widen to up to 1040px with 2 to 3 columns, and the art scenes stay a portrait stage with the scene's own art blurred behind the sides.
