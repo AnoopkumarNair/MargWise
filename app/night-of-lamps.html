@@ -129,6 +129,8 @@
   #intro .introBox { position: absolute; left: 16px; right: 16px; bottom: calc(var(--safe-bot, 0px) + 150px); max-width: 560px; margin: 0 auto; background: rgba(7,10,34,.72); border: 1px solid rgba(255,224,138,.35); border-radius: 18px; padding: 16px 18px; color: #fff3d6; }
   #intro #introText { margin: 0; font-size: 18px; line-height: 1.5; font-weight: 700; animation: introIn .6s ease both; } @keyframes introIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   #intro .idots { display: flex; gap: 6px; justify-content: center; margin-top: 12px; } #intro .idots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,243,214,.3); } #intro .idots i.on { background: #ffcf6b; }
+  .beatart { height: 160px; border-radius: 14px; background: center 30% / cover no-repeat; margin-bottom: 10px; }
+  .clue { display: block; margin-top: 4px; font-weight: 600; opacity: .9; } .clue i { font-style: normal; font-size: .85em; color: #7a5a1a; }
   .howto { font-size: 14px; color: rgba(255,243,214,.85); text-align: center; padding: 0 10px 8px; }
   .ranked { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
   .ranked li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; background: rgba(255,255,255,.08); border-radius: 14px; padding: 10px 12px; }
@@ -521,7 +523,7 @@
     <button class="go" id="consentYes" type="button">Yes, a parent has agreed or is with me</button>
     <button class="go quiet" id="consentNo" type="button">Go back</button>
   </div></div>
-  <div class="beat" id="beat" hidden role="dialog" aria-modal="true" aria-labelledby="beatWho"><div class="beatcard"><small id="beatWho"></small><h3 id="beatTitle"></h3><p id="beatText"></p><button class="go" id="beatGo" type="button">Walk on</button></div></div>
+  <div class="beat" id="beat" hidden role="dialog" aria-modal="true" aria-labelledby="beatWho"><div class="beatcard"><div class="beatart" id="beatArt" hidden></div><small id="beatWho"></small><h3 id="beatTitle"></h3><p id="beatText"></p><button class="go" id="beatGo" type="button">Walk on</button></div></div>
   <div id="loader" role="status" aria-live="polite"><div class="ld-in">
     <svg viewBox="0 0 60 80" aria-hidden="true"><path d="M22 8h16" stroke="#fff3d6" stroke-width="3" stroke-linecap="round"/><path d="M20 14h20l6 12v32a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26z" fill="rgba(255,243,214,.12)" stroke="#fff3d6" stroke-width="2.4" stroke-linejoin="round"/><g id="ldFlame"><path d="M30 28c2 8 10 10 10 20a10 10 0 0 1-20 0c0-6 4-8 5-14c2 2 4 3 5-6z" fill="#f2a03d"/><path d="M30 42c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#ffe08a"/></g></svg>
     <div class="ld-title">The Night of Lamps</div>
@@ -983,6 +985,7 @@
 
   var beatCb = null;
   function showBeat(who, title, text, cb) {
+    var ba = $('beatArt'), iu = who === 'Ila' && ART.bg && ART.bg.ila; ba.hidden = !iu; if (iu) ba.style.backgroundImage = 'url(' + iu + ')';
     $('beatWho').textContent = who; $('beatTitle').textContent = title || ''; $('beatText').textContent = text; beatCb = cb || null;
     $('beat').hidden = false; $('beatGo').focus();
   }
@@ -993,7 +996,7 @@
   function clearWalk() { try { localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ } }
   function readWalk() { try { var w = JSON.parse(localStorage.getItem(WALK_KEY) || 'null'); return w && TK && w.tid === TK.id && w.choices && w.choices.length && Date.now() - w.at < 7200000 ? w : null; } catch (e) { return null; } }
   function resumeWalk(w) { trapBack(); SEED = w.seed; state.choices = w.choices; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.lockDone = w.lockDone || {}; track('walk_resume', { n: litCount() }); advance(false); }
-  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.lockDone = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
+  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.ilaFinal = false; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.lockDone = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
 
   var advTimer = null;
   function advance(first) {
@@ -1001,6 +1004,7 @@
     state.lit = false;
     var s;
     try { s = M.step(bank, state.choices); } catch (e) { console.error(e); state.busy = false; document.body.classList.remove('busy'); return; }
+    if (s.done && !state.ilaFinal && META.ila.last && !first) { state.ilaFinal = true; state.busy = false; document.body.classList.remove('busy'); return showBeat('Ila', '', META.ila.last, function () { advance(false); }); }   // the walk length adapts, so the handover waits for the last stop rather than a fixed lamp number
     if (s.done) { var nx = [2, 4, 6, 8].filter(function (k) { return !state.lockDone[k]; })[0]; if (nx !== undefined && !first) { state.busy = false; document.body.classList.remove('busy'); return showLock(nx, function () { advance(false); }); } return toDreams(); }
     var np = litCount(), rd = ROUNDS[np];
     if (!first && rd && !state.lockDone[np] && !s.echo) { state.busy = false; document.body.classList.remove('busy'); return showLock(np, function () { advance(false); }); }
@@ -1116,7 +1120,7 @@
     var echoing = state.echo;
     var t2 = STORY2.scenes[scene.id] || {}, frag = META.note.slice(0, Math.min(n, META.note.length)).join(' ');
     $('bubble').classList.add('nothread');
-    say('<span class="thread"></span><span>' + esc(echoing ? 'The flame holds. Thank you for looking again.' : scene.lit || 'The lamp is lit.') + '</span>' + (!echoing && t2.keeper ? '<span><b>' + esc(t2.keeper) + '</b>\u201c' + esc(t2.line) + '\u201d</span>' : ''));
+    say('<span class="thread"></span><span>' + esc(echoing ? 'The flame holds. Thank you for looking again.' : scene.lit || 'The lamp is lit.') + '</span>' + (!echoing && t2.keeper ? '<span><b>' + esc(t2.keeper) + '</b>\u201c' + esc(t2.line) + '\u201d</span>' : '') + (!echoing && t2.clue ? '<span class="clue">\u201c' + esc(t2.clue) + '\u201d <i>about the lamplighter</i></span>' : ''));
     // Reduced motion removes movement, not reading time.
     if (!state.reduce) litSequence(n, echoing);
     clearTimeout(advTimer);
@@ -1519,7 +1523,7 @@
     $('fnBg').style.backgroundImage = ART.bg && ART.bg.lighthouse ? 'url(' + ART.bg.lighthouse + ')' : 'linear-gradient(180deg,#0a0f2e,#24306a 55%,#ffbf6a)';
     $('fnJyo').innerHTML = sprite('jyo');
     $('fnL1').textContent = ''; $('fnL1').classList.remove('show'); $('fnT').classList.remove('show'); $('fnNote').classList.remove('show'); $('fnGo').classList.remove('show'); $('fnGo').disabled = true; $('fnChips').innerHTML = '';
-    $('fnNote').textContent = (STORY.outro || '').replace(/^The lighthouse is lit\.\s*/, '');
+    $('fnNote').textContent = (META.outro || STORY.outro || '').replace(/^The lighthouse is lit\.\s*/, '');
     f.classList.remove('lit'); f.classList.add('on'); fnTimers.forEach(clearTimeout); fnTimers = [];
     var fin = false;
     function finish() {
@@ -1723,7 +1727,7 @@
 
   // ---------- boot
   buildHud(); paintHud(); paintSound();
-  $('premise').textContent = STORY.premise; $('mission').textContent = STORY.mission;
+  $('premise').textContent = META.premise || STORY.premise; $('mission').textContent = META.mission || STORY.mission;
   $('welcomeArt').innerHTML = artFor('welcome');
   // ---------- study and work abroad
   var AB = window.MW_ABROAD, UGY = { us: 4, ca: 4, uk: 3, au: 3, nl: 3, de: 3, cn: 4, sg: 4 }, PGY = { us: 2, ca: 2, uk: 1, au: 2, nl: 1, de: 2, cn: 2, sg: 2 };

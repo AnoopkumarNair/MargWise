@@ -1,4 +1,4 @@
-# One-paste art pack for ChatGPT (12 images)
+# One-paste art pack for ChatGPT (13 images)
 
 How to use: open a new ChatGPT chat, paste **everything between the two lines below** as one message. It asks ChatGPT to make the images one after another. If it stops after a few, reply "continue". Save each image under the file name shown, and put them all in `app/art-incoming/` (or attach them to a message to me). I will resize and wire them in. Nothing in the game breaks while images are missing: the intro panels fall back to the pictures we already have.
 
@@ -25,10 +25,12 @@ IMAGES
 9. [jyo-hover, square 1:1, 1024x1024, transparent background] Jyo the firefly, full body, hovering, facing right, neutral and friendly.
 10. [jyo-fly, square 1:1, 1024x1024, transparent background] The same Jyo flying fast diagonally upward, delighted.
 11. [jyo-sleepy, square 1:1, 1024x1024, transparent background] The same Jyo drooping and dim, sleepy, glow turned low.
+13. [ila, vertical 2:3, 1024x1536] Ila: the teenage girl with long wavy dark hair and a rust-red top, standing at a harbour edge at dusk holding a small ferry lantern, a little oil flask at her belt, looking hopefully towards a dark lighthouse far away across the water. Same face and clothes as the girl in image 1. Calm space at the top and bottom.
 12. [share-card, landscape 1200x630] A wide version of image 1: the two teenagers with the lantern and Jyo on the left third, the glowing valley and lighthouse on the right, with a calm empty night sky across the top and the middle for a title that I will add myself.
 ------------------------------------------------------------
 
 ## Notes for me
+- **Story link:** the two teenagers on the cover are "you and Ila" (Ila is the girl: long wavy dark hair, rust-red top, ferry lantern). She is first met after the third lamp, so the cover is the destination, not a scene in order. Image 13 is her own portrait for her story cards. Already generated the first 12? Only image 13 is new.
 - Intro panels use `bg-intro1.jpg` to `bg-intro4.jpg`; the cover uses `bg-gate.jpg` (replace the current one with image 1 to swap the star for Jyo). The share card goes in `app/art/share.jpg` and becomes the link preview.
 - The logo and app icon are not wired in yet; send them and I will add the favicon, header mark and home-screen icon.
 - The Jyo poses are for marketing and future animation; the game draws Jyo in code today.

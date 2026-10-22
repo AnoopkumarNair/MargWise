@@ -16,5 +16,6 @@ Upload the 12 images from `docs/ART_PROMPTS.md` into this folder (on GitHub: **A
 | `jyo-fly` | Jyo flying, transparent |
 | `jyo-sleepy` | Jyo sleepy, transparent |
 | `share-card` | Link-preview card, wide |
+| `ila` | Optional: Ila's portrait for her story cards (image 13 in the prompt pack) |
 
 Then tell me, and I run `python3 app/tools/ingest_art.py` (it resizes, compresses and places each file) and rebuild. Files here are inputs only; the game reads from `app/art/`.
