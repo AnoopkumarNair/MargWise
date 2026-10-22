@@ -241,3 +241,10 @@ A journey uses about 13 of the 15 stops (two flasks each) before the result. A l
 - The mapping of cards to types is a design judgement, not yet validated against a published interest inventory or against real students (see docs/CALIBRATION.md).
 - Card wording is audited for social desirability (see docs/CARD_AUDIT.md), but one audit is not a validation; real data on how often each card is picked is needed.
 - Seeded shuffling removes position effects between students, not within one student.
+## 7. Who checks what
+| Check | Who | How |
+| --- | --- | --- |
+| Do the cards read as the activity they are meant to express, and are they understood by a Class 9 to 12 student? | A school counsellor or teacher | Read the cards above; in the pilot, a think-aloud session with a few students |
+| Does the result look sensible for this student? | The school counsellor | Locks their own top 3 before the student plays, then compares (the counsellor review page) |
+| Are the facts on each field page right? | Two fact-check reviewers | docs/REVIEW_PROCESS.md |
+| Are the questions reliable and valid (do they measure what they claim, consistently, fairly across groups)? | A psychometrician, using pilot data | Item pick rates, test-retest, comparison with an established interest inventory, fairness checks by gender, board and region. A counsellor's agreement is useful evidence but is not psychometric validation |

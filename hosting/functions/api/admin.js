@@ -1,3 +1,4 @@
+import CLAIMS from './_claims.json';
 import { json, safeEq, readJson, ipHash, keyOk, purgeOld } from './_util.js';
 const safe = s => { try { return JSON.parse(s); } catch { return null; } };
 const clean = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f<>]/g, ' ').trim().slice(0, n);
@@ -9,9 +10,9 @@ const VERDICTS = { correct: 'correct', wrong: 'wrong', outdated: 'outdated', 'ca
 export async function onRequest({ request, env }) {
   const u = new URL(request.url), key = request.headers.get('x-admin-key') || '', q = u.searchParams, m = request.method;
   const now0 = Date.now(), ip = keyOk(env.SIGN_KEY) ? await ipHash(request, env.SIGN_KEY) : 'x';
-  const fails = await env.DB.prepare('SELECT COUNT(*) AS n FROM admin_fail WHERE ip = ? AND ts > ?').bind(ip, now0 - 900000).first();
-  if (fails && fails.n >= 8) return json({ error: 'Too many wrong keys. Try again in 15 minutes.' }, 429);
-  if (!safeEq(key, env.ADMIN_KEY || '')) { await env.DB.prepare('INSERT INTO admin_fail (ip, ts) VALUES (?, ?)').bind(ip, now0).run(); await env.DB.prepare('DELETE FROM admin_fail WHERE ts < ?').bind(now0 - 86400000).run(); return json({ error: 'Not allowed.' }, 403); }
+  const fails = await env.DB.prepare('SELECT COUNT(*) AS n FROM admin_fail WHERE ip = ? AND ts > ?').bind('a:' + ip, now0 - 900000).first();
+  if (fails && fails.n >= 30) return json({ error: 'Too many wrong keys. Try again in 15 minutes.' }, 429);
+  if (!safeEq(key, env.ADMIN_KEY || '')) { await env.DB.prepare('INSERT INTO admin_fail (ip, ts) VALUES (?, ?)').bind('a:' + ip, now0).run(); await env.DB.prepare('DELETE FROM admin_fail WHERE ts < ?').bind(now0 - 86400000).run(); return json({ error: 'Not allowed.' }, 403); }
   const t = q.get('tester'), now = Date.now();
   if (q.get('endpilot') && m === 'POST') return json({ ok: true, result: await purgeOld(env, now, true, true) });   // end of pilot: delete everything except follow-up consent students' name, class and notes
   if (q.get('purge') && m === 'POST') return json({ ok: true, purged: await purgeOld(env, now, true) });
@@ -26,6 +27,13 @@ export async function onRequest({ request, env }) {
       await env.DB.prepare('INSERT INTO counsellors (name, invite_id, key_hash, active, created_at) VALUES (?, ?, ?, 1, ?)').bind(name, inv, h, now).run();
       await env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'counsellor_created', JSON.stringify({ name, invite_id: inv })).run();
       return json({ ok: true, key });
+    }
+    if (m === 'PUT') {   // hand a deactivated counsellor's students and reviews to another counsellor of the same school
+      const from = Number(b.from), to = Number(b.to); if (!Number.isInteger(from) || !Number.isInteger(to) || from === to) return json({ error: 'Choose two different counsellors.' }, 400);
+      const a = await env.DB.prepare('SELECT invite_id FROM counsellors WHERE id = ?').bind(from).first(), c = await env.DB.prepare('SELECT invite_id FROM counsellors WHERE id = ? AND active = 1').bind(to).first();
+      if (!a || !c || a.invite_id !== c.invite_id) return json({ error: 'The new counsellor must be active and at the same school.' }, 400);
+      await env.DB.batch([env.DB.prepare('UPDATE testers SET counsellor_id = ? WHERE counsellor_id = ?').bind(to, from), env.DB.prepare('UPDATE reviews SET counsellor_id = ?, counsellor = (SELECT name FROM counsellors WHERE id = ?) WHERE counsellor_id = ?').bind(to, to, from), env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'counsellor_reassign', JSON.stringify({ from, to }))]);
+      return json({ ok: true });
     }
     if (m === 'PATCH') { const id = Number(b.id); if (!Number.isInteger(id)) return json({ error: 'id required' }, 400); await env.DB.prepare('UPDATE counsellors SET active = ? WHERE id = ?').bind(b.active ? 1 : 0, id).run(); await env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'counsellor_active', JSON.stringify({ id, active: !!b.active })).run(); return json({ ok: true }); }
     return json({ error: 'Method not allowed.' }, 405);
@@ -75,8 +83,7 @@ export async function onRequest({ request, env }) {
     if (cl === 'generate' && m === 'POST') {
       const r = await readJson(request, 2000); if (r.err) return json({ error: r.err }, r.status);
       const size = Math.min(40, Math.max(5, Number(r.b.size) || 12));
-      const res = await env.ASSETS.fetch(new Request(new URL('/admin/claims.json', request.url))); if (!res.ok) return json({ error: 'claims.json is missing from this deploy.' }, 500);
-      const items = await res.json(); if (!Array.isArray(items) || !items.length) return json({ error: 'No claims found.' }, 500);
+      const items = JSON.parse(JSON.stringify(CLAIMS)); if (!Array.isArray(items) || !items.length) return json({ error: 'No claims found.' }, 500);
       for (let i = items.length - 1; i > 0; i--) { const a = new Uint32Array(1); crypto.getRandomValues(a); const j = a[0] % (i + 1); [items[i], items[j]] = [items[j], items[i]]; }
       const run = 'r' + now.toString(36), st = items.map((it, i) => { const id = /^[0-9a-f]{12}$/.test(it.cid || '') ? it.cid : (() => { const a = new Uint8Array(6); crypto.getRandomValues(a); return [...a].map(x => x.toString(16).padStart(2, '0')).join(''); })(); return env.DB.prepare('INSERT INTO claims (id, run, batch, field_key, statement, urls) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET run = excluded.run, batch = excluded.batch').bind(id, run, Math.floor(i / size) + 1, clean(it.key, 80), clean(it.statement, 900), clean(it.urls, 900)); });
       for (let i = 0; i < st.length; i += 50) await env.DB.batch(st.slice(i, i + 50));

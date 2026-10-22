@@ -1,6 +1,8 @@
 # Fails if the committed data or build drift from what the pipeline and build produce. Written but not yet run on GitHub.
 name: build-check
 on: [pull_request]
+permissions:
+  contents: read
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -15,7 +17,7 @@ jobs:
         run: python3 pipeline/run.py
         env: { RAW_STRICT: '1' }
       - name: Fail if the rebuild changed committed files
-        run: git diff --exit-code -- data/content.json data/releases/latest.json hosting/public/admin/claims.json
+        run: git diff --exit-code -- data/content.json data/releases/latest.json hosting/functions/api/_claims.json
       - name: Build the game from the accepted release only
         run: python3 app/build.py
       - name: Server key check
