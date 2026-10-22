@@ -16,7 +16,7 @@ const V = {
   beat: d => ({ who: str(d.who, 30) }),
   context: d => ({ cls: str(d.cls, 8), board: str(d.board, 8), lean: str(d.lean, 12) }),
   result: d => ({ code: arr(d.code, 3, area), alts: arr(d.alts, 6, a => (Array.isArray(a) ? a.slice(0, 3).map(area) : null)), profile: obj6(d.profile, num), scores: obj6(d.scores, num), confidence: str(d.confidence, 10), noSignal: bool(d.noSignal), cautious: bool(d.cautious), biased: bool(d.biased), sd: num(d.sd), stops: int(d.stops, 0, 30), mixed: bool(d.mixed), lowEngagement: bool(d.lowEngagement), slots: arr(d.slots, 4, x => int(x, 0, 100)) }),
-  fields: d => ({ order: arr(d.order, 24, x => str(x, 12)), scores: arr(d.scores, 24, num) }),
+  fields: d => ({ bias: d.bias === true, order: arr(d.order, 24, x => str(x, 12)), scores: arr(d.scores, 24, num) }),
   field_open: d => ({ id: str(d.id, 12) }),
   abroad: d => ({ field: d.field ? str(d.field, 12) : null, country: str(d.country, 3), route: d.route === 'B' ? 'B' : 'A' }),
   apt: d => { const s = {}; if (d.s && typeof d.s === 'object') for (const k of ['N', 'V', 'S', 'P']) { const n = int(d.s[k], 0, 3); if (n !== null) s[k] = n; } const items = {}; if (d.items && typeof d.items === 'object') for (const k of ['N', 'V', 'S', 'P']) items[k] = arr(d.items[k], 2, x => (Array.isArray(x) ? x.slice(0, 4).map(v => int(v, 0, 600000)).filter(v => v !== null) : null)); return { s, items }; },

@@ -30,11 +30,11 @@ export async function onRequest({ request, env }) {
     return json({ error: 'Method not allowed.' }, 405);
   }
   if (q.get('reviews') && m === 'GET') {
-    const rows = (await env.DB.prepare('SELECT r.code, t.name, i.label AS school, r.counsellor, r.baseline, r.app_top, r.overlap, r.overlap6, r.missed, r.wrong, r.wrong_field, r.use_it, r.notes, r.baseline_at, r.reviewed_at FROM reviews r JOIN testers t ON t.id = r.tester_id LEFT JOIN invites i ON i.id = t.invite_id ORDER BY r.baseline_at DESC').all()).results;
-    if (q.get('reviews') === 'csv') return csvResp('counsellor-reviews.csv', [['student_code', 'student', 'school', 'counsellor', 'own_top3', 'app_top6', 'top3_overlap', 'own_in_app_top6', 'app_missed', 'fact_wrong', 'fact_wrong_field', 'would_use', 'notes', 'reviewed_at']].concat(rows.map(r => [r.code, r.name, r.school || 'master', r.counsellor, r.baseline, r.app_top || '', r.overlap ?? '', r.overlap6 ?? '', r.missed || '', r.wrong || '', r.wrong_field || '', r.use_it || '', r.notes || '', r.reviewed_at ? new Date(r.reviewed_at).toISOString() : ''])));
+    const rows = (await env.DB.prepare('SELECT r.code, t.name, i.label AS school, r.counsellor, r.baseline, r.blind, r.app_top, r.overlap, r.overlap6, r.missed, r.wrong, r.wrong_field, r.use_it, r.notes, r.baseline_at, r.reviewed_at FROM reviews r JOIN testers t ON t.id = r.tester_id LEFT JOIN invites i ON i.id = t.invite_id ORDER BY r.baseline_at DESC').all()).results;
+    if (q.get('reviews') === 'csv') return csvResp('counsellor-reviews.csv', [['student_code', 'student', 'school', 'counsellor', 'own_top3', 'blind', 'app_top6', 'top3_overlap', 'own_in_app_top6', 'app_missed', 'fact_wrong', 'fact_wrong_field', 'would_use', 'notes', 'reviewed_at']].concat(rows.map(r => [r.code, r.name, r.school || 'master', r.counsellor, r.baseline, r.blind === 1 ? 'yes' : 'no', r.app_top || '', r.overlap ?? '', r.overlap6 ?? '', r.missed || '', r.wrong || '', r.wrong_field || '', r.use_it || '', r.notes || '', r.reviewed_at ? new Date(r.reviewed_at).toISOString() : ''])));
     const done = rows.filter(r => r.reviewed_at), n = done.length, sum = k => done.reduce((a, r) => a + (r[k] || 0), 0), missed = {};
     for (const r of done) { const top = JSON.parse(r.app_top || '[]').slice(0, 3); for (const p of JSON.parse(r.baseline)) if (!top.includes(p)) missed[p] = (missed[p] || 0) + 1; }
-    return json({ reviews: rows, summary: { started: rows.length, done: n, avgTop3Overlap: n ? +(sum('overlap') / n).toFixed(2) : null, share2plus: n ? +(done.filter(r => r.overlap >= 2).length / n).toFixed(2) : null, avgOwnInTop6: n ? +(sum('overlap6') / n).toFixed(2) : null, wouldUse: { yes: done.filter(r => r.use_it === 'yes').length, withChanges: done.filter(r => r.use_it === 'with changes').length, no: done.filter(r => r.use_it === 'no').length }, factsFlagged: done.filter(r => r.wrong).length, fieldsCounsellorsPickedButAppMissed: missed } });
+    return json({ reviews: rows, summary: { started: rows.length, done: n, blindReviews: done.filter(r => r.blind === 1).length, avgTop3OverlapBlindOnly: done.filter(r => r.blind === 1).length ? +(done.filter(r => r.blind === 1).reduce((a, r) => a + r.overlap, 0) / done.filter(r => r.blind === 1).length).toFixed(2) : null, avgTop3Overlap: n ? +(sum('overlap') / n).toFixed(2) : null, share2plus: n ? +(done.filter(r => r.overlap >= 2).length / n).toFixed(2) : null, avgOwnInTop6: n ? +(sum('overlap6') / n).toFixed(2) : null, wouldUse: { yes: done.filter(r => r.use_it === 'yes').length, withChanges: done.filter(r => r.use_it === 'with changes').length, no: done.filter(r => r.use_it === 'no').length }, factsFlagged: done.filter(r => r.wrong).length, fieldsCounsellorsPickedButAppMissed: missed } });
   }
   if (q.get('audit') && m === 'GET') return json({ audit: (await env.DB.prepare('SELECT ts, action, detail FROM audit ORDER BY id DESC LIMIT 100').all()).results });
   // ---- invite codes
@@ -119,7 +119,7 @@ export async function onRequest({ request, env }) {
   // ---- testers
   if (m === 'DELETE') {
     if (!t) return json({ error: 'tester required' }, 400);
-    await env.DB.batch([env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(t)]);
+    await env.DB.batch([env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM reviews WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(t)]);
     return json({ ok: true });
   }
   if (t) { const r = await env.DB.prepare('SELECT ts, type, data, session_id FROM events WHERE tester_id = ? ORDER BY id').bind(t).all(); return json({ events: r.results }); }

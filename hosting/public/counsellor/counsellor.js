@@ -5,7 +5,7 @@ function msg(t,bad){$('msg').textContent=t;$('msg').className=bad?'bad':'mute'}
 function names(a){return a.map(function(x){return NAME[x]||x}).join(', ')}
 function reset(){['s1','s2','done'].forEach(function(i){$(i).hidden=true})}
 $('find').onclick=function(){reset();CUR=$('code').value.trim().toUpperCase();msg('Looking…');api('GET','?code='+encodeURIComponent(CUR)).then(function(j){msg('Student: '+j.name);
- if(j.state==='new')$('s1').hidden=false;else if(j.state==='done'){$('done').hidden=false;msg('Student: '+j.name+' (already reviewed)')}else showCompare(j)},function(e){msg(e.message,true)})};
+ if(j.state==='taken'){msg('Another counsellor already saved picks for this student.',true)}else if(j.state==='new')$('s1').hidden=false;else if(j.state==='done'){$('done').hidden=false;msg('Student: '+j.name+' (already reviewed)')}else showCompare(j)},function(e){msg(e.message,true)})};
 function showCompare(j){if(!j.appTop){msg('Your picks are saved. This student has not reached the results yet. Try again after they finish.');return}$('mine').textContent=names(j.baseline);$('theirs').textContent=names(j.appTop);var n=j.baseline.filter(function(x){return j.appTop.indexOf(x)>-1}).length;$('ov').textContent=n+' of 3 match';$('s2').hidden=false}
 $('save1').onclick=function(){var p=Array.prototype.filter.call($('picks').querySelectorAll('input'),function(c){return c.checked}).map(function(c){return c.value});if(p.length!==3){msg('Choose exactly 3 fields.',true);return}
  api('POST','',{action:'baseline',code:CUR,picks:p}).then(function(){$('s1').hidden=true;msg('Saved and locked.');$('find').onclick()},function(e){msg(e.message,true)})};

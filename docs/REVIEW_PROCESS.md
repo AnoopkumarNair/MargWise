@@ -16,10 +16,10 @@ A verdict follows the claim id. If a statement is edited, its id changes and it 
 | Tie-breaker | A counsellor or the exam body's helpdesk reply | Decides when A and B disagree |
 
 ## 3. Cycle (about 1 to 2 hours per reviewer per batch of 12 to 15)
-1. **Coordinator:** Admin > Fact checks > Generate a set. Batches of 12. Give high-risk batches to **both** reviewers, normal-risk batches to **one**.
-2. **Reviewer:** for each task, open the official page, then record the verdict (correct / wrong / outdated / cannot find), paste the exact words the page says, and the date checked. Rule: no quote, no verdict. If the page cannot be found, write "cannot find" and say where you looked.
+1. **Coordinator:** Admin > Fact checks > Generate a set. Batches of 12. Batches mix risk levels today, so give **every batch to both reviewers** until the tool can batch by risk. The coordinator, not the software, checks that each high-risk claim has two verdicts (compare the two CSVs).
+2. **Reviewer:** for each task, open the official page, then record the verdict (correct / wrong / outdated / cannot find), paste the exact words the page says, and the date checked. Rule: no quote, no verdict. This is a reviewer rule; the upload does not reject a verdict without a quote, so the coordinator rejects those rows before loading. If the page cannot be found, write "cannot find" and say where you looked.
 3. **Coordinator:** load each CSV (enter the reviewer's name). Report shows: correct, needs change, disagree, unreviewed.
-4. **Disagreements and "cannot find":** the tie-breaker settles; record the decision in the notes.
+4. **Disagreements and "cannot find":** the tie-breaker settles. Record the decision in the notes and load the tie-breaker's CSV **last**: the ledger keeps the most recently uploaded verdict per claim, and the report still shows "disagree" until content is changed.
 5. **Fix:** edit `data/content.py`, `data/abroad.json` or `data/plfs_2025.json`; run `python3 pipeline/run.py` and read `data/releases/CHANGES.md`. Mark the finding applied.
 6. **Gate:** Admin > export ledger (`?claims=ledger`), save as `data/ledger.json`. The pipeline now fails on any claim still marked wrong or outdated. For a pilot release run with `REQUIRE_REVIEWED=1` so it also fails if any high-risk claim has no review.
 7. **Release:** `python3 pipeline/run.py --accept`, build, deploy. Write the release id and date in the pilot log.

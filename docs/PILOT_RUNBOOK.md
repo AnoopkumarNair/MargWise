@@ -9,12 +9,12 @@ Plain version. One school, one counsellor, about 40 students (adults first, then
 4. Get a signed scope and the parent consent sheet from the school. No minors before this.
 
 ## At the school (counsellor, per student)
-1. **Talk first.** The counsellor talks to the student for 15 to 20 minutes and writes down their own top 3 career fields for that student (before the app). This is the baseline.
-2. **Student plays.** The student uses the app with the school's code (about 15 minutes) and saves or prints the parent summary.
+1. **Talk first.** The student signs up with the school's code. The counsellor talks to them for 15 to 20 minutes, then **locks their own top 3 on `/counsellor/` before the student plays**. The page records whether the picks were locked before the student reached the results ("blind"). Only blind reviews count towards the headline match rate; the rest are reported separately.
+2. **Student plays** (about 15 minutes) and saves or prints the parent summary. The summary shows the app's result, so the counsellor should not open it before step 1 is locked.
 3. **Compare.** The counsellor opens the summary and records: how many of the app's top 3 fields match their own, whether the app missed something important, and whether any fact looked wrong.
 4. **Report back to the founder** (the part to streamline): one form per student, not a meeting. See below.
 
-## How the counsellor reports back (to build next)
+## How the counsellor reports back (now built, see the last section)
 A "Counsellor review" page in the admin area, one short form per student:
 - Student code (shown on the student's summary page) and the school.
 - Step 1, **locked with a timestamp before the app result is shown**: counsellor's own top 3 fields.
@@ -39,3 +39,9 @@ Until this page exists, use a shared spreadsheet with the same columns.
 - The student's **student code** (6 characters) also shows on the parent summary page and the results footer, as a fallback.
 - Order is enforced by the server: the counsellor locks their own top 3, and only then is the app's top 3 returned. The counsellor name on each review comes from the key, not from typing.
 - The founder sees all reviews, average overlap, "would use" counts, flagged facts and the fields most often missed in Admin > Counsellor reviews, with a CSV.
+
+## Setup and teardown checklist
+- **Database:** apply `hosting/schema.sql`, then `schema2.sql` to `schema7.sql` once each, in order (the `ALTER` lines fail if run twice).
+- **Privacy notice:** the student notice says the school counsellor can see name, completion and results. The parent consent sheet must say the same. Get it checked before minors take part.
+- **End of pilot:** delete each student's data in Admin > Testers ("Delete this tester's data", which also removes the counsellor review), or set `RETENTION_DAYS` and run `POST /api/admin?purge=1`. The student notice promises deletion by a stated date, so diarise it and check the audit log (`?audit=1`). Turn off every counsellor key.
+- **Lockout:** counsellor and admin wrong-key attempts share one counter per network address, so several typos at one school can lock that address for 15 minutes.
