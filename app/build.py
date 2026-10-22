@@ -48,6 +48,13 @@ open(os.path.join(dist, 'index.html'), 'w', encoding='utf8').write(s)
 SHELL = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><style>:root{color-scheme:dark}html,body{margin:0;padding:0;background:#141a3a;color:#fff3d6;font:14px -apple-system,BlinkMacSystemFont,sans-serif}[hidden]{display:none!important}</style><script>window.MW_CONFIG={api:"/api"};</script>'
 doc = SHELL + body.replace('<title>', '</head><body><title>', 1) + '</body></html>'
 doc = doc.replace('</head><body><title>The Night of Lamps</title>', '<title>The Night of Lamps</title></head><body>', 1)
+# brand icons: favicon and home-screen icons, only when app/art/brand/app-icon.png has been supplied
+icon = os.path.join(A, 'art', 'brand', 'app-icon.png')
+if os.path.exists(icon):
+    im = Image.open(icon).convert('RGBA'); os.makedirs(os.path.join(H, 'art'), exist_ok=True)
+    for nm, px in (('icon-32.png', 32), ('icon-192.png', 192), ('icon-512.png', 512), ('apple-touch-icon.png', 180)): im.resize((px, px), Image.LANCZOS).save(os.path.join(H, 'art', nm), 'PNG', optimize=True)
+    links = '<link rel="icon" type="image/png" sizes="32x32" href="/art/icon-32.png"><link rel="apple-touch-icon" href="/art/apple-touch-icon.png"><meta name="theme-color" content="#141a3a">'
+    doc = doc.replace('<meta name="robots" content="noindex">', '<meta name="robots" content="noindex">' + links, 1)
 # link preview card (WhatsApp, messaging apps): only when app/art/share.jpg has been supplied
 share = os.path.join(A, 'art', 'share.jpg')
 if os.path.exists(share):
