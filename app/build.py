@@ -51,14 +51,20 @@ doc = doc.replace('</head><body><title>The Night of Lamps</title>', '<title>The 
 # brand icons: favicon and home-screen icons, only when app/art/brand/app-icon.png has been supplied
 icon = os.path.join(A, 'art', 'brand', 'app-icon.png')
 if os.path.exists(icon):
-    im = Image.open(icon).convert('RGBA'); os.makedirs(os.path.join(H, 'art'), exist_ok=True)
-    for nm, px in (('icon-32.png', 32), ('icon-192.png', 192), ('icon-512.png', 512), ('apple-touch-icon.png', 180)): im.resize((px, px), Image.LANCZOS).save(os.path.join(H, 'art', nm), 'PNG', optimize=True)
+    im = Image.open(icon).convert('RGBA'); os.makedirs(os.path.join(dist, 'art'), exist_ok=True)
+    for nm, px in (('icon-32.png', 32), ('icon-192.png', 192), ('icon-512.png', 512), ('apple-touch-icon.png', 180)): im.resize((px, px), Image.LANCZOS).save(os.path.join(dist, 'art', nm), 'PNG', optimize=True)
     links = '<link rel="icon" type="image/png" sizes="32x32" href="/art/icon-32.png"><link rel="apple-touch-icon" href="/art/apple-touch-icon.png"><meta name="theme-color" content="#141a3a">'
     doc = doc.replace('<meta name="robots" content="noindex">', '<meta name="robots" content="noindex">' + links, 1)
+# header logo on the gate: replaces the drawn lantern when app/art/brand/logo-colour.png has been supplied
+logo = os.path.join(A, 'art', 'brand', 'logo-colour.png')
+if os.path.exists(logo):
+    import re as _re
+    os.makedirs(os.path.join(dist, 'art'), exist_ok=True); Image.open(logo).convert('RGBA').resize((128, 128), Image.LANCZOS).save(os.path.join(dist, 'art', 'logo-128.png'), 'PNG', optimize=True)
+    doc, nrep = _re.subn(r'(<div class="gbrand">)<svg.*?</svg>', r'\1<img src="/art/logo-128.png" alt="" width="40" height="40" style="display:block">', doc, count=1, flags=_re.S)
 # link preview card (WhatsApp, messaging apps): only when app/art/share.jpg has been supplied
 share = os.path.join(A, 'art', 'share.jpg')
 if os.path.exists(share):
-    os.makedirs(os.path.join(H, 'art'), exist_ok=True); shutil.copy(share, os.path.join(H, 'art', 'share.jpg'))
+    os.makedirs(os.path.join(dist, 'art'), exist_ok=True); shutil.copy(share, os.path.join(dist, 'art', 'share.jpg'))
     og = '<meta property="og:title" content="Margwise: The Night of Lamps"><meta property="og:description" content="A story game that helps you find the work that fits you."><meta property="og:image" content="https://margwise.byteheaven.in/art/share.jpg"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image">'
     doc = doc.replace('<meta name="robots" content="noindex">', '<meta name="robots" content="noindex">' + og, 1)
 os.makedirs(H, exist_ok=True); open(os.path.join(H, 'index.html'), 'w', encoding='utf8').write(doc)
