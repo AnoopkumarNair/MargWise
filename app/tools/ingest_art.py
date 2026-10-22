@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Places the images dropped in app/art-incoming/ where the build expects them.
+  ila -> app/art/bg-ila.jpg (shown on Ila's story cards)
   hero-cover -> app/art/bg-gate.jpg        intro1..4 -> app/art/bg-intro1..4.jpg   (2:3, 1024x1536 max)
   share-card -> app/art/share.jpg (1200x630, cropped to fit)
   logo-colour, logo-light, app-icon, jyo-hover, jyo-fly, jyo-sleepy -> app/art/brand/<name>.png (alpha kept, 1024 max)
@@ -9,7 +10,7 @@ from PIL import Image
 A = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'); INC = os.path.join(A, 'art-incoming'); ART = os.path.join(A, 'art'); BR = os.path.join(ART, 'brand')
 os.makedirs(BR, exist_ok=True)
 norm = lambda s: re.sub(r'[^a-z0-9]', '', s.lower())
-WANT = {norm(k): k for k in ['hero-cover', 'intro1', 'intro2', 'intro3', 'intro4', 'share-card', 'logo-colour', 'logo-light', 'app-icon', 'jyo-hover', 'jyo-fly', 'jyo-sleepy']}
+WANT = {norm(k): k for k in ['hero-cover', 'intro1', 'intro2', 'intro3', 'intro4', 'share-card', 'logo-colour', 'logo-light', 'app-icon', 'jyo-hover', 'jyo-fly', 'jyo-sleepy', 'ila']}
 done, seen = [], set()
 for f in sorted(os.listdir(INC)):
     stem, ext = os.path.splitext(f)
@@ -20,6 +21,7 @@ for f in sorted(os.listdir(INC)):
     if key in seen: print('skipped (second file for %s): %s' % (key, f)); continue
     seen.add(key); im = Image.open(os.path.join(INC, f))
     if key == 'hero-cover': out = os.path.join(ART, 'bg-gate.jpg'); im.convert('RGB').save(out, 'JPEG', quality=88)
+    elif key == 'ila': out = os.path.join(ART, 'bg-ila.jpg'); im.convert('RGB').save(out, 'JPEG', quality=88)
     elif key.startswith('intro'): out = os.path.join(ART, 'bg-%s.jpg' % key); im.convert('RGB').save(out, 'JPEG', quality=88)
     elif key == 'share-card':
         im = im.convert('RGB'); w, h = im.size; r = 1200 / 630

@@ -11,7 +11,8 @@
     "I": "Work out from tides and wind why it stalled, though the answer may come too late",
     "A": "Paint a big board so the crowd knows what is happening, with an hour to finish",
     "S": "Keep the waiting children calm and busy, even if you miss the repair"
-   }
+   },
+   "clue": "The lamplighter once stayed up all night with me taking this engine apart. Oil to her elbows."
   },
   "s02": {
    "place": "Lantern Bridge",
@@ -24,7 +25,8 @@
     "I": "Find out why this arch cracked, even if it takes all night of measuring",
     "A": "Sketch a new arch shape for the bridge, though most first ideas get thrown out",
     "E": "Lead the repair team, and face the blame if it goes wrong"
-   }
+   },
+   "clue": "She measured every arch of this bridge twice. Said a bridge should be understood before it is trusted."
   },
   "s03": {
    "place": "Clockmaker's Lane",
@@ -37,7 +39,8 @@
     "I": "Study the pattern of missed chimes, though it may take days to spot the cause",
     "A": "Repaint the clock face so it is easier to read, even if some liked the old one",
     "C": "Write up a step-by-step repair checklist, redoing it as things change"
-   }
+   },
+   "clue": "She taught me to read the clock's gears, then sketched the whole tower on the back of her hand."
   },
   "s04": {
    "place": "Orchard Village",
@@ -50,7 +53,8 @@
     "I": "Test apple blends to work out why one tastes best",
     "S": "Teach visiting children to make juice through games",
     "E": "Sell the fresh juice to passers-by on the village road"
-   }
+   },
+   "clue": "Last autumn she pressed apples with us from dawn, and sold the first jars herself."
   },
   "s05": {
    "place": "Fog Pass",
@@ -63,7 +67,8 @@
     "I": "Map where the fog is thickest to find a safer path, standing still in the cold",
     "S": "Lift the lost travellers' spirits on a long, cold walk",
     "C": "Count everyone through the pass so no one is left behind, even as people grow impatient"
-   }
+   },
+   "clue": "In the fog she walked at the back of the line, counting every traveller through."
   },
   "s06": {
    "place": "Night Bazaar",
@@ -76,7 +81,8 @@
     "I": "Examine the old machine to learn its use, though it may turn out to be junk",
     "E": "Win over the passing buyers, knowing some will walk away",
     "C": "Label the shelves so buyers find things fast, before the doors open"
-   }
+   },
+   "clue": "She once bargained for a whole bazaar's lamp oil and left every trader smiling."
   },
   "s07": {
    "place": "River Camp",
@@ -89,7 +95,8 @@
     "A": "Dream up a new boat shape for the crossing, though it may not float the first time",
     "S": "Care for the tired travellers through the night while others plan the crossing",
     "E": "Run the camp meeting and push for a decision, even if some people are unhappy"
-   }
+   },
+   "clue": "She spent a night with the tired travellers here, then drew them the way across at dawn."
   },
   "s08": {
    "place": "Weavers' Town",
@@ -102,7 +109,8 @@
     "A": "Design a banner pattern for the town, knowing not everyone will like it",
     "S": "Coach a nervous new weaver, even though progress is slow and they may give up",
     "C": "Track the cloth rolls for market day, recounting whenever the totals don't match"
-   }
+   },
+   "clue": "She sat at my loom for a week and wove a banner nobody forgot."
   },
   "s09": {
    "place": "Glass Cliffs",
@@ -115,7 +123,8 @@
     "A": "Draw a picture map of the glowing cliff for the climbers, redrawing it as the light shifts",
     "E": "Lead the climbers to the top, though some will grumble at your choices",
     "C": "Check every harness against the safety list while others start climbing first"
-   }
+   },
+   "clue": "She roped down these cliffs to check the old lamps, and mapped how the light moves."
   },
   "s10": {
    "place": "Salt Market",
@@ -128,7 +137,8 @@
     "S": "Calm the gathering crowd and listen to each person's worry, which takes a while",
     "E": "Settle the argument with a deal both traders accept, though neither is fully happy",
     "C": "Weigh what salt is left so each trader's loss is clear, with the crowd shouting nearby"
-   }
+   },
+   "clue": "When the traders quarrelled, she weighed the salt herself, and then settled it."
   },
   "s11": {
    "place": "Observatory Hill",
@@ -141,7 +151,8 @@
     "A": "Paint the night sky and notice how it changes",
     "S": "Welcome the visitors and help each one find a good spot to look",
     "E": "Recruit new members for the stargazing club"
-   }
+   },
+   "clue": "She came up here to watch the stars, then taught the village children their names."
   },
   "s12": {
    "place": "Herbalists' Garden",
@@ -154,7 +165,8 @@
     "A": "Shape the garden so it feels peaceful to walk in",
     "S": "Show children how to care for the plants through stories",
     "C": "Label each herb bed so nothing gets mixed up"
-   }
+   },
+   "clue": "She kept this garden's herb beds in order for a season and tasted every leaf."
   },
   "s13": {
    "place": "Printers' Quarter",
@@ -167,7 +179,8 @@
     "A": "Design a new letter style for the press, then redo it if people can't read it",
     "E": "Launch a new newspaper for the quarter, at the risk it does not sell",
     "C": "Proofread each page before printing, starting over whenever a mistake slips through"
-   }
+   },
+   "clue": "She read every page of the old press's notes and redrew its letters by hand."
   },
   "s14": {
    "place": "Healing House",
@@ -180,7 +193,8 @@
     "S": "Sit with the sick travellers and talk with them, though some would rather be left alone",
     "E": "Lead the clinic team tonight, even when someone has to wait",
     "C": "Sort the medicine store so the right dose is quick to find, checking label after label"
-   }
+   },
+   "clue": "She sat with the sick through a long night, and tested the well water the next morning."
   },
   "s15": {
    "place": "Festival Square",
@@ -193,7 +207,8 @@
     "S": "Greet newcomers and help them join in, staying by the gate while the fun starts",
     "E": "Manage the festival stalls, then face the stallholders if sales are slow",
     "C": "Keep the timetable so every act starts on time, working out of sight all evening"
-   }
+   },
+   "clue": "She helped me plan this very festival, and lit the first lamp herself."
   }
  },
  "meta": {
@@ -202,26 +217,26 @@
     "at": 0,
     "roman": "Chapter I",
     "title": "The Road Wakes",
-    "line": "The first lamps are the hardest. Light a few, and the road starts to remember itself."
+    "line": "The first lamps are the hardest. Somewhere on the road, a girl is looking for the lamplighter too."
    },
    {
     "at": 4,
     "roman": "Chapter II",
     "title": "Hills and Rivers",
-    "line": "The road climbs and bends. Somewhere ahead, a girl with a ferry lantern is looking for the lighthouse too."
+    "line": "Every keeper remembers the lamplighter a little differently. A pattern is forming, and the road climbs and bends."
    },
    {
     "at": 8,
     "roman": "Chapter III",
     "title": "The Salt Wind",
-    "line": "You can smell the sea. The lighthouse is close, and so is the last piece of the note."
+    "line": "You can smell the sea. The lighthouse is close, and its lamp is still dark."
    }
   ],
   "ila": {
-   "3": "Ahead on the road, a girl with a ferry lantern waves. \"I am Ila. I saw your lamp from the water.\"",
-   "6": "Ila catches up, carrying a flask of lamp oil. \"The lighthouse needs this. Walk with me a while.\"",
-   "9": "Ila points past the hills to the dark sea. \"The lighthouse. Look how dark it still is.\"",
-   "12": "Ila hands you her lantern. \"Almost there. Whatever you carry, it is enough.\""
+   "3": "Ahead on the road, a girl with a ferry lantern waves. \"I am Ila. The lamplighter was my teacher. She left three days ago and nobody knows why. Will you help me find out?\"",
+   "6": "Ila catches up, carrying a flask of lamp oil. \"Everyone remembers her differently. A mechanic, a mapmaker, a storyteller. What was she looking for?\"",
+   "9": "Ila points past the hills to the dark sea. \"The lighthouse. Still dark, and my flask is nearly empty. It needs every lamp we can light.\"",
+   "last": "Ila hands you her lantern. \"She told me once the road was never hers. Take mine. I will keep the harbour lamp burning.\""
   },
   "note": [
    "A lamp",
@@ -231,7 +246,9 @@
    "the work.",
    "Light the road",
    "for the ones",
-   "who walk behind you."
+   "who walk behind you.",
+   "The road was never mine.",
+   "Choose yours."
   ],
   "noteIntro": "Jyo finds a scrap of the lamplighter's note:",
   "intro": [
@@ -242,7 +259,7 @@
    },
    {
     "img": "intro2",
-    "text": "But the great lighthouse at the end of the road has gone dark. Its lamplighter has vanished, leaving only a torn note: “A lamp burns best for hands that love their work.”",
+    "text": "But the great lighthouse at the end of the road has gone dark. Its lamplighter vanished three days ago, leaving only a torn note: “A lamp burns best for hands that love their work.” Her student Ila is searching for her.",
     "fb": "lighthouse"
    },
    {
@@ -255,6 +272,9 @@
     "text": "At every stop, someone needs a hand. You carry two flasks of oil. Spend them on what you would most enjoy doing there: both on one thing, or one on each. There are no right answers. How you light the lamps will show whose road this is.",
     "fb": "s01"
    }
-  ]
+  ],
+  "premise": "Once a year, every lamp on the old road is lit and the lighthouse at its end shines out to sea, so that anyone far from home can find the way back. This year the lamplighter has vanished, and her student Ila cannot find out why. Jyo, a firefly who remembers every lamp, has found you.",
+  "mission": "Walk the road with Ila, help each town in the way you would most gladly spend an evening, and light its lamp. Every keeper remembers the lamplighter a little differently. When enough lamps burn, the lighthouse will shine and show you the doors that open for you.",
+  "outro": "The lighthouse is lit. Ila's teacher left a last line by its lamp: “The road was never mine. Choose yours.” She never settled on one kind of work. She tried many, so that you could find yours. Whatever you chose along the way, every lamp caught. This is the light you carry."
  }
 }
