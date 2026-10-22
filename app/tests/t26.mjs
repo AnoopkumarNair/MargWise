@@ -11,7 +11,7 @@ for(let i=0;i<4000 && Date.now()-t0<100000;i++){
   const s=await st();
   if(s.v==='dreams'){console.log('DREAMS; places',places,'lock screens',locks,lockNames.join('|'));break}
   if(s.beat){await pg.click('#beatGo'); await pg.clock.fastForward(1500); continue}
-  if(s.v==='lock'){ const nm=await pg.evaluate(()=>document.getElementById('lkName').innerText); lockNames.push(nm.slice(5,12)); locks++; await pg.locator('#lkOpts button').nth(locks%4).click(); await pg.clock.fastForward(300); await pg.click('#lkNext'); await pg.clock.fastForward(1800); continue}
+  if(s.v==='lock'){ const nm=await pg.evaluate(()=>document.getElementById('lkName').innerText); lockNames.push(nm.slice(5,12)); locks++; await pg.locator('#lkOpts button').nth(locks%4).click(); await pg.click('#lkTry'); await pg.clock.fastForward(300); await pg.click('#lkNext'); await pg.clock.fastForward(1800); continue}
   if(s.v==='stop' && !s.busy){ places++; const ids=await pg.evaluate(()=>[...document.querySelectorAll('.obj')].map(o=>o.dataset.id)); const pref=['R','I','A'].map(t=>ids.findIndex(x=>x.endsWith('-'+t))); const a=pref[0]>=0?pref[0]:(pref[1]>=0?pref[1]:0); const b2=pref[1]>=0&&pref[1]!==a?pref[1]:(a+1)%4; await pg.locator('.obj').nth(a).click({force:true}); await pg.locator('.obj').nth(b2).click({force:true}); await pg.click('#light'); await pg.clock.fastForward(3000); continue }
   await pg.clock.fastForward(500);
 }

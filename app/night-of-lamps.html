@@ -246,6 +246,7 @@
   #lock .lkopts button.fig { min-height: 96px; } #lock .lkopts button.fig svg { max-height: 74px; max-width: 100%; }
   #lock .lkopts button[aria-pressed="true"] { background: #ffe9a8; color: #2a2038; border-color: #ffcf6b; }
   #lock .lkopts button:disabled { opacity: 1; }
+  #lkTry:disabled { opacity: .45; box-shadow: none; }
   #lock .lkfb { min-height: 2.6em; font-weight: 700; color: #ffe9a8; font-family: var(--hand); font-size: 16px; }
   #lock .gate svg { width: 70px; height: 70px; } #lock .shackle { transform-origin: 40px 30px; transition: transform .6s cubic-bezier(.2,.9,.3,1.3); }
   #lock.open .shackle { transform: translateY(-8px) rotate(-28deg); } #lock.open .keyglow { opacity: 1; }
@@ -316,7 +317,6 @@
   .roadpanel { background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,207,107,.45); border-radius: 16px; padding: 12px 14px 4px; animation: cardin .35s ease both; }
   .roadpanel small { display: block; font-weight: 800; font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--glow); } .roadpanel p { font-size: 15.5px; font-weight: 600; margin: 4px 0; } .roadpanel a { color: var(--glow); }
   .tlwrap .xplain { margin: 8px 0 0; } .tlwrap .tl { margin-top: 6px; }
-  @media (prefers-reduced-motion: reduce) { #finale .fnbg, #finale .fnjyo, #finale .fnt, #finale .fnchip { transition: none; } #finale.lit .fnflash { animation: none; } }
   .aptcard { background: rgba(20,22,52,.72); border: 1.5px solid rgba(255,243,214,.35); border-radius: 14px; padding: 10px 12px; display: grid; gap: 6px; font-size: 14.5px; font-weight: 600; color: #fff3d6; }
   .aptcard b.t { font-size: 16px; } .aptcard .ar { display: flex; justify-content: space-between; gap: 10px; } .aptcard .ar span:last-child { color: #ffe9a8; font-weight: 800; }
   /* ----- tester pack: gate, ratings, feedback ----- */
@@ -573,7 +573,6 @@
   .aim i { transform-origin: bottom; animation: growy .35s ease both; } .aim i:nth-child(1) { animation-delay: .5s; } .aim i:nth-child(2) { animation-delay: .6s; } .aim i:nth-child(3) { animation-delay: .7s; } .aim i:nth-child(4) { animation-delay: .8s; }
   .cs .arr { display: inline-block; font-style: normal; } .cs.up .arr, .cs.dn .arr { animation: nudge .6s ease 1s 2; }
   .road button { z-index: 1; animation: popin .4s ease both; animation-delay: var(--d, 0s); }
-  @media (prefers-reduced-motion: reduce) { .res *, .res *::after { animation-delay: 0s !important; } }
   .road::after { content: ''; position: absolute; left: 10%; top: 21px; height: 3px; border-radius: 3px; width: calc(80% * var(--p, 0)); background: var(--glow); box-shadow: 0 0 8px rgba(255,207,107,.9); transition: width .45s cubic-bezier(.2,.8,.2,1); }
   .road button[aria-selected="true"] .sic { animation: ping 1.2s ease-out .2s 2; }
   /* radar: web, spokes, points springing out (JS), a spark round the outline, one lighthouse sweep; tap to explain */
@@ -594,7 +593,6 @@
   .rinfo { display: flex; gap: 10px; align-items: center; margin: 2px 8px 8px; font-size: 14.5px; font-weight: 600; text-align: left; background: rgba(255,207,107,.12); border: 1.5px solid rgba(255,207,107,.5); border-radius: 12px; padding: 8px 10px; animation: cardin .3s ease both; } .rinfo .ric { font-size: 26px; } .rinfo small { font-size: 13px; opacity: .85; }
   .t3 { cursor: pointer; } .t3[aria-pressed="true"] { background: rgba(255,207,107,.18); box-shadow: 0 0 14px var(--rc); }
   button.rc { font: inherit; font-size: 13px; font-weight: 700; color: inherit; cursor: pointer; min-height: 32px; } .rc[aria-pressed="true"] { border-color: var(--glow); background: rgba(255,207,107,.2); }
-  @media (prefers-reduced-motion: reduce) { * { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; } .obj { animation: none !important; opacity: 1; } }
 </style>
 
 <div id="app">
@@ -727,7 +725,7 @@
     <div class="head"><h2 id="lkName"></h2><p id="lkLead"></p></div>
     <div class="gate" aria-hidden="true"><svg viewBox="0 0 80 80"><path class="shackle" d="M24 36V26a16 16 0 0 1 32 0v10" fill="none" stroke="#fff3d6" stroke-width="6" stroke-linecap="round"/><rect x="16" y="34" width="48" height="36" rx="8" fill="#5a4a86" stroke="#fff3d6" stroke-width="3"/><circle class="keyglow" cx="40" cy="50" r="7" fill="#ffd978"/><rect x="38" y="52" width="4" height="10" rx="2" fill="#2a2038"/></svg></div>
     <div class="lkcard"><div class="lkq" id="lkQ"></div><div class="lkfig" id="lkFig"></div><div class="lkopts" id="lkOpts"></div><div class="lkfb" id="lkFb" role="status" aria-live="polite"></div></div>
-    <div class="actions"><button class="go" id="lkNext" type="button" hidden>Next lock</button><button class="go quiet" id="lkSkip" type="button">Skip this lock</button></div>
+    <div class="actions"><button class="go" id="lkTry" type="button" disabled>Pick a key</button><button class="go" id="lkNext" type="button" hidden>Next lock</button><button class="go quiet" id="lkSkip" type="button">Skip this lock</button></div>
   </section>
 
   <section class="screen pad res" id="parent">
@@ -861,7 +859,7 @@
 
   var NS = 'http://www.w3.org/2000/svg';
   var $ = function (id) { return document.getElementById(id); };
-  var state = { choices: [], scene: null, echo: false, spent: {}, view: 'welcome', busy: false, dreams: [], result: null, reduce: matchMedia('(prefers-reduced-motion: reduce)').matches };
+  var state = { choices: [], scene: null, echo: false, spent: {}, view: 'welcome', busy: false, dreams: [], result: null, reduce: false };   // motion is part of the game, so it stays on whatever the phone's reduce-motion setting says
 
   // ---------- painted scenes. These are PLACEHOLDERS drawn in code; generated art (window.LAMP_ART.bg) replaces them.
   // Palette per place: sky top, sky middle, horizon glow, tint for the hills.
@@ -1743,7 +1741,7 @@
   }
   function paintLock() {
     var dom = lk.items[lk.i], L = LOCKS[dom], lvl = nextLevel(dom), it, opts, fig = '';
-    $('lock').classList.remove('open', 'held'); lk.locked = false; $('lkNext').hidden = true; $('lkFb').textContent = ''; $('lkSkip').hidden = false;
+    $('lock').classList.remove('open', 'held'); lk.locked = false; lk.sel = null; $('lkTry').hidden = false; $('lkTry').disabled = true; $('lkTry').textContent = 'Pick a key'; $('lkNext').hidden = true; $('lkFb').textContent = ''; $('lkSkip').hidden = false;
     $('lkName').textContent = 'Lock ' + (lk.i + 1) + ' of 2: ' + L.name.replace('The Lock of ', '');
     if (L.spatial) { var sp = spatialItem(lvl); $('lkQ').textContent = 'Which one is the same shape, just turned around? A flipped copy does not count.'; fig = figSVG(sp.fig); opts = sp.opts.map(function (o) { return { h: figSVG(o.c), ok: !!o.ok }; }); it = { id: 'S' + lvl, l: lvl }; }
     else { var base = L.items.filter(function (x) { return x.l === lvl; })[0], order = shuffle(base.o.map(function (t, i) { return { t: t, ok: i === base.a }; })); $('lkQ').textContent = base.q; opts = order.map(function (o) { return { h: esc(o.t), ok: o.ok }; }); it = { id: dom + lvl, l: lvl }; }
@@ -1753,11 +1751,17 @@
   function endLockItem(ok, skipped) {
     var dom = lk.items[lk.i];
     state.apt[dom].push({ id: lk.cur.id, l: lk.cur.l, ok: !!ok, skip: !!skipped, ms: Math.min(600000, Date.now() - lk.t0) });
-    $('lkSkip').hidden = true; $('lkNext').hidden = false; $('lkNext').textContent = lk.i === 0 ? 'Next lock' : 'Walk on';
+    $('lkSkip').hidden = true; $('lkTry').hidden = true; $('lkNext').hidden = false; $('lkNext').textContent = lk.i === 0 ? 'Next lock' : 'Walk on';
   }
+  // a tap only picks a key, and you can change your mind; "Turn the key" is what answers
   $('lkOpts').addEventListener('click', function (e) {
-    var b = e.target.closest('button'); if (!b || lk.locked) return; lk.locked = true;
-    Array.prototype.forEach.call($('lkOpts').children, function (x) { x.disabled = true; x.setAttribute('aria-pressed', String(x === b)); });
+    var b = e.target.closest('button'); if (!b || lk.locked) return; lk.sel = b;
+    Array.prototype.forEach.call($('lkOpts').children, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    $('lkTry').disabled = false; $('lkTry').textContent = 'Turn the key';
+  });
+  $('lkTry').addEventListener('click', function () {
+    var b = lk.sel; if (!b || lk.locked) return; lk.locked = true;
+    Array.prototype.forEach.call($('lkOpts').children, function (x) { x.disabled = true; });
     var ok = b.dataset.ok === '1'; $('lock').classList.add(ok ? 'open' : 'held');
     $('lkFb').textContent = ok ? 'Click. The lock turns and the gate swings open.' : 'The lock holds this time, so Jyo guides you round the side.';
     if (ok) Snd.lamp(litCount()); endLockItem(ok, false);
