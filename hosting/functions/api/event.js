@@ -1,4 +1,4 @@
-import { json, safeEq, sign, readJson, keyOk } from './_util.js';
+import { json, readJson, keyOk, checkToken } from './_util.js';
 const AREAS = ['R', 'I', 'A', 'S', 'E', 'C'];
 const str = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f]/g, ' ').slice(0, n);
 const int = (v, lo, hi) => { const n = Number(v); return Number.isInteger(n) && n >= lo && n <= hi ? n : null; };
@@ -37,8 +37,7 @@ const V = {
 export async function onRequestPost({ request, env }) {
   if (!keyOk(env.SIGN_KEY)) return json({ error: 'Not available right now.' }, 503);
   const r = await readJson(request, 120000); if (r.err) return json({ error: r.err }, r.status); const b = r.b;
-  const id = String(b.testerId || ''); if (!safeEq(String(b.token || ''), await sign(id, env.SIGN_KEY))) return json({ error: 'Not allowed.' }, 403);
-  const exists = await env.DB.prepare('SELECT 1 AS x FROM testers WHERE id = ?').bind(id).first(); if (!exists) return json({ error: 'Not allowed.' }, 403);
+  const id = String(b.testerId || ''); if (!(await checkToken(env, id, b.token))) return json({ error: 'Not allowed.' }, 403);
   const day = await env.DB.prepare('SELECT COUNT(*) AS n FROM events WHERE tester_id = ? AND ts > ?').bind(id, Date.now() - 86400000).first();
   if (day && day.n > 4000) return json({ error: 'Daily limit reached.' }, 429);
   const evs = Array.isArray(b.events) ? b.events.slice(0, 40) : [], session = str(b.session, 16), stmts = [], now = Date.now();

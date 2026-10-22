@@ -15,6 +15,10 @@ export async function onRequest({ request, env }) {
   if (!safeEq(key, env.ADMIN_KEY || '')) { await env.DB.prepare('INSERT INTO admin_fail (ip, ts) VALUES (?, ?)').bind('a:' + ip, now0).run(); await env.DB.prepare('DELETE FROM admin_fail WHERE ts < ?').bind(now0 - 86400000).run(); return json({ error: 'Not allowed.' }, 403); }
   const t = q.get('tester'), now = Date.now();
   if (q.get('endpilot') && m === 'POST') return json({ ok: true, result: await purgeOld(env, now, true, true) });   // end of pilot: delete everything except follow-up consent students' name, class and notes
+  if (q.get('revoke') && m === 'POST') {   // a leaked token or return code: kill every token issued so far and the return code
+    const r = await env.DB.prepare('UPDATE testers SET tok_after = ?, ret_hash = NULL WHERE id = ?').bind(now, String(q.get('revoke')).slice(0, 40)).run();
+    await env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'revoke', '{}').run(); return json({ ok: true, changed: r.meta ? r.meta.changes : 0 });
+  }
   if (q.get('purge') && m === 'POST') return json({ ok: true, purged: await purgeOld(env, now, true) });
   if (q.get('counsellors')) {   // personal, school-scoped counsellor keys. The key is shown once; only its hash is stored.
     if (m === 'GET') return json({ counsellors: (await env.DB.prepare('SELECT c.id, c.name, c.active, c.created_at, c.last_used, i.label AS school FROM counsellors c LEFT JOIN invites i ON i.id = c.invite_id ORDER BY c.id DESC').all()).results });

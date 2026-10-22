@@ -1,4 +1,4 @@
-import { json, safeEq, sign, ipHash, readJson, keyOk, purgeOld, retHash, newRetCode } from './_util.js';
+import { json, safeEq, ipHash, readJson, keyOk, purgeOld, retHash, newRetCode, mintToken } from './_util.js';
 export async function onRequestPost({ request, env }) {
   if (!keyOk(env.SIGN_KEY)) return json({ error: 'Sign-up is not available right now.' }, 503);
   const r = await readJson(request, 4000); if (r.err) return json({ error: r.err }, r.status); const b = r.b;
@@ -27,5 +27,5 @@ export async function onRequestPost({ request, env }) {
   const id = crypto.randomUUID();
   const ret = newRetCode();
   await env.DB.batch([env.DB.prepare('INSERT INTO testers (id, name, created_at, ua, invite_id, ret_hash) VALUES (?, ?, ?, NULL, ?, ?)').bind(id, name, now, inviteId, await retHash(ret, env.SIGN_KEY)), env.DB.prepare('INSERT INTO joins (ip, ts) VALUES (?, ?)').bind(ip, now)]);
-  return json({ testerId: id, token: await sign(id, env.SIGN_KEY), returnCode: ret });
+  return json({ testerId: id, token: await mintToken(id, env.SIGN_KEY), returnCode: ret });
 }

@@ -1,4 +1,4 @@
-import { json, safeEq, readJson, ipHash, keyOk, sign } from './_util.js';
+import { json, safeEq, readJson, ipHash, keyOk, mintToken } from './_util.js';
 // Counsellor workspace. A counsellor works for one school: they add students (counsellor-led), lock their own top 3 BEFORE the app's result is returned
 // (enforced here, not in the page), review the result, log follow-ups and pull a report. Keys are personal and school-scoped; the admin key sees everything.
 const clean = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f<>]/g, ' ').trim().slice(0, n);
@@ -76,7 +76,7 @@ export async function onRequest({ request, env }) {
     if (t.source !== 'counsellor') return json({ error: 'This student signs in on their own device.' }, 400);
     if (!ex) return json({ error: 'Lock in your own top 3 first, then start the game.' }, 409);
     if (!keyOk(env.SIGN_KEY)) return json({ error: 'Not available right now.' }, 503);
-    return json({ testerId: t.id, token: await sign(t.id, env.SIGN_KEY), name: t.name });
+    return json({ testerId: t.id, token: await mintToken(t.id, env.SIGN_KEY), name: t.name });
   }
   if ((b.action === 'remove' || b.action === 'followup') && ex && !me.admin && ex.counsellor_id !== me.id) return json({ error: 'Another counsellor reviewed this student.' }, 403);
   if (b.action === 'remove') {   // withdrawal: everything about the student goes, and the removal is logged without the name
