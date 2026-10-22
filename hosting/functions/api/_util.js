@@ -26,6 +26,7 @@ export async function purgeOld(env, now, force = false) {
   const old = await env.DB.prepare('SELECT COUNT(*) AS n FROM testers WHERE created_at < ?').bind(cut).first();
   await env.DB.batch([
     env.DB.prepare('DELETE FROM events WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ?)').bind(cut),
+    env.DB.prepare('DELETE FROM followups WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ?)').bind(cut),
     env.DB.prepare('DELETE FROM reviews WHERE tester_id IN (SELECT id FROM testers WHERE created_at < ?)').bind(cut),
     env.DB.prepare('DELETE FROM testers WHERE created_at < ?').bind(cut),
     env.DB.prepare("INSERT INTO meta (k, v) VALUES ('last_purge', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind(String(now)),

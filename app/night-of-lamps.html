@@ -275,6 +275,15 @@
   /* ----- tester pack: gate, ratings, feedback ----- */
   #gate { position: absolute; inset: 0; z-index: 55; overflow-y: auto; background: #070a22; -webkit-overflow-scrolling: touch; }
   #gate .gscene { position: fixed; inset: 0; background: #070a22 center 18% / cover no-repeat; filter: brightness(.8) saturate(.95); }
+  #gate .gcover { display: none; }
+  #gate.cover .gwrap { display: none; }
+  #gate.cover .gscene { filter: none; background-position: center top; }
+  #gate.cover .gscene::after { background: linear-gradient(180deg, rgba(7,10,34,.55) 0%, rgba(7,10,34,0) 28%, rgba(7,10,34,0) 62%, rgba(7,10,34,.88) 100%); }
+  #gate.cover .gcover { position: relative; min-height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: calc(var(--safe-top) + 34px) 22px calc(var(--safe-bot) + 26px); max-width: 520px; margin: 0 auto; text-align: center; }
+  #gate .gk { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 13vw, 56px); color: #fff3d6; text-shadow: 0 3px 18px rgba(0,0,0,.65); line-height: 1; }
+  #gate .gs { font-weight: 800; letter-spacing: .18em; text-transform: uppercase; font-size: 14px; color: #ffe08a; margin-top: 10px; text-shadow: 0 2px 10px rgba(0,0,0,.7); }
+  #gate .gct p { margin: 14px 0 0; font-size: 17px; font-weight: 700; color: #fff3d6; text-shadow: 0 2px 12px rgba(0,0,0,.75); }
+  #gate .gcb { display: grid; gap: 10px; justify-items: center; } #gate .gcb span { font-size: 14px; font-weight: 700; color: #f6eccf; text-shadow: 0 2px 10px rgba(0,0,0,.8); } #gate .gcb .go { min-width: 220px; }
   #gate .gscene::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,10,34,.15) 0%, rgba(7,10,34,.8) 42%, #070a22 100%); }
   #gate .gwrap { position: relative; min-height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: 18px; padding: calc(var(--safe-top) + 22px) 16px calc(var(--safe-bot) + 18px); max-width: 520px; margin: 0 auto; }
   #gate .ghead { display: grid; gap: 10px; }
@@ -447,6 +456,10 @@
   <div id="veil" aria-hidden="true"></div>
   <div id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gateT">
     <div class="gscene" id="gScene" aria-hidden="true"></div>
+    <div class="gcover" id="gCover">
+      <div class="gct"><div class="gk">Margwise</div><div class="gs">The Night of Lamps</div><p>Find the work that fits you. One lamp at a time.</p></div>
+      <div class="gcb"><button class="go" id="gStart" type="button">Begin</button><span>About 15 minutes. No marks, no wrong answers.</span></div>
+    </div>
     <div class="gwrap">
       <header class="ghead">
         <div class="gbrand"><svg viewBox="0 0 60 80" aria-hidden="true"><path d="M22 8h16" stroke="#fff3d6" stroke-width="3.5" stroke-linecap="round"/><path d="M20 14h20l6 12v32a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26z" fill="rgba(255,243,214,.14)" stroke="#fff3d6" stroke-width="3" stroke-linejoin="round"/><path d="M30 28c2 8 10 10 10 20a10 10 0 0 1-20 0c0-6 4-8 5-14c2 2 4 3 5-6z" fill="#f2a03d"/><path d="M30 42c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#ffe08a"/></svg><span class="gword">Margwise</span><span class="gmean">Light your way</span></div>
@@ -643,7 +656,10 @@
   var bank = applyStory(M.JOURNEY_BANK), STORY = bank.story;
   // ---------- tester mode: only active when the host page sets window.MW_CONFIG (the hosted test build)
   var MWC = window.MW_CONFIG || null, TK = null, SESSION = Math.random().toString(36).slice(2, 10), evq = [], flushT = null;
-  try { TK = JSON.parse(localStorage.getItem('margwise.tester') || 'null'); if (TK && (!TK.at || Date.now() - TK.at > 5400000)) { TK = null; localStorage.removeItem('margwise.tester'); } } catch (e) { TK = null; }
+  // counsellor-led start: /?t=<tester>&k=<token>&n=<first name>. Replaces whoever was signed in on this device and wipes their saved result and walk,
+  // then removes the credentials from the address bar.
+  try { var sp = new URLSearchParams(location.search); if (MWC && sp.get('t') && sp.get('k')) { localStorage.setItem('margwise.tester', JSON.stringify({ id: sp.get('t'), token: sp.get('k'), name: String(sp.get('n') || '').slice(0, 40), at: Date.now(), led: true })); ['margwise.save', 'margwise.walk'].forEach(function (k) { localStorage.removeItem(k); }); history.replaceState(null, '', location.pathname); } } catch (e) { /* storage blocked */ }
+  try { TK = JSON.parse(localStorage.getItem('margwise.tester') || 'null'); if (TK && (!TK.at || Date.now() - TK.at > (TK.led ? 1800000 : 5400000))) { TK = null; localStorage.removeItem('margwise.tester'); } } catch (e) { TK = null; }
   var EID = 0, failN = 0;
   function flush(useBeacon) {
     if (!MWC || !TK || !evq.length) return;
@@ -931,6 +947,12 @@
     $('beat').hidden = false; $('beatGo').focus();
   }
   $('beatGo').addEventListener('click', function () { track('beat', { who: $('beatWho').textContent }); $('beat').hidden = true; var f = beatCb; beatCb = null; if (f) f(); });
+  // ---------- resume: the walk is a list of choices, so it is saved after every step and can be replayed after a refresh or a dropped connection
+  var WALK_KEY = 'margwise.walk';
+  function saveWalk() { if (!TK) return; try { localStorage.setItem(WALK_KEY, JSON.stringify({ tid: TK.id, seed: SEED, choices: state.choices, slots: state.slots, apt: state.apt, lockDone: state.lockDone, at: Date.now() })); } catch (e) { /* storage blocked */ } }
+  function clearWalk() { try { localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ } }
+  function readWalk() { try { var w = JSON.parse(localStorage.getItem(WALK_KEY) || 'null'); return w && TK && w.tid === TK.id && w.choices && w.choices.length && Date.now() - w.at < 7200000 ? w : null; } catch (e) { return null; } }
+  function resumeWalk(w) { trapBack(); SEED = w.seed; state.choices = w.choices; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.lockDone = w.lockDone || {}; track('walk_resume', { n: litCount() }); advance(false); }
   function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.lockDone = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
 
   var advTimer = null;
@@ -1044,7 +1066,7 @@
     var scene = state.scene, spent = {};
     Object.keys(state.spent).forEach(function (k) { if (state.spent[k] > 0) spent[k] = state.spent[k]; });
     var choice = state.echo ? { sceneId: scene.id + '~echo', echoOf: scene.id, spent: spent } : { sceneId: scene.id, spent: spent };
-    state.choices.push(choice); state.lit = true;
+    state.choices.push(choice); state.lit = true; saveWalk();
     track('place_done', { scene: scene.id, echo: !!state.echo, spent: spent, order: state.shownIds, ms: Math.round(performance.now() - (state.t0 || 0)), n: litCount() });
     state.busy = true; document.body.classList.add('busy');
     if (!state.echo) $('stopBg').classList.add('lit'); paintHud();
@@ -1107,6 +1129,7 @@
   };
   state.ctx = { cls: '', board: '', lean: '' }; state.slots = [0, 0, 0, 0];
   function toDreams() {
+    clearWalk();
     show('dreams'); paintHud();
     [['cClass', 'cls'], ['cBoard', 'board'], ['cLean', 'lean']].forEach(function (g) {
       $(g[0]).innerHTML = CTX[g[1]].map(function (o) { return '<button type="button" class="chip" data-k="' + g[1] + '" data-v="' + o[0] + '" aria-pressed="' + (state.ctx[g[1]] === o[0]) + '">' + o[1] + '</button>'; }).join('');
@@ -1180,6 +1203,7 @@
   function paintWelcomeBack() {
     var sv = readSave(), el = $('welcomeBack');
     el.hidden = !sv; el.textContent = '';
+    if (!sv && MWC && TK) { paintTester(); return; }
     if (sv) {
       el.appendChild(document.createTextNode('Welcome back, ' + sv.name + '. Your lighthouse last time: ' + sv.code.split('').map(function (a) { return NAME[a]; }).join(', ') + '. '));
       var fb = document.createElement('button'); fb.type = 'button'; fb.textContent = 'Not you? Forget this'; fb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px';
@@ -1383,7 +1407,7 @@
   $('lkSkip').addEventListener('click', function () { if (lk.locked) return; lk.locked = true; $('lkFb').textContent = 'No problem. Jyo knows another way round.'; endLockItem(false, true); });
   $('lkNext').addEventListener('click', function () {
     if (lk.i === 0) { lk.i = 1; paintLock(); return; }
-    var d = lk.done; lk.done = null; state.lockDone[lk.round] = 1; d && d();
+    var d = lk.done; lk.done = null; state.lockDone[lk.round] = 1; saveWalk(); d && d();
   });
   function aptScores() {
     var out = {}, n = 0;
@@ -1690,13 +1714,13 @@
   function paintCode() { var e = $('scLine'); if (e && MWC && TK) e.textContent = ' Your student code: ' + studentCode() + '.'; }
   function paintTester() {
     var el = $('welcomeBack');
-    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); }
+    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); var rw = readWalk(); if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + rw.choices.filter(function (c) { return !c.echoOf; }).length + ' lamps lit)'; rb.addEventListener('click', function () { resumeWalk(rw); }); el.appendChild(rb); } }
   }
   if (MWC) {
-    try { $('gScene').style.backgroundImage = 'url(' + ((ART.bg && ART.bg.lighthouse) || 'art/bg-lighthouse.webp') + ')'; } catch (e) { /* plain dark gate */ }
+    try { $('gScene').style.backgroundImage = 'url(' + ((ART.bg && (ART.bg.gate || ART.bg.lighthouse)) || 'art/bg-gate.webp') + ')'; } catch (e) { /* plain dark gate */ }
     (function () { var pe = $('personas'), x = pe.previousElementSibling; pe.hidden = true; while (x && (x.tagName === 'P' || x.tagName === 'H3')) { var p = x.previousElementSibling; if (/Reviewer|Fill the road/.test(x.textContent)) x.hidden = true; x = p && p.tagName !== 'BUTTON' ? p : null; } })();
     $('saveBtn').hidden = true;
-    if (!TK) $('gate').hidden = false;
+    if (!TK) { $('gate').classList.add('cover'); $('gate').hidden = false; $('gStart').addEventListener('click', function () { $('gate').classList.remove('cover'); $('gName').focus(); }); }
     fetch(MWC.api + '/config').then(function (r) { return r.json(); }).then(function (j) { $('gCodeL').hidden = !j.needsCode; }, function () { $('gCodeL').hidden = false; });
     paintTester();
     $('gGo').addEventListener('click', function () {

@@ -207,4 +207,7 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 - School counsellors see their own school's students (name, completion, results after they lock their picks). The student notice says so. A counsellor key is personal and school-scoped; only its SHA-256 is stored.
 - Counsellor reviews are deleted with the tester (admin delete and the purge). Reviews record whether the picks were locked before the student reached the results ("blind"); only blind reviews feed the headline match rate.
 - Counsellor and admin wrong-key attempts share one lockout counter per network address.
-- Apply `hosting/schema.sql`, then `schema2.sql` to `schema7.sql`, once each in order.
+- Apply `hosting/schema.sql`, then `schema2.sql` to `schema8.sql`, once each in order.
+
+### Counsellor-led mode
+A counsellor adds a student (consent sheet ticked and dated), locks their own top 3, then `start` returns a tester token and the page opens `/?t=&k=&n=`, which signs the student in, wipes any earlier student's saved result and walk, and strips the credentials from the address bar. Counsellor-led sessions expire after 30 minutes of inactivity. The walk is saved after each step and replayed on "Continue your walk". Counsellors see their school's self-signed students plus the students they added; `remove` deletes a student's events, review and follow-ups and writes an audit row.
