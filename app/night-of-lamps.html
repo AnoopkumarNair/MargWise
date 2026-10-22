@@ -545,7 +545,7 @@
     <div class="lean" id="leanNote" hidden></div><p class="fineprint" id="aptNote" hidden></p>
     <div style="display:grid; gap:12px" id="fields"></div>
     <details class="allf"><summary id="allSum">All fields, by stream</summary><div id="allFields"></div></details>
-    <p class="fineprint">Prototype content. Careers and school paths are drafts for counsellor review. Check official sites for current rules.</p>
+    <p class="fineprint">Prototype content. Careers and school paths are drafts for counsellor review. Check official sites for current rules.<span id="scLine"></span></p>
     <div class="actions"><button class="go" id="dParent" type="button">Summary for parents</button><button class="go" id="fbOpen" type="button" hidden>Share your feedback</button><button class="go quiet" id="again">Walk the road again</button></div>
   </section>
 
@@ -1658,12 +1658,14 @@
   $('fAbroad').addEventListener('click', function () { toAbroad(state.fieldId, 'field'); });
   // ---- parent summary
   function parentName() { return (TK && TK.name) || (readSave() && readSave().name) || ''; }
+  function studentCode() { return TK ? String(TK.id).replace(/-/g, '').slice(0, 6).toUpperCase() : ''; }
   function paintParent() {
     var r = state.result; if (!r) return;
     var fits = state.fits || fieldFits(), nm = $('pNm') ? $('pNm').value : parentName(), pr = r.profile, d = new Date();
     var order = AREAS.slice().sort(function (a, b) { return pr[b] - pr[a]; }), ctx = state.ctx || {};
     var ctxLine = [ctx.cls && ('Class ' + ctx.cls), ctx.board && ('Board: ' + ctx.board), ctx.lean && ('Leaning towards: ' + (LEAN_NAME[ctx.lean] || ctx.lean))].filter(Boolean).join(' · ');
     var h = '<div><label class="pnoprint" for="pNm" style="font-size:13px;font-weight:700">Student name (you can edit it)</label><input class="pnm" id="pNm" type="text" maxlength="40" autocomplete="off"><div class="pmeta">' + d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) + (ctxLine ? ' · ' + esc(ctxLine) : '') + '</div></div>';
+    if (MWC && TK) h += '<div class="pmeta"><b>Student code: ' + studentCode() + '</b> (give this to your counsellor so they can compare notes)</div>';
     h += '<div><h3>Interest shape: ' + esc(r.code.code.slice(0, 3).map(function (a) { return NAME[a]; }).join(', ')) + '</h3><div class="pmeta">Strongest first. The bars compare the student\'s own choices with each other.</div></div>';
     h += '<div style="display:grid;gap:6px">' + order.map(function (a) { var w = Math.round(zv(pr[a]) * 100); return '<div class="prow"><span>' + NAME[a] + '</span><span class="pbar"><i style="width:' + w + '%"></i></span><span>' + w + '</span></div><div class="pmeta" style="margin-top:-4px">' + esc(BLURB[a]) + '</div>'; }).join('') + '</div>';
     h += '<div><h3>Areas to explore</h3><ul>' + fits.slice(0, 5).map(function (x) { var top = x.ms.slice(0, 3).map(function (m) { var c = CAREERS.filter(function (cc) { return cc.id === m.careerId; })[0]; return c ? c.title + (c.ai && c.ai.watch ? ' (very high AI exposure, in use now)' : '') : ''; }).filter(Boolean).join(', '); return '<li><b>' + esc(x.f.name) + '</b> (' + esc(x.f.stream) + ')<div class="pcar">Careers to look at: ' + esc(top) + '</div></li>'; }).join('') + '</ul></div>';
@@ -1672,7 +1674,7 @@
     h += '<div><h3>How much to trust this</h3><p class="pcar" style="margin:0">' + conf + ' The order of close areas can swap on another day.</p></div>';
     h += '<div><h3>Talking points for home</h3><ul><li>Ask which activities in the game they enjoyed most, and why.</li><li>Look at the careers above together, and check subjects and entrance exams on official sites.</li><li>Ask how AI is changing these jobs. Where a job is marked very high AI exposure, look at which tasks AI already helps with and which skills still matter.</li><li>Treat this as one input next to marks, strengths, family circumstances and a counsellor\'s advice.</li></ul></div>';
     h += '<div class="pfine">This is an interest guide from a prototype game, not a test of ability and not a prediction. It is still being checked against established inventories. Career data: O*NET 31.0 (USDOL/ETA, CC BY 4.0, modified). School and exam facts are drafts for counsellor review.</div>';
-    $('pgcard').innerHTML = h; $('pNm').value = nm;
+    $('pgcard').innerHTML = h; $('pNm').value = nm; paintCode();
     $('pNm').addEventListener('input', function () { /* name is local to this page */ });
   }
   function toParent() { show('parent'); $('parent').scrollTop = 0; paintParent(); track('field_open', { id: 'parent' }); }
@@ -1685,6 +1687,7 @@
   $('consentYes').addEventListener('click', function () { $('consent').hidden = true; var g = consentGo; consentGo = null; if (g) g(); });
   $('consentNo').addEventListener('click', function () { $('consent').hidden = true; consentGo = null; });
   // ---- gate
+  function paintCode() { var e = $('scLine'); if (e && MWC && TK) e.textContent = ' Your student code: ' + studentCode() + '.'; }
   function paintTester() {
     var el = $('welcomeBack');
     if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); }

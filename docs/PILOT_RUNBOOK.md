@@ -33,3 +33,9 @@ Until this page exists, use a shared spreadsheet with the same columns.
 | Suggestions are sensible for a real student | School counsellor, using the steps above | During the pilot |
 | The scoring maths does not change by accident | Automated tests in CI | Every change |
 | Go, iterate or stop | Founder, using the frozen rules | Week 6 |
+
+## Counsellor page (built)
+- Page: `/counsellor/`. Key: the counsellor key (a Cloudflare secret `COUNSELLOR_KEY`; the admin key also works). Give the same key to every counsellor; rotate it after the pilot.
+- The student's **student code** (6 characters) shows on the parent summary page and on the results footer. The student reads it to the counsellor.
+- Order is enforced by the server: the counsellor locks their own top 3, and only then is the app's top 3 returned.
+- The founder sees all reviews, the average overlap, the "would use" counts, flagged facts and the fields most often missed in Admin > Counsellor reviews, with a CSV.

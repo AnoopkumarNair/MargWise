@@ -14,6 +14,13 @@ export async function onRequest({ request, env }) {
   if (!safeEq(key, env.ADMIN_KEY || '')) { await env.DB.prepare('INSERT INTO admin_fail (ip, ts) VALUES (?, ?)').bind(ip, now0).run(); await env.DB.prepare('DELETE FROM admin_fail WHERE ts < ?').bind(now0 - 86400000).run(); return json({ error: 'Not allowed.' }, 403); }
   const t = q.get('tester'), now = Date.now();
   if (q.get('purge') && m === 'POST') return json({ ok: true, purged: await purgeOld(env, now, true) });
+  if (q.get('reviews') && m === 'GET') {
+    const rows = (await env.DB.prepare('SELECT r.code, t.name, i.label AS school, r.counsellor, r.baseline, r.app_top, r.overlap, r.overlap6, r.missed, r.wrong, r.wrong_field, r.use_it, r.notes, r.baseline_at, r.reviewed_at FROM reviews r JOIN testers t ON t.id = r.tester_id LEFT JOIN invites i ON i.id = t.invite_id ORDER BY r.baseline_at DESC').all()).results;
+    if (q.get('reviews') === 'csv') return csvResp('counsellor-reviews.csv', [['student_code', 'student', 'school', 'counsellor', 'own_top3', 'app_top6', 'top3_overlap', 'own_in_app_top6', 'app_missed', 'fact_wrong', 'fact_wrong_field', 'would_use', 'notes', 'reviewed_at']].concat(rows.map(r => [r.code, r.name, r.school || 'master', r.counsellor, r.baseline, r.app_top || '', r.overlap ?? '', r.overlap6 ?? '', r.missed || '', r.wrong || '', r.wrong_field || '', r.use_it || '', r.notes || '', r.reviewed_at ? new Date(r.reviewed_at).toISOString() : ''])));
+    const done = rows.filter(r => r.reviewed_at), n = done.length, sum = k => done.reduce((a, r) => a + (r[k] || 0), 0), missed = {};
+    for (const r of done) { const top = JSON.parse(r.app_top || '[]').slice(0, 3); for (const p of JSON.parse(r.baseline)) if (!top.includes(p)) missed[p] = (missed[p] || 0) + 1; }
+    return json({ reviews: rows, summary: { started: rows.length, done: n, avgTop3Overlap: n ? +(sum('overlap') / n).toFixed(2) : null, share2plus: n ? +(done.filter(r => r.overlap >= 2).length / n).toFixed(2) : null, avgOwnInTop6: n ? +(sum('overlap6') / n).toFixed(2) : null, wouldUse: { yes: done.filter(r => r.use_it === 'yes').length, withChanges: done.filter(r => r.use_it === 'with changes').length, no: done.filter(r => r.use_it === 'no').length }, factsFlagged: done.filter(r => r.wrong).length, fieldsCounsellorsPickedButAppMissed: missed } });
+  }
   if (q.get('audit') && m === 'GET') return json({ audit: (await env.DB.prepare('SELECT ts, action, detail FROM audit ORDER BY id DESC LIMIT 100').all()).results });
   // ---- invite codes
   if (q.get('invites')) {

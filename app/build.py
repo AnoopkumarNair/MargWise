@@ -52,6 +52,9 @@ os.makedirs(H, exist_ok=True); open(os.path.join(H, 'index.html'), 'w', encoding
 for tgt in (dist, H):
     shutil.rmtree(os.path.join(tgt, 'vendor'), ignore_errors=True); shutil.copytree(os.path.join(A, 'vendor'), os.path.join(tgt, 'vendor'))
 shutil.rmtree(os.path.join(H, 'art'), ignore_errors=True); shutil.copytree(os.path.join(dist, 'art'), os.path.join(H, 'art'))
+os.makedirs(os.path.join(H, 'counsellor'), exist_ok=True)
+_c = json.load(open(os.path.join(D, 'content.json') if args.dev else os.path.join(REL, 'latest.json'), encoding='utf8'))
+json.dump([{'id': f['id'], 'name': f['name']} for f in _c['fields']], open(os.path.join(H, 'counsellor', 'fields.json'), 'w'), ensure_ascii=False)
 json.dump({'release_id': release_id, 'built_at': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'page_sha256': hashlib.sha256(doc.encode()).hexdigest(), 'engine_sha256': engine_sha, 'dev_build': args.dev}, open(os.path.join(H, 'manifest.json'), 'w'), indent=1)
 print('release', release_id)
 print('built: %d background images (%.2f MB), standalone %d KB, hosted %d KB' % (len(art['bg']), total / 1e6, len(s) // 1000, len(doc) // 1000))
