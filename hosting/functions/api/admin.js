@@ -1,5 +1,5 @@
 import CLAIMS from './_claims.json';
-import { json, safeEq, readJson, ipHash, keyOk, purgeOld } from './_util.js';
+import { json, safeEq, readJson, ipHash, keyOk, purgeOld, newRetCode, retHash } from './_util.js';
 const safe = s => { try { return JSON.parse(s); } catch { return null; } };
 const clean = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f<>]/g, ' ').trim().slice(0, n);
 const csvCell = v => { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
@@ -136,6 +136,13 @@ export async function onRequest({ request, env }) {
     return json({ error: 'Unknown fact-check action.' }, 400);
   }
   // ---- testers
+  if (q.get('newcode') && m === 'POST') {   // a tester lost their login code: only its hash is stored, so issue a new one (the old one stops working)
+    const id = clean(q.get('newcode'), 40), row = await env.DB.prepare("SELECT id FROM testers WHERE id = ? AND COALESCE(source, '') != 'counsellor'").bind(id).first();
+    if (!row) return json({ error: 'No self sign-up tester with that id.' }, 404);
+    const code = newRetCode();
+    await env.DB.batch([env.DB.prepare('UPDATE testers SET ret_hash = ? WHERE id = ?').bind(await retHash(code, env.SIGN_KEY), id), env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'login_code_reissued', JSON.stringify({ id }))]);
+    return json({ ok: true, code });
+  }
   if (q.get('merge') && m === 'POST') {   // the same person signed up twice: move everything from one row onto the row that is kept, then remove the empty row
     const r = await readJson(request, 1000); if (r.err) return json({ error: r.err }, r.status);
     const from = clean(r.b.from, 40), into = clean(r.b.into, 40);
@@ -170,11 +177,11 @@ export async function onRequest({ request, env }) {
   }
   if (t) { const r = await env.DB.prepare('SELECT ts, type, data, session_id FROM events WHERE tester_id = ? ORDER BY id').bind(t).all(); return json({ events: r.results }); }
   const tes = (await env.DB.prepare('SELECT t.id, t.name, t.created_at, i.label AS source, t.invite_id, t.source AS kind FROM testers t LEFT JOIN invites i ON i.id = t.invite_id ORDER BY t.created_at DESC').all()).results;
-  const ev = (await env.DB.prepare("SELECT tester_id, type, data, ts FROM events WHERE type IN ('result','self','areas','feedback','walk_start','place_done','fields','apt') ORDER BY id").all()).results;
+  const ev = (await env.DB.prepare("SELECT tester_id, type, data, ts FROM events WHERE type IN ('result','self','areas','feedback','walk_start','place_done','fields','apt','context') ORDER BY id").all()).results;
   const by = {}; for (const e of ev) { (by[e.tester_id] ||= []).push(e); }
   const out = tes.map(x => {
     const es = by[x.id] || [], last = ty => { const f = es.filter(e => e.type === ty); return f.length ? safe(f[f.length - 1].data) : null; };
-    return { ...x, walks: es.filter(e => e.type === 'walk_start').length, places: es.filter(e => e.type === 'place_done').length, lastTs: es.length ? es[es.length - 1].ts : x.created_at, result: last('result'), self: last('self'), areas: last('areas'), feedback: last('feedback'), fields: last('fields'), apt: last('apt') };
+    return { ...x, walks: es.filter(e => e.type === 'walk_start').length, places: es.filter(e => e.type === 'place_done').length, lastTs: es.length ? es[es.length - 1].ts : x.created_at, result: last('result'), self: last('self'), areas: last('areas'), feedback: last('feedback'), fields: last('fields'), apt: last('apt'), ctx: last('context') };
   });
   return json({ testers: out });
 }

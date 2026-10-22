@@ -546,10 +546,12 @@
   }
   @media (min-width: 700px) { #fields { display: grid !important; } }
   @media (min-width: 1100px) { #allFields { grid-template-columns: 1fr 1fr 1fr; } }
+  #gate .gtabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 14px; background: rgba(42,32,56,.08); margin-bottom: 4px; }
+  #gate .gtabs button { min-height: 44px; border: 0; border-radius: 11px; background: none; font: inherit; font-weight: 800; font-size: 15px; color: #4a3f5c; cursor: pointer; }
+  #gate .gtabs button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 2px 6px rgba(42,32,56,.18); }
+  #gate .gpanel { display: grid; gap: 12px; } #gate .gpanel[hidden] { display: none; } #gate .gpanel > p.fp { margin: 0; font-size: 13.5px; font-weight: 600; color: #4a3f5c; line-height: 1.4; }
   /* the way back to saved results */
   #gate .gback { width: 100%; margin-top: 8px; }
-  #gate .gcard > .gback { margin: 0 0 6px; color: var(--ink); background: #ffe9a8; border-color: var(--glow-deep); box-shadow: 0 3px 0 #c9a25a; }
-  #gate .gcard > #gBack[open] { background: #fff3d6; border: 2px solid var(--glow-deep); border-radius: 14px; padding: 8px 12px 12px; margin-bottom: 8px; }
   .retcard { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 10px; background: rgba(255,207,107,.14); border: 1.5px dashed var(--glow-deep); border-radius: 14px; padding: 10px 12px; }
   .retcard > span { grid-column: 1 / -1; font-size: 12.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--glow); }
   .retcard .rbtns { display: flex; gap: 14px; } .wret { display: block; margin-top: 4px; font-weight: 700; color: var(--cream-2); }
@@ -611,7 +613,7 @@
     <div class="gscene" id="gScene" aria-hidden="true"></div>
     <div class="gcover" id="gCover">
       <div class="gct"><div class="gk">Margwise</div><div class="gs">The Night of Lamps</div><p>Find the work that fits you. One lamp at a time.</p></div>
-      <div class="gcb"><button class="go" id="gStart" type="button">Begin</button><span>About 15 minutes. No marks, no wrong answers.</span><button class="go quiet gback" id="gBackCover" type="button">Been here before? See my results</button></div>
+      <div class="gcb"><button class="go" id="gStart" type="button">Begin</button><span>About 15 minutes. No marks, no wrong answers.</span><button class="go quiet gback" id="gBackCover" type="button">Played before? Log in with my code</button></div>
     </div>
     <div class="gwrap">
       <header class="ghead">
@@ -621,18 +623,22 @@
         <p class="gfacts">About 15 minutes. No marks and no wrong answers. Best with a parent beside you.</p>
       </header>
       <div class="gcard">
-        <button class="go quiet gback" id="gBackTop" type="button">Been here before? See my results</button>
+        <div class="gtabs" role="tablist" aria-label="Sign in"><button type="button" role="tab" id="gTabNew" aria-selected="true" aria-controls="gNew">First time here</button><button type="button" role="tab" id="gTabBack" aria-selected="false" aria-controls="gBack">Log in with my code</button></div>
+        <div id="gNew" role="tabpanel" aria-labelledby="gTabNew" class="gpanel">
         <p class="gtest">You are one of the first people to try this. Your feedback helps us fix it before other students see it.</p>
         <label>Your name<input type="text" id="gName" maxlength="40" autocomplete="given-name" enterkeyhint="next"><small class="fp">The person who invited you will use it to match your feedback to you.</small></label>
         <label id="gCodeL" hidden>Invite code<input type="text" id="gCode" maxlength="40" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="go"><small class="fp">You got this from the person who invited you.</small></label>
         <label class="chkrow"><input type="checkbox" id="gOk"><span>I am 18 or older, or my parent or guardian knows about this and agrees.</span></label>
         <p class="err" id="gErr" role="alert"></p>
         <button class="go" id="gGo" type="button">Start the walk</button>
-        <details class="gdata" id="gBack"><summary>I have been here before</summary>
-          <label>Your return code<input type="text" id="gRet" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-2345" enterkeyhint="go"><small class="fp">It is shown under your results and on the parent summary, and when you log out. Enter it to go straight to your last result without answering again. Lost it? You can start a new walk above.</small></label>
+        <p class="fp">You get your own login code when you start. Played before? Use <b>Log in with my code</b> instead, or you will start again from the beginning.</p>
+        </div>
+        <div id="gBack" role="tabpanel" aria-labelledby="gTabBack" class="gpanel" hidden>
+          <label>Your login code<input type="text" id="gRet" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-2345" enterkeyhint="go"><small class="fp">You got it when you first started. It is on your welcome screen, under your results and on the parent summary. It takes you straight back to your results and any walk you did not finish.</small></label>
           <p class="err" id="gRetErr" role="alert"></p>
-          <button class="go" id="gRetGo" type="button">Find my results</button>
-        </details>
+          <button class="go" id="gRetGo" type="button">Log in</button>
+          <p class="fp">Lost your code? Ask the person who invited you, or start again as a first-time player.</p>
+        </div>
         <details class="gdata"><summary>What we keep, and who sees it</summary>
           <p>We keep your name, the choices you make in the game and how long each place takes, your puzzle answers, the class, board and stream you pick, your results, your screen size and any feedback you write. We never ask for your phone number, email or address. A scrambled version of your connection address is kept for 24 hours only, to stop abuse.</p>
           <p>The Margwise team can see it. If you joined through a school, the counsellor at that school can also see your name, whether you finished, and your results. Nobody else can. We use it to improve the game and to check how well it measures interests.</p>
@@ -1446,7 +1452,7 @@
     var none = r.noSignal; document.querySelector('#reveal .stepbar').hidden = none; $('compass').parentNode.hidden = none; $('legend').hidden = none; if (none) { $('sure').hidden = true; $('notes').hidden = false; } $('openDoors').hidden = none; $('revealLine').hidden = none;
     if (none) { $('notes').textContent = 'There is not enough here to show a shape. That happens when almost no oil is spent or everything feels the same. It does not mean anything is wrong. Try the walk again and spend your oil on what you would enjoy most.'; $('revealLine').hidden = true; }
     var na = $('noSigAgain'); if (!na) { na = document.createElement('button'); na.type = 'button'; na.id = 'noSigAgain'; na.className = 'go'; na.textContent = 'Walk the road again'; na.addEventListener('click', function () { show('welcome'); }); $('notes').parentNode.appendChild(na); } na.hidden = !none;
-    var rl = $('retLine'); rl.hidden = !(MWC && TK && RET) || none; rl.innerHTML = RET ? '<span>Your return code</span><b>' + esc(RET) + '</b><span class="rbtns"><button type="button" class="linkbtn" id="retCopy">Copy</button>' + (navigator.share ? '<button type="button" class="linkbtn" id="retShare">Share</button>' : '') + '</span><small>Keep it. With it you can see these results again on any phone or laptop, without answering again.</small>' : '';
+    var rl = $('retLine'); rl.hidden = !(MWC && TK && RET) || none; rl.innerHTML = RET ? '<span>Your login code</span><b>' + esc(RET) + '</b><span class="rbtns"><button type="button" class="linkbtn" id="retCopy">Copy</button>' + (navigator.share ? '<button type="button" class="linkbtn" id="retShare">Share</button>' : '') + '</span><small>Keep it. Log in with it to see these results again on any phone or laptop, without answering again.</small>' : '';
   }
   function saveSnapshot(r) {
     var apt = {}; APT.forEach(function (d) { apt[d] = state.apt[d].map(function (x) { return [x.l || 0, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); });
@@ -1485,7 +1491,7 @@
   }
   $('openDoors').addEventListener('click', function () { toDoors(); });
   $('retLine').addEventListener('click', function (e) {
-    if (e.target.closest('#retShare')) { try { navigator.share({ title: 'Margwise return code', text: 'My Margwise return code: ' + RET + '. To see my results again, open ' + location.origin + ' and tap "Been here before? See my results".' }).catch(function () { /* closed */ }); } catch (x) { /* no share sheet */ } return; }
+    if (e.target.closest('#retShare')) { try { navigator.share({ title: 'Margwise login code', text: 'My Margwise login code: ' + RET + '. To see my results again, open ' + location.origin + ' and tap "Log in with my code".' }).catch(function () { /* closed */ }); } catch (x) { /* no share sheet */ } return; }
     var b = e.target.closest('#retCopy'); if (!b) return; var done = function () { b.textContent = 'Copied'; }; try { navigator.clipboard.writeText(RET).then(done, function () {}); } catch (x) { /* no clipboard: the code is on screen */ } });
   // ---------- save (prototype only: nothing leaves the phone, the phone number is never stored)
   var DEMO_CODE = '4271', SAVE_KEY = 'margwise.save';
@@ -2079,7 +2085,7 @@
     var order = AREAS.slice().sort(function (a, b) { return pr[b] - pr[a]; }), ctx = state.ctx || {};
     var ctxLine = [ctx.cls && ('Class ' + ctx.cls), ctx.board && ('Board: ' + ctx.board), ctx.lean && ('Leaning towards: ' + (LEAN_NAME[ctx.lean] || ctx.lean))].filter(Boolean).join(' · ');
     var h = '<div><label class="pnoprint" for="pNm" style="font-size:13px;font-weight:700">Student name (you can edit it)</label><input class="pnm" id="pNm" type="text" maxlength="40" autocomplete="off"><div class="pmeta">' + d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) + (ctxLine ? ' · ' + esc(ctxLine) : '') + '</div></div>';
-    if (MWC && TK) h += '<div class="pmeta"><b>Student code: ' + studentCode() + '</b> (give this to your counsellor so they can compare notes)' + (RET ? '<br>Return code: ' + esc(RET) + ' (to see these results again on another device)' : '') + '</div>';
+    if (MWC && TK) h += '<div class="pmeta"><b>Student code: ' + studentCode() + '</b> (give this to your counsellor so they can compare notes)' + (RET ? '<br>Login code: ' + esc(RET) + ' (to log in and see these results again on any device)' : '') + '</div>';
     h += '<div><h3>Interest shape: ' + esc(r.code.code.slice(0, 3).map(function (a) { return NAME[a]; }).join(', ')) + '</h3><div class="pmeta">Strongest first. The bars compare the student\'s own choices with each other.</div></div>';
     h += '<div style="display:grid;gap:6px">' + order.map(function (a) { var w = Math.round(zv(pr[a]) * 100); return '<div class="prow"><span>' + NAME[a] + '</span><span class="pbar"><i style="width:' + w + '%"></i></span><span>' + w + '</span></div><div class="pmeta" style="margin-top:-4px">' + esc(BLURB[a]) + '</div>'; }).join('') + '</div>';
     h += '<div><h3>Areas to explore</h3><ul>' + fits.slice(0, 5).map(function (x) { var top = x.ms.slice(0, 3).map(function (m) { var c = CAREERS.filter(function (cc) { return cc.id === m.careerId; })[0]; return c ? c.title + (c.ai && c.ai.watch ? ' (very high AI exposure, in use now)' : '') : ''; }).filter(Boolean).join(', '); return '<li><b>' + esc(x.f.name) + '</b> (' + esc(x.f.stream) + ')<div class="pcar">Careers to look at: ' + esc(top) + '</div></li>'; }).join('') + '</ul></div>';
@@ -2131,7 +2137,7 @@
   // ---- gate
   function paintCode() { var e = $('scLine'); if (e && MWC && TK) e.textContent = ' Your student code: ' + studentCode() + '.'; }
   function doLogout() {
-    var msg = 'Log out of Margwise on this device?' + (RET ? '\n\nYour results are saved. To see them again without answering, use your return code:\n\n' + RET + '\n\nWrite it down before you log out.' : ' Your progress is saved.');
+    var msg = 'Log out of Margwise on this device?' + (RET ? '\n\nYour results are saved. To log in again, use your login code:\n\n' + RET + '\n\nWrite it down before you log out.' : ' Your progress is saved.');
     if (!window.confirm(msg)) return;
     flush(true); evq = [];
     try { localStorage.removeItem('margwise.tester'); localStorage.removeItem(WALK_KEY); localStorage.setItem('margwise.washere', '1'); } catch (e) { /* storage blocked */ }
@@ -2142,15 +2148,18 @@
   function paintTester() {
     var el = $('welcomeBack'); Array.prototype.forEach.call(document.querySelectorAll('.logout'), function (b) { b.hidden = !(MWC && TK); });
     if (STALE_LED && !(TK && TK.led)) { STALE_LED = false; $('begin').hidden = false; }
-    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } if (RET) { var rc = document.createElement('small'); rc.className = 'wret'; rc.textContent = 'Your return code is ' + RET + '. It brings back your results on any phone or laptop.'; el.appendChild(rc); } var rw = readWalk() || SRVWALK; if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + rw.choices.filter(function (c) { return !c.echoOf; }).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
+    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } if (RET) { var rc = document.createElement('small'); rc.className = 'wret'; rc.textContent = 'Your login code is ' + RET + '. Use it to log in next time, on any phone or laptop.'; el.appendChild(rc); } var rw = readWalk() || SRVWALK; if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + rw.choices.filter(function (c) { return !c.echoOf; }).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
   }
   if (MWC) {
     try { $('gScene').style.setProperty('--art', 'url(' + ((ART.bg && (ART.bg.gate || ART.bg.lighthouse)) || 'art/bg-gate.webp') + ')'); } catch (e) { /* plain dark gate */ }
     (function () { var pe = $('personas'), x = pe.previousElementSibling; pe.hidden = true; while (x && (x.tagName === 'P' || x.tagName === 'H3')) { var p = x.previousElementSibling; if (/Reviewer|Fill the road/.test(x.textContent)) x.hidden = true; x = p && p.tagName !== 'BUTTON' ? p : null; } })();
     $('saveBtn').hidden = true;
-    function openBack() { $('gate').classList.remove('cover'); var d = $('gBack'); d.open = true; d.parentNode.insertBefore(d, $('gBackTop')); $('gBackTop').hidden = true; try { d.scrollIntoView({ block: 'start' }); } catch (e) { /* old browser */ } $('gRet').focus(); }
+    // two ways in: a first-time player gets a new login code; a returning player logs in with theirs
+    function gTab(back) { $('gTabNew').setAttribute('aria-selected', String(!back)); $('gTabBack').setAttribute('aria-selected', String(back)); $('gNew').hidden = back; $('gBack').hidden = !back; }
+    function openBack() { $('gate').classList.remove('cover'); gTab(true); try { $('gTabBack').scrollIntoView({ block: 'start' }); } catch (e) { /* old browser */ } $('gRet').focus(); }
+    $('gTabNew').addEventListener('click', function () { gTab(false); $('gName').focus(); }); $('gTabBack').addEventListener('click', openBack);
     if (!TK) { $('gate').classList.add('cover'); $('gate').hidden = false; $('gStart').addEventListener('click', function () { $('gate').classList.remove('cover'); $('gName').focus(); }); }
-    $('gBackCover').addEventListener('click', openBack); $('gBackTop').addEventListener('click', openBack);
+    $('gBackCover').addEventListener('click', openBack);
     var wasHere = false; try { wasHere = localStorage.getItem('margwise.washere') === '1'; } catch (e) { /* storage blocked */ }
     if (!TK && wasHere) openBack();
     fetch(MWC.api + '/config').then(function (r) { return r.json(); }).then(function (j) { $('gCodeL').hidden = !j.needsCode; }, function () { $('gCodeL').hidden = false; });
@@ -2176,7 +2185,7 @@
   }
   if (MWC) {
     $('gRetGo').addEventListener('click', function () {
-      var code = $('gRet').value.trim(); $('gRetErr').textContent = ''; if (!code) { $('gRetErr').textContent = 'Please type your return code.'; return; }
+      var code = $('gRet').value.trim(); $('gRetErr').textContent = ''; if (!code) { $('gRetErr').textContent = 'Please type your login code.'; return; }
       $('gRetGo').disabled = true;
       fetch(MWC.api + '/resume', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code: code }) })
         .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
