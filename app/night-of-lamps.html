@@ -1233,7 +1233,7 @@
     matches.forEach(function (m) { by[m.careerId] = m; });
     return FIELDS.map(function (f) {
       var ms = CAREERS.filter(function (c) { return c.field === f.id; }).map(function (c) { return by[c.id]; }).sort(function (a, b) { return b.r - a.r; });
-      var kk = Math.min(CONTENT.fieldK || ms.length, ms.length), raw = ms.slice(0, kk).reduce(function (a, m) { return a + m.r; }, 0) / kk, rp = refPct(f.id, raw), score; if (rp !== null) score = rp + .002 * raw; else { var nf = nullStats()[f.id]; score = (raw - nf.m) / nf.sd; }
+      var kk = Math.min(CONTENT.fieldK || ms.length, ms.length), raw = ms.slice(0, kk).reduce(function (a, m) { return a + m.r; }, 0) / kk, rp = refPct(f.id, raw), score; if (rp !== null) score = rp + .002 * raw + ((CONTENT.fieldBias && CONTENT.fieldBias[f.id]) || 0); else { var nf = nullStats()[f.id]; score = (raw - nf.m) / nf.sd; }
       var nd = aptNudge(f.id); return { f: f, ms: ms, score: score + nd, raw: raw, nudge: nd };
     }).sort(function (a, b) { return b.score - a.score; });
   }
