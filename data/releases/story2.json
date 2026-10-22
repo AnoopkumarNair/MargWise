@@ -236,20 +236,24 @@
   "noteIntro": "Jyo finds a scrap of the lamplighter's note:",
   "intro": [
    {
-    "img": "gate",
-    "text": "Once a year, on the Night of Lamps, the valley lights one lamp for every road a person might take. Tonight the hills are glowing."
+    "img": "intro1",
+    "text": "Once a year, on the Night of Lamps, the valley lights one lamp for every road a person might take. Tonight the hills are glowing.",
+    "fb": "gate"
    },
    {
-    "img": "lighthouse",
-    "text": "But the great lighthouse at the end of the road has gone dark. Its lamplighter has vanished, leaving only a torn note: “A lamp burns best for hands that love their work.”"
+    "img": "intro2",
+    "text": "But the great lighthouse at the end of the road has gone dark. Its lamplighter has vanished, leaving only a torn note: “A lamp burns best for hands that love their work.”",
+    "fb": "lighthouse"
    },
    {
-    "img": "welcome",
-    "text": "A small firefly named Jyo has guided lamplighters for a hundred years. It finds you on the hill. “The road needs someone to light its lamps,” Jyo whispers. “Will you carry the lantern?”"
+    "img": "intro3",
+    "text": "A small firefly named Jyo has guided lamplighters for a hundred years. It finds you on the hill. “The road needs someone to light its lamps,” Jyo whispers. “Will you carry the lantern?”",
+    "fb": "welcome"
    },
    {
-    "img": "s01",
-    "text": "At every stop, someone needs a hand. You carry two flasks of oil. Spend them on what you would most enjoy doing there: both on one thing, or one on each. There are no right answers. How you light the lamps will show whose road this is."
+    "img": "intro4",
+    "text": "At every stop, someone needs a hand. You carry two flasks of oil. Spend them on what you would most enjoy doing there: both on one thing, or one on each. There are no right answers. How you light the lamps will show whose road this is.",
+    "fb": "s01"
    }
   ]
  }

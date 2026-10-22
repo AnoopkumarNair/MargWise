@@ -29,7 +29,7 @@
   h1, h2, h3 { font-family: var(--display); margin: 0; line-height: 1.1; text-wrap: balance; }
   p { margin: 0; text-wrap: pretty; }
 
-  #app { position: relative; height: 100dvh; max-width: 520px; margin: 0 auto; overflow: hidden; }
+  #app { position: relative; z-index: 1; height: 100dvh; max-width: 520px; margin: 0 auto; overflow: hidden; }
   .screen { position: absolute; inset: 0; display: none; min-height: 0; min-width: 0; }
   .screen.on { display: flex; flex-direction: column; }
   .screen.pad { padding: calc(var(--safe-top) + 58px) 14px calc(var(--safe-bot) + 10px); gap: 10px; animation: slidein .45s cubic-bezier(.2,.8,.2,1) both; }
@@ -459,6 +459,24 @@
     .obj .tag { font-size: 13.5px; margin-top: -8px; min-height: 0; } .objs { gap: 8px 10px; }
     .go { min-height: 46px; padding-block: 10px; font-size: 16.5px; }
   }
+  /* ---------- responsive layer: phones keep the single column; wider screens use the space ---------- */
+  body::before { content: ''; position: fixed; inset: 0; z-index: 0; background: var(--sideart, none) center / cover no-repeat; filter: blur(30px) brightness(.42) saturate(1.1); opacity: 0; transition: opacity .5s; pointer-events: none; }
+  body[data-view="stop"]::before, body[data-view="lock"]::before, body[data-view="reveal"]::before, body[data-view="intro"]::before { opacity: 1; }
+  @media (min-width: 700px) {
+    /* reading and result screens widen; art scenes stay a portrait stage with blurred art filling the sides */
+    body[data-view="doors"] #app, body[data-view="field"] #app, body[data-view="abroad"] #app, body[data-view="parent"] #app, body[data-view="how"] #app, body[data-view="dreams"] #app { max-width: min(100vw, 1040px); }
+    .screen.pad { padding-left: 28px; padding-right: 28px; }
+    #fields { grid-template-columns: repeat(3, 1fr); }
+    #allFields { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; } #allFields h3 { grid-column: 1 / -1; }
+    #fCareers { grid-template-columns: 1fr 1fr; }
+    .rcards { grid-template-columns: 1fr 1fr; }
+    #parent .pgcard, #how .pgcard { max-width: 820px; width: 100%; margin: 0 auto; }
+    #parent .head, #how .head, #parent .actions, #how .actions { max-width: 820px; width: 100%; margin-left: auto; margin-right: auto; }
+    .xplain { max-width: 100%; }
+    #dreams .grp .chips { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (min-width: 700px) { #fields { display: grid !important; } #fCareers { display: grid !important; } }
+  @media (min-width: 1100px) { #fCareers { grid-template-columns: 1fr 1fr 1fr; } #allFields { grid-template-columns: 1fr 1fr 1fr; } }
   @media (prefers-reduced-motion: reduce) { * { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; } .obj { animation: none !important; opacity: 1; } }
 </style>
 
@@ -826,7 +844,7 @@
     if (state.reduce) mode = 'cut';
     sceneAnims.forEach(function (a) { try { a.cancel(); } catch (e) {} }); sceneAnims = [];
     var next = artSlot === 'artA' ? 'artB' : 'artA', cur = $(artSlot), n = $(next), fore = $('fore');
-    n.innerHTML = artFor(id);
+    n.innerHTML = artFor(id); try { var su = ART.bg && ART.bg[id]; if (su) document.body.style.setProperty('--sideart', 'url(' + su + ')'); } catch (e) { /* plain sides */ }
     var commit = function () { n.classList.add('on'); cur.classList.remove('on'); sceneAnims.forEach(function (a) { try { a.cancel(); } catch (e) {} }); sceneAnims = []; };
     var go = function () {
       if (mode === 'cut') { commit(); }
@@ -957,7 +975,7 @@
   function veilGo() { if (state.reduce) return; try { var v = $('veil'); v.getAnimations().forEach(function (a) { a.cancel(); }); v.animate([{ opacity: 1 }, { opacity: 1, offset: .18 }, { opacity: 0 }], { duration: 560, easing: 'ease-out' }); } catch (e) { /* no animation support */ } }
   function show(view) {
     var prev = state.view; if (prev && prev !== view) veilGo();
-    state.view = view;
+    state.view = view; document.body.dataset.view = view;
     ['welcome', 'intro', 'stop', 'dreams', 'reveal', 'doors', 'field', 'abroad', 'parent', 'how', 'lock'].forEach(function (v) { $(v).classList.toggle('on', v === view); });
     $('hud').hidden = view === 'welcome' || view === 'intro'; $('hud').classList.toggle('solid', view !== 'stop');
     document.body.classList.remove('busy'); state.busy = false;
@@ -1537,7 +1555,7 @@
   var introI = 0, INTRO = (META && META.intro) || [];
   function paintIntro() {
     var p = INTRO[introI]; if (!p) { endIntro(); return; }
-    $('introBg').style.setProperty('--art', 'url(' + ((ART.bg && ART.bg[p.img]) || 'art/bg-' + p.img + '.webp') + ')');
+    $('introBg').style.setProperty('--art', 'url(' + ((ART.bg && (ART.bg[p.img] || ART.bg[p.fb])) || 'art/bg-' + p.fb + '.webp') + ')');
     var t = $('introText'); t.style.animation = 'none'; void t.offsetWidth; t.style.animation = ''; t.textContent = p.text;
     $('introDots').innerHTML = INTRO.map(function (x, i) { return '<i class="' + (i === introI ? 'on' : '') + '"></i>'; }).join('');
     $('introNext').textContent = introI === INTRO.length - 1 ? 'Take the lantern' : 'Next'; $('introSkip').hidden = introI === INTRO.length - 1; $('introNext').focus();
