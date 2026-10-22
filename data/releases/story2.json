@@ -36,7 +36,7 @@
     "R": "Climb the tower and follow the broken gear by hand, in a dusty, cramped space",
     "I": "Study the pattern of missed chimes, though it may take days to spot the cause",
     "A": "Repaint the clock face so it is easier to read, even if some liked the old one",
-    "C": "Plan the repair step by step so nothing is missed, while others do the climbing"
+    "C": "Plan the repair step by step and list the parts needed, rewriting it as things change"
    }
   },
   "s04": {
@@ -47,7 +47,7 @@
    "lit": "The orchard is calm. Its lamp swings among the apple trees.",
    "o": {
     "R": "Run the press and keep it humming all day",
-    "I": "Test different apple blends and work out which one tastes best, and why",
+    "I": "Test apple blends to find which one tastes best",
     "S": "Teach visiting children to make juice through games",
     "E": "Persuade passers-by to buy and strike a good deal"
    }
@@ -73,7 +73,7 @@
    "lit": "The bazaar glows, and a lamp hangs overhead, warm as a cup of tea.",
    "o": {
     "R": "Build a sturdy stall frame from the plan, working fast as the light fades",
-    "I": "Examine the old machine to learn its use, even if the stall opens without you",
+    "I": "Examine the old machine to learn its use, though it may turn out to be junk",
     "E": "Set prices and win over buyers, knowing some will walk away",
     "C": "Sort the stock and label shelves so buyers find things fast, before the doors open"
    }
@@ -101,7 +101,7 @@
     "R": "Repair the creaking loom, crawling under it with tools for hours",
     "A": "Design a banner pattern for the town, knowing not everyone will like it",
     "S": "Coach a nervous new weaver, even though progress is slow and they may give up",
-    "C": "Track the cloth rolls so none go missing before market day, a slow, careful job"
+    "C": "Track the cloth rolls for market day, recounting whenever the totals don't match"
    }
   },
   "s09": {
@@ -112,8 +112,8 @@
    "lit": "The highest lamp is lit. The cliffs shine like glass for miles.",
    "o": {
     "R": "Rope down a short stretch to test the rock, which is slow, tiring work",
-    "A": "Capture the cliff's changing light in drawings, even if it means climbing last",
-    "E": "Split the climbers into teams and set the pace, taking the blame if anyone is late",
+    "A": "Draw a picture map of the glowing cliff for the climbers, redrawing it as the light shifts",
+    "E": "Split the climbers into teams and set the pace, though some will grumble at your choices",
     "C": "Check every harness against the safety list while others start climbing first"
    }
   },
@@ -127,7 +127,7 @@
     "R": "Haul the salt sacks off the road and stack them, heavy work in the heat",
     "S": "Calm the gathering crowd and listen to each person's worry, which takes a while",
     "E": "Settle the argument with a deal both traders accept, though neither is fully happy",
-    "C": "Weigh and record what salt is left, a fiddly job with the crowd shouting nearby"
+    "C": "Weigh what salt is left so each trader's loss is clear, with the crowd shouting nearby"
    }
   },
   "s11": {
@@ -140,7 +140,7 @@
     "I": "Chart the stars and wonder what is out there",
     "A": "Paint the night sky and notice how it changes",
     "S": "Welcome the visitors and help each one find a good spot to look",
-    "E": "Lead the club night and persuade new people to join"
+    "E": "Run the club night and sign up new members"
    }
   },
   "s12": {
@@ -152,7 +152,7 @@
    "o": {
     "I": "Test soils and seeds to grow healthier plants",
     "A": "Shape the garden so it feels peaceful to walk in",
-    "S": "Teach children to care for the plants through stories",
+    "S": "Show children how to care for the plants through stories",
     "C": "Label every herb and keep the beds in tidy rows"
    }
   },
@@ -166,7 +166,7 @@
     "I": "Investigate how the old press works, reading faded notes that may lead nowhere",
     "A": "Design a new letter style for the press, then redo it if people can't read it",
     "E": "Start a new newspaper and find people to pay for it, at the risk it does not sell",
-    "C": "Proofread each page and keep the print run on time, with little praise if it goes well"
+    "C": "Proofread each page before printing, starting over whenever a mistake slips through"
    }
   },
   "s14": {
@@ -177,7 +177,7 @@
    "lit": "The house settles into calm. A steady lamp burns in the window.",
    "o": {
     "I": "Test the water to find what is making people ill, with many tests that show nothing",
-    "S": "Sit up with the sick travellers and comfort them, missing a night's sleep",
+    "S": "Sit with the sick travellers and talk with them, though some would rather be left alone",
     "E": "Lead the clinic team and choose who is seen first, even when someone has to wait",
     "C": "Sort the medicine store so the right dose is quick to find, checking label after label"
    }

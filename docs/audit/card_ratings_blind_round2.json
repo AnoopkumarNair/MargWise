@@ -1,0 +1,102 @@
+{
+  "rater": "single rater (Claude), blind to trait key at time of rating",
+  "scale": {"desirability": "1-5, social desirability regardless of enjoyment", "cost_weight": "1-5, 1 = none/light, 5 = very heavy", "type_cue": "wording reveals type via a repeated trigger phrase"},
+  "global_notes": [
+    "s04, s11, s12 carry no stated cost on any card, unlike the other 12 scenes; the costs elsewhere are uniform enough that their absence is noticeable but not a within-scene problem.",
+    "The kind of cost is patterned: physical discomfort (oily hands, cold, by hand, heavy, crawling); work that may lead nowhere or take days; others may dislike it or it gets thrown out; blame or people walking away; slow, careful, unseen work; giving up sleep or fun for others. That flavour is itself a cue.",
+    "Some costs make a card look selfish or idle rather than merely costly: 'while others do the climbing', 'even if the stall opens without you', 'even if it means climbing last', 'with little praise'. Others make a card look noble: 'even if you miss the repair', 'missing a night's sleep'."
+  ],
+  "scenes": {
+    "s01": {"cards": {
+      "s01-1": {"desirability": 4, "cost_weight": 3, "type_cue": true, "note": "oily hands / no one to ask: hands-on plus alone pattern"},
+      "s01-2": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'work out ... why' trigger; answer may come too late"},
+      "s01-3": {"desirability": 3, "cost_weight": 2, "type_cue": true, "note": "'paint' trigger"},
+      "s01-4": {"desirability": 4, "cost_weight": 2, "type_cue": false, "note": "kind; the sacrifice reads as noble"}},
+      "dominant": null, "odd_one_out": null, "verdict": "Balanced. s01-4 slightly most virtuous, s01-1 most useful; no clear winner."},
+    "s02": {"cards": {
+      "s02-1": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'find out why'"},
+      "s02-2": {"desirability": 4, "cost_weight": 3, "type_cue": true, "note": "'by hand'; only card that meets the midnight deadline"},
+      "s02-3": {"desirability": 3, "cost_weight": 2, "type_cue": false, "note": "ideas thrown out"},
+      "s02-4": {"desirability": 3, "cost_weight": 4, "type_cue": true, "note": "'take charge' plus 'face the blame'"}},
+      "dominant": null, "odd_one_out": null, "verdict": "Mild tilt to s02-2 (it solves the deadline) and heavy cost on s02-4; acceptable."},
+    "s03": {"cards": {
+      "s03-1": {"desirability": 4, "cost_weight": 3, "type_cue": true, "note": "'by hand', dusty cramped"},
+      "s03-2": {"desirability": 2, "cost_weight": 1, "type_cue": true, "note": "'so nothing is missed'; 'while others do the climbing' reads as shirking"},
+      "s03-3": {"desirability": 3, "cost_weight": 2, "type_cue": true, "note": "'repaint'"},
+      "s03-4": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'study ... spot the cause'"}},
+      "dominant": null, "odd_one_out": "s03-2", "verdict": "s03-2 is the odd one out: its 'cost' is that others do the hard part, so it looks lazy rather than costly."},
+    "s04": {"cards": {
+      "s04-1": {"desirability": 4, "cost_weight": 1, "type_cue": true, "note": "'teach children ... through games' (same frame as s12-3)"},
+      "s04-2": {"desirability": 3, "cost_weight": 1, "type_cue": true, "note": "'persuade'"},
+      "s04-3": {"desirability": 3, "cost_weight": 2, "type_cue": false, "note": "running a machine all day"},
+      "s04-4": {"desirability": 4, "cost_weight": 1, "type_cue": true, "note": "'and why'; noticeably longer and more elaborate than the other three"}},
+      "dominant": null, "odd_one_out": "s04-4", "verdict": "No virtue winner, but s04-4 stands out by length (73 chars against roughly 45 to 50). No costs in this scene."},
+    "s05": {"cards": {
+      "s05-1": {"desirability": 4, "cost_weight": 3, "type_cue": false, "note": "useful; standing in cold"},
+      "s05-2": {"desirability": 4, "cost_weight": 2, "type_cue": true, "note": "'so no one is left behind'"},
+      "s05-3": {"desirability": 4, "cost_weight": 4, "type_cue": true, "note": "'alone ... freezing wind': solitary physical hardship pattern"},
+      "s05-4": {"desirability": 5, "cost_weight": 3, "type_cue": false, "note": "rescuing lost travellers is the most heroic option"}},
+      "dominant": "s05-4 (mild)", "odd_one_out": null, "verdict": "All four are worthy, and s05-4 edges ahead because it rescues lost people."},
+    "s06": {"cards": {
+      "s06-1": {"desirability": 3, "cost_weight": 1, "type_cue": true, "note": "'sort ... label'"},
+      "s06-2": {"desirability": 3, "cost_weight": 3, "type_cue": false, "note": "the setup baits it, but 'stall opens without you' reads as neglecting duty"},
+      "s06-3": {"desirability": 3, "cost_weight": 2, "type_cue": true, "note": "'set prices / win over'"},
+      "s06-4": {"desirability": 4, "cost_weight": 2, "type_cue": false, "note": "solid practical work"}},
+      "dominant": null, "odd_one_out": null, "verdict": "Balanced."},
+    "s07": {"cards": {
+      "s07-1": {"desirability": 3, "cost_weight": 2, "type_cue": false, "note": "type ambiguous (design or invent)"},
+      "s07-2": {"desirability": 4, "cost_weight": 3, "type_cue": true, "note": "'sore arms and wet feet' body-cost pattern"},
+      "s07-3": {"desirability": 4, "cost_weight": 3, "type_cue": true, "note": "night-long caring is a sacrifice-of-sleep pattern (also s14-3)"},
+      "s07-4": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'push for a decision ... unhappy'"}},
+      "dominant": null, "odd_one_out": null, "verdict": "Balanced."},
+    "s08": {"cards": {
+      "s08-1": {"desirability": 3, "cost_weight": 2, "type_cue": true, "note": "'design' plus 'not everyone will like it'"},
+      "s08-2": {"desirability": 2, "cost_weight": 3, "type_cue": true, "note": "'so none go missing'; 'slow, careful job' sounds dull"},
+      "s08-3": {"desirability": 4, "cost_weight": 3, "type_cue": false, "note": "kind, patient"},
+      "s08-4": {"desirability": 4, "cost_weight": 3, "type_cue": true, "note": "'repair ... with tools'; directly fixes the setup problem"}},
+      "dominant": null, "odd_one_out": "s08-2 (mild)", "verdict": "s08-2 is the least attractive because its cost describes the task itself as dull."},
+    "s09": {"cards": {
+      "s09-1": {"desirability": 2, "cost_weight": 2, "type_cue": true, "note": "drawing while the group must reach the top looks self-indulgent"},
+      "s09-2": {"desirability": 3, "cost_weight": 4, "type_cue": true, "note": "'taking the blame'"},
+      "s09-3": {"desirability": 4, "cost_weight": 2, "type_cue": true, "note": "'every ... against the safety list'; safety reads as virtuous"},
+      "s09-4": {"desirability": 4, "cost_weight": 3, "type_cue": false, "note": "brave, useful"}},
+      "dominant": null, "odd_one_out": "s09-1", "verdict": "s09-1 is the odd one out: it does nothing toward the group goal, and 'climbing last' adds a selfish tone."},
+    "s10": {"cards": {
+      "s10-1": {"desirability": 2, "cost_weight": 3, "type_cue": true, "note": "'weigh and record'; low value in a crisis"},
+      "s10-2": {"desirability": 4, "cost_weight": 4, "type_cue": true, "note": "'heavy work in the heat'"},
+      "s10-3": {"desirability": 4, "cost_weight": 2, "type_cue": true, "note": "'deal'"},
+      "s10-4": {"desirability": 4, "cost_weight": 2, "type_cue": false, "note": "caring"}},
+      "dominant": null, "odd_one_out": "s10-1 (mild)", "verdict": "s10-1 is the weakest: bookkeeping while people argue."},
+    "s11": {"cards": {
+      "s11-1": {"desirability": 4, "cost_weight": 1, "type_cue": true, "note": "'wonder'"},
+      "s11-2": {"desirability": 4, "cost_weight": 1, "type_cue": false, "note": "welcoming"},
+      "s11-3": {"desirability": 3, "cost_weight": 1, "type_cue": true, "note": "'paint'; echoes s09-1 'changing light'"},
+      "s11-4": {"desirability": 3, "cost_weight": 1, "type_cue": true, "note": "'persuade'"}},
+      "dominant": null, "odd_one_out": null, "verdict": "Balanced, with no costs."},
+    "s12": {"cards": {
+      "s12-1": {"desirability": 3, "cost_weight": 1, "type_cue": true, "note": "'label every'"},
+      "s12-2": {"desirability": 4, "cost_weight": 1, "type_cue": true, "note": "'test'"},
+      "s12-3": {"desirability": 4, "cost_weight": 1, "type_cue": true, "note": "'teach children ... through stories' (same frame as s04-1)"},
+      "s12-4": {"desirability": 3, "cost_weight": 1, "type_cue": false, "note": "peaceful"}},
+      "dominant": null, "odd_one_out": null, "verdict": "Balanced, with no costs."},
+    "s13": {"cards": {
+      "s13-1": {"desirability": 2, "cost_weight": 3, "type_cue": true, "note": "'keep ... on time'; 'little praise' frames it as thankless"},
+      "s13-2": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'investigate ... may lead nowhere'"},
+      "s13-3": {"desirability": 3, "cost_weight": 2, "type_cue": true, "note": "'design'"},
+      "s13-4": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'risk ... not sell'"}},
+      "dominant": null, "odd_one_out": "s13-1 (mild)", "verdict": "s13-1 is the least attractive because 'little praise' is a status cost, not a task cost."},
+    "s14": {"cards": {
+      "s14-1": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'sort ... label after label'"},
+      "s14-2": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'lead ... choose'"},
+      "s14-3": {"desirability": 5, "cost_weight": 3, "type_cue": true, "note": "night-long sacrifice pattern; in a healing house this is the 'right' answer"},
+      "s14-4": {"desirability": 4, "cost_weight": 3, "type_cue": true, "note": "'test ... show nothing'"}},
+      "dominant": "s14-3", "odd_one_out": null, "verdict": "s14-3 dominates: comforting the sick in a healing house is the morally obvious pick."},
+    "s15": {"cards": {
+      "s15-1": {"desirability": 4, "cost_weight": 2, "type_cue": false, "note": "welcoming"},
+      "s15-2": {"desirability": 3, "cost_weight": 2, "type_cue": true, "note": "'painting'"},
+      "s15-3": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'set the prices ... face'"},
+      "s15-4": {"desirability": 3, "cost_weight": 3, "type_cue": true, "note": "'keep ... on time'; 'out of sight'"}},
+      "dominant": null, "odd_one_out": null, "verdict": "Balanced."}
+  },
+  "blind_summary": {"dominant_scenes": ["s14", "s05 (mild)"], "odd_one_out_scenes": ["s03", "s09", "s04 (length)", "s08 (mild)", "s10 (mild)", "s13 (mild)"]}
+}

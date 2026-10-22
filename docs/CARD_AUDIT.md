@@ -47,3 +47,18 @@ The s06 setup should also be made neutral. That is outside the card text, so it 
   3. A field pilot (a few hundred students) that compares pick rates per type with how often you'd expect each type to be picked. Check that each type's score is consistent across scenes, and check scores against an established interest measure (for example a validated RIASEC inventory) given to the same students.
   4. Checks that each card works the same way for different groups (gender, region, language) before using the results for career advice.
   5. A balanced design. Every type appears in only 10 of 15 scenes, and which types appear together changes from scene to scene, so the scoring should account for that.
+
+## Round 2: blind re-rating of the rewritten cards (single rater)
+Data: `docs/audit/card_ratings_blind_round2.json`, `docs/audit/card_rewrites_round2.json`.
+
+| Type | Old mean desirability | New mean | Mean cost weight (new) |
+| --- | --- | --- | --- |
+| S Social | 4.5 | 4.2 | 2.1 |
+| R Realistic | 3.7 | 3.9 | 3.0 |
+| I Investigative | 4.0 | 3.5 | 2.4 |
+| E Enterprising | 3.4 | 3.1 | 2.6 |
+| A Artistic | 3.0 | 2.9 | 1.8 |
+| C Conventional | 2.4 | 2.8 | 2.2 |
+| Gap, top to bottom | 2.1 | 1.4 | |
+
+Flagged stops fell from 12 to 6 of 15. A smaller bias remains: Social still rates highest and Organiser and Creator lowest. The reviewer's main finding is that the **kind of cost has itself become a cue** (Builder: the body; Thinker: may lead nowhere; Creator: others may dislike it; Persuader: blame; Organiser: slow and unseen; Helper: giving up sleep or fun), and a heavier cost did not make a card less appealing. Eleven further card fixes were applied (s03-2, s04-4, s06-2, s08-2, s09-1, s09-2, s10-1, s11-4, s12-3, s13-1, s14-3). Left as they are on purpose: the three stops with no costs (s04, s11, s12), the remaining type-flavoured costs, and two mildly tilted stops. These need student data, not another single-rater pass: desirability ratings from 30 or more Class 9 to 12 students, think-aloud sessions to catch type cues, and a field pilot against a validated RIASEC measure.
