@@ -1537,7 +1537,7 @@
   var introI = 0, INTRO = (META && META.intro) || [];
   function paintIntro() {
     var p = INTRO[introI]; if (!p) { endIntro(); return; }
-    $('introBg').style.setProperty('--art', 'url(' + ((ART.bg && ART.bg[p.img]) || 'art/bg-' + p.img + '.webp') + ')');
+    $('introBg').style.setProperty('--art', 'url(' + ((ART.bg && (ART.bg[p.img] || ART.bg[p.fb])) || 'art/bg-' + p.fb + '.webp') + ')');
     var t = $('introText'); t.style.animation = 'none'; void t.offsetWidth; t.style.animation = ''; t.textContent = p.text;
     $('introDots').innerHTML = INTRO.map(function (x, i) { return '<i class="' + (i === introI ? 'on' : '') + '"></i>'; }).join('');
     $('introNext').textContent = introI === INTRO.length - 1 ? 'Take the lantern' : 'Next'; $('introSkip').hidden = introI === INTRO.length - 1; $('introNext').focus();

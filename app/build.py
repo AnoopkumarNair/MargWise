@@ -48,6 +48,12 @@ open(os.path.join(dist, 'index.html'), 'w', encoding='utf8').write(s)
 SHELL = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><style>:root{color-scheme:dark}html,body{margin:0;padding:0;background:#141a3a;color:#fff3d6;font:14px -apple-system,BlinkMacSystemFont,sans-serif}[hidden]{display:none!important}</style><script>window.MW_CONFIG={api:"/api"};</script>'
 doc = SHELL + body.replace('<title>', '</head><body><title>', 1) + '</body></html>'
 doc = doc.replace('</head><body><title>The Night of Lamps</title>', '<title>The Night of Lamps</title></head><body>', 1)
+# link preview card (WhatsApp, messaging apps): only when app/art/share.jpg has been supplied
+share = os.path.join(A, 'art', 'share.jpg')
+if os.path.exists(share):
+    os.makedirs(os.path.join(H, 'art'), exist_ok=True); shutil.copy(share, os.path.join(H, 'art', 'share.jpg'))
+    og = '<meta property="og:title" content="Margwise: The Night of Lamps"><meta property="og:description" content="A story game that helps you find the work that fits you."><meta property="og:image" content="https://margwise.byteheaven.in/art/share.jpg"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image">'
+    doc = doc.replace('<meta name="robots" content="noindex">', '<meta name="robots" content="noindex">' + og, 1)
 os.makedirs(H, exist_ok=True); open(os.path.join(H, 'index.html'), 'w', encoding='utf8').write(doc)
 for tgt in (dist, H):
     shutil.rmtree(os.path.join(tgt, 'vendor'), ignore_errors=True); shutil.copytree(os.path.join(A, 'vendor'), os.path.join(tgt, 'vendor'))
