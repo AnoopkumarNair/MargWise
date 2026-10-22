@@ -113,7 +113,7 @@
   .obj[data-n="1"] .art, .obj[data-n="2"] .art { border-color: var(--glow); box-shadow: 0 0 0 2px var(--glow-deep), 0 0 34px 6px rgba(255,200,90,.6), inset 0 0 38px rgba(255,210,110,.55); }
   .obj[data-n="1"] .tag, .obj[data-n="2"] .tag { background: #ffe9a8; box-shadow: 0 4px 0 #d89a2b, 0 0 14px rgba(255,200,90,.6); }
   /* ----- results redesign ----- */
-  #dreams.on, #reveal.on, #doors.on, #field.on { overflow-y: auto; }
+  #dreams.on, #reveal.on, #doors.on, #field.on, #lock.on { overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .screen.pad.res { padding-bottom: calc(var(--safe-bot) + 14px); gap: 12px; }
   .grp { display: grid; gap: 8px; }
   .grp h3 { font-size: 17px; font-family: var(--body); font-weight: 800; color: var(--cream); }
@@ -227,13 +227,19 @@
   #parent .pcar { font-weight: 600; color: #4a3f5c; }
   #parent .pfine { font-size: 13px; font-weight: 600; color: #4a3f5c; border-top: 1px solid #d7c9a6; padding-top: 8px; }
   @media print {
-    html, body { background: #fff !important; }
-    #app > *:not(#parent) { display: none !important; }
-    #parent { display: block !important; position: static !important; overflow: visible !important; padding: 0 !important; }
-    #parent .head, #parent .actions, #parent .pnoprint { display: none !important; }
-    #parent .pgcard { background: #fff; border: 1px solid #999; border-radius: 0; }
+    @page { margin: 14mm; }
+    html, body, #app { background: #fff !important; height: auto !important; max-width: none !important; overflow: visible !important; position: static !important; }
+    body::before { display: none !important; }
+    #app > *:not(#parent):not(#how), #hud, #gate, #beat, .sheet, #loader { display: none !important; }
+    #parent, #how { position: static !important; overflow: visible !important; height: auto !important; padding: 0 !important; display: none !important; }
+    #parent.on, #how.on { display: block !important; }
+    #parent .head, #parent .actions, #parent .pnoprint, #how .head, #how .actions { display: none !important; }
+    #parent .pgcard, #how .pgcard { background: #fff !important; color: #000 !important; border: 1px solid #999; border-radius: 0; max-width: none !important; width: auto !important; }
+    #parent .pgcard *, #how .pgcard * { color: #000 !important; }
     #parent .pnm { border: 0; padding: 0; font-size: 22px; }
+    .pgcard > *, .pgcard li, .prow { break-inside: avoid; }
   }
+
   #veil { position: absolute; inset: 0; z-index: 48; background: #070a22; opacity: 0; pointer-events: none; }
   .linkbtn { background: none; border: 0; color: #ffe08a; text-decoration: underline; font: inherit; font-weight: 700; text-align: left; padding: 10px 0; min-height: 44px; }
   .fcard .why { display: block; margin-top: 4px; font-weight: 700; font-size: 13.5px; color: #4a3f5c; }
@@ -461,6 +467,40 @@
     .obj .tag { font-size: 13.5px; margin-top: -8px; min-height: 0; } .objs { gap: 8px 10px; }
     .go { min-height: 46px; padding-block: 10px; font-size: 16.5px; }
   }
+  /* ---------- field page: visual summary first, detail on tap ---------- */
+  :root { --tR: #e8923c; --tI: #5aa9e6; --tA: #c77dff; --tS: #f08aa0; --tE: #f2c14e; --tC: #6cc9a0; }
+  .fhero { display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center; background: rgba(255,255,255,.09); border-radius: 18px; padding: 12px; }
+  .fhero .gl { font-size: 40px; width: 64px; height: 64px; display: grid; place-items: center; background: #ffe9a8; border-radius: 16px; }
+  .fhero h2 { font-size: 26px; } .fhero p { font-size: 15px; font-weight: 600; margin-top: 2px; opacity: .92; }
+  .tchips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; } .tc { font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 99px; background: rgba(0,0,0,.3); border: 2px solid var(--c, #ffcf6b); } .tc b { letter-spacing: 2px; color: var(--c, #ffcf6b); }
+  .tc.tR { --c: var(--tR); } .tc.tI { --c: var(--tI); } .tc.tA { --c: var(--tA); } .tc.tS { --c: var(--tS); } .tc.tE { --c: var(--tE); } .tc.tC { --c: var(--tC); }
+  .ftry { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; background: linear-gradient(135deg, #ffe08a, #ffb347); color: #2a2038; border-radius: 16px; padding: 12px 14px; font-weight: 800; box-shadow: 0 4px 0 #b9812e; }
+  .ftry .ico { font-size: 26px; } .ftry small { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
+  .whystrip { display: grid; gap: 8px; background: rgba(255,255,255,.07); border-radius: 16px; padding: 10px 12px; }
+  .sureRow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 14.5px; } .sureWhy { opacity: .85; font-weight: 600; }
+  .meter { display: inline-flex; gap: 3px; } .meter i { width: 18px; height: 10px; border-radius: 4px; background: rgba(255,243,214,.25); } .meter.m1 i:nth-child(1), .meter.m2 i:nth-child(-n+2), .meter.m3 i { background: #ffcf6b; }
+  .evrow { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; } .evrow small { font-weight: 800; opacity: .8; font-size: 13px; }
+  .ev { font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 99px; background: rgba(255,207,107,.2); border: 1px solid rgba(255,207,107,.55); }
+  .near { font-size: 13.5px; font-weight: 800; padding: 6px 12px; border-radius: 99px; background: rgba(255,255,255,.12); border: 2px solid rgba(255,243,214,.5); min-height: 36px; }
+  .swipe { font-size: 12px; font-weight: 700; opacity: .7; margin-left: 6px; }
+  .cscroll { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
+  .ccard { flex: 0 0 82%; scroll-snap-align: start; background: rgba(255,255,255,.09); border-radius: 16px; padding: 12px; display: grid; gap: 6px; align-content: start; }
+  .ccard b { font-size: 17px; } .ccard p { font-size: 14.5px; font-weight: 600; opacity: .9; } .ccard .tags { display: flex; gap: 6px; flex-wrap: wrap; } .ccard summary { cursor: pointer; font-weight: 800; font-size: 14px; color: #ffe08a; min-height: 36px; display: flex; align-items: center; }
+  .tl details summary { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; cursor: pointer; list-style: none; min-height: 44px; } .tl details summary::-webkit-details-marker { display: none; }
+  .tl .sic { font-size: 22px; width: 34px; height: 34px; display: grid; place-items: center; background: rgba(255,207,107,.18); border-radius: 10px; } .tl .stt small { display: block; } .tl .stt em { font-style: normal; font-size: 14px; font-weight: 600; opacity: .85; display: block; } .tl details[open] .stt em { display: none; }
+  .tl .stx { display: block; margin: 6px 0 4px 44px; font-size: 15.5px; font-weight: 600; }
+  .tl li { padding-left: 0; } .tl li::before { display: none; } .tl { border-left: 0; padding-left: 0; gap: 8px; }
+  .tl li { background: rgba(255,255,255,.06); border-radius: 14px; padding: 6px 10px; }
+  /* doors: cards invite a tap */
+  @keyframes fcardIn { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
+  @keyframes tapBob { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+  @keyframes fcGlow { 0%, 100% { box-shadow: 0 4px 0 #b9955a, 0 0 0 0 rgba(255,207,107,.0); } 50% { box-shadow: 0 4px 0 #b9955a, 0 0 18px 4px rgba(255,207,107,.55); } }
+  .fcard { animation: fcardIn .5s cubic-bezier(.2,.8,.2,1) both; } #fields .fcard:nth-child(2) { animation-delay: .12s; } #fields .fcard:nth-child(3) { animation-delay: .24s; }
+  #fields .fcard:first-child { animation: fcardIn .5s cubic-bezier(.2,.8,.2,1) both, fcGlow 2.6s ease-in-out 1s infinite; }
+  .fcard .tap { display: inline-flex; gap: 6px; align-items: center; margin-top: 8px; font-size: 13px; font-weight: 900; color: #7a4a00; background: #ffe08a; border-radius: 99px; padding: 4px 12px; } .fcard .tap i { font-style: normal; font-size: 18px; line-height: 1; animation: tapBob 1.2s ease-in-out infinite; }
+  .fcard .chev { animation: tapBob 1.2s ease-in-out infinite; }
+  @media (hover: hover) { .fcard:hover { transform: translateY(-3px); } }
+  @media (min-width: 700px) { .cscroll { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); overflow: visible; } .ccard { flex: auto; } .swipe { display: none; } }
   /* ---------- responsive layer: phones keep the single column; wider screens use the space ---------- */
   body::before { content: ''; position: fixed; inset: 0; z-index: 0; background: var(--sideart, none) center / cover no-repeat; filter: blur(30px) brightness(.42) saturate(1.1); opacity: 0; transition: opacity .5s; pointer-events: none; }
   body[data-view="stop"]::before, body[data-view="lock"]::before, body[data-view="reveal"]::before, body[data-view="intro"]::before { opacity: 1; }
@@ -468,17 +508,16 @@
     /* reading and result screens widen; art scenes stay a portrait stage with blurred art filling the sides */
     body[data-view="doors"] #app, body[data-view="field"] #app, body[data-view="abroad"] #app, body[data-view="parent"] #app, body[data-view="how"] #app, body[data-view="dreams"] #app { max-width: min(100vw, 1040px); }
     .screen.pad { padding-left: 28px; padding-right: 28px; }
-    #fields { grid-template-columns: repeat(3, 1fr); }
+    #fields { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); } #fields .fcard { min-width: 0; }
     #allFields { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; } #allFields h3 { grid-column: 1 / -1; }
-    #fCareers { grid-template-columns: 1fr 1fr; }
     .rcards { grid-template-columns: 1fr 1fr; }
     #parent .pgcard, #how .pgcard { max-width: 820px; width: 100%; margin: 0 auto; }
     #parent .head, #how .head, #parent .actions, #how .actions { max-width: 820px; width: 100%; margin-left: auto; margin-right: auto; }
     .xplain { max-width: 100%; }
     #dreams .grp .chips { grid-template-columns: repeat(4, 1fr); }
   }
-  @media (min-width: 700px) { #fields { display: grid !important; } #fCareers { display: grid !important; } }
-  @media (min-width: 1100px) { #fCareers { grid-template-columns: 1fr 1fr 1fr; } #allFields { grid-template-columns: 1fr 1fr 1fr; } }
+  @media (min-width: 700px) { #fields { display: grid !important; } }
+  @media (min-width: 1100px) { #allFields { grid-template-columns: 1fr 1fr 1fr; } }
   @media (prefers-reduced-motion: reduce) { * { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; } .obj { animation: none !important; opacity: 1; } }
 </style>
 
@@ -629,11 +668,13 @@
   </section>
 
   <section class="screen pad res" id="field">
-    <div class="head"><h2 id="fTitle"></h2><p id="fWhy"></p></div>
-    <details class="xplain" id="fExplain" open><summary>Why this showed up, and what is still uncertain</summary><div id="fExplainBody"></div></details>
-    <div class="grp"><h3>Careers in this field</h3><div style="display:grid; gap:8px" id="fCareers"></div></div>
+    <div class="fhero" id="fHero"></div>
+    <div class="ftry" id="fTry" hidden></div>
+    <div class="whystrip" id="fWhyStrip"></div>
+    <details class="xplain" id="fExplain"><summary>See which choices pointed here</summary><div id="fExplainBody"></div></details>
+    <div class="grp"><h3>Careers in this field <small class="swipe">swipe &rarr;</small></h3><p class="fineprint" id="fAiNote"></p><div class="cscroll" id="fCareers"></div></div>
     <div class="grp"><h3>Your school path</h3><div class="seg" id="fBoard" role="group" aria-label="Board"></div><ol class="tl" id="fPath"></ol><button class="linkbtn" id="fAbroad" type="button">Thinking of studying or working abroad? See how it works for this field.</button></div>
-    <div class="fineprint" id="fSrc"></div>
+    <details class="xplain" id="fChk"><summary>Check before relying on this</summary><div class="fineprint" id="fSrc"></div></details>
     <div class="actions"><button class="go quiet" id="fBack">Back to all fields</button></div>
   </section>
 </div>
@@ -1163,7 +1204,8 @@
     else if (state.view === 'doors') { show('reveal'); }
     else if (state.view === 'field') { show('doors'); }
     else if (state.view === 'abroad') { show(state.ab.from || 'doors'); }
-    else if (state.view === 'parent') { show('doors'); }
+    else if (state.view === 'parent' || state.view === 'how') { show('doors'); }
+    else if (state.view === 'intro') { show('welcome'); }
   });
   var _bk = $('back'); _bk.addEventListener('click', function () { /* locks have no back step */ }, false);
 
@@ -1321,7 +1363,7 @@
     var code3 = state.result.code.code;
     $('fields').innerHTML = fits.slice(0, 3).map(function (x, i) {
       var sh = x.f.areas.filter(function (a) { return code3.indexOf(a) >= 0; }), nxt = fits[i + 1], close = nxt && Math.abs(x.score - nxt.score) < .05;
-      return '<button type="button" class="fcard" data-id="' + x.f.id + '"><span class="gl" aria-hidden="true">' + x.f.icon + '</span><span><h3>' + x.f.name + '</h3><p>' + x.f.blurb + '</p><span class="meta"><span class="pill">' + x.f.group + '</span>' + (close ? '<span class="pill">Close to the next one</span>' : '') + '</span><small class="why">' + (sh.length ? 'Matches your ' + sh.map(function (a) { return NAME[a]; }).join(' and ') + ' side.' : 'Worth a look beyond your top three areas.') + '</small></span><span class="chev" aria-hidden="true">\u203a</span></button>';
+      return '<button type="button" class="fcard" data-id="' + x.f.id + '"><span class="gl" aria-hidden="true">' + x.f.icon + '</span><span><h3>' + x.f.name + '</h3><p>' + x.f.blurb + '</p><span class="meta"><span class="pill">' + x.f.group + '</span>' + (close ? '<span class="pill">Close to the next one</span>' : '') + '</span><small class="why">' + (sh.length ? 'Matches your ' + sh.map(function (a) { return NAME[a]; }).join(' and ') + ' side.' : 'Worth a look beyond your top three areas.') + '</small><span class="tap">Tap to open <i aria-hidden="true">\u203a</i></span></span><span class="chev" aria-hidden="true">\u203a</span></button>';
     }).join('');
     $('allSum').textContent = 'All ' + fits.length + ' fields, by stream';
     $('allFields').innerHTML = GROUPS.map(function (g) {
@@ -1351,35 +1393,43 @@
     return { up: out.filter(function (o) { return o.d > .006; }), down: out.filter(function (o) { return o.d < -.006; }).slice(-1), n: out.length, supporters: out.filter(function (o) { return o.d > .006; }).length };
   }
   function renderExplain(id, x) {
-    var w = whyField(id), r = state.result, f = x.f, code = r.code.code, h = '', pr = r.profile;
+    var w = whyField(id), r = state.result, f = x.f, pr = r.profile, h = '';
     function line(o, away) { var mine = o.cards.filter(function (c) { return (f.areas.indexOf(c.trait) >= 0) !== !!away; }); if (!mine.length) return ''; return '<li><b>' + esc(o.place) + ':</b> you picked ' + mine.map(function (c) { return '<span class="q">\u201c' + esc(c.text) + '\u201d</span> (' + NAME[c.trait] + ')'; }).join(' and ') + '.</li>'; }
+    var ids = state.fits.map(function (y) { return y.f.id; }), at = ids.indexOf(id), nxt = state.fits[at + 1], prv = state.fits[at - 1];
+    var close = (nxt && Math.abs(x.score - nxt.score) < .05) || (prv && Math.abs(x.score - prv.score) < .05);
+    var level = w.supporters < 3 ? 1 : close ? 2 : 3, lab = ['', 'Thin evidence', 'Close call', 'Clear signal'][level];
+    var near = state.fits.filter(function (y) { return y.f.id !== id && y.f.areas.some(function (a) { return f.areas.indexOf(a) >= 0; }); }).slice(0, 2);
+    var strip = '<div class="sureRow"><span class="meter m' + level + '" aria-hidden="true"><i></i><i></i><i></i></span><b>' + lab + '</b><span class="sureWhy">' + (level === 3 ? 'several of your choices agree' : level === 2 ? 'a neighbouring area is almost as close' : 'only a few choices point here') + '</span></div>';
+    if (w.up.length) strip += '<div class="evrow"><small>Your choices at</small>' + w.up.slice(0, 4).map(function (o) { return '<span class="ev">' + esc(o.place) + '</span>'; }).join('') + '</div>';
+    if (near.length) strip += '<div class="evrow"><small>Also look at</small>' + near.map(function (y) { return '<button type="button" class="near" data-id="' + y.f.id + '">' + y.f.icon + ' ' + esc(y.f.name) + '</button>'; }).join('') + '</div>';
+    $('fWhyStrip').innerHTML = strip;
     h += '<h4>Choices that pointed here</h4>' + (w.up.length ? '<ul>' + w.up.slice(0, 3).map(function (o) { return line(o, false); }).join('') + '</ul>' : '<p>No single choice stands out; this comes from the overall shape of your choices.</p>');
     if (w.down.length) h += '<h4>A choice that pointed somewhere else</h4><ul>' + w.down.map(function (o) { return line(o, true); }).join('') + '</ul><p class="fineprint">Mixed signals are normal. It is a reason to look at more than one area.</p>';
-    var lean = f.areas.map(function (a) { return NAME[a] + ' (' + (pr[a] > .5 ? 'strong in your choices' : pr[a] > -.2 ? 'middling' : 'lower in your choices') + ')'; }).join(' and ');
-    h += '<h4>How it lines up with you</h4><p>This area leans on ' + lean + '.</p>';
-    var u = [], nxt = state.fits[state.fits.map(function (y) { return y.f.id; }).indexOf(id) + 1], prv = state.fits[state.fits.map(function (y) { return y.f.id; }).indexOf(id) - 1];
-    if ((nxt && Math.abs(x.score - nxt.score) < .05) || (prv && Math.abs(x.score - prv.score) < .05)) u.push('It is very close to a neighbouring area in your list. On another day the order could swap.');
+    var u = [];
+    if (close) u.push('It is very close to a neighbouring area in your list. On another day the order could swap.');
     if (w.supporters < 3) u.push(w.supporters ? 'Only ' + w.supporters + ' of your ' + w.n + ' choices pointed here, so this rests on a small amount of evidence.' : 'No single choice stands out for this area; it comes from the overall shape of your choices.');
     if (r.cautious || r.noSignal) u.push('Your choices were spread out, so the whole shape is rough.');
     u.push('This is about what you enjoy, not what you are good at. The puzzle results are shown separately and do not change this order.');
     u.push('Matches come from US job profiles. Indian courses, exams and pay can differ, so check the official pages listed below.');
+    u.push('Interests grow with experience. What you enjoy now may change, and that is fine.');
     h += '<h4>What is still uncertain</h4><ul>' + u.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>';
-    var near = state.fits.filter(function (y) { return y.f.id !== id && y.f.areas.some(function (a) { return f.areas.indexOf(a) >= 0; }); }).slice(0, 2);
-    if (near.length) h += '<h4>Nearby areas worth a look</h4><p>' + near.map(function (y) { return esc(y.f.name); }).join(' and ') + ' share part of this area\'s interests.</p>';
-    var nx = ['Open two of the careers below that you had not thought about and read what the work involves.', f.early, 'Talk to one person who works in this area and ask what a normal week looks like.'].filter(Boolean);
-    nx.push('Interests grow with experience. What you enjoy now may change, and that is fine.');
-    h += '<h4>What you could try next</h4><ul>' + nx.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>';
+    var nx = ['Open two of the careers below that you had not thought about and read what the work involves.', 'Talk to one person who works in this area and ask what a normal week looks like.'];
+    h += '<h4>More ways to try it</h4><ul>' + nx.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>';
     $('fExplainBody').innerHTML = h; if (state.whyTracked !== id) { state.whyTracked = id; track('why_open', { id: id }); }
   }
+  $('field').addEventListener('click', function (e) { var b = e.target.closest('.near'); if (b) toField(b.dataset.id); });
   function toField(id) {
     var x = state.fits.filter(function (y) { return y.f.id === id; })[0], f = x.f, code = state.result.code.code;
     show('field'); Snd.door(); $('field').scrollTop = 0; state.fieldId = id; track('field_open', { id: id });
-    $('fTitle').textContent = f.name;
-    var sh = f.areas.filter(function (a) { return code.indexOf(a) >= 0; });
-    $('fWhy').textContent = sh.length ? 'This lines up with your ' + sh.map(function (a) { return NAME[a]; }).join(' and ') + ' side.' : 'Not a close match to your top three, but it can still be worth a look.';
-    var hi = x.ms.filter(function (m) { var a = BYID[m.careerId].ai; return a && a.watch; }).length; if (hi) $('fWhy').textContent += ' ' + hi + ' of the ' + x.ms.length + ' careers below ' + (hi === 1 ? 'has' : 'have') + ' very high AI exposure with AI already in use.';
-    $('fCareers').innerHTML = x.ms.map(function (m) { var c = BYID[m.careerId]; return '<div class="crow"><b>' + c.title + '</b><p>' + c.line + '</p>' + usPay(c) + aiLine(c) + '</div>'; }).join('');
-    $('fSrc').innerHTML = (f.verify.length ? '<b>Check before relying on this:</b><ul class="chk-list">' + f.verify.map(function (v) { return '<li>' + esc(v) + '</li>'; }).join('') + '</ul>' : '') + '<p class="src" style="margin-top:8px"><b>Where to check:</b> ' + f.sources.map(function (z) { return '<a href="' + z.url + '" target="_blank" rel="noopener noreferrer">' + esc(z.name) + '</a>'; }).join(', ') + '. Career fit uses O*NET interest profiles, which come from US jobs and are only a rough guide for India.</p>';
+    var pr = state.result.profile;
+    function dots(a) { var z = pr[a], n = z > .5 ? 3 : z > -.2 ? 2 : 1; return '\u25cf\u25cf\u25cf'.slice(0, n) + '\u25cb\u25cb\u25cb'.slice(0, 3 - n); }
+    $('fHero').innerHTML = '<span class="gl" aria-hidden="true">' + f.icon + '</span><div><h2 id="fTitle">' + esc(f.name) + '</h2><p>' + esc(f.blurb) + '</p><div class="tchips" aria-label="Interest types this area leans on">' + f.areas.map(function (a) { return '<span class="tc t' + a + '">' + NAME[a] + ' <b aria-hidden="true">' + dots(a) + '</b></span>'; }).join('') + '</div></div>';
+    $('fTry').hidden = !f.early; $('fTry').innerHTML = f.early ? '<span class="ico" aria-hidden="true">\u2728</span><div><small>Try this week</small><span>' + esc(f.early) + '</span></div>' : '';
+    var hi = x.ms.filter(function (m) { var a = BYID[m.careerId].ai; return a && a.watch; }).length;
+    $('fAiNote').textContent = hi ? hi + ' of the ' + x.ms.length + ' careers below ' + (hi === 1 ? 'has' : 'have') + ' very high AI exposure with AI already in use.' : '';
+    $('fCareers').innerHTML = x.ms.map(function (m) { var c = BYID[m.careerId], a = c.ai, tag = a ? '<span class="aitag ai-' + a.tier + (a.watch ? ' ai-watch' : '') + '">' + AI_TXT[a.tier] + (a.watch ? ', in use now' : '') + '</span>' : '', more = usPay(c) + aiLine(c); return '<div class="ccard"><b>' + esc(c.title) + '</b><p>' + esc(c.line) + '</p><div class="tags">' + tag + '</div>' + (more ? '<details><summary>Pay, outlook and AI</summary>' + more + '</details>' : '') + '</div>'; }).join('');
+    $('fSrc').innerHTML = (f.verify.length ? '<ul class="chk-list">' + f.verify.map(function (v) { return '<li>' + esc(v) + '</li>'; }).join('') + '</ul>' : '') + '<p class="src" style="margin-top:8px"><b>Where to check:</b> ' + f.sources.map(function (z) { return '<a href="' + z.url + '" target="_blank" rel="noopener noreferrer">' + esc(z.name) + '</a>'; }).join(', ') + '. Career fit uses O*NET interest profiles, which come from US jobs and are only a rough guide for India.</p>';
+    $('fExplain').open = false; $('fChk').open = false;
     renderExplain(id, x); renderPath();
   }
   function plfsText() {
@@ -1411,7 +1461,9 @@
     var steps = [['now', 'Now', now + note], ['', 'Class 11 to 12 subjects', f.subjects[bk]], ['', 'Entrance exams', f.exams], ['', 'Degree', f.degree], ['', 'Roles to look at first', roles ? esc(roles) + '.' : ''], ['', 'India salary context (national, not these roles)', plfsText() + ' Pay for a specific job can be very different, so ask people who do it.'], ['', 'If plan A does not work', f.backup || ''], ['', 'Compare colleges', f.compare || ''], ['', 'Try it early', f.early]];
     if (f.note) steps.push(['', 'Good to know', f.note]);
     steps = steps.filter(function (t) { return t[2]; });
-    $('fPath').innerHTML = steps.map(function (t) { return '<li class="' + t[0] + '"><small>' + t[1] + '</small><span>' + t[2] + '</span></li>'; }).join('');
+    var IC = { 'Now': '\ud83d\udccd', 'Class 11 to 12 subjects': '\ud83d\udcda', 'Entrance exams': '\ud83d\udcdd', 'Degree': '\ud83c\udf93', 'Roles to look at first': '\ud83d\udcbc', 'India salary context (national, not these roles)': '\ud83d\udcb0', 'If plan A does not work': '\ud83d\udd01', 'Good to know': '\ud83d\udca1' };
+    function peek(t) { var p = String(t).replace(/<[^>]+>/g, ''); var q = p.split(/(?<=[.!?])\s/)[0] || p; return q.length > 90 ? q.slice(0, 87) + '\u2026' : q; }
+    $('fPath').innerHTML = steps.map(function (t, i) { return '<li class="' + t[0] + '"><details' + (i < 2 ? ' open' : '') + '><summary><span class="sic" aria-hidden="true">' + (IC[t[1]] || '\u2022') + '</span><span class="stt"><small>' + t[1] + '</small><em>' + esc(peek(t[2])) + '</em></span></summary><span class="stx">' + t[2] + '</span></details></li>'; }).join('');
   }
   $('fBoard').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; state.ctx.board = b.dataset.b === 'state' ? 'state' : b.dataset.b; renderPath(); });
   $('fBack').addEventListener('click', function () { show('doors'); });
