@@ -67,6 +67,9 @@
   .iconbtn[aria-pressed="true"] { background: rgba(255,207,107,.3); border-color: var(--glow); }
   .iconbtn svg { width: 20px; height: 20px; }
   .iconbtn .slash { opacity: 0; } .iconbtn[aria-pressed="false"] .slash { opacity: 1; } .iconbtn[aria-pressed="false"] .wave { opacity: .35; }
+  #logoutTop { position: fixed; z-index: 40; right: 68px; top: calc(var(--safe-top) + 14px); min-height: 32px; padding: 4px 12px; border-radius: 16px; border: 1.5px solid rgba(255,243,214,.45); background: rgba(14,16,40,.62); color: #fff3d6; font: 700 12.5px/1 inherit; font-family: inherit; }
+  body[data-view="stop"] #logoutTop { right: 14px; top: calc(var(--safe-top) + 55px); }
+  @media print { #logoutTop { display: none !important; } }
   .soundtop { position: absolute; z-index: 6; right: 14px; top: calc(var(--safe-top) + 12px); }
   .progwrap { display: grid; gap: 3px; justify-items: center; min-width: 0; }
   .prog { font-weight: 800; font-size: 13px; line-height: 1.1; color: var(--cream); text-shadow: 0 1px 6px rgba(0,0,0,.6); white-space: nowrap; }
@@ -524,6 +527,7 @@
 
 <div id="app">
   <div id="veil" aria-hidden="true"></div>
+  <button id="logoutTop" class="logout" type="button" hidden>Log out</button>
   <div id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gateT">
     <div class="gscene" id="gScene" aria-hidden="true"></div>
     <div class="gcover" id="gCover">
