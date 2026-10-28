@@ -28,3 +28,116 @@ jobs:
         run: node --test engine/tests/engine.test.mjs engine/tests/design.test.mjs
       - name: Question map is current
         run: node engine/tools/question_map.mjs --check
+      - name: Vendored files match VERSIONS.md
+        run: node .github/scripts/check_vendor_hashes.mjs
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Contract tests
+        run: |
+          if [ -e contracts/tests ]; then
+            node --test contracts/tests/
+          else
+            echo "skip: contracts/tests does not exist yet"
+          fi
+  graph:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Id registry is append-only and complete
+        run: |
+          python3 pipeline/check_registry.py
+      - name: Registry unit tests
+        run: |
+          python3 -m unittest discover -s pipeline/tests -p "test_*.py"
+      - name: Validate the graph
+        run: |
+          if [ -e pipeline/validate_graph.py ]; then
+            python3 pipeline/validate_graph.py
+          else
+            echo "skip: pipeline/validate_graph.py does not exist yet"
+          fi
+  matcher:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Matcher tests
+        run: |
+          if [ -e matcher/tests ]; then
+            node --test matcher/tests/
+          else
+            echo "skip: matcher/tests does not exist yet"
+          fi
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: API tests
+        run: |
+          if [ -e hosting/tests/adult ]; then
+            node --test hosting/tests/adult/
+          else
+            echo "skip: hosting/tests/adult does not exist yet"
+          fi
+      - name: Migration guard
+        run: |
+          if [ -e hosting/tests/migration_guard.mjs ]; then
+            node hosting/tests/migration_guard.mjs
+          else
+            echo "skip: hosting/tests/migration_guard.mjs does not exist yet"
+          fi
+      - name: Invariant checker
+        run: |
+          if [ -e hosting/tools/check_invariants.mjs ]; then
+            node hosting/tools/check_invariants.mjs
+          else
+            echo "skip: hosting/tools/check_invariants.mjs does not exist yet"
+          fi
+  intake-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Intake and privacy unit tests
+        run: |
+          dirs=""
+          for d in app/adult/tests/intake app/adult/tests/privacy; do [ -e "$d" ] && dirs="$dirs $d"; done
+          if [ -n "$dirs" ]; then
+            node --test $dirs
+          else
+            echo "skip: app/adult/tests/intake and privacy do not exist yet"
+          fi
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Install Chromium
+        run: |
+          if [ -e app/adult/tests/e2e ]; then
+            npx playwright install --with-deps chromium
+          else
+            echo "skip: app/adult/tests/e2e does not exist yet"
+          fi
+      - name: End-to-end tests
+        run: |
+          if [ -e app/adult/tests/e2e ]; then
+            node --test app/adult/tests/e2e/
+          else
+            echo "skip: app/adult/tests/e2e does not exist yet"
+          fi

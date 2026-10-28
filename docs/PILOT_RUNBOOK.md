@@ -68,3 +68,76 @@ Admin `?itemstats=1` shows how often each card is picked and the share of oil sp
 
 ## Testing the hosted site on tablets and desktops
 `app/tests/hosted_tablet.mjs` plays the whole game on the live site at five tablet viewports (iPad and Android tablet, portrait and landscape), saves a screenshot of every screen, and flags any control outside the viewport or any horizontal scroll. It needs a valid invite code for the site (create a throw-away code in Admin > Invite codes, and delete the test students afterwards): `SITE=https://margwise.byteheaven.in/ CODE=<code> OUT=/tmp/shots node app/tests/hosted_tablet.mjs`. Layout: phones keep one column; from 700px wide the reading and result screens widen to up to 1040px with 2 to 3 columns, and the art scenes stay a portrait stage with the scene's own art blurred behind the sides.
+
+# Adult
+
+This section is for the adult app at `/work/`. The owner runs every step that touches production. Agents write and update this text. Lines marked TODO(owner) need your input.
+
+Never apply SQL to the live database from an agent session. Never push to `main` from an agent session.
+
+## 1. Releasing the graph
+1. Read `CHANGES.md` and the graph change report.
+2. Check that `python3 pipeline/check_registry.py` passes.
+3. Run `python3 pipeline/run.py --accept` for the graph (TODO(owner): confirm the exact accept command once the graph pipeline exists).
+4. Rebuild and check the release id appears in the app and in `manifest.json`.
+5. Tag the commit `graph-<release_id>`.
+6. The last 3 releases stay served. Older ones stay in git tags.
+
+## 2. Migrations
+Migrations only add. They are never rolled back.
+1. List what is applied: `wrangler d1 migrations list` for preview, then for production.
+2. Rehearse on a local copy of the production export.
+3. Apply to preview. Run the smoke test (section 3).
+4. Apply to production. Run the invariant checker.
+
+**First time on production: mark the baseline as applied, do not run it.** `0000_baseline.sql` describes tables that already exist in production. Running it there could change live data.
+1. Confirm production already has the tables from `schema.sql` to `schema12.sql`. TODO(owner): confirm this by comparing the production schema with the baseline.
+2. Record `0000_baseline.sql` as applied without running it. TODO(owner): write the exact command and check it on preview first (the `d1_migrations` table records applied names).
+3. Run `wrangler d1 migrations list` for production. It must show `0000_baseline.sql` as applied and nothing else pending except new files.
+
+## 3. Deploying
+1. Deploy to preview first. Run the end-to-end suite against the preview URL.
+2. Deploy to production. TODO(owner): list the deploy command and project name.
+3. Smoke test: the health endpoint, sign-up with your own address, roads for a test title, export and delete of a test account.
+4. Confirm the feature switches in the health output match what you intend.
+
+## 4. Rollback
+1. Use the Pages rollback to the previous deployment.
+2. Do not roll back migrations. Fix forward.
+3. Stored profiles stay valid after a graph rollback because ids are stable.
+
+## 5. Rotating a key
+1. Add the new key version.
+2. Deploy.
+3. Wait out the overlap period. TODO(owner): set the overlap length.
+4. Remove the old version.
+5. If a key may have leaked: rotate at once and set `tok_after` so older sign-in tokens stop working.
+
+## 6. Incidents and breaches
+**Severity.** TODO(owner): define levels, for example: 1 = personal data exposed or site down; 2 = a feature broken; 3 = a cosmetic or data error.
+
+**First steps.**
+1. Contain: switch off the feature, rotate keys, or take the page down.
+2. Assess: was personal data read, changed or lost? Which people? Which fields?
+3. Decide whether to notify. Write the decision and the reason down.
+
+**Breach notice (DPDP).** TODO(owner): add the steps and deadlines after the lawyer's review.
+
+**Post-mortem template.**
+- Timeline: what happened and when.
+- Cause.
+- The fix.
+- The test or invariant that now stops it happening again.
+
+## 7. Support
+- Every adult page shows the `help@` address. TODO(owner): set the address.
+- Reply within 3 working days.
+- Keep a short FAQ built from real questions.
+- Data requests (see, correct, delete) use the same self-service tools as users. Log each one. Never log the person's data in the log.
+
+## 8. Routine checks
+TODO(owner): choose the days. A starting point:
+- Weekly: look at the error log and the health endpoint. Check the support inbox.
+- Monthly: run the invariant checker on production. Check that the last 3 graph releases are served.
+- Before each release: CI is green and `docs/adult/deviations.md` is current.
+- Yearly: review key ages, the privacy notice and the vendored libraries (`hosting/public/vendor/VERSIONS.md`).

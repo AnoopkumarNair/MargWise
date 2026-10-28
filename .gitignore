@@ -1,0 +1,4 @@
+# Adult graph build outputs (rebuilt by the pipeline; never committed)
+data/graph/graph.sqlite
+data/graph/raw/onet/*/zip
+__pycache__/
