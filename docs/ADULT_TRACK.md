@@ -30,7 +30,8 @@ Going 18+ removes verifiable parental consent and the ban on tracking and behavi
 | Duty | What we do | Built? |
 | --- | --- | --- |
 | Adults only | Ask for birth year; refuse under 18 with a kind message; store only an age band (18 to 24, 25 to 34, 35 to 44, 45+), not the year. Do not promote the adult track in schools to students or to first-year students (many are 17). Delete any account later found to belong to a minor | No |
-| Notice and consent | A separate adult sign-up notice: what is kept, why, for how long, how to delete, whom to contact. Plain English | Partly (tester notice exists) |
+| Notice and consent | A separate adult sign-up notice: what is kept (now including the email address), why, for how long, how to delete, whom to contact. Plain English | Partly (tester notice exists) |
+| Verified email | Adults sign up and log in with a verified email (one-time code or link). Used only for sign-in and, with research consent, one retest invite. Never shown in full to staff, never to colleges. It verifies the inbox, not the age | No |
 | Purpose limitation | Self-exploration and product improvement only. No sale or sharing of data, no college or placement referral income | Yes, by policy |
 | Retention | Turn on automatic deletion (`RETENTION_DAYS`) for the adult track from day one | Built, switched off |
 | Erasure and grievance | Self-service "delete my data" plus a named contact for complaints | Admin delete only |
