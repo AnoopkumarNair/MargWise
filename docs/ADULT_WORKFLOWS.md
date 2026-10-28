@@ -107,6 +107,7 @@ Two cards, shown once before the walk:
 
 Rules:
 
+- For working or between-jobs testers, quick mode is pre-selected and the story is one tap away. For everyone else neither is pre-selected.
 - The choice is recorded in every event as `mode` (`walk-story` or `walk-quick`).
 - No switching mid-walk. The two are separate instrument versions, and a mixed walk cannot be scored as either. "Walk again" can use the other mode, and the result screen says which mode each result came from.
 - The order of the two cards is randomised per person, so screen position does not decide the split.
@@ -126,6 +127,12 @@ The answers only choose which path content is shown and in what order. They neve
 ## 6. The walk (reused, with changes)
 
 - **Story mode.** Today's walk unchanged in scored text. Adult wording only in the intro panels and in Ila's lines that mention school. Lamp locks become optional: "Want a short puzzle? (skip any time)". They were written and weighted for school students, and `APT_NUDGE` stays off for adults.
+- **Story for working adults (changed framing, same scored text).** The story's theme suits career changers: the lamplighter "tried many kinds of work so that you could find yours", and the note ends "The road was never mine. Choose yours." What does not suit them:
+  - the art shows a teenager (intro panel 3), so redraw it as an adult;
+  - Ila calls the lamplighter "my teacher", so make her a former colleague who worked beside her;
+  - lines aimed at children, such as "Best with a parent beside you", go.
+
+  The cards stay as they are. Their trade-offs ("face the blame if it goes wrong", "with an hour to finish") already read like work. Check the result with five people from the founder's network before the first invites: do they find it childish, and do they finish it?
 - **Quick mode (new).** One screen per place, with the four activity cards in neutral wording and the same two-flask spend. A progress bar replaces the road. No art, no locks, no story beats. The same adaptive length (8 to 15 places) and the same engine.
 - **Both modes.** A `progress` event after every place (reused), so the walk can continue on any device. An idle person returns to "Continue your walk".
 - **Abandoning.** A walk left unfinished for 7 days still counts toward completion figures (it is not quietly dropped). On return, the person is offered "continue" or "start over".
@@ -136,7 +143,7 @@ The answers only choose which path content is shown and in what order. They neve
 2. **Three closest fields (reused).** The text says "areas to explore", never "your career".
 3. **Field page (changed).** The path block depends on the stage:
    - **College or graduated:** the `after_degree` path. Master's routes and their exams, first jobs, certifications, a plan B, and the master's-abroad route first.
-   - **Working or between jobs:** the from-where-you-are path. How close the field is to the current job, the skills to build, the AI exposure of the current job next to the target, and reskilling routes. Phase 3 only. Until then these users see the graduate path with a note that a working-life version is coming.
+   - **Working or between jobs:** the from-where-you-are path. How close the field is to the current job, the skills to build, the AI exposure of the current job next to the target, and reskilling routes. Built first. Graduates' `after_degree` path comes later; until then graduates see the professional path with a note.
    - **Still in school:** today's school path.
 
    Careers, US and India pay, AI exposure and the "check before relying on this" box are reused for every stage.
