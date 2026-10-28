@@ -101,3 +101,43 @@ Going 18+ removes verifiable parental consent and the ban on tracking and behavi
 1. Price: free for individuals with career cells paying, or free everywhere for the first 500 users?
 2. Who fact-checks the `after_degree` content: the same reviewers, or someone who knows postgraduate admissions?
 3. Is the story's tone right for over-25s? Plan a five-person check from the founder's network before the first invites.
+
+## Before building the adult section (checklist, 28 Oct 2026)
+
+The design has moved fast: the graph is now the core (`CAREER_GRAPH.md`), intake is by resume (`SKILLS_INTAKE.md`), and matching has levels and constraints (`MATCHING.md`). Phases 1 to 3 above predate that and are kept for history. Before any code, these must be settled.
+
+**Owner decisions**
+
+| # | Decision | Why it blocks |
+| --- | --- | --- |
+| 1 | The 2 or 3 industries to go deep on first | Pipeline A v0, the level ladders and the abbreviations list are built for these first |
+| 2 | The first 150 to 300 companies for the ATS feed list | Indian skill weights and levels come from their postings |
+| 3 | Adzuna: email about commercial terms now, or start without it | Decides Pipeline B's first demand source |
+| 4 | Price for the adult pilot (free for the first N users?) | Sets the notice text and what we promise |
+| 5 | Name and look for adults: Margwise with the lamp map, or a plainer adult look | Sets the first screens |
+| 6 | Pilot success rules for the graph product (below, to freeze) | Must be frozen before data |
+
+**Proposed pilot rules (to freeze):**
+
+- at least 70 percent of people who start the intake reach the roads view;
+- the median time from start to roads is 8 minutes or less;
+- at least 60 percent mark at least one road "worth exploring";
+- at least 70 percent agree the level labels (up, across, reset) are right for them;
+- zero unresolved critical errors in shown credentials or pay.
+
+**Outside checks**
+
+- One hour with a DPDP lawyer. It covers the adult notice, verified email, resume intake (read on the device, the optional AI step), the AI provider as a processor, the follow-up emails, and the learning loop.
+- Licences: O*NET (CC BY 4.0, attribution in the app), ESCO (check), Adzuna (terms), each ATS's feed terms.
+- Email sending: SPF, DKIM and DMARC on byteheaven.in.
+- Network allow-list and secrets for the scheduled weekly session.
+
+**People**
+
+- 30 consenting resumes from the founder's network for the intake test (SKILLS_INTAKE.md rules).
+- 5 people for a look-and-tone check of the first screens.
+- 30 to 50 "how I switched" stories to seed the `moved` edges.
+
+**Housekeeping**
+
+- Fold ADULT_TRACK, ADULT_WORKFLOWS, CAREER_GRAPH, SKILLS_INTAKE, MATCHING and AI_LAYER into one adult spec, so the build follows one source of truth. Keep the old files as history.
