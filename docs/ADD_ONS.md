@@ -1,5 +1,7 @@
 # Add-ons for working adults: side roads and consultations
 
+> Superseded where it differs by `docs/adult/SPEC.md` (the authoritative adult spec) and `docs/adult/BUILD_PLAN.md`.
+
 Status on 28 Oct 2026: design only. Nothing below is built. Both come after the roads view works.
 
 ## The rule they must keep

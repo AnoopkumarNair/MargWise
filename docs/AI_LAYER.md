@@ -1,5 +1,7 @@
 # AI layer: where a language model helps, and where it must not
 
+> Superseded where it differs by `docs/adult/SPEC.md` (the authoritative adult spec) and `docs/adult/BUILD_PLAN.md`.
+
 Status on 28 Oct 2026: design only. Nothing below is built.
 
 ## The rule

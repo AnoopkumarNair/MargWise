@@ -1,5 +1,7 @@
 # Adult track (18+): plan
 
+> Superseded where it differs by `docs/adult/SPEC.md` (the authoritative adult spec) and `docs/adult/BUILD_PLAN.md`.
+
 Status on 28 Oct 2026: plan only. Nothing below is built.
 
 Purpose: a real product for adults making their own decision, not a stand-in for the school product. It gives reach and feedback now, without the verifiable parental consent that blocks Class 9 to 12. Adult results are never used as evidence about adolescents (see PILOT_PLAN, "What the pilot must not claim").

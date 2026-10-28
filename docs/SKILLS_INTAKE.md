@@ -1,5 +1,7 @@
 # Skills intake: how a working adult tells us what they can do
 
+> Superseded where it differs by `docs/adult/SPEC.md` (the authoritative adult spec) and `docs/adult/BUILD_PLAN.md`.
+
 Status on 28 Oct 2026: design only. Nothing below is built. It feeds "Where you stand" in `docs/CAREER_GRAPH.md`.
 
 ## The idea, and the two changes to it

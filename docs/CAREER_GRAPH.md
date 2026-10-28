@@ -1,5 +1,7 @@
 # Career graph: the adult product's core
 
+> Superseded where it differs by `docs/adult/SPEC.md` (the authoritative adult spec) and `docs/adult/BUILD_PLAN.md`.
+
 Status on 28 Oct 2026: design only. Nothing below is built. The existing school pipeline runs (checked on 28 Oct 2026: 16 fields, 83 careers, 0 validation errors, 239 fact-check claims).
 
 ## The correction (28 Oct 2026)

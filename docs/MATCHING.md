@@ -1,5 +1,7 @@
 # Matching: the user model, the job model and levels
 
+> Superseded where it differs by `docs/adult/SPEC.md` (the authoritative adult spec) and `docs/adult/BUILD_PLAN.md`.
+
 Status on 28 Oct 2026: design only. Nothing below is built. It sits between `SKILLS_INTAKE.md` (how the user model is filled) and `CAREER_GRAPH.md` (where the job model comes from).
 
 ## Three parts
