@@ -28,6 +28,12 @@ Every slice in `BUILD_PLAN.md` ships with the tests listed for it here. A slice 
   - every occupation in `fld:health` has a task.
 
   They catch silent parsing errors that structure checks miss.
+- **New AI-era roles** (SPEC 5.7):
+  - every catalogue role has 12 or more needs after inheritance, 1 to 3 parents that exist, parent shares summing to 1, and 2 or more sources, each with a URL, a date and a quote of at least 8 words;
+  - every `entry_from` occupation exists;
+  - `maturity` and `reviewed_on` are set;
+  - no role ships without `reviewed_by`;
+  - quote check: when the source page is cached in `data/graph/raw/emerging_sources/`, the quote must appear in it word for word.
 - **Exports:**
   - every slice validates against `matcher/slice.schema.json` and stays under 60 KB;
   - every road target in a slice carries its needs;
@@ -37,7 +43,7 @@ Every slice in `BUILD_PLAN.md` ships with the tests listed for it here. A slice 
 
 ## 2. Matcher
 
-- **Golden cases:** `matcher/tests/golden.json`, starting at 8 in slice 1 and growing to 15 in slice 2. Each has a hand-built profile, the expected road ids in order, the kinds, the coverage to 2 decimals and the flags. The owner reads them and agrees (BUILD_PLAN marks this ASK).
+- **Golden cases:** `matcher/tests/golden.json`, starting at 8 in slice 1 and growing to 15 in slice 2. Slice 2 must include at least 2 cases with roads into new AI-era roles: one adjacent (for example, a QA analyst towards LLM evaluation specialist) and one reset. Each has a hand-built profile, the expected road ids in order, the kinds, the coverage to 2 decimals and the flags. The owner reads them and agrees (BUILD_PLAN marks this ASK).
 - **Properties** (500 random profiles from a fixed seed):
   - coverage is between 0 and 1;
   - adding a skill never lowers any road's coverage;

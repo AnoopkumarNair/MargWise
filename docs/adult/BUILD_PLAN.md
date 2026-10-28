@@ -25,7 +25,7 @@ Slices 1 to 3 store nothing on a server and need no sign-in, so the owner can sh
 | Slice | The owner can try | Tickets (detail below) | Tests (TEST_PLAN) |
 | --- | --- | --- | --- |
 | **S1. Title to roads** | Open `/work/`, type a job title, tick skills, see adjacent, stretch and leap roads with coverage and gaps, open one | T0.2; T1.1; T1.2 (SOC to ISCO only); T1.3 without PLFS; T1.4; T1.5 without embeddings; T1.6; T2.1; T2.2 with coverage, gap and kinds only (levels and bridges stubbed); T2.3; T2.4 with 8 cases; T4.1 without sign-in; T4.7; T5.2 basic; plus `matcher/slice.schema.json` | Layer 1 all, layer 2 (8 golden cases and properties), layer 7 S1 script, layer 8 budgets for the first load and slices, layer 9 |
-| **S2. Deeper and honest labels** | "Your job today" (skills with AI labels, tasks by AI use, pay band, data age), level labels (up, across, diagonal, reset, fork), constraints and priority sliders, road detail, drill | T1.3 PLFS and freshness (SPEC 5.5, 5.6); T2.2 levels (SPEC 7.2) and order (7.3); T2.4 grown to 15 cases (**ASK**: the owner reads them); T4.6 constraints part; T5.1; T5.3 (bridges show "no reviewed course yet" unless credentials are curated) | Layers 1 and 2 extended, layer 7 S2, layer 8 a11y; **people test after S2** |
+| **S2. Deeper and honest labels** | "Your job today" (skills with AI labels, tasks by AI use, pay band, data age), level labels (up, across, diagonal, reset, fork), constraints and priority sliders, road detail, drill | T1.3 PLFS and freshness (SPEC 5.5, 5.6); T2.2 levels (SPEC 7.2) and order (7.3); T2.4 grown to 15 cases (**ASK**: the owner reads them); T4.6 constraints part; T5.1; T5.3 (bridges show "no reviewed course yet" unless credentials are curated); **T1.7 new AI-era roles** | Layers 1 and 2 extended, layer 7 S2, layer 8 a11y; **people test after S2** |
 | **S3. Resume on the device** | Upload a PDF or DOCX, or paste text; see found roles and skills with source lines; confirm; roads. Nothing leaves the device; the profile lives in memory only | T4.3; T4.4; T4.6 confirm screen; the fixture generator scripts and fixtures | Layer 3 all fixtures, layer 4 (on-device network and storage tests, canaries), layer 7 S3, layer 8 intake budget; **people test after S3** |
 | **S4. Accounts and saving** | Sign up with email (birth year first), save the profile, log in on another device, export, delete | T3.1 to T3.5; T4.2 (**ASK**: notice wording); T5.4; the adult panel of T7.2 | Layers 5 and 7 S4; `fakedb.mjs` |
 | **S5. Better reading on the device** | Tier 2 suggestions for implied skills; the owner runs the 30-resume evaluation | T4.5; T7.3 | Layer 3 extended (tier 2 fixtures), layer 8 model-size and consent check; the 30-person evaluation |
@@ -92,6 +92,17 @@ Rules for slicing:
 - **`--accept`:** also copies `slices/`, `skills_index.json` and `titles.json` to `data/releases/graph/`, with their hashes in `manifest.json` under `graph`.
 - **`build-check.yml`:** extend the drift check to `data/releases/graph/`.
 - **Done when:** a full run passes and CI on the branch passes.
+
+**T1.7 New AI-era roles (SPEC 5.7, slice S2).**
+
+- **Catalogue loader.** `data/graph/emerging.py` reads `data/graph/raw/emerging_roles.yaml`, creates the `occ:ai-*`, `skl:ai-*` and `tec:` nodes, inherits parent `needs` scaled by share, applies the role's own `needs`, adds `close_to` edges from `entry_from`, and stores the sources with their quotes.
+- **Run order.** It runs in `pipeline/run.py` after the graph build and before the checks.
+- **Seed list.** Draft about 15 candidate roles with parents, needs and real sources. The quotes must come from real pages that you fetch; if a page cannot be fetched, leave the role out and list it. **ASK:** the owner approves, edits or drops each role before it ships.
+- **UI.** A "New role" tag, a maturity note, and the source list on the role's page.
+- **Done when:**
+  - the TEST_PLAN checks for new roles pass;
+  - a golden case with a road into a new role passes;
+  - the owner has approved the seed list.
 
 ## M2. Matcher (SPEC sections 6 and 7)
 

@@ -191,6 +191,44 @@ Rules:
 4. **New roles and skills come from postings, not code lists.** Roles and tools that appear in Indian postings but not in O*NET (for example, AI engineer or agent operations) are added as `occ:in-*` or `tec:in-*` nodes with `trust: observed` after the founder approves them (CAREER_GRAPH "emerging skills"). Until postings are connected, the UI says "Roles newer than the official lists may be missing".
 5. **The release pins the version.** The O*NET version and its release date appear in `manifest.json` and in the app footer.
 
+### 5.7 New roles that AI created
+
+Official lists lag the market by years, and AI has created roles that are not in them yet. People in the founder's league are moving into exactly these roles. They are a first-class part of the map from slice S2, not something that waits for postings.
+
+**Three kinds of AI-era change, handled differently:**
+
+| Kind | Example | How the map holds it |
+| --- | --- | --- |
+| **New roles** | AI or ML engineer, AI product manager, AI solutions architect, LLM evaluation specialist, AI trainer or data annotation lead, AI governance and risk, AI red teamer, conversation designer, agent or automation builder, forward-deployed engineer, AI enablement or adoption lead | New occupation nodes `occ:ai-*` from a curated catalogue (below) |
+| **Existing roles, changed by AI** | A financial analyst who now spends less time on reports and more on judgment | Not a new node. The skill and task AI labels (5.5) and the emerging skills on the existing occupation |
+| **Roles AI demand creates elsewhere** | Data centre technicians, power and cooling engineers, semiconductor process roles | Existing O*NET occupations, with a demand signal once postings exist. Where an Indian role is missing, it goes into the catalogue |
+
+**The catalogue: `data/graph/raw/emerging_roles.yaml`.** Each entry has:
+
+- `id` (`occ:ai-llm-evaluator`), `label`, and other titles people use;
+- a description in plain words;
+- `parents`: 1 to 3 existing O*NET occupations it grows out of, with a share. For example, an LLM evaluation specialist might be 0.5 software QA analyst, 0.3 data scientist and 0.2 technical writer. Parent `needs` are inherited, scaled by share, as a starting point;
+- `needs`: its own skills, with weights. These add to or override the inherited ones, and must include the AI-specific skills (new `tec:` and `skl:ai-*` nodes where none exist);
+- `levels`: typical ladder and years, if known;
+- `entry_from`: occupations people commonly move from, as hints for `close_to`;
+- `sources`: at least 2. Each is a real posting from an Indian employer's ATS feed, or a public report (for example NASSCOM, MeitY or IndiaAI material, or LinkedIn's Jobs on the Rise India), with URL, date and the word-for-word quote that supports the role or a skill;
+- `maturity`: `settling` (titles and skills still changing) or `established`;
+- `reviewed_by` and `reviewed_on`: the founder's approval.
+
+**Rules:**
+
+1. **Honest labels.** Every new role carries the `trust: observed` or `secondary` of its sources and a visible "New role" tag. `settling` roles say "This role is new and its title and skills are still changing". Some new titles fade (for example, "prompt engineer" as a stand-alone job), so maturity matters.
+2. **Seed, then grow.** The founder approves a seed list of about 15 roles that people in their network actually hold or hire for (**ASK** in S2). Later, Pipeline B proposes more from postings (emerging titles and skills), always with founder approval.
+3. **Quarterly review.**
+   - **Promotion:** a role with growing postings for 2 quarters becomes `established`.
+   - **Retirement:** a role with no supporting postings for 3 quarters is retired. Roads into a retired role show "fewer openings lately" before it is retired.
+4. **Matching treats them like any occupation,** with two differences:
+   - **Coverage:** computed against the catalogue `needs`.
+   - **Level:** the target level comes from `levels` when present; otherwise it is "not yet known".
+
+   Roads into a new role are labelled "New role".
+5. **India first.** Prefer roles with Indian sources. Many AI roles in India sit in global capability centres (GCCs), IT services and data-services firms, so the seed should reflect the founder's industries (D1).
+
 ## 6. User model
 
 Stored in D1 as JSON, holding ids and bands only:
