@@ -72,7 +72,8 @@ Each signal keeps its history, so the app can say "rising for 3 months" and not 
 
 ## What a working adult sees
 
-1. **Where you stand.**
+1. **Where you stand.** Given by uploading a resume (read in the browser, never uploaded) or by typing a job title; see `docs/SKILLS_INTAKE.md`.
+   Underneath that:
    - **Current job:** typed and matched to an occupation (AI_LAYER.md).
    - **Industry and years of work.**
    - **Skills you have:** pre-ticked from the occupation's top skills, so you edit a list rather than write one.
