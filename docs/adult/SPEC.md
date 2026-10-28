@@ -144,6 +144,7 @@ CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai
 - Every occupation has 10 or more `needs` edges.
 - No node or edge has an empty `source`, `trust` or `as_of`, and `trust` is in the allowed set.
 - Every one of the 83 existing careers' SOC codes is present as an occupation.
+- Every `needs` edge has a real collection date from O*NET (not the download date).
 - Slice files are under 60 KB each; `skills_index.json` is under 1.5 MB gzipped.
 
 ### 5.4 Exports
@@ -174,6 +175,21 @@ Every signal has `as_of`.
 
 - **Greyed** when its age is more than twice its cadence (`data/sources.yaml`).
 - **Hidden** when its age is more than three times its cadence.
+
+### 5.6 Data age: the map is slow, the weather is fresh
+
+"SOC 2018" and "ISCO-08" are editions of code lists. They are not the age of the data.
+
+- **What O*NET updates.** O*NET publishes database releases several times a year. Technology skills are refreshed often, from job postings.
+- **What ages.** Each occupation's skill and knowledge ratings come from surveys repeated every few years, so some are several years old. All of it is US data.
+
+Rules:
+
+1. **Every `needs` edge keeps O*NET's own collection date.** The O*NET files carry a `Date` column (MM/YYYY) per rating; store it in `edge.as_of`. Never store the download date there.
+2. **Age is shown.** The slice includes, for each occupation, the oldest and newest rating dates. The UI says "Skill ratings collected 2021 to 2024 (US)".
+3. **Old ratings count for less.** A rating's weight is multiplied by `max(0.6, 1 - 0.05 * max(0, age_years - 3))` (after 3 years it loses 5 percent a year, down to 0.6). Once Indian posting frequencies exist (Pipeline B), they take over: posting weight 0.6 and O*NET weight 0.4.
+4. **New roles and skills come from postings, not code lists.** Roles and tools that appear in Indian postings but not in O*NET (for example, AI engineer or agent operations) are added as `occ:in-*` or `tec:in-*` nodes with `trust: observed` after the founder approves them (CAREER_GRAPH "emerging skills"). Until postings are connected, the UI says "Roles newer than the official lists may be missing".
+5. **The release pins the version.** The O*NET version and its release date appear in `manifest.json` and in the app footer.
 
 ## 6. User model
 

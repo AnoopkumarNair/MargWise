@@ -3,7 +3,7 @@
 Margwise has two products on one codebase:
 
 - **The student game:** a static page (`app/night-of-lamps.html`) with the knowledge base embedded.
-- **The adult app:** in design and being built, at `/work/`. Its source of truth is `docs/adult/SPEC.md`, and the ordered tickets are in `docs/adult/BUILD_PLAN.md`. Older adult design docs explain the reasoning but are superseded where they differ.
+- **The adult app:** in design and being built, at `/work/`. Its source of truth is `docs/adult/SPEC.md`, the slices and tickets are in `docs/adult/BUILD_PLAN.md`, and the tests are in `docs/adult/TEST_PLAN.md`. Older adult design docs explain the reasoning but are superseded where they differ.
 
 ## Commands
 

@@ -1,6 +1,6 @@
 # Build plan: Margwise for working adults (v1)
 
-Read `docs/adult/SPEC.md` first. It is the source of truth. This file is the ordered list of tickets. Work top to bottom, and finish one ticket before starting the next.
+Read `docs/adult/SPEC.md` first. It is the source of truth. **Build in the vertical slices below, not in M-order.** Each slice is a thin end-to-end piece the owner can try. The M sections further down hold the detail of each ticket. Tests for every slice are in `docs/adult/TEST_PLAN.md`, and a slice is done only when its Definition of Done there is met.
 
 ## Ground rules for the implementing session
 
@@ -16,6 +16,29 @@ Read `docs/adult/SPEC.md` first. It is the source of truth. This file is the ord
   ```
 - **Stop and ask the owner** when a ticket says **ASK**, when a licence or terms question comes up, or when a test target in SPEC section 11 cannot be met.
 - **Network.** Some tickets download public data. If a host is blocked, report the host name and continue with tickets that do not need it. Do not invent or mock data in place of real files.
+
+
+## Delivery slices (follow this order)
+
+Slices 1 to 3 store nothing on a server and need no sign-in, so the owner can show them to people from their network straight away, with no legal blockers. Slice 4 adds accounts.
+
+| Slice | The owner can try | Tickets (detail below) | Tests (TEST_PLAN) |
+| --- | --- | --- | --- |
+| **S1. Title to roads** | Open `/work/`, type a job title, tick skills, see adjacent, stretch and leap roads with coverage and gaps, open one | T0.2; T1.1; T1.2 (SOC to ISCO only); T1.3 without PLFS; T1.4; T1.5 without embeddings; T1.6; T2.1; T2.2 with coverage, gap and kinds only (levels and bridges stubbed); T2.3; T2.4 with 8 cases; T4.1 without sign-in; T4.7; T5.2 basic; plus `matcher/slice.schema.json` | Layer 1 all, layer 2 (8 golden cases and properties), layer 7 S1 script, layer 8 budgets for the first load and slices, layer 9 |
+| **S2. Deeper and honest labels** | "Your job today" (skills with AI labels, tasks by AI use, pay band, data age), level labels (up, across, diagonal, reset, fork), constraints and priority sliders, road detail, drill | T1.3 PLFS and freshness (SPEC 5.5, 5.6); T2.2 levels (SPEC 7.2) and order (7.3); T2.4 grown to 15 cases (**ASK**: the owner reads them); T4.6 constraints part; T5.1; T5.3 (bridges show "no reviewed course yet" unless credentials are curated) | Layers 1 and 2 extended, layer 7 S2, layer 8 a11y; **people test after S2** |
+| **S3. Resume on the device** | Upload a PDF or DOCX, or paste text; see found roles and skills with source lines; confirm; roads. Nothing leaves the device; the profile lives in memory only | T4.3; T4.4; T4.6 confirm screen; the fixture generator scripts and fixtures | Layer 3 all fixtures, layer 4 (on-device network and storage tests, canaries), layer 7 S3, layer 8 intake budget; **people test after S3** |
+| **S4. Accounts and saving** | Sign up with email (birth year first), save the profile, log in on another device, export, delete | T3.1 to T3.5; T4.2 (**ASK**: notice wording); T5.4; the adult panel of T7.2 | Layers 5 and 7 S4; `fakedb.mjs` |
+| **S5. Better reading on the device** | Tier 2 suggestions for implied skills; the owner runs the 30-resume evaluation | T4.5; T7.3 | Layer 3 extended (tier 2 fixtures), layer 8 model-size and consent check; the 30-person evaluation |
+| **S6. "Most accurate"** | Redacted preview, then large-model reading, with fallbacks | T6.1 to T6.5 (**ASK**: R2 or Hugging Face for model files; the provider and spend cap) | Layers 4 (canaries in the preview and in the AI request), 6, 7 S6 |
+| **S7. Pilot readiness** | The full journey; the readiness review | T7.1; T7.4; T5.5 as the full journey | All layers; the SPEC 11 results table |
+
+Rules for slicing:
+
+- **Releases.** Only the owner runs `--accept`. During a slice, build the adult app with `python3 app/adult/build.py --dev` (working files, marked `dev-unaccepted` in the footer, never deployed), as `app/build.py --dev` does for the student game. Before the slice's pull request is merged, the owner reviews the graph change report, runs `--accept`, and the session rebuilds without `--dev` so the CI drift check passes.
+- **Finish a slice completely** (Definition of Done in TEST_PLAN) before starting the next. Do not leave a slice half-tested to "come back later".
+- **Stub the edges, not the core.** A slice may show "not yet measured" or "no reviewed course yet", but whatever it does show must be real data and the real matcher.
+- **One pull request per slice,** with screenshots, the test summary and a 5-minute demo script for the owner.
+- **The owner signs off each slice.** Feedback from the people tests goes into the next slice's tickets, or into a short "changes" note at the top of that slice.
 
 ## M0. Housekeeping (small)
 
@@ -129,7 +152,7 @@ It implements SPEC 7.1 to 7.4 exactly, with `MATCHER_VERSION = '1.0.0'`.
 - `styles.css`, reusing the colour tokens and fonts from `app/night-of-lamps.html`;
 - `app.js`, a small hash router with one module per screen.
 
-`app/adult/build.py` copies the app to `hosting/public/work/`, copies the release's graph files to `hosting/public/work/graph/`, and stamps the release id. Add a strict CSP for `/work/*` to `hosting/public/_headers`.
+`app/adult/build.py` copies the app to `hosting/public/work/`, copies the release's graph files to `hosting/public/work/graph/`, and stamps the release id. `--dev` uses the working files in `data/graph/` and stamps `dev-unaccepted`. Add a strict CSP for `/work/*` to `hosting/public/_headers`.
 
 - **Done when:** `/work/` serves locally (`npx wrangler pages dev hosting/public`), the release id shows in the footer, and the page works at phone width.
 
@@ -251,4 +274,4 @@ The owner decides on the pilot.
 
 ## Order of value
 
-M1 and M2 can run before any owner decision. M3 and M4 come next. M6 needs the R2-or-Hugging-Face decision and the provider confirmation. M7 needs the owner and real people.
+Follow the slices. S1 to S3 need no owner decision except reading the golden cases. S4 needs the notice wording. S6 needs the R2-or-Hugging-Face decision and the provider confirmation. S7 needs the owner and real people.
