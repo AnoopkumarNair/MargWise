@@ -70,6 +70,41 @@ Each signal keeps its history, so the app can say "rising for 3 months" and not 
 
 **What "ranks" means.** Signals rank roads, they never rewrite the map. A falling demand trend pushes a road down; it does not delete the road. A person who wants that road still sees it, with the signal next to it.
 
+## AI inside the job model, not just a tag
+
+AI changes the work inside every job, so the job model carries it at the level of tasks and skills, and the matcher uses it.
+
+- **Tasks.** Each occupation's tasks carry observed AI use from the Anthropic Economic Index, split where the data allows into:
+  - **automation:** AI does the task;
+  - **augmentation:** AI helps a person do it.
+
+  From this comes the share of the job's tasks where AI is already used.
+- **Skills inherit from tasks.** A skill whose tasks are mostly automated is marked **"AI already does much of this"**. A skill tied to tasks with no AI use seen (judgment, client relationships, physical work, accountability) is marked **"people still do this"**. Both are shown on the person's own skills ("Deeper: your own job today") and on every gap.
+- **New skills that pair with AI.** Each month Pipeline B looks for terms whose share of Indian postings rose from near zero, for example AI-assisted analysis, AI governance or agent workflows in a named tool. The counsel proposes them as new skill nodes with quotes from postings. The founder approves them. They then appear in the gap lists for the roles that ask for them.
+- **Ladders change.** Pipeline B tracks the share of postings at each level for each occupation. If entry-level roles shrink in an exposed job (an early sign Anthropic reported for 22 to 25 year olds in exposed jobs), the ladder shows "fewer entry roles than a year ago". Reset roads into that job are flagged, because they depend on entry roles.
+- **Gaps are weighted by it.** Among missing skills, those marked "people still do this" and the new AI-paired skills come first. An "AI resilience" slider lets the person push this harder.
+- **Honest limits.** These are measurements of current use and of trends in postings, not forecasts of job loss. The existing wording stays: exposure is relative, US-based task data, and India may differ.
+
+## Keeping up with the market
+
+| What moves | How it is tracked | Cadence |
+| --- | --- | --- |
+| Which skills postings ask for, and at which levels | Pipeline B on ATS feeds and Adzuna | Weekly counts, monthly trend |
+| Emerging skills | New-term detection in postings, the counsel's proposal, founder approval | Monthly |
+| Pay bands | Postings that show pay, and PLFS | Monthly, and yearly (PLFS) |
+| AI use by task | Anthropic Economic Index releases | Each release (about quarterly) |
+| AI exposure categories, and projections | BLS | Yearly |
+| Occupation and skill taxonomies | O*NET and ESCO releases | Yearly |
+| Events (layoffs, hiring drives, GCC openings, policy) | Public reports and news, read by the counsel with the quote check | Weekly |
+| What hiring managers see now | The network pulse | Monthly |
+
+**Rules that keep it honest:**
+
+- **Freshness.** Every value carries `as_of`. A value older than twice its cadence is shown greyed, as "may be out of date". A value older than three times its cadence is hidden.
+- **Drift alarms.** A skill whose share of postings moves by more than 30 percent in a month, or a pay band that moves by more than 15 percent, goes to the top of the weekly pull request. Big moves are checked, not trusted.
+- **Human time.** About an hour a week reviewing the pull request. This is the real cost of keeping up, and it should be planned for.
+- **Telling people.** The monthly "What changed for your roads" email (opt-in) is how users feel the market move.
+
 ## What a working adult sees
 
 1. **Where you stand.** Given by uploading a resume (read in the browser, never uploaded) or by typing a job title; see `docs/SKILLS_INTAKE.md`.

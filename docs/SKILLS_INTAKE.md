@@ -82,6 +82,28 @@ Phrases the dictionary did not place go to the AI. Examples: "built a reconcilia
 - **The resume text is data, not instructions.** A resume can hide white-on-white text such as "ignore your instructions". The schema check and the id check make such text harmless.
 - **Nothing is logged.** Neither the text nor the reply is stored. The person's daily AI limit from `AI_LAYER.md` applies.
 
+### How accurate is it without a large model? (three tiers)
+
+Expected strengths and weaknesses, to be measured with the 30-resume test. No figure is claimed until then.
+
+| Tier | Runs | Good at | Misses |
+| --- | --- | --- | --- |
+| **1. Dictionary** | In the browser, no AI | Named things: tools, software, certifications, standard skills ("SAP FICO", "Power BI", "GST", "Python", "IFRS"). High precision | Skills implied by achievements ("cut month-end close from 10 to 4 days" means financial close and process improvement). Ambiguous words ("R", "Go", "Spring", "Excel" as a verb). Two-column layouts, tables and text inside images. Unusual date formats |
+| **2. Small embedding model** | In the browser (a sentence-embedding model of about 25 MB, loaded once and cached) | Implied skills. Each achievement sentence is compared with the graph's skill descriptions, and the closest skills are suggested above a threshold. Nothing leaves the device | Sentences that need reasoning across lines, and very new terms not yet in the graph |
+| **3. Language model** | Server, the paid tier, with consent | Whatever is still unplaced, and messy layouts. Its answer must be graph ids | Costs money. The text leaves the device, so it needs consent |
+
+Two things lift accuracy whichever tier is used:
+
+- **Role suggestions.** "People in your role usually have" suggests the skills a resume leaves out.
+- **The confirm screen.** The person fixes what was missed.
+
+The measure that matters is not what the parser finds alone. It is how many confirmed skills the person did not have to type.
+
+**Decision after the 30-resume test.**
+
+- **Tiers 1 and 2 together reach 70 percent recall at 85 percent precision:** the language model stays optional.
+- **They do not:** the language model step becomes the default. It is still announced before upload ("Your resume text will be sent to an AI service to read it. Turn this off to keep it on your device") and can be switched off. The person then sees a lower-quality but private result.
+
 ### 6. The confirm screen (the most important step)
 
 A resume shows what someone claims, so the person's own confirmation is the real input.

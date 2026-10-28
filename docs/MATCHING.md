@@ -97,16 +97,26 @@ For a person P and a target occupation-level T:
 
 **Tests.** Fixed sample people with known answers, the way `engine/reference.py` checks the engine today. CI fails if a matcher change moves any sample road without the version number changing.
 
-## ATS: two meanings, both covered
+## ATS: parsing, and a score with an honest name
 
-1. **ATS-style resume parsing.** This is what `SKILLS_INTAKE.md` already does: sections, roles, dates, skills. It runs in the browser.
+1. **ATS-style resume parsing.** This is what `SKILLS_INTAKE.md` already does: sections, roles, dates and skills, in the browser.
    - Commercial parsers (Affinda, Textkernel and others) would require sending the resume to their servers, which breaks the on-device promise.
-   - OpenResume has a browser-based parser, but its licence is AGPL-3.0, which would oblige us to publish all of Margwise's source code. Write our own small parser on pdf.js (Apache-2.0) and mammoth.js (BSD-2-Clause).
-2. **"How would an ATS read my resume for this role?"** A useful bonus once the target roles exist. For a road the person picks, show:
-   - the skills Indian postings for that role list most often that the resume does not mention;
-   - which sections the parser could not read.
+   - OpenResume has a browser parser, but its AGPL-3.0 licence would oblige us to publish all of Margwise's source code.
+   - So write our own on pdf.js (Apache-2.0) and mammoth.js (BSD-2-Clause).
+2. **A score, yes, named for what it measures.** There is no single "ATS score". Each employer's system (Workday, SuccessFactors, Taleo, Greenhouse, Naukri RMS and others) reads and filters differently, and most rank by the recruiter's own filters. A number labelled "ATS score" would claim knowledge of employers' systems that nobody outside them has. That is a misleading claim, and it pushes people to stuff keywords. So show two scores we can define and defend, for a role the person picks:
 
-   It is framed as "skills employers list that your resume does not show", with no "ATS score", and no advice to stuff keywords. Build it after the roads view.
+   - **Readability, out of 6.** Could a standard parser find:
+     - the contact block;
+     - the role titles;
+     - the dates;
+     - the sections, as one column or separable columns;
+     - text that is real text rather than an image;
+     - a file under 2 MB?
+
+     Each failed check says how to fix it.
+   - **Role match, 0 to 100 percent.** The share of the role's most-asked skills in Indian postings that the resume visibly mentions, weighted by how often postings ask for each. It lists the missing ones and marks which of them the person actually has (from the confirm screen). The advice is to show real skills more clearly, never to add skills they lack.
+
+   The screen may be titled "ATS readiness check" as long as both definitions sit beside the numbers, with the line: "Employers' systems differ. This checks what most of them need, not how any one employer ranks you." Build it after the roads view.
 
 ## "Predict" versus "measure"
 
