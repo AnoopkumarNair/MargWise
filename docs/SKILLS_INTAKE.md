@@ -13,6 +13,11 @@ The idea is right. A resume is the lowest-effort way for a working adult to give
 
 The result: **the resume never leaves the person's device.** Only the confirmed, structured profile is saved. That is a stronger privacy promise than any redaction, and it costs no AI calls in most cases.
 
+**Updated 28 Oct 2026: two ways to read a resume.** The owner proposed a small model in the browser that removes personal details, followed by a large model that reads the rest. That is sound, and it is likely to be the most accurate route, so the person chooses at the start between:
+
+- **"Most accurate" (recommended default):** personal details are removed on the device, the person sees the cleaned text, and only then does a large model read it. See "Redact on the device, then read with a large model" below.
+- **"Keep everything on my device":** tiers 1 and 2 only. Nothing leaves the device, and accuracy is lower.
+
 ## The flow
 
 ```mermaid
@@ -82,6 +87,58 @@ Phrases the dictionary did not place go to the AI. Examples: "built a reconcilia
 - **The resume text is data, not instructions.** A resume can hide white-on-white text such as "ignore your instructions". The schema check and the id check make such text harmless.
 - **Nothing is logged.** Neither the text nor the reply is stored. The person's daily AI limit from `AI_LAYER.md` applies.
 
+### Redact on the device, then read with a large model
+
+```mermaid
+flowchart LR
+  T[Resume text<br/>in the browser] --> R1[Rules: email, phone, URL,<br/>PIN, PAN, Aadhaar, passport,<br/>date of birth, labelled lines]
+  R1 --> R2[Small name-and-place model<br/>in the browser<br/>plus Indian name lists]
+  R2 --> PH[Swap for placeholders<br/>NAME, EMPLOYER_1, COLLEGE_1, CITY_1<br/>the key stays on the device]
+  PH --> PV[Preview: exactly what will be sent<br/>tap any word to hide it too]
+  PV -->|person agrees| LLM[Large model, paid tier<br/>returns roles, dates, skills<br/>as graph ids with placeholders]
+  LLM --> BACK[Browser puts real employer<br/>and college names back<br/>for the confirm screen only]
+  BACK --> CF[Confirm screen]
+```
+
+**Step 1: rules first.** Everything with a pattern is removed by rules before any model runs, because rules never miss a well-formed email address or PAN:
+
+- emails, phone numbers, URLs and handles;
+- PIN codes;
+- PAN, Aadhaar and passport-like numbers;
+- dates of birth;
+- lines labelled Name, Father's name, Address, Religion, Marital status, Gender or Nationality.
+
+**Step 2: a small name-and-place model in the browser.** A named-entity model (a quantised BERT-class model, about 60 to 110 MB, run with transformers.js) finds person names, organisations and places that rules cannot.
+
+- **Indian names are the known weakness.** Common open models were trained mostly on Western news text and miss many Indian names. So the model's output is combined with public lists of Indian first names and surnames, and with layout clues: the top lines of the resume, and the line before contact details.
+- **Pick the model by measurement.** Test 2 or 3 candidates, including PII-specific models, on the 30 resumes. Choose the smallest that meets the target below.
+
+**Step 3: placeholders, not deletion.** Each item found is replaced with a consistent placeholder: `[NAME]`, `[EMPLOYER_1]`, `[COLLEGE_1]`, `[CITY_1]`. The mapping from placeholder to real text stays in the browser's memory. It is never sent and never saved.
+
+- **Why placeholders.** "Senior Analyst at [EMPLOYER_1], 2019 to 2023" still lets the large model work out roles, dates and skills, while the employer's name never leaves the device.
+- **Industry without the name.** The large model cannot see the employer, so on the confirm screen the person picks the employer's industry (pre-filled from a local list of large Indian employers where possible).
+
+**Step 4: the preview.** The person sees exactly the text that will be sent, with placeholders highlighted. They can tap any remaining word to hide it too. Nothing is sent until they press "Send to read". This is the backstop for anything the model missed.
+
+**Step 5: the large model.**
+
+- **The model:** the paid-tier provider from `AI_LAYER.md`, which does not train on prompts. It never goes to a free tier.
+- **The answer:** roles (title, placeholder employer, dates), skills with the line each came from, and credentials. All of these must be ids from the graph, or placeholders. The server drops anything else.
+- **Logging:** none, of either the text or the reply.
+- **Cost:** about 3,000 to 5,000 tokens per resume. Small on the ₹500 monthly cap, but count it against the per-person daily limit.
+
+**Step 6: back in the browser.** The browser puts the real employer and college names back, for the confirm screen only. What is saved is still only the confirmed ids and bands, never names.
+
+**What this does and does not achieve.**
+
+- **It does:** the person's name, contact details, ID numbers, employer and college names never reach the AI provider or Margwise. Only the confirmed ids are stored.
+- **It does not:** make the text anonymous. A rare job title, exact dates and an unusual skill mix can still point to one person. Under DPDP, pseudonymised data is still personal data, so the notice, the consent and the paid-tier, no-training provider all still apply. The design must never call it "anonymous".
+
+**Phones.** The small model is a one-time download, cached afterwards.
+
+- **On a slow connection or a low-memory phone,** the page offers rules-only redaction plus the preview, which is still safe because the person sees everything before it is sent.
+- **The page shows the download size** before fetching.
+
 ### How accurate is it without a large model? (three tiers)
 
 Expected strengths and weaknesses, to be measured with the 30-resume test. No figure is claimed until then.
@@ -99,10 +156,17 @@ Two things lift accuracy whichever tier is used:
 
 The measure that matters is not what the parser finds alone. It is how many confirmed skills the person did not have to type.
 
-**Decision after the 30-resume test.**
+**Decision after the 30-resume test.** Compare the two ways on the same 30 resumes:
 
-- **Tiers 1 and 2 together reach 70 percent recall at 85 percent precision:** the language model stays optional.
-- **They do not:** the language model step becomes the default. It is still announced before upload ("Your resume text will be sent to an AI service to read it. Turn this off to keep it on your device") and can be switched off. The person then sees a lower-quality but private result.
+- the private route (tiers 1 and 2);
+- the redact-then-read route (rules, small model, preview, large model).
+
+"Most accurate" stays the default only if:
+
+- it beats the private route on recall;
+- it meets the redaction target below.
+
+If the private route reaches 70 percent recall at 85 percent precision on its own, it becomes the default instead, because it costs nothing and sends nothing.
 
 ### 6. The confirm screen (the most important step)
 
@@ -181,11 +245,13 @@ Run the steps on 30 resumes from the founder's network, with each person's conse
 | Time | The median time from upload to confirmed profile is 4 minutes or less |
 | AI use | Record how often the dictionary alone was enough. Below 50 percent means the dictionary needs work |
 | Contact removal | Check the 30 by hand: count any email, phone, ID number or address left in the text that would have been sent to the AI. Target zero; any miss becomes a new pattern |
+| Name and employer removal | Across the 30, at least 99 percent of person names and 95 percent of employer and college names are replaced before the preview. Every miss is listed, and the name lists or layout rules are fixed. The preview remains the backstop |
+| Extraction with placeholders | Roles and dates from the redact-then-read route match the person's confirmed roles in at least 90 percent of cases |
 
 ## Build order
 
 1. `skills_index.json` from Pipeline A v0 (O*NET technology skills, skills and alternate titles), plus a hand-made list of Indian abbreviations.
 2. The browser reader, contact removal and dictionary match, with the confirm screen. No AI.
 3. The gap and coverage calculation, and the roads view.
-4. The optional AI step for unmatched lines.
+4. The redact-then-read route: rules, the small name-and-place model, placeholders, the preview and the large model. Pick the small model on the 30 resumes.
 5. ESCO labels and posting-based skill weights, as Pipeline A grows.
