@@ -84,16 +84,24 @@ Never apply SQL to the live database from an agent session. Never push to `main`
 6. The last 3 releases stay served. Older ones stay in git tags.
 
 ## 2. Migrations
-Migrations only add. They are never rolled back.
-1. List what is applied: `wrangler d1 migrations list` for preview, then for production.
-2. Rehearse on a local copy of the production export.
-3. Apply to preview. Run the smoke test (section 3).
-4. Apply to production. Run the invariant checker.
+Migrations only add. They are never rolled back. Run the `wrangler` and `sqlite3` commands from `hosting/` (where `wrangler.toml` is) and the `node` commands from the repo root. Use `npx wrangler@4` so the Wrangler version is fixed. The database names come from `hosting/wrangler.toml`: the live database is the one named there, today `margwise-test`; preview will be `margwise-preview` once you create it.
+1. List what is applied, first on preview, then on production:
+   - `npx wrangler@4 d1 migrations list margwise-preview --remote`
+   - `npx wrangler@4 d1 migrations list margwise-test --remote`
 
-**First time on production: mark the baseline as applied, do not run it.** `0000_baseline.sql` describes tables that already exist in production. Running it there could change live data.
-1. Confirm production already has the tables from `schema.sql` to `schema12.sql`. TODO(owner): confirm this by comparing the production schema with the baseline.
+   Without `--remote`, Wrangler lists the local copy on your computer, not the real database.
+2. Rehearse on a local copy of the production export:
+   - `npx wrangler@4 d1 export margwise-test --remote --output prod.sql` (this file holds personal data: keep it on your computer and delete it afterwards).
+   - Load it: `sqlite3 prod.sqlite < prod.sql`. Apply the new migration files to `prod.sqlite` with `sqlite3`.
+3. Apply to preview: `npx wrangler@4 d1 migrations apply margwise-preview --remote`. Run the smoke test (section 3).
+4. Apply to production: `npx wrangler@4 d1 migrations apply margwise-test --remote`. Then take a fresh export as in step 2 and run the invariant checker on it: `node hosting/tools/check_invariants.mjs --db hosting/prod.sqlite`. The checker needs a SQLite file, or the `.sql` file from `wrangler d1 export` (it loads that into memory itself): `node hosting/tools/check_invariants.mjs --db hosting/prod.sql`.
+
+**First time on production: compare the schema, then mark the baseline as applied without running it.** `0000_baseline.sql` describes tables that already exist in production. Every statement in it is `CREATE ... IF NOT EXISTS`, so running it would not change existing tables or rows. The real risk is different: it would hide schema drift. If a production table differs from the baseline, the `IF NOT EXISTS` statement skips it silently, and the database looks migrated when it is not.
+1. Compare the production schema with the baseline. Export the schema only (`npx wrangler@4 d1 export margwise-test --remote --no-data --output prod-schema.sql`), load the baseline into an empty database (`sqlite3 base.sqlite < migrations/0000_baseline.sql`) and the export into another (`sqlite3 prod-schema.sqlite < prod-schema.sql`), then compare the tables, columns and indexes of the two. Any difference must be explained before you go on. TODO(owner): record the result here.
 2. Record `0000_baseline.sql` as applied without running it. TODO(owner): write the exact command and check it on preview first (the `d1_migrations` table records applied names).
-3. Run `wrangler d1 migrations list` for production. It must show `0000_baseline.sql` as applied and nothing else pending except new files.
+3. Run `npx wrangler@4 d1 migrations list margwise-test --remote`. It must show `0000_baseline.sql` as applied and nothing else pending except new files.
+
+**Settings to check after a deploy.** Emails are only really sent when `ENVIRONMENT=production` is set on the production deployment (or `EMAIL_DRY_RUN=0`). Without it, emails stay in dry-run mode. Health shows this as `flags.email_dry_run`; on production it must be `false`.
 
 ## 3. Deploying
 1. Deploy to preview first. Run the end-to-end suite against the preview URL.

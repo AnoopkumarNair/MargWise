@@ -1,5 +1,9 @@
 {
   "ok": false,
+  "error": {
+    "code": "unavailable",
+    "message": "This is not available right now. Please try again later."
+  },
   "db": false,
   "release": "abc123",
   "api_v": 1,

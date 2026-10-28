@@ -11,7 +11,7 @@ import path from 'node:path';
 
 let DatabaseSync;
 try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) {
-  throw new Error('fakedb needs node:sqlite (Node 22 or newer; this is ' + process.version + '). Install Node 22+ and run again. The API tests are not skipped on purpose. (' + e.message + ')');
+  throw new Error('fakedb needs node:sqlite (Node 22.13 or newer without flags; 22.5 to 22.12 need --experimental-sqlite; this is ' + process.version + '). Install Node 22.13+ and run again. The API tests are not skipped on purpose. (' + e.message + ')');
 }
 
 export const MIGRATIONS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../migrations');
@@ -69,6 +69,9 @@ export function createFakeDb({ dir = MIGRATIONS_DIR, upTo = Infinity } = {}) {
 
 // Open an existing SQLite file (for example a local copy of a production export) read-only, with the same D1 call shapes.
 export function openFakeDbFile(file) { return new FakeD1(new DatabaseSync(file, { readOnly: true })); }
+
+// Load the SQL text that `wrangler d1 export --output x.sql` writes into a fresh in-memory database (read-only use; nothing on disk).
+export function openFakeDbFromSql(file) { const db = new FakeD1(); db.raw.exec(readFileSync(file, 'utf8')); return db; }
 
 // The old way: schema.sql, schema2.sql ... schema12.sql in numeric order (schema10 sorts before schema2 as text, so sort as numbers).
 export function createLegacyDb(hostingDir = path.resolve(MIGRATIONS_DIR, '..')) {

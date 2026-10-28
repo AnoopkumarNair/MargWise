@@ -1,9 +1,11 @@
 -- 0000_baseline.sql: the whole current schema in one file (schema.sql to schema12.sql, applied in numeric order).
 --
 -- WARNING: NEVER APPLY THIS FILE TO THE PRODUCTION DATABASE.
--- Production already has this schema. SQLite cannot make "ALTER TABLE ADD COLUMN" repeatable, and this file is the
--- result of those changes. On production, only record it as applied (insert its row into d1_migrations; see the
--- runbook). It is for NEW databases: local, preview and tests (BACKEND.md ADR-03).
+-- Production already has this schema. Every statement here is CREATE ... IF NOT EXISTS, so running it there would
+-- change no table or row; the real risk is that it would hide schema drift: a production table that differs from
+-- this file would be skipped silently and look "migrated". On production, compare the exported schema with this file,
+-- then only record it as applied (see docs/PILOT_RUNBOOK.md, Adult section 2). It is for NEW databases: local,
+-- preview and tests (BACKEND.md ADR-03).
 --
 -- Differences from the old files, none of which change the resulting tables, columns (in order) or indexes:
 --   * columns that the old files added with ALTER TABLE are written inside CREATE TABLE, in the order they were added;

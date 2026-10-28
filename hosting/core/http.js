@@ -1,12 +1,14 @@
 // Responses and request reading for the adult API (BACKEND ADR-09).
 // Every response: content-type application/json, cache-control no-store, x-content-type-options nosniff, x-request-id. No CORS headers (same origin only).
 // Success: {ok:true, ...}. Failure: {ok:false, error:{code, message}}. The message is safe to show to a person.
-import { validate } from '../../contracts/validate.js';
+import { validate } from '../../contracts/validate_lib.js';
 
-// The only error codes. Keep this list short; a new code needs a new ADR note.
+// The only error codes, in their canonical order. contracts/bands.json (error_code) and contracts/api/error.schema.json list exactly
+// these keys in this order; hosting/tests/adult/http.test.mjs checks it. A new code needs a note in docs/adult/deviations.md.
 //   bad_request   the request is wrong (shape, type, method)      too_large     body over the limit
 //   invalid_code  wrong one-time code or link                     expired       code, link or pending token ran out
 //   unauthorized  no valid session                                forbidden     valid session, not allowed
+//   refused_age   under 18 at sign-up (SPEC 9); nothing is stored
 //   not_found     nothing there                                   conflict      the profile changed (stale rev)
 //   rate_limited  too many tries                                  unavailable   a part we depend on is down or switched off
 //   internal      our bug; nothing about it is shown
@@ -17,6 +19,7 @@ export const ERRORS = {
   expired: [410, 'That has expired. Please ask for a new one.'],
   unauthorized: [401, 'Please sign in again.'],
   forbidden: [403, 'You are not allowed to do that.'],
+  refused_age: [403, 'Margwise for working adults is for people aged 18 and over.'],
   not_found: [404, 'We could not find that.'],
   conflict: [409, 'This changed somewhere else.'],
   rate_limited: [429, 'Too many tries. Please wait a while and try again.'],
@@ -35,18 +38,23 @@ export function ok(body = {}, { rid, status = 200, headers: extra } = {}) {
 
 // fail('conflict', {rid, extra:{current: doc}}). `message` replaces the default only with text you wrote yourself (never user input).
 export function fail(code, { rid, message, status, extra, headers: h } = {}) {
-  const e = ERRORS[code] || ERRORS.internal; if (!ERRORS[code]) code = 'internal';
-  const res = new Response(JSON.stringify({ ok: false, error: { code, message: message || e[1] }, ...extra }), { status: status || e[0], headers: headers(rid, h) });
+  if (!Object.prototype.hasOwnProperty.call(ERRORS, code)) code = 'internal';   // own keys only: 'constructor' is not a code
+  const e = ERRORS[code], body = { ok: false, error: { code, message: message || e[1] } };
+  for (const [k, v] of Object.entries(extra || {})) if (k !== 'ok' && k !== 'error') body[k] = v;   // extra can never hide the error
+  const res = new Response(JSON.stringify(body), { status: status || e[0], headers: headers(rid, h) });
   codes.set(res, code); return res;
 }
 
 export const newRid = deps => [...deps.random(8)].map(b => b.toString(16).padStart(2, '0')).join('');
 
+// Exactly application/json, optionally with parameters (charset). Not application/json-seq, application/jsonx and the like.
+export const isJsonType = ct => String(ct || '').split(';')[0].trim().toLowerCase() === 'application/json';
+
 // Read a JSON object body. Refuses a wrong content type, a body over `max` bytes, bad JSON and anything that is not an object.
-// If `schema` is given the value must also pass it (contracts/validate.js). Returns {value} or {response}. The error text from the
+// If `schema` is given the value must also pass it (contracts/validate_lib.js). Returns {value} or {response}. The error text from the
 // validator is NOT sent back, because it can contain the person's own input.
 export async function readJson(request, { max = 8192, schema, rid } = {}) {
-  if (!/^application\/json\b/i.test(request.headers.get('content-type') || '')) return { response: fail('bad_request', { rid }) };
+  if (!isJsonType(request.headers.get('content-type'))) return { response: fail('bad_request', { rid }) };
   const declared = Number(request.headers.get('content-length'));
   if (Number.isFinite(declared) && declared > max) return { response: fail('too_large', { rid }) };
   let raw; try { raw = new Uint8Array(await request.arrayBuffer()); } catch { return { response: fail('bad_request', { rid }) }; }
@@ -74,6 +82,7 @@ export function defineRoute(route, fn) {
     try {
       if (request.method !== method) res = fail('bad_request', { rid, status: 405, headers: { allow: method } });
       else res = await fn(request, deps, { rid });
+      if (!(res instanceof Response)) throw new TypeError('handler did not return a Response');   // our bug: answered and logged as internal
     } catch { res = fail('internal', { rid }); }
     if (!res.headers.get('x-request-id')) { const h = new Headers(res.headers); h.set('x-request-id', rid); const c = codes.get(res); res = new Response(res.body, { status: res.status, headers: h }); if (c) codes.set(res, c); }
     deps.log({ ts: t0, rid, route, status: res.status, ms: deps.now() - t0, release: deps.config.release, api_v: deps.config.apiV, error_code: codeOf(res) });

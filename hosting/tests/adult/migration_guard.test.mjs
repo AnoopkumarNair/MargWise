@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { checkSql, checkMigrations, checkSqlStrings, splitStatements } from '../migration_guard.mjs';
+import { checkSql, checkMigrations, checkSqlStrings, checkPrepareCalls, splitStatements } from '../migration_guard.mjs';
 
 const dirWith = files => { const d = mkdtempSync(path.join(tmpdir(), 'mg-')); for (const [n, s] of Object.entries(files)) writeFileSync(path.join(d, n), s); return d; };
 const OK = 'CREATE TABLE IF NOT EXISTS t (a INTEGER);\n';
@@ -53,4 +53,20 @@ test('string-built SQL in handlers is caught, parameterised SQL is not', () => {
   const d = mkdtempSync(path.join(tmpdir(), 'mgs-')); mkdirSync(path.join(d, 'x'));
   writeFileSync(path.join(d, 'x/a.js'), 'db.prepare("SELECT 1 WHERE a = " + id);\ndb.prepare(`SELECT ${id}`);\ndb.prepare("SELECT 1 WHERE a = ?").bind(id);\ndb.prepare(`SELECT 1 WHERE a = ?`);\n');
   const r = checkSqlStrings([d]); assert.equal(r.length, 2); assert.match(r[0], /a\.js:1/); assert.match(r[1], /a\.js:2/);
+});
+
+test('prepare( must get a plain string literal: variables, calls, joins and templates are caught', () => {
+  const bad = [
+    'db.prepare(sql)', 'db.prepare(q.trim())', 'db.prepare(buildSql(id))', "db.prepare('SELECT ' + col)", "db.prepare('SELECT 1'.concat(x))",
+    "db.prepare('SELECT 1'.replace('1', x))", 'db.prepare(`SELECT ${x}`)', 'db.prepare(\n  "SELECT 1" +\n  x)', "db.prepare(cond ? 'A' : 'B')",
+    'db.prepare(SQL)', "let SQL2 = 'SELECT 1'; db.prepare(SQL2)", "const LOWER = 'SELECT 1' + x; db.prepare(LOWER)", 'const T = `SELECT ${x}`; db.prepare(T)',
+    "const s = 'SELECT 1'; db.prepare(s)",
+  ];
+  for (const src of bad) assert.equal(checkPrepareCalls(src).length, 1, src);
+  const good = [
+    "db.prepare('SELECT 1')", 'db.prepare("SELECT 1 WHERE a = ?").bind(a)', 'db.prepare(`SELECT 1\n WHERE a = ?`)', "db.prepare( 'SELECT \\' ok' )",
+    "const SELECT_ONE = 'SELECT 1 WHERE a = ?';\ndb.prepare(SELECT_ONE).bind(a)", "db.prepare('SELECT 1', extra)",
+  ];
+  for (const src of good) assert.deepEqual(checkPrepareCalls(src), [], src);
+  assert.match(checkPrepareCalls('x\ny\ndb.prepare(q)', 'a.js')[0], /^a\.js:3: /);
 });

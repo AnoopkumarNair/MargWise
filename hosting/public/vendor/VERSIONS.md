@@ -2,6 +2,8 @@
 
 Browser libraries and fonts are copied here. There are no CDNs (strict CSP). When you change a file, update its row. CI fails if a file is unlisted, missing, or its SHA-256 differs.
 
+The game's files (`fonts.css`, `fonts/`, `gsap.min.js`) live in `app/vendor/`; `python3 app/build.py` copies them here and never deletes this file or other vendored files. Change them in `app/vendor/`, rebuild, then update the row. The check also fails if a file in `app/vendor/` differs from its row.
+
 Check by hand: `node .github/scripts/check_vendor_hashes.mjs`
 
 | Path | Version | SHA-256 | Source |

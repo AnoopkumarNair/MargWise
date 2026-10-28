@@ -1,7 +1,7 @@
 // Consistency between the contract files themselves. Run: node --test contracts/tests/
 import test from 'node:test'; import assert from 'node:assert/strict';
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
-import { checkSchema } from '../validate.js';
+import { checkSchema } from '../validate_lib.js';
 import { plan } from '../sync.mjs';
 import { PROFILE_V } from '../profile_migrations.js';
 
@@ -86,10 +86,21 @@ test('events: the envelope closes data to the union of every type, with the same
   for (const t of ['profile_saved', 'roads_viewed', 'road_opened', 'road_added'])
     for (const k of ['job_release', 'matcher_version']) assert.ok(events.$defs[t].required.includes(k), `${t} must require ${k} (invariant 7)`);
 });
-test('events: only feedback carries text, capped at 1,500 characters', () => {
-  for (const [at, s] of walk(events)) if (s.type === 'string' && !s.enum && !s.pattern) {
-    assert.match(at, /\/text$/, at); assert.equal(s.maxLength, 1500);
+test('events: only feedback carries text, capped at 1,500 characters and with no @', () => {
+  let n = 0;
+  for (const [at, s] of walk(events)) if (s.type === 'string' && !s.enum && (!s.pattern || /\/text$/.test(at))) {
+    assert.match(at, /\/text$/, at); assert.equal(s.maxLength, 1500, at); assert.equal(s.pattern, '^[^@]*$', at); n++;
   }
+  assert.ok(n >= 2, 'the feedback text field (in data and in $defs.feedback)');
+});
+test('events: every other string pattern refuses spaces and @, so the invariant checker can tell ids from free text', () => {
+  for (const [at, s] of walk(events)) if (s.type === 'string' && s.pattern && !/\/text$/.test(at)) {
+    const rx = new RegExp(s.pattern, 'u'); assert.ok(!rx.test('a b') && !rx.test('a@b'), at);
+  }
+});
+test('the nickname refuses @, so an email address cannot be stored as a name', () => {
+  const nick = read('api/email_complete.request.schema.json').properties.nickname, rx = new RegExp(nick.pattern, 'u');
+  assert.ok(rx.test('Asha')); assert.ok(!rx.test('asha@example.com'));
 });
 test('embedded copies in api/ match their sources (fix with: node contracts/sync.mjs)', () => {
   for (const p of plan()) assert.ok(p.same, `${p.file} ${p.at} differs from ${p.source}`);
@@ -97,4 +108,20 @@ test('embedded copies in api/ match their sources (fix with: node contracts/sync
 test('no request schema accepts a tester id: it always comes from the token', () => {
   for (const f of SCHEMAS.filter(f => f.endsWith('.request.schema.json'))) for (const [at, s] of walk(read(f)))
     for (const k of Object.keys(s.properties || {})) assert.doesNotMatch(k, /tester/i, `${f} ${at}/${k}`);
+});
+test('versions.js (what code imports) equals versions.json (what other readers use)', async () => {
+  const { versions } = await import('../versions.js');
+  const { _doc, ...json } = V;
+  assert.deepEqual({ ...versions }, json);
+  assert.ok(Object.isFrozen(versions));
+});
+test('every pattern is anchored at both ends, so it checks the whole value', () => {
+  for (const f of SCHEMAS) for (const [at, s] of walk(read(f))) if (s.pattern) {
+    assert.ok(s.pattern.startsWith('^') && s.pattern.endsWith('$') && !s.pattern.endsWith('\\$'), `${f} ${at}: ${s.pattern}`);
+  }
+});
+test('slice source urls: https only, the whole value, no spaces', () => {
+  const rx = new RegExp(slice.$defs.source.properties.url.pattern, 'u');
+  for (const ok of ['https://www.onetonline.org/link/details/15-1252.00', 'https://bls.gov', 'https://a.example.org:8443/x?y=1#z']) assert.ok(rx.test(ok), ok);
+  for (const bad of ['http://bls.gov', 'https://', 'https://bls.gov/a b', 'https://bls.gov\njavascript:x', 'javascript:alert(1)//https://x.org', 'https://localhost']) assert.ok(!rx.test(bad), bad);
 });

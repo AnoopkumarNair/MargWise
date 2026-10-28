@@ -69,3 +69,41 @@ test('request ids differ and come from the injected random', () => {
   const a = makeFakeDeps({ seed: 5 }), b = makeFakeDeps({ seed: 5 });
   assert.equal(newRid(a), newRid(b)); assert.notEqual(newRid(a), newRid(a));
 });
+
+// ---- the one canonical list of error codes (B3) ----
+import { readFileSync } from 'node:fs';
+const contract = f => JSON.parse(readFileSync(new URL('../../../contracts/' + f, import.meta.url), 'utf8'));
+test('ERRORS is the one list: equal to bands.json error_code and the error schema enum, in order (refused_age included)', () => {
+  const keys = Object.keys(ERRORS);
+  assert.deepEqual(keys, contract('bands.json').error_code.values);
+  assert.deepEqual(keys, contract('api/error.schema.json').properties.error.properties.code.enum);
+  assert.ok(keys.includes('refused_age')); assert.equal(ERRORS.refused_age[0], 403);
+});
+test('every code fail() can produce validates against the error schema', async () => {
+  const schema = contract('api/error.schema.json');
+  for (const c of [...Object.keys(ERRORS), 'whatever', 'constructor', '__proto__', 'toString']) {
+    const r = fail(c); const b = await r.json(); const v = checkContract(schema, b);
+    assert.ok(v.ok, `${c}: ${JSON.stringify(v.errors)}`);
+    if (!Object.prototype.hasOwnProperty.call(ERRORS, c)) { assert.equal(b.error.code, 'internal', c); assert.equal(r.status, 500, c); }
+  }
+});
+test('extra fields can never replace ok or error', async () => {
+  const b = await fail('not_found', { extra: { ok: true, error: { code: 'x' }, current: 1 } }).json();
+  assert.equal(b.ok, false); assert.equal(b.error.code, 'not_found'); assert.equal(b.current, 1);
+});
+
+// ---- handler bugs and content types ----
+test('a handler that returns something other than a Response is answered and logged as internal', async () => {
+  for (const ret of [undefined, null, { ok: true }, 'text', 200]) {
+    const deps = makeFakeDeps(); const h = defineRoute('GET /api/v1/t', async () => ret);
+    const r = await h(new Request('https://x.test/'), deps);
+    assert.equal(r.status, 500, String(ret)); assert.equal((await r.json()).error.code, 'internal');
+    assert.ok(r.headers.get('x-request-id')); assert.equal(deps.logged()[0].error_code, 'internal');
+  }
+});
+test('only application/json (with optional parameters) is accepted', async () => {
+  for (const ct of ['application/json', 'application/json; charset=utf-8', 'Application/JSON ;charset=UTF-8'])
+    assert.ok((await readJson(post({ n: 1 }, { 'content-type': ct }))).value, ct);
+  for (const ct of ['application/json-seq', 'application/jsonx', 'application/json+x', 'application/jsonp; charset=utf-8', 'text/json', '', 'multipart/form-data'])
+    assert.equal((await readJson(post({ n: 1 }, { 'content-type': ct }))).response.status, 400, ct);
+});

@@ -2,7 +2,7 @@
 import test from 'node:test'; import assert from 'node:assert/strict';
 import fs from 'node:fs'; import os from 'node:os'; import path from 'node:path'; import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { validate, checkSchema } from '../validate.js';
+import { validate, checkSchema } from '../validate_lib.js';
 
 const DIR = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const pass = (s, v, at) => { const r = validate(s, v, at); assert.ok(r.ok, JSON.stringify(r.errors)); assert.deepEqual(r.errors, []); };
@@ -146,4 +146,20 @@ test('CLI: works on a real contract, as the Python pipeline calls it', () => {
 test('importing the module runs no CLI', () => {
   const r = spawnSync(process.execPath, ['--input-type=module', '-e', `import(${JSON.stringify(CLI)}).then(m => console.log(typeof m.validate))`], { encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr); assert.equal(r.stdout.trim(), 'function');
+});
+test('$ref only follows the schema\'s own keys, never the prototype chain', () => {
+  for (const ref of ['#/__proto__', '#/constructor', '#/$defs/toString', '#/$defs/__proto__', '#/hasOwnProperty'])
+    assert.throws(() => checkSchema({ $defs: { a: { type: 'string' } }, $ref: ref }), /\$ref not found/, ref);
+  assert.throws(() => validate({ $defs: {} }, 1, '#/$defs/constructor'), /\$ref not found/);
+  pass({ $defs: { a: { type: 'string' } }, properties: { x: { $ref: '#/$defs/a' } } }, { x: 's' });
+});
+test('the library has no Node imports, so the browser and the Workers bundle can load it', () => {
+  const src = fs.readFileSync(path.join(DIR, 'validate_lib.js'), 'utf8');
+  assert.doesNotMatch(src, /\bimport\b[^;]*['"]node:|\bprocess\b|\brequire\(/);
+  for (const f of ['http.js', 'health.js', 'deps.js'])
+    assert.doesNotMatch(fs.readFileSync(path.join(DIR, '..', 'hosting', 'core', f), 'utf8'), /contracts\/validate\.js/, `${f} must import validate_lib.js`);
+});
+test('the CLI module re-exports the same library functions', async () => {
+  const cli = await import('../validate.js'), lib = await import('../validate_lib.js');
+  assert.equal(cli.validate, lib.validate); assert.equal(cli.checkSchema, lib.checkSchema);
 });

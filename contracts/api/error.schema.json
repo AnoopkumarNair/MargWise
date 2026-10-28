@@ -17,7 +17,7 @@
       "properties": {
         "code": {
           "type": "string",
-          "enum": ["bad_request", "unauthorized", "refused_age", "rate_limited", "invalid_code", "expired", "conflict", "not_found", "unavailable"]
+          "enum": ["bad_request", "too_large", "invalid_code", "expired", "unauthorized", "forbidden", "refused_age", "not_found", "conflict", "rate_limited", "unavailable", "internal"]
         },
         "message": {
           "type": "string",

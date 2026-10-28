@@ -2,7 +2,7 @@
 import test from 'node:test'; import assert from 'node:assert/strict';
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
 import { migrateIds, registryMap } from '../migrate_ids.js';
-import { validate } from '../validate.js';
+import { validate } from '../validate_lib.js';
 
 const DIR = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const PROFILE = JSON.parse(fs.readFileSync(path.join(DIR, 'profile.schema.json'), 'utf8'));
@@ -78,7 +78,7 @@ test('roles: a tombstoned occupation is mapped; a split one takes the first and 
   const r = migrateIds(base([], [{ occ: 'occ:13-2011.01', level: 3, industry: 'bfsi', years: '3-7', current: true }, { occ: 'occ:13-2099.01', level: 2, industry: 'it', years: '1-3', current: false }]), REG);
   assert.deepEqual(r.profile.roles.map(x => x.occ), ['occ:13-2011.00', 'occ:13-2051.00']);
   assert.equal(r.profile.roles[1].level, 2);
-  assert.deepEqual(r.mapped, [{ from: 'occ:13-2011.01', to: ['occ:13-2011.00'], field: 'roles' }, { from: 'occ:13-2099.01', to: ['occ:13-2051.00', 'occ:13-2041.00'], field: 'roles', pick: true }]);
+  assert.deepEqual(r.mapped, [{ from: 'occ:13-2011.01', to: ['occ:13-2011.00'], field: 'roles', index: 0 }, { from: 'occ:13-2099.01', to: ['occ:13-2051.00', 'occ:13-2041.00'], field: 'roles', index: 1, pick: true }]);
 });
 test('credentials are mapped too', () => {
   const r = migrateIds(base([], undefined, [{ id: 'cred:aws-saa-c02', year: 2021, expires: 2024 }]), REG);
@@ -97,4 +97,56 @@ test('the mapped profile still validates against the profile contract', () => {
 test('profiles without the optional lists are fine', () => {
   const r = migrateIds({ v: 1, roles: [], skills: [] }, REG);
   assert.deepEqual(r.profile, { v: 1, roles: [], skills: [] }); assert.equal(r.changed, false);
+});
+
+// ---- B4: nothing is merged away silently; roles are never merged ----
+const role = (occ, extra = {}) => ({ occ, level: 3, industry: 'it', years: '3-7', current: false, ...extra });
+test('roles with the same occupation are all kept (direct, mapped, and a split that lands on an existing one)', () => {
+  const roles = [role('occ:13-2011.00', { current: true }), role('occ:13-2011.00', { years: '1-3' }), role('occ:13-2011.01', { level: 2 }), role('occ:13-2051.00'), role('occ:13-2099.01', { level: 5 })];
+  const r = migrateIds(base([], roles), REG);
+  assert.equal(r.profile.roles.length, 5);
+  assert.deepEqual(r.profile.roles.map(x => x.occ), ['occ:13-2011.00', 'occ:13-2011.00', 'occ:13-2011.00', 'occ:13-2051.00', 'occ:13-2051.00']);
+  assert.deepEqual(r.profile.roles.map(x => x.level), [3, 3, 2, 3, 5]);
+  const pick = r.mapped.find(m => m.pick); assert.equal(pick.index, 4); assert.equal(r.profile.roles[pick.index].level, 5, 'the pick entry is kept and its index points at it');
+  assert.deepEqual(r.merged, []);
+});
+test('a role dropped as a tombstone without replacement is reported, and indexes still point at the right roles', () => {
+  const reg = [...REG, entry('occ:11-1111.00', 'occupation', 'tombstone', null)];
+  const r = migrateIds(base([], [role('occ:11-1111.00'), role('occ:13-2011.01', { level: 6 })]), reg);
+  assert.deepEqual(r.dropped, ['occ:11-1111.00']); assert.equal(r.profile.roles.length, 1);
+  assert.equal(r.profile.roles[r.mapped[0].index].level, 6);
+});
+test('credentials with the same id keep the latest year, and the others are reported in merged', () => {
+  const r = migrateIds(base([], undefined, [{ id: 'cred:aws-saa', year: 2019 }, { id: 'cred:aws-saa-c02', year: 2023, expires: 2026 }, { id: 'cred:aws-saa' }]), REG);
+  assert.deepEqual(r.profile.creds, [{ id: 'cred:aws-saa', year: 2023, expires: 2026 }]);
+  assert.deepEqual(r.merged.map(m => [m.field, m.id, m.entry.year]), [['creds', 'cred:aws-saa', 2019], ['creds', 'cred:aws-saa', undefined]]);
+  const tie = migrateIds(base([], undefined, [{ id: 'cred:aws-saa-c02', year: 2021 }, { id: 'cred:aws-saa', year: 2021, expires: 2030 }]), REG);
+  assert.deepEqual(tie.profile.creds, [{ id: 'cred:aws-saa', year: 2021, expires: 2030 }], 'on a tie the direct entry wins');
+});
+test('skills removed as duplicates are reported in merged', () => {
+  const r = migrateIds(base([{ id: 'skl:2.A.2.z', strength: 'strong', last: 2026 }, { id: 'skl:2.A.2.a', strength: 'rusty', last: 2015 }, { id: 'skl:2.A.2.a', strength: 'used' }]), REG);
+  assert.deepEqual(r.profile.skills, [{ id: 'skl:2.A.2.a', strength: 'rusty', last: 2015 }]);
+  assert.equal(r.merged.length, 2); assert.ok(r.merged.every(m => m.field === 'skills' && m.id === 'skl:2.A.2.a'));
+  assert.deepEqual(r.merged.map(m => m.entry.strength).sort(), ['strong', 'used']);
+});
+test('every entry in is accounted for: kept, dropped or merged', () => {
+  const p = base([{ id: 'tec:pydata', strength: 'used' }, { id: 'tec:python', strength: 'rusty' }, { id: 'tec:old-tool', strength: 'used' }], [role('occ:13-2011.00'), role('occ:13-2011.01')], [{ id: 'cred:aws-saa', year: 2020 }, { id: 'cred:aws-saa-c02', year: 2022 }]);
+  const r = migrateIds(p, REG);
+  const splits = r.mapped.filter(m => m.field !== 'roles').reduce((n, m) => n + m.to.length - 1, 0);
+  const inCount = p.roles.length + p.skills.length + p.creds.length + splits;
+  const outCount = r.profile.roles.length + r.profile.skills.length + r.profile.creds.length + r.dropped.length + r.merged.length;
+  assert.equal(outCount, inCount);
+});
+
+// ---- B5: the real registry file shape ----
+test('registryMap accepts the real data/graph/id_registry.json shape, an array and a Map', () => {
+  const real = JSON.parse(fs.readFileSync(path.join(DIR, '..', 'data', 'graph', 'id_registry.json'), 'utf8'));
+  assert.equal(real.registry_version, 1); assert.ok(Array.isArray(real.entries));
+  assert.equal(registryMap(real).size, new Set(real.entries.map(e => e.id)).size);
+  const p = base([{ id: 'skl:2.A.2.a', strength: 'strong' }]);
+  assert.deepEqual(migrateIds(p, real).profile, p, 'the real registry never empties a profile');
+  const wrapped = { registry_version: 1, entries: REG }, q = base([{ id: 'skl:2.A.2.z', strength: 'used' }]);
+  assert.deepEqual(migrateIds(q, wrapped), migrateIds(q, REG));
+  assert.deepEqual(migrateIds(q, registryMap(wrapped)), migrateIds(q, REG));
+  for (const bad of [null, undefined, 'x', 1, {}, { entries: 'x' }]) assert.throws(() => registryMap(bad), TypeError);
 });

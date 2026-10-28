@@ -110,8 +110,8 @@
     "values": ["intake", "roads", "road", "job_today", "general"]
   },
   "error_code": {
-    "_doc": "Stable error codes in the API error envelope (ADR-09, SPEC 9). refused_age and unauthorized are added to the ADR-09 list.",
-    "values": ["bad_request", "unauthorized", "refused_age", "rate_limited", "invalid_code", "expired", "conflict", "not_found", "unavailable"]
+    "_doc": "Stable error codes in the API error envelope (SPEC 9), in the order of ERRORS in hosting/core/http.js (a test checks they are equal). ADR-09 names rate_limited, invalid_code, expired, conflict, not_found, bad_request and unavailable; the others are added and logged in docs/adult/deviations.md: too_large (413, body over the limit), unauthorized (401, no valid session), forbidden (403), refused_age (403, under 18 at sign-up) and internal (500, our bug).",
+    "values": ["bad_request", "too_large", "invalid_code", "expired", "unauthorized", "forbidden", "refused_age", "not_found", "conflict", "rate_limited", "unavailable", "internal"]
   },
   "registry_kind": {
     "_doc": "Node kinds in data/graph/id_registry.json (SPEC 5.2). Technology ids (tec:) use kind 'skill'.",

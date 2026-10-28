@@ -27,3 +27,10 @@ test('wrangler.toml points migrations_dir at the migrations folder, relative to 
   assert.equal(path.resolve(MIGRATIONS_DIR, '..', m[1]), MIGRATIONS_DIR);
   assert.ok(!/^preview_database_id\s*=/m.test(toml), 'the preview id is an owner action; it must not be invented');
 });
+
+import { splitStatements } from '../migration_guard.mjs';
+test('every baseline statement is CREATE ... IF NOT EXISTS (so the runbook wording about its risk stays true)', () => {
+  const stmts = splitStatements(readFileSync(MIGRATIONS_DIR + '/0000_baseline.sql', 'utf8'));
+  assert.ok(stmts.length >= 10);
+  for (const s of stmts) assert.match(s.text.replace(/\s+/g, ' '), /^CREATE (UNIQUE )?(TABLE|INDEX) IF NOT EXISTS /, s.text.slice(0, 60));
+});

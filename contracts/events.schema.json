@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "contracts/events.schema.json",
   "title": "Adult event",
-  "description": "One adult event (SPEC 9, ADR-08). Two steps: validate the whole event against this schema, then validate data against #/$defs/<type> (validate(schema, event.data, \"#/$defs/\" + event.type)). Ids, numbers, enums and flags only, plus feedback text capped at 1,500 characters. Result events carry job_release and matcher_version (invariant 7).",
+  "description": "One adult event (SPEC 9, ADR-08). Two steps: validate the whole event against this schema, then validate data against #/$defs/<type> (validate(schema, event.data, \"#/$defs/\" + event.type)). Ids, numbers, enums and flags only, plus feedback text capped at 1,500 characters with no @ (so no email address is stored; the app removes it before sending). Result events carry job_release and matcher_version (invariant 7).",
   "type": "object",
   "additionalProperties": false,
   "required": ["type", "eid", "data"],
@@ -151,7 +151,8 @@
         "text": {
           "type": "string",
           "minLength": 0,
-          "maxLength": 1500
+          "maxLength": 1500,
+          "pattern": "^[^@]*$"
         }
       }
     }
@@ -410,7 +411,8 @@
         "text": {
           "type": "string",
           "minLength": 0,
-          "maxLength": 1500
+          "maxLength": 1500,
+          "pattern": "^[^@]*$"
         },
         "job_release": {
           "type": "string",

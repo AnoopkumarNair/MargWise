@@ -9,7 +9,11 @@ Rules:
   2. Every id listed in any data/releases/graph/**/manifest*.json exists in the registry.
   3. Every id in the current release is live. The current release is named in
      data/releases/graph/latest.json ({"release_id": ...}); without it, the last manifest by path.
-If no graph release exists yet, rules 2 and 3 pass. If main cannot be read from git, rule 1 is skipped with a warning.
+  4. Every entry has a kind from contracts/bands.json registry_kind, a label and a first_release, and every id in
+     replaced_by is itself in the registry.
+  5. If latest.json names a release, that release has a manifest.
+If no graph release exists yet, rules 2, 3 and 5 pass. If main cannot be read from git, rule 1 is skipped with a warning,
+except in CI (CI=true), where that is a failure: CI must always compare with main (checkout with fetch-depth: 0).
 """
 import glob, json, os, subprocess, sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -32,6 +36,22 @@ def entries_of(reg, errs, where):
             errs.append('%s: %s replaced_by must be a list of ids or null' % (where, e['id']))
         out[e['id']] = e
     return out
+
+KINDS = tuple(json.load(open(os.path.join(ROOT, 'contracts', 'bands.json'), encoding='utf8'))['registry_kind']['values'])
+
+def check_entries(reg):
+    """Rule 4: complete entries and replacements that exist. Returns a list of problems."""
+    errs = []; table = entries_of(reg, errs, 'current'); kinds = KINDS
+    for i, e in table.items():
+        if e.get('kind') not in kinds: errs.append('id %s: kind %r is not one of %s' % (i, e.get('kind'), ', '.join(kinds)))
+        for k in ('label', 'first_release'):
+            if not (isinstance(e.get(k), str) and e[k].strip()): errs.append('id %s: %s must be a non-empty string' % (i, k))
+        for r in e.get('replaced_by') or []:
+            if not isinstance(r, str): continue
+            if r not in table: errs.append('id %s: replaced_by names %s, which is not in the registry' % (i, r))
+            elif r == i: errs.append('id %s: replaced_by names itself' % i)
+        if e.get('status') == 'live' and e.get('replaced_by'): errs.append('id %s: a live entry cannot have replaced_by' % i)
+    return errs
 
 def check_append_only(old, new):
     """old and new are parsed registries. Returns a list of problems."""
@@ -66,12 +86,14 @@ def check_releases(reg, root):
     errs = []; table = entries_of(reg, [], 'registry')
     base = os.path.join(root, 'data', 'releases', 'graph')
     paths = sorted(glob.glob(os.path.join(base, '**', 'manifest*.json'), recursive=True))
-    if not paths: return errs, 0
     cur = None
     lp = os.path.join(base, 'latest.json')
     if os.path.exists(lp):
         try: cur = json.load(open(lp)).get('release_id')
         except Exception as e: errs.append('latest.json unreadable: %s' % e)
+    if not paths:
+        if cur is not None: errs.append('latest.json names release %s, but there is no graph manifest' % cur)
+        return errs, 0
     current_path = None
     for p in paths:
         try: m = json.load(open(p))
@@ -80,6 +102,7 @@ def check_releases(reg, root):
         if cur is not None and rid == cur: current_path = p
         for i in manifest_ids(m):
             if i not in table: errs.append('%s: id %s is not in the registry' % (os.path.relpath(p, root), i))
+    if cur is not None and current_path is None: errs.append('latest.json names release %s, but no manifest has that release_id' % cur)
     if current_path is None and cur is None: current_path = paths[-1]
     if current_path:
         try: m = json.load(open(current_path))
@@ -113,9 +136,10 @@ def main(root=ROOT):
     if not os.path.exists(path): print('FAIL %s is missing' % REG); return 1
     try: reg = json.load(open(path))
     except ValueError as e: print('FAIL %s is not valid JSON: %s' % (REG, e)); return 1
-    entries_of(reg, errs, 'current')
+    errs += check_entries(reg)
     old, ref = base_registry(root)
     if old == 'new': print('ok   registry is new on this branch (first introduction); append-only check passes')
+    elif old is None and os.environ.get('CI', '').lower() == 'true': errs.append('append-only check could not run in CI: %s (check out with fetch-depth: 0)' % ref)
     elif old is None: print('WARN append-only check skipped: %s' % ref)
     else:
         errs += check_append_only(old, reg); print('ok   compared with %s:%s' % (ref, REG) if not errs else 'compared with %s:%s' % (ref, REG))

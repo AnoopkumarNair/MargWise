@@ -58,20 +58,46 @@ export function checkMigrations(dir = path.join(here, '../migrations')) {
   return bad;
 }
 
-// SQL must be a plain string literal: no template with ${}, and no "+" joining pieces, inside prepare( ... ).
-export function checkSqlStrings(dirs = [path.join(here, '../core'), path.join(here, '../functions/api/v1')]) {
-  const bad = [];
-  const walk = d => existsSync(d) ? readdirSync(d).flatMap(f => { const p = path.join(d, f); return statSync(p).isDirectory() ? walk(p) : /\.m?js$/.test(f) ? [p] : []; }) : [];
-  for (const d of dirs) for (const f of walk(d)) {
-    const src = readFileSync(f, 'utf8');
-    for (const m of src.matchAll(/\.prepare\(\s*([`'"])/g)) {
-      const q = m[1]; let j = m.index + m[0].length; while (j < src.length && src[j] !== q) { if (src[j] === '\\') j++; j++; }
-      const body = src.slice(m.index + m[0].length, j), after = src.slice(j + 1, j + 40);
-      const line = src.slice(0, m.index).split('\n').length;
-      if ((q === '`' && body.includes('${')) || /^\s*\+/.test(after)) bad.push(`${path.relative(path.join(here, '..'), f)}:${line}: SQL is built from a string; use ? and bind()`);
+// SQL must be a plain string literal (ADR-13). The first argument of every .prepare( must be one '...' or "..." string, or a
+// `...` template without ${}, followed directly by ) or a comma. Anything else is reported: a variable, a call, a "+" join,
+// .concat(), a template with ${}. A named constant is allowed only when the same file defines it as
+// `const NAME = '<plain literal>';` with an UPPER_CASE name (so a reviewer can read the SQL where it is defined).
+const readLiteral = (src, i) => {   // src[i] is a quote; returns the index just after the closing quote, or -1
+  const q = src[i]; let j = i + 1;
+  while (j < src.length && src[j] !== q) { if (src[j] === '\\') j++; j++; }
+  return j < src.length ? j + 1 : -1;
+};
+export function sqlConstants(src) {
+  const ok = new Set();
+  for (const m of src.matchAll(/\bconst\s+([A-Z][A-Z0-9_]*)\s*=\s*(?=['"`])/g)) {
+    const at = m.index + m[0].length, end = readLiteral(src, at);
+    if (end < 0) continue;
+    if (src[at] === '`' && src.slice(at, end).includes('${')) continue;
+    if (/^\s*[;\n]/.test(src.slice(end, end + 2)) || end === src.length) ok.add(m[1]);
+  }
+  return ok;
+}
+export function checkPrepareCalls(src, file = 'file.js') {
+  const bad = [], consts = sqlConstants(src);
+  for (const m of src.matchAll(/\.prepare\(\s*/g)) {
+    const at = m.index + m[0].length, line = src.slice(0, m.index).split('\n').length;
+    const report = why => bad.push(`${file}:${line}: ${why}; SQL must be a plain string literal, with values passed by ? and bind()`);
+    if (`'"\``.includes(src[at])) {
+      const end = readLiteral(src, at);
+      if (end < 0) { report('unterminated string'); continue; }
+      if (src[at] === '`' && src.slice(at, end).includes('${')) { report('SQL is built with ${}'); continue; }
+      if (!/^\s*[),]/.test(src.slice(end, end + 40))) report('SQL is built from a string');
+      continue;
     }
+    const id = /^([A-Za-z_$][A-Za-z0-9_$]*)\s*\)/.exec(src.slice(at));
+    if (id && consts.has(id[1])) continue;
+    report(id ? `"${id[1]}" is not a const UPPER_CASE plain string defined in this file` : 'the SQL is not a string literal');
   }
   return bad;
+}
+export function checkSqlStrings(dirs = [path.join(here, '../core'), path.join(here, '../functions/api/v1')]) {
+  const walk = d => existsSync(d) ? readdirSync(d).flatMap(f => { const p = path.join(d, f); return statSync(p).isDirectory() ? walk(p) : /\.m?js$/.test(f) ? [p] : []; }) : [];
+  return dirs.flatMap(d => walk(d).flatMap(f => checkPrepareCalls(readFileSync(f, 'utf8'), path.relative(path.join(here, '..'), f))));
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

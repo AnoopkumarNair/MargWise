@@ -1,6 +1,8 @@
 // The machine-checked invariants (BACKEND.md, "Invariants"). Usage:
 //   node hosting/tools/check_invariants.mjs                 build a fresh test database from the migrations and check it (CI)
 //   node hosting/tools/check_invariants.mjs --db export.sqlite   check a local SQLite copy of a production export (owner, monthly and after each migration; opened read-only)
+//   node hosting/tools/check_invariants.mjs --db export.sql      the same from the SQL text `wrangler d1 export` writes: it is loaded into a
+//                                                                 temporary in-memory database first (nothing is written to disk)
 // Exit code 0 = no violation, 1 = a violation, 2 = could not run. Output names tables, columns and counts, never values. Invariants that cannot apply yet say so.
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,8 +11,11 @@ import { versions } from '../core/versions.js';
 
 export const EVENT_DATA_MAX = 6000;        // events.data cap in functions/api/event.js
 export const PROFILE_DATA_MAX = 32768;     // ADR-06
-export const FEEDBACK_MAX = 1000;          // capped feedback text (SPEC 9); adjust together with the event handler
-export const FREE_TEXT_STRING_MAX = 64;    // any other string in an adult event is an id, a number as text or an enum word
+export const FEEDBACK_MAX = 1500;          // feedback text cap: contracts/events.schema.json data.text maxLength (a test keeps them equal)
+export const FREE_TEXT_STRING_MAX = 80;    // the longest id the contracts allow (occ ids are up to 80 characters)
+// Any other string in an adult event is an id, a version, a number as text or an enum word: the contract patterns allow no spaces
+// and at most 80 characters. So a string with whitespace, or longer than 80, is free text.
+export const isFreeText = x => typeof x === 'string' && (x.length > FREE_TEXT_STRING_MAX || /\s/.test(x));
 const DAY = 86400000;
 const ident = s => { if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(s)) throw new Error('unsafe identifier'); return '"' + s + '"'; };   // names come from the schema, never from users
 
@@ -45,7 +50,8 @@ export async function runInvariants(db, { now = Date.now(), profileV = versions.
   { // 2
     const id = 2, title = 'No resume text; no @ outside testers.email; no free text except capped feedback';
     const v = [];
-    for (const t of (await db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name <> 'd1_migrations'").all()).results) {
+    // Platform tables are skipped: sqlite_*, D1's own _cf_* tables and d1_migrations (the same list as the data inventory).
+    for (const t of (await db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '\\_cf\\_%' ESCAPE '\\' AND name <> 'd1_migrations'").all()).results) {
       for (const c of await tableCols(db, t.name)) {
         if (t.name === 'testers' && c.name === 'email') continue;
         if (/INT|REAL|NUM/i.test(c.type) && c.type) continue;
@@ -62,7 +68,7 @@ export async function runInvariants(db, { now = Date.now(), profileV = versions.
     if (adultReady) {   // adult events carry ids and numbers; only feedback may hold text, and it is capped
       const rows = (await db.prepare("SELECT e.type, e.data FROM events e JOIN testers t ON t.id = e.tester_id WHERE t.track = 'adult'").all()).results;
       let free = 0, longFeedback = 0;
-      const walk = (x, depth = 0) => { if (typeof x === 'string') { if (x.length > FREE_TEXT_STRING_MAX) free++; } else if (x && typeof x === 'object' && depth < 6) for (const y of Object.values(x)) walk(y, depth + 1); };
+      const walk = (x, depth = 0) => { if (typeof x === 'string') { if (isFreeText(x)) free++; } else if (x && typeof x === 'object' && depth < 6) for (const y of Object.values(x)) walk(y, depth + 1); };
       for (const r of rows) {
         let d; try { d = JSON.parse(r.data); } catch { free++; continue; }
         if (r.type === 'feedback') { const t = d && d.text; if (typeof t === 'string' && t.length > FEEDBACK_MAX) longFeedback++; if (d) { const { text, ...rest } = d; walk(rest); } } else walk(d);
@@ -143,8 +149,10 @@ export function format(results) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const i = process.argv.indexOf('--db');
-    const { createFakeDb, openFakeDbFile } = await import('../tests/adult/fakedb.mjs');
-    const db = i > 0 ? openFakeDbFile(process.argv[i + 1]) : createFakeDb();
+    const { createFakeDb, openFakeDbFile, openFakeDbFromSql } = await import('../tests/adult/fakedb.mjs');
+    const file = i > 0 ? process.argv[i + 1] : null;
+    if (i > 0 && !file) throw new Error('--db needs a file: a SQLite database or the .sql text from wrangler d1 export');
+    const db = !file ? createFakeDb() : /\.sql$/i.test(file) ? openFakeDbFromSql(file) : openFakeDbFile(file);
     const results = await runInvariants(db);
     console.log(format(results));
     const bad = results.filter(r => r.status === 'fail').length;
