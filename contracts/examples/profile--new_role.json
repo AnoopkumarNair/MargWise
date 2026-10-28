@@ -1,0 +1,51 @@
+{
+  "v": 1,
+  "rev": 1,
+  "roles": [
+    {
+      "occ": "occ:15-1253.00",
+      "level": 3,
+      "industry": "it",
+      "years": "3-7",
+      "current": true
+    },
+    {
+      "occ": "occ:ai-llm-evaluator",
+      "level": 3,
+      "industry": "it",
+      "years": "0-1",
+      "current": false
+    }
+  ],
+  "skills": [
+    {
+      "id": "tec:in-langchain",
+      "strength": "used",
+      "last": 2026
+    },
+    {
+      "id": "skl:2.B.3.e",
+      "strength": "rusty",
+      "last": 2019
+    }
+  ],
+  "creds": [
+    {
+      "id": "cred:istqb-ctfl",
+      "year": 2018,
+      "expires": null
+    }
+  ],
+  "lead": {
+    "people": "0",
+    "budget": false,
+    "expert": true
+  },
+  "constraints": {
+    "city": "other",
+    "open_to": ["india", "remote"],
+    "mode": "any"
+  },
+  "job_release": "dev-unaccepted",
+  "matcher_version": "1.0.0"
+}

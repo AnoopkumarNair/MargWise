@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/me_logout_all.response.schema.json",
+  "title": "me_logout_all response",
+  "description": "Every session is revoked, including this one.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok"],
+  "properties": {
+    "ok": {
+      "enum": [true]
+    }
+  }
+}

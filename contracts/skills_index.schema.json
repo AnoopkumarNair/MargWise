@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/skills_index.schema.json",
+  "title": "Skills index",
+  "description": "data/graph/skills_index.json (SPEC 5.4): the dictionary the browser uses to find skills and technologies in text. alt holds other names and Indian abbreviations. A term listed in ambiguous needs a nearby context word before it counts (BUILD_PLAN T4.4).",
+  "type": "array",
+  "maxItems": 50000,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "label", "alt", "kind"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "maxLength": 80,
+        "pattern": "^(skl|tec):[A-Za-z0-9]+([._-][A-Za-z0-9]+)*$"
+      },
+      "label": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "alt": {
+        "type": "array",
+        "minItems": 0,
+        "maxItems": 60,
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        }
+      },
+      "kind": {
+        "type": "string",
+        "enum": ["skill", "knowledge", "activity", "technology"]
+      },
+      "ambiguous": {
+        "type": "array",
+        "minItems": 0,
+        "maxItems": 60,
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        }
+      }
+    }
+  }
+}

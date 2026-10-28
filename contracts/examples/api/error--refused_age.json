@@ -1,0 +1,7 @@
+{
+  "ok": false,
+  "error": {
+    "code": "refused_age",
+    "message": "Margwise for working adults is for people aged 18 and over."
+  }
+}

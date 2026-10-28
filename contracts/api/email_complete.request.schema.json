@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/email_complete.request.schema.json",
+  "title": "email_complete request",
+  "description": "POST /api/v1/email/complete (SPEC 9). Creates the tester. Idempotent: a repeat returns a token for the same tester (unique email_hash; optional idempotency_key per ADR-09).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["pending", "nickname", "consent", "research"],
+  "properties": {
+    "pending": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 512
+    },
+    "nickname": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "pattern": "^[^<>\\u0000-\\u001f]+$"
+    },
+    "consent": {
+      "enum": [true]
+    },
+    "research": {
+      "type": "boolean"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{8,64}$"
+    }
+  }
+}

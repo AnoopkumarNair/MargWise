@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/me_logout_all.request.schema.json",
+  "title": "me_logout_all request",
+  "description": "POST /api/v1/me/logout-all has an empty body. It sets tok_after.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [],
+  "properties": {}
+}

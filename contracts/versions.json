@@ -1,0 +1,7 @@
+{
+  "_doc": "Contract versions (BACKEND ADR-07). Bump the matching number in the same commit as any change: matcher behaviour -> MATCHER_VERSION; profile.schema.json or a band the profile uses -> PROFILE_V (and add a step to profile_migrations.js); slice.schema.json or skills_index.schema.json -> SLICE_V; api/*, events.schema.json or extract.schema.json -> API_V.",
+  "MATCHER_VERSION": "1.0.0",
+  "PROFILE_V": 1,
+  "SLICE_V": 1,
+  "API_V": 1
+}

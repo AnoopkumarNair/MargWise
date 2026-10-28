@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/email_verify.request.schema.json",
+  "title": "email_verify request",
+  "description": "POST /api/v1/email/verify (SPEC 9). Send either email and code, or link (the token from the emailed link). The handler rejects a body with both forms or with neither; this subset of JSON Schema cannot say \"one of\".",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [],
+  "properties": {
+    "email": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 254,
+      "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+    },
+    "code": {
+      "type": "string",
+      "pattern": "^[0-9]{6}$"
+    },
+    "link": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{32,128}$"
+    }
+  }
+}

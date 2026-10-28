@@ -1,0 +1,124 @@
+{
+  "_doc": "Fixed value lists for the adult app (SPEC 5.9, 6, 7 and 9). The profile stores these values, never free text. The schemas repeat these lists as enums, and contracts/tests/contracts.test.mjs checks that they match. Changing a list used by the profile bumps PROFILE_V. Labels shown to people live in the app, not here.",
+
+  "years": {
+    "_doc": "Years in one role (profile roles[].years). Ranges are 'from-to' in whole years; '12+' means 12 or more. The SPEC 6 example uses '3-7'.",
+    "values": ["0-1", "1-3", "3-7", "7-12", "12+"]
+  },
+  "level": {
+    "_doc": "Seniority level of a role, 1 (entry) to 6 (head, director, VP). Worked out by the app from SPEC 7.2 and stored as a number.",
+    "values": [1, 2, 3, 4, 5, 6]
+  },
+  "industry": {
+    "_doc": "Industry of a role (SPEC 3, decision D1). 'it' covers IT services, engineering R&D, software products, GCC technology functions and IT management. 'bpm' is BPM / ITeS. 'bfsi' is banking, financial services and insurance (technology, operations, analytics, risk, BFSI GCCs). 'other' is anything else.",
+    "values": ["it", "bpm", "bfsi", "other"]
+  },
+  "strength": {
+    "_doc": "How well the person knows a skill (SPEC 6 and 7.1): strong = 1.0, used = 0.7, rusty = 0.4.",
+    "values": ["strong", "used", "rusty"]
+  },
+  "lead_people": {
+    "_doc": "How many people the person leads (profile lead.people). SPEC 7.2 adds a level for 6 or more, so the bands split at 6.",
+    "values": ["0", "1-5", "6-20", "21+"]
+  },
+  "hours_month": {
+    "_doc": "Study hours a month the person can give (constraints.hours_month). The SPEC 6 example uses '5-10'.",
+    "values": ["0-5", "5-10", "10-20", "20-40", "40+"]
+  },
+  "course_budget": {
+    "_doc": "Course budget in rupees (constraints.course_budget). 'free' means free courses only; k = thousand, L = lakh. The SPEC 6 example uses '10k-50k'.",
+    "values": ["free", "up-to-10k", "10k-50k", "50k-2L", "2L+"]
+  },
+  "pay_floor_pct": {
+    "_doc": "Lowest pay change the person accepts, in percent of today's pay (constraints.pay_floor_pct). A number, not a string. The SPEC 6 example uses -10. Leave the field out for no floor.",
+    "values": [-30, -20, -10, 0, 10, 20]
+  },
+  "mode": {
+    "_doc": "Preferred work mode (constraints.mode). 'any' means no preference.",
+    "values": ["office", "hybrid", "remote", "any"]
+  },
+  "city": {
+    "_doc": "City cluster ids (SPEC 5.9), stored instead of any address. Metros: blr Bengaluru, hyd Hyderabad, pnq Pune, maa Chennai, ncr Delhi NCR, bom Mumbai, ccu Kolkata, amd Ahmedabad. Tier 2: cjb Coimbatore, cok Kochi, jai Jaipur, idr Indore, bbi Bhubaneswar, vtz Visakhapatnam, trv Thiruvananthapuram, ixc Chandigarh, nag Nagpur, mys Mysuru. 'other' is anywhere else in India. data/graph/raw/cities.json must use exactly these ids, each with its state.",
+    "values": ["blr", "hyd", "pnq", "maa", "ncr", "bom", "ccu", "amd", "cjb", "cok", "jai", "idr", "bbi", "vtz", "trv", "ixc", "nag", "mys", "other"]
+  },
+  "open_to": {
+    "_doc": "Places the person would work (constraints.open_to): any city cluster id above, plus 'india' (anywhere in India), 'remote' (remote only) and 'abroad'. 'Same city' is the person's own cluster id. Used only for the needs_relocation flag (ADR-16).",
+    "values": ["blr", "hyd", "pnq", "maa", "ncr", "bom", "ccu", "amd", "cjb", "cok", "jai", "idr", "bbi", "vtz", "trv", "ixc", "nag", "mys", "other", "india", "remote", "abroad"]
+  },
+  "priority_keys": {
+    "_doc": "Keys of profile.priorities (SPEC 6 and 7.3). short_move is the 'short' component (coverage).",
+    "values": ["pay", "ai_safe", "short_move", "demand", "enjoy"]
+  },
+  "priority_weight": {
+    "_doc": "Weight of one priority slider, a whole number from 0 (ignore) to 5. The SPEC 6 example uses 0 and 1.",
+    "values": [0, 1, 2, 3, 4, 5]
+  },
+  "age_band": {
+    "_doc": "Age band kept for an adult tester instead of a birth year (SPEC 3 and 10). Under 18 is refused and never stored. Never part of the profile or the matcher (ADR-16).",
+    "values": ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
+  },
+  "trust": {
+    "_doc": "Trust level of every fact (SPEC 2).",
+    "values": ["official", "secondary", "estimate", "observed"]
+  },
+  "need_kind": {
+    "_doc": "Kind of a skill-like node in a slice or in skills_index.json: O*NET skill, knowledge or work activity, or a technology.",
+    "values": ["skill", "knowledge", "activity", "technology"]
+  },
+  "skill_ai_label": {
+    "_doc": "Skill AI label (SPEC 5.5): ai_does_much = 'AI already does much of this' (share 0.5 or more), people_do = 'people still do this' (0.15 or less), mixed = in between, unknown = no task data.",
+    "values": ["ai_does_much", "mixed", "people_do", "unknown"]
+  },
+  "ai_task_mode": {
+    "_doc": "AI use on a task (SPEC 5.5). none = no use was observed; unknown = no data.",
+    "values": ["automation", "augmentation", "none", "unknown"]
+  },
+  "road_kind": {
+    "_doc": "Kind of move (SPEC 7.2).",
+    "values": ["up", "across", "diagonal", "reset", "fork"]
+  },
+  "road_reach": {
+    "_doc": "How close a road is by coverage (SPEC 7.3): adjacent 0.7 or more, stretch 0.4 to 0.7, leap under 0.4.",
+    "values": ["adjacent", "stretch", "leap"]
+  },
+  "road_flag": {
+    "_doc": "Constraint flags on a road (SPEC 5.9 and 7.3). They are shown and never hide a road.",
+    "values": ["outside_time", "below_pay_floor", "needs_relocation"]
+  },
+  "experience_fit": {
+    "_doc": "Experience fit against the target level's year band (SPEC 7.2).",
+    "values": ["below", "in", "above"]
+  },
+  "maturity": {
+    "_doc": "Maturity of a new AI-era role (SPEC 5.7).",
+    "values": ["settling", "established"]
+  },
+  "event_type": {
+    "_doc": "Adult event types for POST /api/v1/event (SPEC 9).",
+    "values": ["intake", "profile_saved", "roads_viewed", "road_opened", "road_added", "feedback"]
+  },
+  "intake_source": {
+    "_doc": "Where the experience came from (intake event): a file upload, pasted text, or a typed job title.",
+    "values": ["upload", "paste", "title"]
+  },
+  "intake_mode": {
+    "_doc": "Reading mode (SPEC 8 screen 4): most_accurate (redacted text to the AI read), on_device, or none (title route).",
+    "values": ["most_accurate", "on_device", "none"]
+  },
+  "feedback_about": {
+    "_doc": "What a feedback event is about.",
+    "values": ["intake", "roads", "road", "job_today", "general"]
+  },
+  "error_code": {
+    "_doc": "Stable error codes in the API error envelope (ADR-09, SPEC 9). refused_age and unauthorized are added to the ADR-09 list.",
+    "values": ["bad_request", "unauthorized", "refused_age", "rate_limited", "invalid_code", "expired", "conflict", "not_found", "unavailable"]
+  },
+  "registry_kind": {
+    "_doc": "Node kinds in data/graph/id_registry.json (SPEC 5.2). Technology ids (tec:) use kind 'skill'.",
+    "values": ["occupation", "skill", "task", "title", "credential", "cluster"]
+  },
+  "registry_status": {
+    "_doc": "Status of an id in the registry (ADR-05).",
+    "values": ["live", "tombstone"]
+  }
+}

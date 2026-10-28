@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/email_verify.response.schema.json",
+  "title": "email_verify response",
+  "description": "A known address gets token. A new address gets needsProfile: true and pending, a signed 30-minute token holding the email hash, invite and age band.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok"],
+  "properties": {
+    "ok": {
+      "enum": [true]
+    },
+    "token": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 512
+    },
+    "needsProfile": {
+      "enum": [true]
+    },
+    "pending": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 512
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "slice_v": 1,
+  "release": "abc123",
+  "occ": {
+    "id": "occ:13-2011.00",
+    "label": "Accountants and Auditors",
+    "alt": ["Chartered Accountant"],
+    "soc": "13-2011",
+    "isco": ["2411"],
+    "job_zone": 4,
+    "typical_level": [3, 4],
+    "ratings": {
+      "oldest": "2021-07",
+      "newest": "2024-06"
+    },
+    "as_of": "2025-08",
+    "src": "onet"
+  },
+  "ladder": [
+    {
+      "level": 3,
+      "label": "Senior Accountant",
+      "years": "5-8"
+    }
+  ],
+  "needs": [
+    {
+      "id": "skl:2.A.2.a",
+      "label": "Critical Thinking",
+      "kind": "skill",
+      "w": 0.61,
+      "ai": "mixed",
+      "as_of": "2023-06",
+      "src": "onet"
+    },
+    {
+      "id": "skl:2.C.1.a",
+      "label": "Economics and Accounting",
+      "kind": "knowledge",
+      "w": 0.72,
+      "ai": "ai_does_much",
+      "as_of": "2023-06",
+      "src": "onet"
+    },
+    {
+      "id": "tec:excel",
+      "label": "Microsoft Excel",
+      "kind": "technology",
+      "w": 0.8,
+      "ai": "mixed",
+      "as_of": "2023-06",
+      "src": "onet"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "tsk:8063",
+      "label": "Prepare detailed reports on audit findings.",
+      "ai_mode": "augmentation",
+      "as_of": "2026-03",
+      "src": "aei"
+    },
+    {
+      "id": "tsk:8064",
+      "label": "Confer with clients about their accounts.",
+      "ai_mode": "none",
+      "as_of": "2026-03",
+      "src": "aei"
+    }
+  ],
+  "signals": [
+    {
+      "kind": "ai_obs",
+      "period": "2026Q1",
+      "value": 0.42,
+      "as_of": "2026-03",
+      "src": "aei"
+    }
+  ],
+  "targets": [
+    {
+      "occ": {
+        "id": "occ:13-2051.00",
+        "label": "Financial and Investment Analysts",
+        "job_zone": 4,
+        "as_of": "2025-08",
+        "src": "onet"
+      },
+      "via": ["close_to"],
+      "needs": [
+        {
+          "id": "skl:2.A.2.a",
+          "label": "Critical Thinking",
+          "kind": "skill",
+          "w": 0.61,
+          "ai": "mixed",
+          "as_of": "2023-06",
+          "src": "onet"
+        },
+        {
+          "id": "skl:2.C.1.a",
+          "label": "Economics and Accounting",
+          "kind": "knowledge",
+          "w": 0.72,
+          "ai": "ai_does_much",
+          "as_of": "2023-06",
+          "src": "onet"
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "sources": [
+    {
+      "id": "onet",
+      "name": "O*NET 30.0 Database",
+      "url": "https://www.onetcenter.org/database.html",
+      "trust": "official",
+      "as_of": "2025-08",
+      "licence": "CC BY 4.0"
+    },
+    {
+      "id": "aei",
+      "name": "Anthropic Economic Index",
+      "url": "https://www.anthropic.com/economic-index",
+      "trust": "observed",
+      "as_of": "2026-03"
+    }
+  ]
+}

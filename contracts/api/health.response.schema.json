@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/health.response.schema.json",
+  "title": "health response",
+  "description": "Health (SPEC 9, ADR-10, ADR-18). ok is false and the status is 503 when the database is not reachable. No secrets.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok", "db", "release", "api_v", "ai_enabled", "email_configured", "flags"],
+  "properties": {
+    "ok": {
+      "type": "boolean"
+    },
+    "db": {
+      "type": "boolean"
+    },
+    "release": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "api_v": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "ai_enabled": {
+      "type": "boolean"
+    },
+    "email_configured": {
+      "type": "boolean"
+    },
+    "flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adult_signup", "ai_enabled", "email_dry_run", "show_demand"],
+      "properties": {
+        "adult_signup": {
+          "type": "boolean"
+        },
+        "ai_enabled": {
+          "type": "boolean"
+        },
+        "email_dry_run": {
+          "type": "boolean"
+        },
+        "show_demand": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

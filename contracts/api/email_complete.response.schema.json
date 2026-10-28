@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/email_complete.response.schema.json",
+  "title": "email_complete response",
+  "description": "The session token for the new (or existing) tester.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok", "token"],
+  "properties": {
+    "ok": {
+      "enum": [true]
+    },
+    "token": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 512
+    }
+  }
+}
