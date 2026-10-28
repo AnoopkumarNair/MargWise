@@ -9,7 +9,7 @@ The earlier drafts treated adults as an extension of the school product: the sam
 - **A student needs the 10,000-foot view.** Which broad field, which stream, which exam. The interest walk and the 16 fields are right for that.
 - **A working adult needs street level.** Starting from the job they hold today, they go deeper (the skills in it, what is rising and falling, what AI already does) and wider (adjacent roles, stretch roles, and the skills and credentials that bridge them). The unit is the occupation and the skill, not the field. The core is the map of how jobs and skills connect.
 
-**One map, two zoom levels.** The adult graph is the master data. The school product's 16 fields become clusters of occupations on the same graph, so students see the continent and adults see the streets. Work on the graph improves both.
+**One map, set to each audience's depth.** The graph is the master data for every audience. The school product's 16 fields become named clusters of occupations on it, so students see the continent and adults see the streets. Work on the graph improves both. See "One graph, depth set per audience".
 
 For adults the interest walk becomes an optional lens ("not sure what you enjoy? An 8-minute walk adds an interest lens"), not the entry point.
 
@@ -87,6 +87,33 @@ Each signal keeps its history, so the app can say "rising for 3 months" and not 
 
 The lamp art can still frame this as a map (your lamp, roads, brighter lamps for demand, fog for AI exposure), but it is a skin on the graph, not the logic.
 
+## One graph, depth set per audience
+
+The same graph and the same two pipelines serve everyone. A **depth profile** (`data/graph/profiles.json`) decides what each audience sees. Some rows change more than how much is shown, because a 14-year-old and a 35-year-old need different things, and the law treats them differently.
+
+| Setting | Student (Class 9 to 12) | Graduate (18 to 24) | Working adult |
+| --- | --- | --- | --- |
+| Entry point | The interest walk | Degree, then the walk or the graph | Current job and skills |
+| Unit shown first | The 16 fields | Occupations within fields | Occupations and skills |
+| How far the map opens | Field, then its careers, then 1 step to related careers ("careers that share skills with this one") | 2 steps | 2 steps, plus drill-down on any skill, role or credential |
+| Skills | Broad groups in plain words ("working with numbers", "explaining to people"), linked to school subjects | Named skills | Named skills and tools, with "I have this" ticks |
+| Bridges | Subjects, entrance exams, degrees (today's school path) | Master's, exams, first jobs, certifications | Certifications, NSQF qualifications, part-time degrees, lateral moves |
+| Demand signal | **Long horizon only:** 10-year projections and broad direction. A month-to-month trend is noise for someone 8 to 10 years from work | 1 to 3 year trend | Monthly trend with history |
+| Pay | US median and India broad-group band (today) | Entry pay band | Pay change for each road |
+| AI | Exposure tag and the "AI used / not used" task lists (today) | The same, per role | Per task in their own job, and for each road |
+| Ordering | The interest engine's field order (calibrated, fixed) | Interest order, with optional priorities | The person's own priority sliders |
+| Learning loop | **Off.** Nothing a student does adds to the graph. Children's data cannot be used for behavioural monitoring under DPDP, and student data is research-only with parental consent | On, with consent | On, with consent |
+| Follow-ups | Only under the school research consent, through the counsellor | Opt-in email | Opt-in email |
+
+**What students gain.**
+
+- **Field cards are generated from the graph,** so they stay current with the pipelines instead of hand edits.
+- **"Careers that share skills"** widens a student's view beyond the first career they recognise.
+- **Plain-word skills link a school subject to real work:** "Physics leads to these skills, which these careers use".
+- **AI and demand facts come from the same refreshed sources the adults see.**
+
+**Keeping the student product valid.** The 16 fields stay fixed, named clusters with curated membership. They are not re-derived automatically. The field-ranking calibration (`data/fieldbias.json` and the 360 reference profiles) depends on which careers are in each field, so any membership change goes through the same review, re-runs the reference build, and is versioned like an engine change.
+
 ## The system learns as it is used
 
 | From the person | Feeds | Shown only when |
@@ -131,7 +158,7 @@ Pipeline A collects and extracts. That is fine where the source allows it:
 5. **Priorities sliders and drill-down.**
 6. **The learning loop.** "Add your own road", ticked-skill proposals, follow-ups, network pulse.
 7. **The scheduled weekly session.**
-8. **Back to schools.** The 16 fields re-derived as clusters of the graph.
+8. **Student depth profile.** Field cards and "careers that share skills" generated from the graph, with the 16 field memberships fixed and the calibration re-run on any change. The student product's open items (verifiable parental consent, validation) still gate any use with real students.
 
 ## Open questions for the owner
 
