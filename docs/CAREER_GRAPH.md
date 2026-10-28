@@ -1,144 +1,140 @@
-# Career graph and the learning loop
+# Career graph: the adult product's core
 
-Status on 28 Oct 2026: design only. Nothing below is built. The existing pipeline runs (checked on 28 Oct 2026: 16 fields, 83 careers, 0 validation errors, 239 fact-check claims); this design extends it.
+Status on 28 Oct 2026: design only. Nothing below is built. The existing school pipeline runs (checked on 28 Oct 2026: 16 fields, 83 careers, 0 validation errors, 239 fact-check claims).
 
-## The idea in one paragraph
+## The correction (28 Oct 2026)
 
-Everything Margwise knows becomes one graph:
+The earlier drafts treated adults as an extension of the school product: the same walk and engine at the centre, the same 16 school-stream fields, with a graph added on the side. That was wrong.
 
-- jobs, skills, tasks, credentials and fields are the nodes;
-- "needs", "teaches", "is close to" and "people moved from here to there" are the edges.
+- **A student needs the 10,000-foot view.** Which broad field, which stream, which exam. The interest walk and the 16 fields are right for that.
+- **A working adult needs street level.** Starting from the job they hold today, they go deeper (the skills in it, what is rising and falling, what AI already does) and wider (adjacent roles, stretch roles, and the skills and credentials that bridge them). The unit is the occupation and the skill, not the field. The core is the map of how jobs and skills connect.
 
-A weekly run refreshes it from public sources and from demand signals, and opens a pull request for the founder to approve. A working adult is placed on the graph at their current job and shown the roads out of it. Each road is seen through four separate lenses: interest fit, skill gap, demand in India and AI exposure. What people go on to do, when they agree to tell us, adds new roads. The graph learns; the interest engine does not.
+**One map, two zoom levels.** The adult graph is the master data. The school product's 16 fields become clusters of occupations on the same graph, so students see the continent and adults see the streets. Work on the graph improves both.
 
-## Nodes and edges
+For adults the interest walk becomes an optional lens ("not sure what you enjoy? An 8-minute walk adds an interest lens"), not the entry point.
 
-Every node and edge carries `source`, `trust` (official, secondary, estimate, or the new `observed`), `as_of` and `cadence`, exactly like `data/sources.yaml` entries today.
-
-| Node | Key | From |
-| --- | --- | --- |
-| Occupation | SOC code, plus NCO-2015 and ISCO-08 codes through crosswalks | O*NET (today), BLS SOC to ISCO crosswalk, NCO-2015 (built on ISCO-08) |
-| Skill | O*NET skill, knowledge and technology element ids; ESCO skill ids where mapped | O*NET, ESCO (EU, open, mapped to ISCO) |
-| Task | O*NET task id | O*NET, with AI use from the Anthropic Economic Index (today) |
-| Field | Our 16 fields | `data/content.py` |
-| Credential | Degree, exam, certification or NSQF qualification | Official bodies; National Qualifications Register (NQR) |
-| Job title | A typed title, normalised | O*NET alternate titles, then user-confirmed titles |
-| Demand point | Occupation or skill, month, source | Demand signals, below |
-
-| Edge | Meaning | Weight |
-| --- | --- | --- |
-| `needs` | Occupation needs skill | O*NET importance and level |
-| `has_task` | Occupation has task | Task share; AI-use flag |
-| `close_to` | Occupation is close to occupation | O*NET related occupations, plus skill overlap computed by us |
-| `teaches` | Credential teaches skill | From the official syllabus or NQR qualification file, with a quote |
-| `in_field` | Occupation is in field | Ours, as today |
-| `is_title_of` | Job title means occupation | Dictionary (AI_LAYER.md) |
-| `moved` | People moved from occupation A to B | Count of consented, confirmed moves; `trust: observed` |
-| `moved_via` | A move used a credential | Count, from the same follow-ups |
-
-**Storage.** A single SQLite file built by the pipeline (`data/graph/graph.sqlite`, with `nodes` and `edges` tables), queried with NetworkX in Python. No graph database server: the graph is a few hundred thousand edges at most, which SQLite handles easily. The app gets small precomputed JSON slices, one per starting occupation, so the page stays static and fast. A graph server can come later if live queries are ever needed.
-
-## Demand: what is hot in India, legally
-
-Scraping LinkedIn or Indeed breaks their terms of use, both block bots, and Margwise's edge is being trustworthy. So no scraping. The only job connector this account has (ZipRecruiter) covers the US and Canada only. Use these instead, each recorded in `sources.yaml` with its trust level:
-
-| Signal | What it gives | Notes |
-| --- | --- | --- |
-| **Employer job boards through their public ATS feeds** (Greenhouse and Lever publish open postings as JSON for embedding on career sites) | Real postings with full descriptions, for a curated list of companies hiring in India | Keep a list of 150 to 300 companies in `data/demand/companies.yaml`. Read each ATS's terms first. Store counts and extracted skills, not the postings |
-| **Adzuna API (India market)** | Posting counts and salary hints by title and keyword | Free developer key. Commercial use needs Adzuna's agreement and "Jobs by Adzuna" attribution, so email them before launch |
-| **Public reports** | Sector and role trends, for example the Naukri JobSpeak monthly index, LinkedIn's Jobs on the Rise India, India Skills Report, and National Career Service vacancy figures | Read by the counsel (AI_LAYER.md) with a word-for-word quote check. `secondary` trust |
-| **O*NET Hot Technologies and In Demand flags** | Skills that show up most in postings | US-based, already joinable on SOC |
-| **The founder's network as a sensor** | Once a month, 3 questions to consenting professionals who hire: "Did your team hire this quarter? For which role? Which 3 skills decided it?" | The most current signal, from people the founder can verify. `observed` trust, shown only from 5 answers up |
-
-Demand is shown as a direction (rising, steady, falling) with its sources and month. It is never a single "hotness score", because the signals cover different slices of the market.
-
-## Placing a person on the graph
-
-1. **Where you stand.** The current job is matched to an occupation by title (AI_LAYER.md). An optional "skills I already have" list follows, pre-ticked from that occupation's top skills, so the person only edits it.
-2. **Your interests.** The existing walk and engine, unchanged.
-3. **Roads out.** Candidate targets come from `close_to` and `moved` edges, plus the best-fitting occupations in the person's top three fields.
-4. **Four lenses, never blended into one score:**
-   - **Interest fit:** from the engine, as today.
-   - **Skill gap:** the skills the target needs that the person has not ticked, weighted by importance.
-   - **Demand in India:** the direction and its sources.
-   - **AI exposure:** of the target, next to the current job.
-5. **Bridges.** For each road, the cheapest path through `teaches` edges: which credentials cover the gap, with duration and cost from the official page. Where people have made this move, `moved_via` shows what they used, from 5 people up.
-6. **What AI is taking in your job now.** The person's current tasks, sorted into "AI is used for this today" and "no AI use seen yet" (data that already exists). Roads that lean on the second group are highlighted. For professionals this is often the most useful screen, and it needs no new data.
-
-**The story becomes the map.** For adults, the result screen can be the lamp map itself:
-
-- the person stands at their own lamp (the current job);
-- roads lead to other lamps;
-- a road's length is the skill gap;
-- a lamp's brightness is demand;
-- fog over a lamp is AI exposure;
-- way-stations on a road are credentials.
-
-This uses the existing art style and gives the walk a purpose.
-
-## The learning loop
+## Two pipelines
 
 ```mermaid
-flowchart LR
-  U[Person explores roads] --> E[Events: roads opened,<br/>own road added]
-  E --> AG[Weekly aggregates<br/>counts from 5 people up,<br/>no names or emails]
-  F[Follow-up at 3, 6, 12 months<br/>opt-in: did you move? to what? what helped?] --> AG
-  N[Network pulse<br/>what we hired for] --> AG
-  AG --> Q[Proposals: new titles,<br/>new roads, new credentials,<br/>content gaps]
-  Q --> PR[Weekly pull request<br/>founder approves]
-  PR --> G[(Career graph)]
-  G --> U
+flowchart TB
+  subgraph A[Pipeline A: the map - structure, monthly]
+    A1[Taxonomies<br/>O*NET full database, ESCO,<br/>NCO-2015 and crosswalks] --> AG[(Career graph<br/>occupations, skills, tasks,<br/>titles, credentials)]
+    A2[Indian job postings<br/>ATS feeds, Adzuna<br/>skills and titles extracted] --> AG
+    A3[Credentials<br/>NQR, certification bodies,<br/>university programmes] --> AG
+  end
+  subgraph B[Pipeline B: the weather - signals, weekly]
+    B1[Demand counts and trends<br/>by occupation and skill] --> S[(Signals<br/>time-stamped,<br/>attached to graph nodes)]
+    B2[Pay bands from postings and PLFS] --> S
+    B3[AI exposure and observed AI use<br/>BLS, Anthropic Economic Index] --> S
+    B4[Events<br/>layoffs, hiring drives, GCC openings,<br/>policy, from reports and news] --> S
+  end
+  AG --> R[Ranking for one person<br/>their job, their skills, their priorities]
+  S --> R
+  R --> U[Roads: adjacent, stretch,<br/>with gap, pay, demand, AI, bridges]
+  U -. consented outcomes .-> AG
 ```
 
-**What learns and what does not:**
+### Pipeline A: the map (structure)
 
-| Learns from use | Never learns from use |
-| --- | --- |
-| The job-title dictionary (confirmed titles) | The interest engine and its scores. These stay fixed and calibrated, or test-retest and validation mean nothing |
-| New roads (`moved` edges), but only from confirmed follow-ups, not from clicks | The order of fields, which comes from interest fit |
-| Which credentials people actually used (`moved_via`) | Facts such as fees, exam rules and pay, which come only from sources |
-| The content queue: which roads people open that have no reviewed card yet | |
-| "Add your own road": a target we did not suggest becomes a proposal | |
+What exists and how it connects. It changes slowly, so it runs monthly.
+
+| Input | What it adds | Notes |
+| --- | --- | --- |
+| **O*NET full database** (CC BY 4.0) | About 900 occupations, each with skills, knowledge, abilities, work activities, tasks, technology skills (named tools and software), related occupations and alternate titles | Today the repository reads only interests, wages and tasks for 83 careers. The full download is the backbone |
+| **ESCO** (the EU's occupations and skills classification) | About 3,000 occupations and over 13,000 skills, with "essential" and "optional" links between them, mapped to ISCO-08 | A finer skill vocabulary than O*NET. Check its licence before use |
+| **NCO-2015 and crosswalks** | Indian occupation codes (built on ISCO-08), joined to SOC through the published ISCO to SOC crosswalk | The India link. NCO is also what PLFS pay data uses |
+| **Indian job postings** (ATS feeds of a curated company list, Adzuna) | Real Indian job titles, and which skills appear with which titles. This is the "skills that go together" layer | This is the collection step, done within each source's terms. Keep extracted titles, skills and counts, not the postings themselves |
+| **Credentials** (NQR, certification bodies, university programmes) | `teaches` links from a credential to skills, with duration and cost | Every link carries a word-for-word quote from the official page (AI_LAYER.md quote check) |
+
+**Output.** `data/graph/graph.sqlite`, with nodes (occupation, skill, task, title, credential, cluster) and edges (`needs`, `has_task`, `close_to`, `co_occurs`, `teaches`, `in_cluster`, `is_title_of`, `moved`). Every node and edge carries `source`, `trust`, `as_of`. Validation checks:
+
+- no orphan skills;
+- every occupation has at least 10 skills;
+- every crosswalk link resolves;
+- no edge without a source.
+
+### Pipeline B: the weather (signals)
+
+What is changing, and how strongly. It runs weekly, and it attaches time-stamped values to nodes. It never adds or removes structure.
+
+| Signal | Attached to | Source |
+| --- | --- | --- |
+| Posting volume and its 3-month and 12-month trend | Occupation, skill | ATS feeds, Adzuna |
+| Pay band in India | Occupation | Postings that show pay (`secondary`), PLFS (`official`, broad group) |
+| AI exposure and observed AI use per task | Occupation, task | BLS categories, Anthropic Economic Index (both exist today) |
+| Rising and falling skills | Skill | Change in the share of postings that mention it |
+| Events | Occupation, skill, industry | Public reports and news, read by the counsel with the quote check: hiring drives, layoffs, new GCCs, policy changes |
+| Network pulse | Occupation, skill | Monthly answers from people in the founder's network who hire, shown from 5 answers up |
+
+Each signal keeps its history, so the app can say "rising for 3 months" and not only show today's number.
+
+**What "ranks" means.** Signals rank roads, they never rewrite the map. A falling demand trend pushes a road down; it does not delete the road. A person who wants that road still sees it, with the signal next to it.
+
+## What a working adult sees
+
+1. **Where you stand.**
+   - **Current job:** typed and matched to an occupation (AI_LAYER.md).
+   - **Industry and years of work.**
+   - **Skills you have:** pre-ticked from the occupation's top skills, so you edit a list rather than write one.
+2. **Deeper: your own job today.** The skills in it, each marked rising, steady or falling in India. The tasks AI already does, and the ones where no AI use has been seen yet. How pay for the job is moving.
+3. **Wider: the roads out.**
+   - **Adjacent roles (one step):** most of your skills carry over.
+   - **Stretch roles (two steps):** a real gap, but a known bridge.
+   - **Each road shows:** the skills to add, the pay change, the demand trend, AI exposure, and the credentials that bridge the gap (with duration and cost from the official page).
+4. **Your priorities set the order.** Sliders for what matters: pay, staying safe from AI, a short move, demand, interest fit (only if the walk was taken). The order follows the person's weights, and every road shows how its components add up, so nothing is a black box. The default is equal weights.
+5. **Drill anywhere.** Open a skill to see every role that needs it. Open a role to see its roads. Open a credential to see which roads it opens. This is how "deeper and wider" works on screen.
+6. **The interest walk (optional)** adds an "enjoy" lens to every road. It is the same engine and is never retrained.
+
+The lamp art can still frame this as a map (your lamp, roads, brighter lamps for demand, fog for AI exposure), but it is a skin on the graph, not the logic.
+
+## The system learns as it is used
+
+| From the person | Feeds | Shown only when |
+| --- | --- | --- |
+| Typed job titles they confirm | Pipeline A: `is_title_of` | Reviewed |
+| Skills they tick that the occupation lacks | Pipeline A: proposed `needs` edges for Indian versions of a job | 5 or more people, then reviewed |
+| A target they add that we did not suggest | Pipeline A: proposed `close_to` edge | 5 or more people, then reviewed |
+| Follow-up at 3, 6 and 12 months (opt-in): did you move, to what, what helped | Pipeline A: `moved` and `moved_via` edges, `trust: observed` | 5 or more people, then reviewed |
+| Roads opened | Neither pipeline. Only the content queue (what to review next) | Never shown as advice |
 
 **Guardrails:**
 
-- **No herd effect.** Clicks never raise a road's rank. If everyone opens "data science", that sets the content queue, not the advice. "People like you also explored" is either shown as its own labelled lens or not at all.
-- **Minimum group of 5.** No count, road or credential learned from users is shown until at least 5 different people back it.
-- **No single person can tip the graph.** Each verified email counts once per edge, and new `moved` edges need the founder's approval in the weekly pull request.
-- **Consent.** The adult notice says that anonymised choices improve the map. Follow-ups need their own opt-in (the research tick or a separate one). Withdrawing removes a person's events from the next weekly build.
-- **Cold start.** Seed the graph from O*NET related occupations, crosswalks and NQR. Then add 30 to 50 "how I switched" stories from the founder's network: before, after, what helped, how long, entered as `observed` edges with each person's consent.
+- **Popularity is not evidence.** Clicks never change the ranking.
+- **No single person can tip the graph.** One verified email counts once per edge.
+- **Every user-derived edge needs the founder's approval** in the weekly pull request.
+- **Withdrawal.** A person who withdraws is removed from the next build.
+- **The moat.** Confirmed Indian career moves, and what helped make them, exist in no public dataset. That is the asset this loop builds.
 
-**The real moat.** The PRICING_AND_MARKET doc names "consented outcome data" as hard to copy. Confirmed Indian career moves, with what helped, are exactly that. No public dataset has them.
+## Collecting the data, within the rules
 
-## The weekly run as a scheduled Claude Code session
+Pipeline A collects and extracts. That is fine where the source allows it:
 
-The founder does not need to run the pipeline by hand. A scheduled cloud session can be the operator:
+- open taxonomies under open licences;
+- employers' own ATS job feeds, which are published for embedding;
+- APIs with keys (Adzuna);
+- public reports, which are read and quoted.
 
-1. **Monday (time to be chosen).** A fresh session checks out the repository on a new branch.
-2. It runs `python3 pipeline/run.py --fetch` (sources), then `pipeline/demand.py` (ATS feeds, Adzuna, reports), then `pipeline/graph.py` (rebuild and checks).
-3. It pulls **aggregates only** from the live site through a new admin endpoint, `GET /api/admin?aggregates=1`. That endpoint returns only counts from 5 up: no names, emails or individual events. So the scheduled session never sees personal data.
-4. The counsel (AI_LAYER.md) writes change notes and proposals, which pass the quote check and `validate.py`.
-5. The session opens a pull request: what changed, new proposals, a coverage figure and failures. **It never merges or deploys.** The founder reviews, merges, runs `--accept` and deploys.
+**What stays out:** LinkedIn, Indeed and Naukri pages. Their terms forbid automated collection and they block bots, and a product built on trust cannot rest on breaking terms. If one of them offers a licensed data feed later, it slots into Pipeline A as one more source.
 
-Needs before this can run:
+## Operating it
 
-- **Network access.** The environment's network settings must allow the source hosts: onetonline.org, bls.gov, the exam bodies, the ATS feeds, Adzuna and the report sites.
-- **Secrets.** An admin key for the aggregates endpoint, and an Adzuna key, as environment secrets, never in the repository.
-- **Cost.** Each run uses the founder's Claude usage. Weekly for sources, monthly for demand, is enough.
+- **Pipeline A.** Monthly, as `pipeline/graph.py`, with the same validate, change report and `--accept` flow as today.
+- **Pipeline B.** Weekly, as `pipeline/signals.py`.
+- **Both are run by a scheduled Claude Code session** that opens a pull request and never merges. The session reads live usage only as aggregate counts from 5 up, through an admin endpoint, so it never sees personal data. It needs network access to the source hosts and two secrets: the admin key and the Adzuna key.
 
-## Build order
+## Build order (adult-first)
 
-1. **Graph v0 from what exists.** O*NET occupations, skills, tasks, related occupations and alternate titles; our fields; the AI layer; the SOC to ISCO to NCO crosswalks. Build to SQLite with checks. No new outside data yet.
-2. **Professional result v0.** Where you stand, the four lenses, and "what AI is taking in your job now". Demand shows "not yet measured".
-3. **Seeding from the network.** 30 to 50 switch stories as `moved` edges.
-4. **Demand v1.** The ATS feed list and public reports, then Adzuna once its terms are agreed.
-5. **The weekly scheduled session,** with the aggregates endpoint and pull requests.
-6. **Learning loop.** "Add your own road", the follow-up emails and the network pulse.
-7. **The lamp map** as the adult result view.
+1. **Pipeline A v0 from open data only.** The O*NET full database and the crosswalks, built into SQLite with checks. No postings yet. This is enough for "where you stand", the deeper view and adjacent roles.
+2. **The adult result v0.** Current job, ticked skills, deeper view, roads with skill gap and AI exposure. Demand shows "not yet measured".
+3. **Pipeline B v0.** AI signals (they already exist) and PLFS pay, then the ATS feeds for the founder's company list.
+4. **Postings into Pipeline A.** Indian titles and skill co-occurrence.
+5. **Priorities sliders and drill-down.**
+6. **The learning loop.** "Add your own road", ticked-skill proposals, follow-ups, network pulse.
+7. **The scheduled weekly session.**
+8. **Back to schools.** The 16 fields re-derived as clusters of the graph.
 
 ## Open questions for the owner
 
-1. Which 150 to 300 companies go on the ATS list first? Your league is the obvious start: the firms your network works at and hires from.
-2. Will you email Adzuna about commercial terms now, or start without it?
-3. The NQR has a public search, but no bulk download was found. Ask NCVET for data access, or start with certifications from official bodies only?
-4. What day and time should the weekly run happen, and should it run weekly or only monthly at first?
+1. Which 150 to 300 companies go on the posting list first?
+2. Email Adzuna about commercial terms now, or start with ATS feeds only?
+3. Which industries does your network sit in? Pipeline A v0 should be deepest there first.

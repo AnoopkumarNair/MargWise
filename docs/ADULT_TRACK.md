@@ -10,20 +10,19 @@ Purpose: a real product for adults making their own decision, not a stand-in for
 | --- | --- |
 | What adults are for | Users in their own right, deciding their own next step |
 | Who | (B) working professionals first: switching or reskilling, often because of AI. (A) college students and recent graduates, 18 to 24, second |
-| Format | Both: the story walk, or a quick mode on the same engine. The user picks at the start |
+| Core for working adults | The career graph (docs/CAREER_GRAPH.md): start from the current job, go deeper into its skills and wider into connected roles. The interest walk (story or quick mode) is an optional lens, not the entry point. The 16 school fields are not the unit for adults |
 | First users | The founder's network first, verified personally; then parents through schools, online communities and, for graduates, college career cells |
 
 ## Order of work (changed 28 Oct 2026: professionals first)
 
 The owner chose working professionals as the first segment: they are the founder's own league, the founder can verify each tester personally, and the founder can judge whether the content is right for them. Graduates move to second place.
 
-1. **Shared core first.** Verified email sign-in, age gate, adult notice, track flag, quick mode, adult result page. Every later step needs these.
-2. **Professionals (B) second.** The first users are invited from the founder's network, one labelled code per circle (for example former colleagues, LinkedIn, parents through schools). Build the from-where-you-are path in two layers:
-   - **data first:** related occupations, skills and knowledge from O*NET joined on the SOC code, and the AI exposure of the current job next to each target. All of this comes from public data and is cheap;
-   - **India reskilling routes second:** hand-written, sourced and fact-checked. This is the expensive part, and the one place where AI drafting helps (see `docs/AI_LAYER.md`).
-3. **Graduates (A) third,** after professionals meet the rules below. Their `after_degree` content is separate work.
+1. **Shared core first.** Verified email sign-in, age gate, adult notice, track flag. Every later step needs these.
+2. **Career graph, Pipeline A v0** (open data: the O*NET full database and crosswalks), then the **adult result v0**: where you stand, the deeper view of your own job, and roads out with skill gap and AI exposure. See `docs/CAREER_GRAPH.md` for the full order, including Pipeline B (signals) and the learning loop.
+3. **The interest walk as an optional lens** for adults, with quick mode and adult story framing.
+4. **Graduates (A) after professionals,** using the same graph at a shallower zoom.
 
-For professionals, quick mode is the default and the story is offered as an option (see ADULT_WORKFLOWS sections 4 and 6).
+When a professional takes the walk, quick mode is the default and the story is one tap away (see ADULT_WORKFLOWS sections 4 and 6). Hand-written reskilling text is replaced by graph bridges: credentials linked to skills, each with a quoted official source.
 
 ## Regulatory guardrails (adults only removes the minors problem)
 

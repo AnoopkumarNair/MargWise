@@ -1,5 +1,7 @@
 # Adult track: workflows from sign-in to the end
 
+> **Changed 28 Oct 2026.** For working adults, the result is the career graph view in `docs/CAREER_GRAPH.md` ("What a working adult sees"). The walk (sections 4 and 6) is an optional lens taken before or after it, not the first step. Sign-in, consent, research, deletion and operator workflows below still apply.
+
 Status on 28 Oct 2026: design only. It builds on `docs/ADULT_TRACK.md` and reuses today's flow where it already works. Each step says whether it is **reused**, **changed** or **new**.
 
 Today's flow, for reference: gate (name, invite code, a self-declared "18 or older, or my parent agrees" tick), then intro, context (class, board, stream lean), the walk with lamp locks, interest shape, the three closest fields, field page, parent summary, feedback, and log out. Return codes (replaced by verified email for adults), saved progress and "Is this still <name>?" already exist.
