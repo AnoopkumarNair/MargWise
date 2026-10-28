@@ -73,7 +73,7 @@ npx wrangler pages deploy hosting/public --project-name margwise
 | `data/` | Raw snapshots, curated content, the source registry, schemas, releases |
 | `pipeline/` | The runner, the quality gate and the change report |
 | `hosting/` | Cloudflare Pages Functions (tester API), database schema, admin page |
-| `docs/` | Architecture, calibration plan, review process, art brief. Adult app: `docs/adult/SPEC.md` (authoritative), `BUILD_PLAN.md` and `TEST_PLAN.md`; earlier adult design notes alongside |
+| `docs/` | Architecture, calibration plan, review process, art brief. Adult app: `docs/adult/SPEC.md` (authoritative), `BACKEND.md`, `DELIVERY.md`, `BUILD_PLAN.md` and `TEST_PLAN.md`; earlier adult design notes alongside |
 
 ## Data sources and credits
 

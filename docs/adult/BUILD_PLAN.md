@@ -20,14 +20,15 @@ Read `docs/adult/SPEC.md` first. It is the source of truth. **Build in the verti
 
 ## Delivery slices (follow this order)
 
-Slices 1 to 3 store nothing on a server and need no sign-in, so the owner can show them to people from their network straight away, with no legal blockers. Slice 4 adds accounts.
+S0 comes first and is short. Slices 1 to 3 store nothing on a server and need no sign-in, so the owner can show them to people from their network straight away, with no legal blockers. Slice 4 adds accounts.
 
 | Slice | The owner can try | Tickets (detail below) | Tests (TEST_PLAN) |
 | --- | --- | --- | --- |
+| **S0. Foundations** | Nothing visible yet, but the base everything else stands on: contracts, the id registry, migrations, portable handlers, logging, the invariant checker and the CI skeleton | F0.1 to F0.8 (**ASK**: create the preview D1 database and Turnstile keys) | Contract-validator tests; baseline-equals-current-schema test; migration guard; handler and health tests; inventory test; CI green |
 | **S1. Title to roads** | Open `/work/`, type a job title, tick skills, see adjacent, stretch and leap roads with coverage and gaps, open one | T0.2; T1.1; T1.2 (SOC to ISCO only); T1.3 without PLFS; T1.4; T1.5 without embeddings; T1.6; T2.1; T2.2 with coverage, gap and kinds only (levels and bridges stubbed); T2.3; T2.4 with 8 cases; T4.1 without sign-in; T4.7; T5.2 basic; plus `matcher/slice.schema.json` | Layer 1 all, layer 2 (8 golden cases and properties), layer 7 S1 script, layer 8 budgets for the first load and slices, layer 9 |
-| **S2. Deeper and honest labels** | "Your job today" (skills with AI labels, tasks by AI use, pay band, data age), level labels (up, across, diagonal, reset, fork), constraints and priority sliders, road detail, drill | T1.3 PLFS and freshness (SPEC 5.5, 5.6); T2.2 levels (SPEC 7.2) and order (7.3); T2.4 grown to 15 cases (**ASK**: the owner reads them); T4.6 constraints part; T5.1; T5.3 (bridges show "no reviewed course yet" unless credentials are curated); **T1.7 new AI-era roles** | Layers 1 and 2 extended, layer 7 S2, layer 8 a11y; **people test after S2** |
+| **S2. Deeper and honest labels** | "Your job today" (skills with AI labels, tasks by AI use, pay band, data age), level labels (up, across, diagonal, reset, fork), constraints and priority sliders, road detail, drill | T1.3 PLFS and freshness (SPEC 5.5, 5.6); T2.2 levels (SPEC 7.2) and order (7.3); T2.4 grown to 15 cases (**ASK**: the owner reads them); T4.6 constraints part; T5.1; T5.3 (bridges show "no reviewed course yet" unless credentials are curated); **T1.7 new AI-era roles**; **T1.8 certifications**; **T1.9 city clusters** | Layers 1 and 2 extended, layer 7 S2, layer 8 a11y; **people test after S2** |
 | **S3. Resume on the device** | Upload a PDF or DOCX, or paste text; see found roles and skills with source lines; confirm; roads. Nothing leaves the device; the profile lives in memory only | T4.3; T4.4; T4.6 confirm screen; the fixture generator scripts and fixtures | Layer 3 all fixtures, layer 4 (on-device network and storage tests, canaries), layer 7 S3, layer 8 intake budget; **people test after S3** |
-| **S4. Accounts and saving** | Sign up with email (birth year first), save the profile, log in on another device, export, delete | T3.1 to T3.5; T4.2 (**ASK**: notice wording); T5.4; the adult panel of T7.2 | Layers 5 and 7 S4; `fakedb.mjs` |
+| **S4. Accounts and saving** | Sign up with email (birth year first), save the profile, log in on another device, export, delete | T3.1 to T3.7; T4.2 (**ASK**: notice wording); T5.4; the adult panel of T7.2 | Layers 5 and 7 S4; `fakedb.mjs` |
 | **S5. Better reading on the device** | Tier 2 suggestions for implied skills; the owner runs the 30-resume evaluation | T4.5; T7.3 | Layer 3 extended (tier 2 fixtures), layer 8 model-size and consent check; the 30-person evaluation |
 | **S6. "Most accurate"** | Redacted preview, then large-model reading, with fallbacks | T6.1 to T6.5 (**ASK**: R2 or Hugging Face for model files; the provider and spend cap) | Layers 4 (canaries in the preview and in the AI request), 6, 7 S6 |
 | **S7. Pilot readiness** | The full journey; the readiness review | T7.1; T7.4; T5.5 as the full journey | All layers; the SPEC 11 results table |
@@ -39,6 +40,50 @@ Rules for slicing:
 - **Stub the edges, not the core.** A slice may show "not yet measured" or "no reviewed course yet", but whatever it does show must be real data and the real matcher.
 - **One pull request per slice,** with screenshots, the test summary and a 5-minute demo script for the owner.
 - **The owner signs off each slice.** Feedback from the people tests goes into the next slice's tickets, or into a short "changes" note at the top of that slice.
+
+## F0. Foundations (slice S0; BACKEND.md ADRs)
+
+**F0.1 Contracts and validator (architect).**
+
+- `contracts/validate.js`: the dependency-free subset validator in ADR-07, with `contracts/tests/validate.test.mjs` covering every keyword, on valid and invalid cases.
+- `versions.json` and `bands.json`.
+- Draft schemas: `profile`, `slice`, `skills_index`, `extract`, `events` and every v1 API request and response.
+- **Done when:** the validator tests pass, and every example in SPEC 6 and 9 validates.
+
+**F0.2 Id registry (ADR-05).**
+
+- `data/graph/id_registry.json`, empty at first, filled at the first release.
+- `pipeline/check_registry.py`: the file is append-only (compared with `git show main:`), every id in any previous release manifest exists, and every current id is `live`.
+- `contracts/migrate_ids.js`, with tests for: a tombstone with a replacement, a tombstone without one, and an unknown id.
+
+**F0.3 Migrations (ADR-03).**
+
+- `hosting/migrations/0000_baseline.sql`: the combined effect of `schema.sql` to `schema12.sql`.
+- `migrations_dir` in `wrangler.toml`.
+- `hosting/tests/migration_guard.mjs`.
+- **A runbook step for the owner:** on the existing production database, mark `0000_baseline.sql` as applied, never run it there. **ASK:** the owner creates `margwise-preview` and adds `preview_database_id`.
+- **Done when:** applying the baseline to an empty database produces the same tables, columns and indexes as applying `schema.sql` to `schema12.sql` in order (a test compares `sqlite_master`).
+
+**F0.4 `hosting/tests/adult/fakedb.mjs`.** The `node:sqlite` stand-in for D1 (TEST_PLAN layer 5). It applies `hosting/migrations/*.sql` in order.
+
+**F0.5 Portable handler core (ADR-01, 09, 10).** `hosting/core/` holds:
+
+- `deps.js`: builds `db`, `now`, `random`, `log`, `config` and `assets` from `env`. Fakes for tests.
+- `http.js`: `ok()` and `fail(code)` responses with the ADR-09 headers, request ids, body-size limits and contract validation.
+- `log.js`: one JSON line per request with the ADR-10 fields only, plus a test that it never logs a body.
+- `health.js`, plus its adapter `hosting/functions/api/v1/health.js`.
+
+**F0.6 Data inventory and invariants (ADR-11, 14).**
+
+- `hosting/core/data_inventory.js`.
+- `hosting/tools/check_invariants.mjs`, with the checks that apply so far.
+- A test that every table with `tester_id` or `email_hash` is in the inventory.
+
+**F0.7 CI skeleton.** Jobs `contracts`, `graph`, `matcher`, `api`, `intake-unit` and `e2e` in `build-check.yml`, running whatever exists so far, plus a vendored-file hash check against `hosting/public/vendor/VERSIONS.md`.
+
+**F0.7b Feature switches (ADR-18).** `hosting/core/flags.js`, with safe defaults, reported in health.
+
+**F0.8 Ops documents.** The "Adult" section skeleton in `docs/PILOT_RUNBOOK.md` (DELIVERY "Release and operations runbook"), and an empty `docs/adult/deviations.md`.
 
 ## M0. Housekeeping (small)
 
@@ -82,7 +127,12 @@ Rules for slicing:
 
 **T1.5 Exports.** `data/graph/export.py` writes `slices/<soc>.json`, `skills_index.json` and `titles.json` as in SPEC 5.4.
 
-- **Indian abbreviations.** Add a starter list at `data/graph/raw/abbrev_in.csv` (columns: `term,maps_to_id,note`) with about 40 common ones (SAP FICO, MIS, BFSI, KYC, GST, TDS and so on), each mapped to an existing skill or technology id. Mark the file as needing the owner's review.
+- **Indian abbreviations and titles.** Add a starter list at `data/graph/raw/abbrev_in.csv` (columns: `term,maps_to_id,note`) focused on the three industries (SPEC 3), about 80 terms:
+  - **IT:** SDE, SDET, DevOps, SRE, L1/L2/L3 support, delivery manager, scrum master and SAP modules (FICO, MM, SD, ABAP, BASIS);
+  - **BPM:** AHT, CSAT, voice and non-voice process, team lead, quality analyst, F&A, O2C, P2P, R2R;
+  - **BFSI:** KYC, AML, credit underwriting, collections, treasury ops, GST, TDS, MIS.
+
+  Also add Indian job-title variants (associate, senior associate, analyst, senior analyst, consultant, senior consultant, lead, AM, DM, manager, AVP, VP) to the title dictionary. Mark both files as needing the owner's review.
 - **Skill AI labels** come from SPEC 5.5.
 - **Done when:** the size limits in SPEC 5.3 pass.
 
@@ -104,9 +154,18 @@ Rules for slicing:
   - a golden case with a road into a new role passes;
   - the owner has approved the seed list.
 
+**T1.8 Certifications catalogue (SPEC 5.8, slice S2).** `data/graph/credentials.py` loads `raw/credentials.yaml` into `cred:` nodes with `teaches` edges (each with an exam-guide quote).
+
+- **Seed list.** Draft about 40 across IT, BPM and BFSI from official exam guides: cloud, Kubernetes, security, testing, ITIL, PMP and agile, SAP, Salesforce, ServiceNow, data and AI, COPC and Six Sigma, NISM, IIBF, CFA and FRM, and NPTEL, SWAYAM and FutureSkills Prime courses. **ASK:** the owner approves.
+- **Matcher.** Credit the taught skills and flag expired certifications (SPEC 7.1).
+- **Golden case.** Add one where a certification closes a gap.
+- **Tests.** Every entry has an official URL, an issuer, and at least 5 `teaches` links with quotes.
+
+**T1.9 City clusters (SPEC 5.9, slice S2).** `raw/cities.json` from SPEC 5.9, with the constraint questions on the constraints screen and the `needs_relocation` flag. City demand stays "not yet measured" until postings exist.
+
 ## M2. Matcher (SPEC sections 6 and 7)
 
-**T2.1 Contracts.** `matcher/bands.json` (every band list) and `matcher/profile.schema.json` (JSON Schema for SPEC 6).
+**T2.1 Contracts.** Use `contracts/bands.json` and `contracts/profile.schema.json` from F0.1. A change to either goes through the architect lane (DELIVERY change control).
 
 **T2.2 `matcher/match.js`.** A plain ES module with no dependencies, usable both in the browser and in Node. It exports:
 
@@ -129,31 +188,56 @@ It implements SPEC 7.1 to 7.4 exactly, with `MATCHER_VERSION = '1.0.0'`.
 
 - **Done when:** the tests pass, and the owner has read the 15 cases' roads. **ASK:** show them in a short table in the pull request description.
 
-## M3. Backend (SPEC sections 9 and 10)
+## M3. Backend (SPEC sections 9 and 10; BACKEND ADR-01 to 14)
 
-**T3.1 `hosting/schema13.sql`.** Exactly as SPEC 10. Update `docs/ARCHITECTURE.md`'s list of migrations.
+Every endpoint is a pure handler in `hosting/core/` with a one-line adapter in `hosting/functions/api/v1/`. Tests run the handlers against `fakedb` with an injected clock and randomness.
 
-**T3.2 Invite track.**
+**T3.1 `hosting/migrations/0001_adult.sql`.** Exactly as SPEC 10. Add the new tables to `data_inventory.js`. Update `docs/ARCHITECTURE.md`.
+
+**T3.2 Invite track and student/adult isolation (BACKEND ADR-15).**
+
+- **Every existing query:** student, admin and counsellor queries get the track filter. Add the ADR-15 regression tests.
+- **Retention per track:** `RETENTION_DAYS_STUDENT` and `RETENTION_DAYS_ADULT`.
 
 - **`admin.js`:** creating an invite accepts `track` (`student` or `adult`), and the invite list shows it.
 - **`join.js`:** refuses adult codes, with "Use the link for working adults: /work/".
 
-**T3.3 Email sign-in.** `hosting/functions/api/email/start.js`, `verify.js` and `complete.js`, as in SPEC 9.
+**T3.3 Keys and tokens (ADR-04).** `hosting/core/keys.js` uses a separate key per purpose (`SIGN_KEY`, `EMAIL_KEY`, `CODE_KEY` and `IP_KEY`), with versioned adult tokens `v1.<iat>.<mac>`, overlap acceptance during rotation, and `tok_after`. Email normalisation follows ADR-04. Tests cover rotation and the overlap window.
 
-- **Codes:** 6 digits from `crypto.getRandomValues`, stored as an HMAC. 15-minute expiry. 5 tries.
-- **Links:** carry a separate random token, also stored as an HMAC.
-- **Server-side age check:** `currentYear - birthYear < 18` refuses, increments `under18` for the invite, and stores nothing else.
-- **Sending:** a small `email/_send.js` wrapper around Cloudflare Email Service, using `EMAIL_FROM`. In tests and local dev, `EMAIL_DRY_RUN=1` writes the message to the response log instead.
-- **Done when:** the unit tests in `hosting/tests/email.test.mjs` cover the age refusal, rate limits, wrong code, expiry, a known address logging in, and a new address completing.
+**T3.4 Email sign-in.** `hosting/core/email_start.js`, `email_verify.js` and `email_complete.js`, as in SPEC 9 and ADR-04.
 
-**T3.4 Profile and account endpoints.**
+- **Turnstile:** verified on the server, with test keys in local and preview.
+- **Codes and links:** codes from `crypto.getRandomValues`, stored as HMACs with `CODE_KEY`. A 15-minute expiry, 5 tries, and a new code voids the old one.
+- **Age check on the server:** under 18 counts in `under18` only.
+- **Limits:** per address (`email_sends`), per IP bucket and site-wide.
+- **No account discovery:** the same queries run for known and unknown addresses.
+- **`pending` tokens:** signed, valid for 30 minutes.
+- **Idempotent completion:** a repeat returns the same tester, because of the unique index.
+- **Sending:** `hosting/core/email_send.js` wraps Cloudflare Email Service. `EMAIL_DRY_RUN=1` records the message for tests.
+- **Done when:** every case in TEST_PLAN layer 5 for email passes.
 
-- `me/profile.js` (GET and POST): validate against the schema, check every id against the id list published with the current graph release (`hosting/functions/api/_graph_ids.json`, generated at T1.6).
-- `me/export.js`, `me/delete.js` and `me/logout-all.js`.
-- Extend `purgeOld` and the admin delete to cover `profiles` and `email_codes`.
-- **Done when:** tests cover a schema rejection, an unknown id rejection, a full delete (no rows left in any table for that tester) and the audit row.
+**T3.5 Profile and account endpoints (ADR-05, 06, 11).**
 
-**T3.5 Events.** In `event.js`, add validators for the adult event types in SPEC 9 (ids and numbers only, no free text except `feedback.text`, which is capped at 1,500 characters as today).
+- **Profile GET:** upgrades to the current `v` and maps ids.
+- **Profile PUT:** checks the contract, checks ids against the release id list (loaded through `env.ASSETS.fetch` and cached in memory, never bundled) and writes with `WHERE rev = ?`. A mismatch returns `409`.
+- **Export, delete and logout-all** use `data_inventory.js`.
+- **The purge** covers `email_codes` older than 24 hours and `email_sends` older than 7 days.
+- **Done when:** these tests pass:
+  - a schema rejection;
+  - an unknown-id rejection;
+  - a tombstone mapping;
+  - the concurrent-write conflict;
+  - a cross-account attempt;
+  - a full delete, where the invariant checker finds no rows left;
+  - the audit row.
+
+**T3.6 Events (ADR-08).** `POST /api/v1/event` takes the adult event types in SPEC 9 (ids and numbers only, plus `feedback.text` capped at 1,500 characters). It deduplicates by `eid`, caps events per tester per day, and validates against the contract.
+
+**T3.7 Ops counters and alerts (ADR-10).**
+
+- `ops_daily` increments in the handlers.
+- An admin metrics endpoint shows aggregates only.
+- `.github/workflows/health-watch.yml` calls health and metrics every 30 minutes and opens an issue on the ADR-10 alert conditions. The owner configures the URL and secret.
 
 ## M4. Adult app shell and intake without AI
 
@@ -237,10 +321,10 @@ Unit tests use synthetic examples.
 
 **T6.3 Placeholders and preview.** Consistent placeholders (`[NAME]`, `[EMPLOYER_n]`, `[COLLEGE_n]`, `[CITY_n]`), with the map held in memory only. The preview highlights placeholders, any word can be tapped to hide it, and nothing is sent until "Send to read".
 
-**T6.4 `/api/ai/read`.**
+**T6.4 `POST /api/v1/ai/read`** (handler in `hosting/core/ai_read.js`, with Turnstile and the `ai_calls` limits).
 
 - **Provider settings:** live in `data/ai_config.json` (provider, model, endpoint, timeout). The key is the `AI_API_KEY` secret. The default provider is Gemini on the paid tier. **ASK** the owner to confirm it and to set the spend cap.
-- **The prompt:** asks for JSON matching `matcher/extract.schema.json`, made of roles (title text, placeholder employer, start, end), skills (graph id plus source line) and credentials.
+- **The prompt:** asks for JSON matching `contracts/extract.schema.json`, made of roles (title text, placeholder employer, start, end), skills (graph id plus source line) and credentials.
 - **Checks:** the server checks the schema, drops unknown ids, rejects any output containing an email address or a phone pattern, applies the limits in SPEC 9, and logs nothing but model, tokens, time and success.
 - **Back in the browser:** placeholders are restored for the confirm screen only.
 
@@ -285,4 +369,4 @@ The owner decides on the pilot.
 
 ## Order of value
 
-Follow the slices. S1 to S3 need no owner decision except reading the golden cases. S4 needs the notice wording. S6 needs the R2-or-Hugging-Face decision and the provider confirmation. S7 needs the owner and real people.
+Follow the slices, starting with S0. S1 to S3 need no owner decision except reading the golden cases. S4 needs the notice wording. S6 needs the R2-or-Hugging-Face decision and the provider confirmation. S7 needs the owner and real people.

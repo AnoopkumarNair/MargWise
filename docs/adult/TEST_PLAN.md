@@ -39,6 +39,8 @@ Every slice in `BUILD_PLAN.md` ships with the tests listed for it here. A slice 
   - every road target in a slice carries its needs;
   - every id in a slice exists in the graph;
   - `skills_index.json` has no duplicate term pointing at two ids unless the term is marked ambiguous.
+- **Certifications** (SPEC 5.8): every entry has an official URL, an issuer, a validity, and at least 5 `teaches` links with quotes. A golden case where a certification closes a gap, and one with an expired certification.
+- **Cities** (SPEC 5.9): the clusters are unique, each has a state, and the profile accepts only known clusters.
 - **Freshness:** a test with a fixed "today" checks that weights fall with rating age (SPEC 5.6), and that the greying and hiding thresholds apply.
 
 ## 2. Matcher
@@ -111,7 +113,7 @@ The canaries are listed in `fixtures/canaries.json`.
 
 ## 5. API
 
-**D1 stand-in.** `hosting/tests/adult/fakedb.mjs` wraps Node's built-in `node:sqlite` (Node 22) with the D1 call shapes the code uses: `prepare().bind().first()`, `.run()`, `.all()` and `env.DB.batch()`. It applies `hosting/schema*.sql` in order. If `node:sqlite` is unavailable, the tests fail with a clear message rather than skipping.
+**D1 stand-in.** `hosting/tests/adult/fakedb.mjs` wraps Node's built-in `node:sqlite` (Node 22) with the D1 call shapes the code uses: `prepare().bind().first()`, `.run()`, `.all()` and `env.DB.batch()`. It applies `hosting/migrations/*.sql` in order (BACKEND ADR-03). If `node:sqlite` is unavailable, the tests fail with a clear message rather than skipping.
 
 **For each endpoint:**
 
@@ -129,7 +131,20 @@ The canaries are listed in `fixtures/canaries.json`.
 - the feedback length cap;
 - the email dry run.
 
-**Student endpoints:** `join.js` refuses adult codes, and existing student flows are unchanged.
+**Student endpoints:** `join.js` refuses adult codes, and existing student flows are unchanged. With an adult tester in the database, every existing student, admin and counsellor endpoint returns exactly what it returned before (ADR-15).
+
+**Backend foundations** (BACKEND ADRs):
+
+- **Migrations:** the baseline equals the old schema files applied in order; the migration guard rejects destructive SQL.
+- **Key rotation:** tokens from the old key work inside the overlap window and fail after it. `tok_after` revokes them.
+- **Email normalisation:** cases covering upper case, spaces, Unicode lookalikes, and `+tags` left unchanged.
+- **Optimistic concurrency:** two writes from the same `rev`, where one wins and the other gets `409`.
+- **The id registry:** append-only, tombstones mapped on read.
+- **Profile migrations:** `v1` to `v2` with fixtures, once `v2` exists.
+- **Logging:** a test captures log lines for every endpoint and fails if any contains an email, a code, a token, an IP or a request body.
+- **The inventory:** every table with `tester_id` or `email_hash` is listed.
+- **The invariant checker** passes after the full e2e journey, including the delete.
+- **Feature switches:** each one off, with the rest still working.
 
 ## 6. AI read
 
@@ -184,6 +199,15 @@ The existing `build-check.yml` steps run unchanged on every pull request. Adult 
 | After slice 3 | The same 5 | Their own resume, on-device mode | The confirm screen takes 4 minutes or less. Nobody is surprised by what was found |
 | After slice 5 | 30 consenting people | `eval_intake.mjs` on their resumes and confirmed profiles | SPEC 11 intake and redaction targets |
 | Before the pilot | Owner | The whole journey on their own phone, on mobile data | No blockers |
+
+## Browsers and devices
+
+- **Automated:** Chromium at phone and desktop sizes.
+- **Manual, by the owner, before each slice sign-off:**
+  - Chrome on a mid-range Android phone;
+  - Safari on an iPhone;
+  - one desktop browser other than Chrome.
+- **A slice cannot be signed off** with a blocker on any of these.
 
 ## CI wiring
 

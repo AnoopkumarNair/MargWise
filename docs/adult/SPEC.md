@@ -54,12 +54,24 @@ The student game stays as it is. It will later read the same graph at a shallowe
 | AI in the job model | Task-level AI use and automation versus augmentation, and skill labels ("AI already does much of this" or "people still do this"). Emerging skills from postings, approved by a human |
 | Scores | "Readability, out of 6" and "Role match, %", each shown with its definition. Not in v1 |
 | Add-ons | Side roads and paid mentor calls. Not in v1 |
+| **Industries (D1, decided 28 Oct 2026)** | **Primary: IT**, in full: IT services, engineering R&D, software products, the technology functions of GCCs, and IT management (delivery, programme, product and engineering management). **Second: BPM / ITeS** (business process management). **Third: BFSI** technology, operations, analytics and risk, including BFSI GCCs. See "Why these industries" below |
+| **Location** | Metro-first pilot through the founder's network, but no city is excluded. The person's city cluster and openness to move are inputs. City demand is shown once postings are connected (5.9) |
+| **Certifications** | Part of the map: as **bridges** (what a certification teaches) and as **asked-for credentials** (what employers list), never double-counted with skills (5.8) |
+| **Backend** | As in `docs/adult/BACKEND.md` (ADR-01 to ADR-14 and the invariants). Delivery follows `docs/adult/DELIVERY.md` |
+
+**Why these industries.**
+
+- **One sector, three segments.** India's technology sector was estimated by NASSCOM at about 5.95 million people in FY26. Of its USD 315 billion revenue, IT services is about USD 149 billion, engineering R&D USD 63 billion and BPM USD 59 billion. Hiring growth has slowed, campus hiring has fallen significantly, and most net hiring growth came from GCCs.
+- **BPM / ITeS** is the most AI-compressed part of the sector (support, finance and accounting operations, data processing). Its people have the strongest reason to look for a next role, and their roads lead to adjacent IT, analytics and new AI-era roles (for example, AI trainer, data annotation lead, LLM evaluation).
+- **BFSI** sits right next to IT. Technology and BFSI together were reported as 56 percent of GCC hiring in the first half of 2026, BFSI and fintech had the highest hiring intensity, and about 190 BFSI GCCs employ around 540,000 people. Its operations, analytics and risk roles are heavily AI-exposed, and many of its people already sit in technology functions.
+- **Portal users.** All three groups use job portals heavily, are digital-first, and are in the founder's network.
+
+(Figures are from press coverage of NASSCOM's Strategic Review 2026 and of a July 2026 foundit GCC report. They describe the sector, so they are not shown to users as facts.)
 
 ### Open (the owner decides; the v1 defaults allow work to start)
 
 | # | Question | Default until answered |
 | --- | --- | --- |
-| D1 | Which 2 or 3 industries to go deep on first | All industries at O*NET depth. No Indian ladders or abbreviation lists beyond a starter set |
 | D2 | The company list for ATS feeds | Empty. Pipeline B demand shows "not yet measured" |
 | D3 | Adzuna commercial terms | Not used |
 | D4 | Pilot price | Free for invited testers |
@@ -69,7 +81,12 @@ The student game stays as it is. It will later read the same graph at a shallowe
 ## 4. Architecture
 
 ```
+contracts/                     JSON Schemas, bands, versions, validator, id and profile migrations (BACKEND ADR-05/06/07)
 data/graph/                   Pipeline A + B outputs (committed, reviewed, accepted like content.json)
+  id_registry.json             append-only registry of every published id (ADR-05)
+  raw/emerging_roles.yaml      new AI-era roles (5.7)
+  raw/credentials.yaml         certifications catalogue (5.8)
+  raw/cities.json              city clusters (5.9)
   raw/onet/<version>/          O*NET database text files (pinned version)
   raw/crosswalk/               SOC<->ISCO-08 crosswalk, NCO-2015 <-> ISCO-08
   build_graph.py               Pipeline A v0: raw -> graph.sqlite
@@ -84,8 +101,10 @@ app/adult/                     the adult app source (separate from the student g
   index.html, app.js, intake.js, redact.js, match.js, styles.css
   build.py                     copies + stamps release ids -> hosting/public/work/
 hosting/public/work/           built adult app, served at /work/
-hosting/functions/api/         shared Pages Functions; new: email/, me/profile, me/export, me/delete, ai/read
-hosting/schema13.sql           adult columns and tables
+hosting/core/                  portable adult handlers: handle(request, deps) (ADR-01), data_inventory.js (ADR-14)
+hosting/functions/api/v1/      thin Pages Functions adapters for the adult API
+hosting/migrations/            wrangler d1 migrations: 0000_baseline.sql (existing schema), 0001_adult.sql, ... (ADR-03)
+hosting/tools/                 check_invariants.mjs, migration_guard.mjs
 engine/                        unchanged
 matcher/                       match.js (shared by browser and tests), reference.py, tests/golden.json
 ```
@@ -113,10 +132,10 @@ CREATE TABLE node (id TEXT PRIMARY KEY, kind TEXT NOT NULL,       -- occupation 
   label TEXT NOT NULL, alt TEXT, attrs TEXT,                       -- attrs: JSON (job_zone, soc, isco, nco, description, ...)
   source TEXT NOT NULL, trust TEXT NOT NULL, as_of TEXT NOT NULL);
 CREATE TABLE edge (src TEXT NOT NULL, dst TEXT NOT NULL, kind TEXT NOT NULL,
-  -- needs | has_task | close_to | co_occurs | teaches | in_cluster | is_title_of | skill_near | moved | moved_via
+  -- needs | has_task | close_to | co_occurs | teaches | asked_for | in_cluster | is_title_of | skill_near | moved | moved_via
   weight REAL, attrs TEXT, source TEXT NOT NULL, trust TEXT NOT NULL, as_of TEXT NOT NULL,
   PRIMARY KEY (src, dst, kind));
-CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai_tier | ai_task_mode | pay_band_in | demand_trend | skill_trend | entry_share
+CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai_tier | ai_task_mode | pay_band_in | demand_trend | skill_trend | entry_share | city_share | remote_share | pay_band_city
   period TEXT NOT NULL, value TEXT NOT NULL, source TEXT NOT NULL, trust TEXT NOT NULL, as_of TEXT NOT NULL,
   PRIMARY KEY (node, kind, period));
 ```
@@ -229,18 +248,55 @@ Official lists lag the market by years, and AI has created roles that are not in
    Roads into a new role are labelled "New role".
 5. **India first.** Prefer roles with Indian sources. Many AI roles in India sit in global capability centres (GCCs), IT services and data-services firms, so the seed should reflect the founder's industries (D1).
 
+### 5.8 Certifications
+
+Certifications play two roles, which are kept apart so nothing is counted twice:
+
+1. **Bridge.** A certification `teaches` skills. If a person lacks those skills, the certification is a way to close the gap.
+2. **Asked-for credential.** Employers list certain certifications in postings, for example AWS Solutions Architect, CKA, PMP, ITIL 4, CISSP, ISTQB, Salesforce Administrator, ServiceNow CSA, SAP, NISM or IIBF. This is an `asked_for` edge from an occupation to a credential, with the share of postings that list it. It comes from Pipeline B, so it is empty until postings are connected.
+
+**The catalogue: `data/graph/raw/credentials.yaml`.** Each entry has:
+
+- `id` (`cred:aws-saa`), name and issuer;
+- `official_url` and the `exam_guide_url`;
+- level, typical cost in INR and hours;
+- `validity_years` (null if it does not expire);
+- India availability (online, test centres in India);
+- `teaches`: skill ids, each with a word-for-word quote from the exam guide;
+- `source`, `trust: official` (from the issuer), `as_of`;
+- `reviewed_by` and `reviewed_on`.
+
+Include low-cost Indian routes where they exist: NPTEL and SWAYAM courses with certification, NASSCOM FutureSkills Prime, NISM (securities) and IIBF (banking).
+
+**Seed.** About 40 certifications across IT, BPM and BFSI, drafted with real exam-guide quotes. The owner approves each one (**ASK**, slice S2).
+
+**How the matcher uses them:**
+
+- **Skills credited.** A certification the person holds, and that has not expired, credits its `teaches` skills at the `used` level (0.7), unless the person rated those skills themselves. Their own rating wins.
+- **Expired certifications** credit at the `rusty` level (0.4) and are labelled "expired, renew?".
+- **Screening flags.** An `asked_for` certification that the person lacks is shown as a separate screening note on the road ("Often asked for: CKA, in 31 percent of postings"). It does not change coverage, which measures skills only.
+- **Bridges** (7.4) choose from certifications first. Each bridge shows cost, hours, validity, and the official link.
+
+### 5.9 Location
+
+- **Who it is for.** The pilot starts in metros through the founder's network, because that is where most of these jobs are: Bengaluru alone was reported as about 30 percent of GCC hiring, and metros about 88 percent of GCC activity. Tier-2 cities are growing fastest, so none is excluded.
+- **City clusters.** `raw/cities.json` lists Bengaluru, Hyderabad, Pune, Chennai, Delhi NCR, Mumbai, Kolkata, Ahmedabad, a tier-2 list (for example Coimbatore, Kochi, Jaipur, Indore, Bhubaneswar, Visakhapatnam, Thiruvananthapuram, Chandigarh, Nagpur, Mysuru) and "other". Each cluster has a state. Only the **cluster** is stored, never an address.
+- **Inputs.** The profile records the person's current cluster and their openness: same city, these cities, anywhere in India, remote only, abroad.
+- **Signals.** Once postings are connected, demand and pay are recorded per occupation per cluster, with a "remote or hybrid share". Each road shows "Where these jobs are: mostly Bengaluru, Hyderabad, Pune; 20 percent remote". Until then it shows "not yet measured". A road where most openings are outside the person's acceptable places gets the `needs_relocation` flag. It is never hidden.
+- **Pay by city.** Postings that show pay, per cluster, with `secondary` trust. PLFS has no city-level occupation pay, so it stays a broad national band.
+
 ## 6. User model
 
 Stored in D1 as JSON, holding ids and bands only:
 
 ```json
 {
-  "v": 1,
+  "v": 1, "rev": 3,
   "roles": [{"occ": "occ:13-2011.00", "level": 3, "industry": "bfsi", "years": "3-7", "current": true}],
   "skills": [{"id": "skl:2.A.2.a", "strength": "strong", "last": 2026}],
-  "creds": [{"id": "cred:...", "year": 2019}],
+  "creds": [{"id": "cred:aws-saa", "year": 2024, "expires": 2027}],
   "lead": {"people": "1-5", "budget": false, "expert": true},
-  "constraints": {"hours_month": "5-10", "course_budget": "10k-50k", "relocate": "india", "pay_floor_pct": -10, "mode": "hybrid"},
+  "constraints": {"hours_month": "5-10", "course_budget": "10k-50k", "city": "blr", "open_to": ["blr", "hyd", "remote"], "pay_floor_pct": -10, "mode": "hybrid"},
   "priorities": {"pay": 1, "ai_safe": 1, "short_move": 1, "demand": 1, "enjoy": 0},
   "job_release": "abc123", "matcher_version": "1.0.0"
 }
@@ -250,7 +306,9 @@ Stored in D1 as JSON, holding ids and bands only:
 | --- | --- |
 | `strength` | `used`, `strong`, `rusty` |
 | `level` | 1 to 6 (section 7.2) |
-| Bands | Fixed strings from the lists in `matcher/bands.json` |
+| Bands | Fixed strings from the lists in `contracts/bands.json` |
+| `rev` | Increases on every save. Used for optimistic concurrency (BACKEND ADR-06) |
+| Ids | Must be live or tombstoned-with-replacement in `id_registry.json`. Mapped on read by `contracts/migrate_ids.js` (ADR-05) |
 
 ## 7. Matcher v1 (`matcher/match.js`, mirrored by `matcher/reference.py`)
 
@@ -260,6 +318,7 @@ For person P and target T, with need weights `w_s` from T's slice:
 
 ```
 have(s) = 1.0 if strong, 0.7 if used, 0.4 if rusty (or last-used more than 3 years ago and not strong)
+          if the person did not rate s but holds a credential that teaches s: 0.7 if valid, 0.4 if expired (5.8)
 near(s) = max over P's skills k with skill_near(k, s) >= 0.5 of 0.5 * sim(k, s) * have(k)
 cover(s) = max(have(s), near(s))
 coverage = sum(w_s * cover(s)) / sum(w_s)          over T's top 40 needs
@@ -301,7 +360,7 @@ Kinds: **adjacent** (coverage 0.7 or more), **stretch** (0.4 to 0.7), **leap** (
 
 ### 7.4 Bridges (v1 minimal)
 
-Credential nodes only exist where `teaches` edges are curated (`data/graph/raw/credentials.csv`, each with an official URL and a quote). The bridge is a greedy cover of the gap weight, up to 3 credentials. If none exist, show "No reviewed course yet for these skills" and the skills themselves.
+Credential nodes exist only where the catalogue (`data/graph/raw/credentials.yaml`, 5.8) holds them, each with an official URL and a quote. The bridge is a greedy cover of the gap weight, up to 3 credentials. If none exist, show "No reviewed course yet for these skills" and the skills themselves.
 
 ### 7.5 Tests
 
@@ -328,7 +387,7 @@ Credential nodes only exist where `teaches` edges are curated (`data/graph/raw/c
    - "People in your role usually have…" chips.
    - Credentials.
    - Leadership: 3 taps.
-7. **Constraints.** 6 quick questions.
+7. **Constraints.** 6 quick questions: study hours a month, course budget, current city cluster, places you would work (including remote), lowest pay change, work mode.
 8. **Your job today.**
    - Skills, with their AI labels and trend (or "not yet measured").
    - Tasks split into "AI used today" and "No AI use seen".
@@ -350,41 +409,50 @@ Credential nodes only exist where `teaches` edges are curated (`data/graph/raw/c
 
 Every screen shows the job release id and the "as of" dates in its footer.
 
-## 9. API (Pages Functions, same style as `hosting/functions/api/*.js`)
+## 9. API (`/api/v1/`, portable handlers; conventions in BACKEND ADR-09)
 
-| Endpoint | Purpose | Notes |
+Every response is `{ok:true,...}` or `{ok:false, error:{code, message}}`, and carries an `x-request-id`. The tester id always comes from the verified token, never from the request body.
+
+| Endpoint | Request | Behaviour |
 | --- | --- | --- |
-| `POST /api/email/start` | `{code, birthYear, email}` | Age check on the server, invite track `adult`, rate limits (3 per address per hour, the existing IP limits, a daily site cap). Sends the 6-digit code and link. Always answers "If this address can sign in, we have sent a code" |
-| `POST /api/email/verify` | `{email, code}` or `{link token}` | New address: `{needsProfile:true, pending}`. Known address: `{testerId, token}` |
-| `POST /api/email/complete` | `{pending, nickname, consent:true, research:bool}` | Creates the tester (`track=adult`) and returns a token |
-| `GET/POST /api/me/profile` | Read or save the user model | Validated against `matcher/profile.schema.json`, ids checked against the current release's id set |
-| `POST /api/me/export` | Everything kept, as JSON | |
-| `POST /api/me/delete` | Deletes the tester, events, profile and email, and revokes tokens | Writes an audit row with no identity |
-| `POST /api/me/logout-all` | Sets `tok_after` | |
-| `POST /api/ai/read` | `{text}` (already redacted on the device) | Calls the configured provider with the extraction prompt. Accepts only schema-valid output with known ids or placeholders. Per-person 10 calls a day, a site daily cap, a 20 second timeout. Logs no text |
-| `POST /api/event` | Existing | New adult event types: `intake`, `profile_saved`, `roads_viewed`, `road_opened`, `road_added`, `feedback` |
+| `POST /api/v1/email/start` | `{invite, birthYear, email, turnstile}` | Verify Turnstile. Check the age on the server. Under 18: count a refusal for the invite, store nothing else, and return `refused_age`. Otherwise the invite must be active with `track=adult`. Limits per address (3 an hour, 10 a day), per IP bucket and site-wide. Store `email_codes`, send the code and link. Always answer "If this address can sign in, we have sent a code" |
+| `POST /api/v1/email/verify` | `{email, code}` or `{link}` | At most 5 tries, then the code is void. New address: `{needsProfile:true, pending}`, where `pending` is a signed 30-minute token holding the email hash, invite and age band. Known address: `{token}` |
+| `POST /api/v1/email/complete` | `{pending, nickname, consent:true, research:bool}` | Creates the tester. **Idempotent:** the unique `email_hash` index means a repeat returns a token for the same tester |
+| `GET /api/v1/me/profile` | | Returns the profile, upgraded to the current `v` and with ids mapped (ADR-05/06) |
+| `PUT /api/v1/me/profile` | `{rev, data}` | Validates the contract, checks ids against the current release's id list (loaded with `env.ASSETS.fetch` and cached), writes with `WHERE rev = ?`. On a mismatch, `409 conflict` with the current document |
+| `POST /api/v1/me/export` | | Everything in the data inventory for this tester, as JSON |
+| `POST /api/v1/me/delete` | `{confirm:"DELETE"}` | Deletes across every table in the inventory, revokes sessions, and writes an audit row with no identity |
+| `POST /api/v1/me/logout-all` | | Sets `tok_after` |
+| `POST /api/v1/ai/read` | `{text, turnstile}` | Requires login. Text at most 20,000 characters. The provider is called with the extraction prompt. The output must validate against `contracts/extract.schema.json`, unknown ids are dropped, and any output containing an email or phone pattern is rejected. Limits: 10 a person a day, a site daily cap, a 20-second timeout. Never logs the text |
+| `POST /api/v1/event` | `{type, eid, data}` | Adult event types `intake`, `profile_saved`, `roads_viewed`, `road_opened`, `road_added` and `feedback`. Ids and numbers only, plus the capped feedback text. Deduplicated by `eid`. Capped per tester per day |
+| `GET /api/v1/health` | | Database reachable, release id, `API_V`, AI enabled, email configured |
 
-**Secrets:** `SIGN_KEY` (existing), `EMAIL_FROM`, `AI_API_KEY`, `AI_ENABLED`, `AI_DAILY_CAP`.
+**Secrets, per environment (ADR-02 and ADR-04):** `SIGN_KEY`, `EMAIL_KEY`, `CODE_KEY`, `IP_KEY`, `TURNSTILE_SECRET`, `EMAIL_FROM`, `AI_API_KEY`, plus the settings `AI_ENABLED`, `AI_DAILY_CAP`, `EMAIL_DRY_RUN` and `RETENTION_DAYS`.
 
 **Email** goes through Cloudflare Email Service. The domain needs SPF, DKIM and DMARC.
 
-## 10. Database (`hosting/schema13.sql`)
+## 10. Database (`hosting/migrations/0001_adult.sql`, after the baseline, ADR-03)
 
 ```sql
-ALTER TABLE testers ADD COLUMN track TEXT;            -- 'student' (null = student) | 'adult'
+ALTER TABLE testers ADD COLUMN track TEXT;              -- NULL = student, 'adult'
 ALTER TABLE testers ADD COLUMN age_band TEXT;
-ALTER TABLE testers ADD COLUMN email TEXT;             -- lower-cased; adults only
-ALTER TABLE testers ADD COLUMN email_hash TEXT;        -- HMAC(SIGN_KEY, 'em:'+email)
+ALTER TABLE testers ADD COLUMN email TEXT;              -- normalised (ADR-04); adults only
+ALTER TABLE testers ADD COLUMN email_hash TEXT;         -- HMAC(EMAIL_KEY, 'em:v1:' + email)
 ALTER TABLE testers ADD COLUMN research_ok INTEGER;
-CREATE UNIQUE INDEX IF NOT EXISTS testers_email ON testers(email_hash);
-ALTER TABLE invites ADD COLUMN track TEXT;              -- null = student
+ALTER TABLE testers ADD COLUMN key_v INTEGER;           -- session key version (ADR-04)
+CREATE UNIQUE INDEX IF NOT EXISTS testers_email ON testers(email_hash) WHERE email_hash IS NOT NULL;
+ALTER TABLE invites ADD COLUMN track TEXT;              -- NULL = student, 'adult'
 CREATE TABLE IF NOT EXISTS email_codes (email_hash TEXT PRIMARY KEY, code_hash TEXT NOT NULL, link_hash TEXT NOT NULL,
-  expires_at INTEGER NOT NULL, tries INTEGER NOT NULL DEFAULT 0, invite_id INTEGER, age_band TEXT, sent_count INTEGER NOT NULL DEFAULT 1, first_sent INTEGER NOT NULL);
-CREATE TABLE IF NOT EXISTS profiles (tester_id TEXT PRIMARY KEY, data TEXT NOT NULL, job_release TEXT, matcher_version TEXT, updated_at INTEGER NOT NULL);
+  expires_at INTEGER NOT NULL, tries INTEGER NOT NULL DEFAULT 0, invite_id INTEGER, age_band TEXT, created_at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS email_sends (email_hash TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (email_hash, day));
+CREATE TABLE IF NOT EXISTS profiles (tester_id TEXT PRIMARY KEY, v INTEGER NOT NULL, rev INTEGER NOT NULL, data TEXT NOT NULL,
+  job_release TEXT, matcher_version TEXT, updated_at INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS under18 (invite_id INTEGER, day TEXT, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (invite_id, day));
+CREATE TABLE IF NOT EXISTS ai_calls (tester_id TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, tokens INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (tester_id, day));
+CREATE TABLE IF NOT EXISTS ops_daily (day TEXT NOT NULL, metric TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, metric));
 ```
 
-Retention, purge and delete must cover `profiles` and `email_codes`, and add `profiles` to the end-of-pilot deletion.
+Every table holding `tester_id` or `email_hash` must be listed in `hosting/core/data_inventory.js`, which deletion, purge, export and the invariant checker all use (ADR-11, ADR-14). `email_codes` rows older than 24 hours and `email_sends` rows older than 7 days are purged daily (on first request of the day, as today's lazy purge).
 
 ## 11. Acceptance rules (frozen before data)
 
@@ -413,3 +481,16 @@ Retention, purge and delete must cover `profiles` and `email_codes`, and add `pr
 ## 13. Not in v1
 
 The interest walk for adults, the lamp map skin, Pipeline B demand from postings, ATS feeds and Adzuna, emerging-skill detection, readiness and role-match scores, side roads, mentor calls, follow-up emails, the "What changed" email, the learning loop beyond logging `road_added`, the student depth profile, and the scheduled weekly Claude Code session.
+
+## 14. Document map
+
+| Need | Document |
+| --- | --- |
+| What we are building, and the decisions | This file |
+| Backend decisions, invariants, failure modes | `docs/adult/BACKEND.md` |
+| How agents and the owner build it (hats, lanes, gates, change control, runbook) | `docs/adult/DELIVERY.md` |
+| What to build, in which order | `docs/adult/BUILD_PLAN.md` |
+| How it is tested | `docs/adult/TEST_PLAN.md` |
+| The opening prompt for an implementation session | `docs/adult/HANDOFF_PROMPT.md` |
+| Why things are the way they are (history) | `docs/ADULT_TRACK.md`, `ADULT_WORKFLOWS.md`, `CAREER_GRAPH.md`, `SKILLS_INTAKE.md`, `MATCHING.md`, `AI_LAYER.md`, `ADD_ONS.md` |
+
