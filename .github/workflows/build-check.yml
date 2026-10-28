@@ -39,7 +39,7 @@ jobs:
       - name: Contract tests
         run: |
           if [ -e contracts/tests ]; then
-            node --test contracts/tests/
+            node --test 'contracts/tests/*.test.mjs'
           else
             echo "skip: contracts/tests does not exist yet"
           fi
@@ -74,7 +74,7 @@ jobs:
       - name: Matcher tests
         run: |
           if [ -e matcher/tests ]; then
-            node --test matcher/tests/
+            node --test 'matcher/tests/*.test.mjs'
           else
             echo "skip: matcher/tests does not exist yet"
           fi
@@ -88,7 +88,7 @@ jobs:
       - name: API tests
         run: |
           if [ -e hosting/tests/adult ]; then
-            node --test hosting/tests/adult/
+            node --test 'hosting/tests/adult/*.test.mjs'
           else
             echo "skip: hosting/tests/adult does not exist yet"
           fi
@@ -115,7 +115,7 @@ jobs:
       - name: Intake and privacy unit tests
         run: |
           dirs=""
-          for d in app/adult/tests/intake app/adult/tests/privacy; do [ -e "$d" ] && dirs="$dirs $d"; done
+          for d in app/adult/tests/intake app/adult/tests/privacy; do [ -e "$d" ] && dirs="$dirs $d/*.test.mjs"; done
           if [ -n "$dirs" ]; then
             node --test $dirs
           else
@@ -137,7 +137,7 @@ jobs:
       - name: End-to-end tests
         run: |
           if [ -e app/adult/tests/e2e ]; then
-            node --test app/adult/tests/e2e/
+            node --test 'app/adult/tests/e2e/*.test.mjs'
           else
             echo "skip: app/adult/tests/e2e does not exist yet"
           fi
