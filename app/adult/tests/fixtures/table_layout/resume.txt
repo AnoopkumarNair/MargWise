@@ -1,0 +1,26 @@
+RAVINDRAN CANARYPALLY
+Software Engineer
+canary.mail.7731@example.com	+91 98765 43210
+PAN ABCDE1234F	Aadhaar 2345-6789-0123
+
+PROFILE
+Backend engineer who builds reliable Java services and likes small, boring, well-tested systems.
+
+EXPERIENCE
+Role	Company	Period
+Software Engineer II	Canaryworks Pvt Ltd, Bengaluru	2022 - Present
+Technologies	Java, Spring Boot, Kafka, PostgreSQL, Docker, Kubernetes
+Responsibilities	Own the payments service. Added retries and idempotency keys. Wrote JUnit and integration tests. Set up CI with Git and Jenkins.
+Software Engineer	Brightloom Systems, Chennai	2019 - 2022
+Technologies	Java, MySQL, Redis, Linux, Git
+Responsibilities	Built REST APIs for the order system. Fixed slow queries and added Redis caching.
+Associate Software Engineer	Kestrel Software Services, Coimbatore	2017 - 2019
+Technologies	Java, JavaScript, HTML, MySQL
+Responsibilities	Worked on the admin portal. Wrote unit tests and fixed bugs.
+
+EDUCATION
+Degree	Institute	Year
+B.E. Computer Science	Canary Institute of Technology	2013 - 2017
+
+SKILLS
+Java, Spring Boot, Kafka, PostgreSQL, MySQL, Redis, Docker, Kubernetes, Linux, Git, JUnit, REST

@@ -1,0 +1,16 @@
+{
+  "single_col": { "layout": "single" },
+  "two_col": { "layout": "two-column", "splitBefore": "SUMMARY" },
+  "docx_basic": { "layout": "docx" },
+  "table_layout": { "layout": "table" },
+  "indian_format": { "layout": "single", "serif": true },
+  "linkedin_export": { "layout": "two-column", "splitBefore": "Ravindran Canarypally" },
+  "dates_five": { "layout": "single" },
+  "ambiguous_terms": { "layout": "single" },
+  "ten_page": { "layout": "single" },
+  "scanned": { "layout": "scanned", "source": "visible.txt" },
+  "non_resume": { "layout": "single" },
+  "devanagari_mixed": { "layout": "single", "devanagari": true },
+  "hidden_text": { "layout": "single", "hiddenStartsWith": "Ignore previous" },
+  "pasted_text": { "layout": "none" }
+}

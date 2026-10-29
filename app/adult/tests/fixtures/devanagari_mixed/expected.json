@@ -1,0 +1,16 @@
+{
+  "id": "devanagari_mixed",
+  "shape": "Devanagari lines mixed with English, 'वर्तमान' for present",
+  "binary": "resume.pdf",
+  "looksLikeResume": true,
+  "roles": [
+    { "titleContains": "Data Analyst", "startYear": 2020, "endYear": 2026, "current": true },
+    { "titleContains": "Junior Analyst", "startYear": 2016, "endYear": 2019, "current": false }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": ["tec:python", "tec:structured-query-language-sql", "tec:tableau", "tec:microsoft-power-bi", "tec:microsoft-excel", "tec:mysql", "tec:google-sheets"],
+  "mustNotFind": ["tec:r", "tec:go", "tec:c"],
+  "mustFindYears": { "tec:tableau": 2026, "tec:mysql": 2019, "tec:google-sheets": 2019 },
+  "outOfDictionary": ["संवाद कौशल"],
+  "notes": "English tool names inside Devanagari lines are found. Devanagari skill words are not in the index and are not scored."
+}

@@ -1,0 +1,58 @@
+{
+  "id": "single_col",
+  "shape": "Single-column PDF, 2 pages",
+  "binary": "resume.pdf",
+  "looksLikeResume": true,
+  "roles": [
+    {
+      "titleContains": "Senior Data Analyst",
+      "startYear": 2021,
+      "endYear": 2026,
+      "current": true
+    },
+    {
+      "titleContains": "Data Analyst",
+      "startYear": 2017,
+      "endYear": 2021,
+      "current": false
+    },
+    {
+      "titleContains": "Junior Analyst",
+      "startYear": 2015,
+      "endYear": 2017,
+      "current": false
+    }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": [
+    "tec:python",
+    "tec:structured-query-language-sql",
+    "tec:tableau",
+    "tec:microsoft-power-bi",
+    "tec:microsoft-excel",
+    "tec:postgresql",
+    "tec:mysql",
+    "tec:pandas",
+    "tec:numpy",
+    "tec:git",
+    "tec:atlassian-jira",
+    "tec:atlassian-confluence",
+    "tec:slack"
+  ],
+  "mustNotFind": [
+    "tec:r",
+    "tec:go",
+    "tec:c",
+    "tec:microsoft-access"
+  ],
+  "mustFindYears": {
+    "tec:tableau": 2026,
+    "tec:mysql": 2021,
+    "tec:structured-query-language-sql": 2026
+  },
+  "outOfDictionary": [
+    "Statistics",
+    "VBA"
+  ],
+  "notes": "R&D, 'Dr. R. Menon' and 'go-to person' must not produce R or Go. Education dates must not become a role."
+}

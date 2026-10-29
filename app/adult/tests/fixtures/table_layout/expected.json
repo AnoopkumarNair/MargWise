@@ -1,0 +1,17 @@
+{
+  "id": "table_layout",
+  "shape": "Table-based layout PDF (roles in table rows, cells separated by tabs in the text twin)",
+  "binary": "resume.pdf",
+  "looksLikeResume": true,
+  "roles": [
+    { "titleContains": "Software Engineer II", "startYear": 2022, "endYear": 2026, "current": true },
+    { "titleContains": "Software Engineer", "startYear": 2019, "endYear": 2022, "current": false },
+    { "titleContains": "Associate Software Engineer", "startYear": 2017, "endYear": 2019, "current": false }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": ["tec:oracle-java", "tec:spring-boot", "tec:postgresql", "tec:docker", "tec:kubernetes", "tec:mysql", "tec:redis", "tec:linux", "tec:git", "tec:junit", "tec:javascript", "tec:hypertext-markup-language-html"],
+  "mustNotFind": ["tec:r", "tec:go", "tec:spring-framework"],
+  "mustFindYears": { "tec:spring-boot": 2026, "tec:redis": 2022, "tec:javascript": 2019 },
+  "outOfDictionary": ["Jenkins"],
+  "notes": "Education row '2013 - 2017' must not become a role. 'Spring Boot' must not also report the Spring framework."
+}

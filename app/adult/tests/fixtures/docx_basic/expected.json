@@ -1,0 +1,17 @@
+{
+  "id": "docx_basic",
+  "shape": "DOCX",
+  "binary": "resume.docx",
+  "looksLikeResume": true,
+  "roles": [
+    { "titleContains": "Senior Accountant", "startYear": 2019, "endYear": 2026, "current": true },
+    { "titleContains": "Accounts Executive", "startYear": 2016, "endYear": 2019, "current": false },
+    { "titleContains": "Accounts Assistant", "startYear": 2014, "endYear": 2016, "current": false }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": ["tec:sap-erp-financials", "tec:microsoft-excel", "tec:microsoft-word"],
+  "mustNotFind": ["tec:r", "tec:go", "tec:microsoft-access"],
+  "mustFindYears": { "tec:sap-erp-financials": 2026, "tec:microsoft-excel": 2026 },
+  "outOfDictionary": ["Tally", "Tally ERP", "GST", "TDS"],
+  "notes": "Tally is not in the skills index today, so it is listed here for the record and not scored. 'Co.' and the ampersand in 'Venkat & Co.' must not trigger anything."
+}
