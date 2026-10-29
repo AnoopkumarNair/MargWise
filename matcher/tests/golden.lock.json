@@ -1,0 +1,14 @@
+{
+ "_doc": "Written by node matcher/tests/version_guard.mjs --write. Do not edit by hand.",
+ "matcher_version": "1.0.0",
+ "cases": {
+  "acc-core": "1fcc4eaf49b5e4a16a6eb24cffbbbc88eeda9e88896beea80d182a24895269f9",
+  "acc-rusty": "05a16bb9befbcea48598756c11e2b99bafb78b1e03bbc10b78c1a6231c909ce2",
+  "swdev-data": "3874011a0e32913ec65f84680a79c482ad22c8f726160b678a8f82c4b6ca6c7f",
+  "swdev-qa-near": "55aae39fd08baa52fa97244651bc6366f3569a591da8df87af7d8318cf8d0bbc",
+  "csr-voice": "e3abd319b4fa2a78cafb74f13d52227c2279bf2767788983022e89976c2fc440",
+  "csr-creds": "038e29dd6ef96d58e707f49707752ff1ea1d2ae49099fa488b0070b88eb8f6c9",
+  "nurse-core": "7d4b5b05a27a7f1b8709238fd970c3c51701d58972172cd634a57dbb10285e18",
+  "nurse-lead-short": "068c8526bc7a7987555d3ce0876134e4d956f35b6973633246ddef4a93b31fd8"
+ }
+}

@@ -1,0 +1,838 @@
+{
+ "_doc": "Hand-built golden cases for the adult matcher (SPEC 7.5, TEST_PLAN layer 2). Each case names a fixture slice and the skill_near and credential data it uses (paths relative to matcher/tests/). expect holds the person level, then the roads in order with reach, coverage to 2 decimals, and flags. Fixtures are made up for tests, not real data. A change to any expected output needs a MATCHER_VERSION bump (tests/version_guard.mjs).",
+ "matcher_version": "1.0.0",
+ "cases": [
+  {
+   "id": "acc-core",
+   "family": "Business and financial (13-)",
+   "summary": "Accountant, 5-8 years in BFSI, strong in accounting, Excel and Tally",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:13-2011.00",
+      "level": 3,
+      "industry": "bfsi",
+      "years": "5-8",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.c",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:excel",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.2.a",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:tally",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.e",
+      "strength": "used",
+      "last": 2025
+     },
+     {
+      "id": "skl:2.C.8.b",
+      "strength": "used",
+      "last": 2025
+     }
+    ],
+    "lead": {
+     "people": "1-5",
+     "budget": false,
+     "expert": true
+    },
+    "constraints": {
+     "city": "city:bom",
+     "open_to": [
+      "city:bom"
+     ],
+     "pay_floor_pct": 0,
+     "hours_month": "0-5"
+    }
+   },
+   "slice": "fixtures/slice_accountant.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "note": "Constraints are set (Mumbai only, no pay cut, under 5 study hours) but flags stay empty: the slices carry no city, pay or hours data yet.",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:13-2031.00",
+      "reach": "adjacent",
+      "coverage": 0.71,
+      "flags": []
+     },
+     {
+      "id": "occ:13-2041.00",
+      "reach": "stretch",
+      "coverage": 0.68,
+      "flags": []
+     },
+     {
+      "id": "occ:13-2051.00",
+      "reach": "stretch",
+      "coverage": 0.66,
+      "flags": []
+     },
+     {
+      "id": "occ:11-3031.01",
+      "reach": "leap",
+      "coverage": 0.24,
+      "flags": []
+     },
+     {
+      "id": "occ:43-3031.00",
+      "reach": "adjacent",
+      "coverage": 0.77,
+      "flags": []
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "leap",
+      "coverage": 0.16,
+      "flags": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "acc-rusty",
+   "family": "Business and financial (13-)",
+   "summary": "Accountant, 8-12 years, leads 6-20; most skills last used 2018-2019 (rusty)",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:13-2011.00",
+      "level": 4,
+      "industry": "bfsi",
+      "years": "8-12",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.c",
+      "strength": "used",
+      "last": 2019
+     },
+     {
+      "id": "tec:excel",
+      "strength": "strong",
+      "last": 2018
+     },
+     {
+      "id": "tec:tally",
+      "strength": "rusty"
+     },
+     {
+      "id": "skl:2.A.2.a",
+      "strength": "used",
+      "last": 2025
+     },
+     {
+      "id": "skl:2.A.1.e",
+      "strength": "used",
+      "last": 2019
+     }
+    ],
+    "lead": {
+     "people": "6-20",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_accountant.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "note": "Used skills last used more than 3 years before 2026 count as rusty (0.4). Excel is strong, so it keeps 1.0.",
+   "expect": {
+    "person_level": 5,
+    "roads": [
+     {
+      "id": "occ:13-2031.00",
+      "reach": "stretch",
+      "coverage": 0.46,
+      "flags": []
+     },
+     {
+      "id": "occ:13-2041.00",
+      "reach": "stretch",
+      "coverage": 0.45,
+      "flags": []
+     },
+     {
+      "id": "occ:13-2051.00",
+      "reach": "stretch",
+      "coverage": 0.5,
+      "flags": []
+     },
+     {
+      "id": "occ:11-3031.01",
+      "reach": "leap",
+      "coverage": 0.1,
+      "flags": []
+     },
+     {
+      "id": "occ:43-3031.00",
+      "reach": "stretch",
+      "coverage": 0.47,
+      "flags": []
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "leap",
+      "coverage": 0.13,
+      "flags": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "swdev-data",
+   "family": "Computer and mathematical (15-)",
+   "summary": "Software developer, 2-5 years in IT, Java and Python",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:15-1252.00",
+      "level": 2,
+      "industry": "it",
+      "years": "2-5",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.B.3.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:java",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:sql",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:git",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:python",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.3.a",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.2.i",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_software_developer.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "expect": {
+    "person_level": 2,
+    "roads": [
+     {
+      "id": "occ:15-2051.00",
+      "reach": "stretch",
+      "coverage": 0.53,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1242.00",
+      "reach": "stretch",
+      "coverage": 0.67,
+      "flags": []
+     },
+     {
+      "id": "occ:11-3021.00",
+      "reach": "leap",
+      "coverage": 0.2,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1211.00",
+      "reach": "stretch",
+      "coverage": 0.49,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1253.00",
+      "reach": "leap",
+      "coverage": 0.38,
+      "flags": []
+     },
+     {
+      "id": "occ:ai-llm-evaluator",
+      "reach": "leap",
+      "coverage": 0.12,
+      "flags": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "swdev-qa-near",
+   "family": "Computer and mathematical (15-)",
+   "summary": "Tester on a developer slice: strong quality control and Selenium, no LLM evaluation",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:15-1252.00",
+      "level": 3,
+      "industry": "it",
+      "years": "5-8",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.B.3.m",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:selenium",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:jira",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.3.e",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.2.a",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_software_developer.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "note": "near() matters: LLM evaluation is credited 0.5 x 0.7 x 1.0 = 0.35 through quality control analysis, which lifts the LLM Evaluation Specialist road from a leap (0.35) to a stretch (0.44).",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:15-1253.00",
+      "reach": "adjacent",
+      "coverage": 0.71,
+      "flags": []
+     },
+     {
+      "id": "occ:11-3021.00",
+      "reach": "leap",
+      "coverage": 0.0,
+      "flags": []
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "leap",
+      "coverage": 0.22,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1211.00",
+      "reach": "leap",
+      "coverage": 0.23,
+      "flags": []
+     },
+     {
+      "id": "occ:ai-llm-evaluator",
+      "reach": "stretch",
+      "coverage": 0.44,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1242.00",
+      "reach": "leap",
+      "coverage": 0.11,
+      "flags": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "csr-voice",
+   "family": "Office and administrative support (43-)",
+   "summary": "Customer service, voice process, 2-5 years in BPM",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:43-4051.00",
+      "level": 2,
+      "industry": "bpm",
+      "years": "2-5",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.f",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.b",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:zendesk",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:salesforce",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.b",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:excel",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_customer_service.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "expect": {
+    "person_level": 2,
+    "roads": [
+     {
+      "id": "occ:41-3091.00",
+      "reach": "stretch",
+      "coverage": 0.55,
+      "flags": []
+     },
+     {
+      "id": "occ:43-1011.00",
+      "reach": "leap",
+      "coverage": 0.32,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1232.00",
+      "reach": "stretch",
+      "coverage": 0.44,
+      "flags": []
+     },
+     {
+      "id": "occ:43-9061.00",
+      "reach": "stretch",
+      "coverage": 0.62,
+      "flags": []
+     },
+     {
+      "id": "occ:13-1151.00",
+      "reach": "leap",
+      "coverage": 0.21,
+      "flags": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "csr-creds",
+   "family": "Office and administrative support (43-)",
+   "summary": "Customer service, 5-8 years, ITIL 4 (valid) and COPC (expired 2023)",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:43-4051.00",
+      "level": 3,
+      "industry": "bpm",
+      "years": "5-8",
+      "current": true
+     },
+     {
+      "occ": "occ:41-3091.00",
+      "level": 1,
+      "industry": "bpm",
+      "years": "0-2",
+      "current": false
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.f",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.b",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:zendesk",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.b",
+      "strength": "strong",
+      "last": 2026
+     }
+    ],
+    "creds": [
+     {
+      "id": "cred:itil4",
+      "year": 2025,
+      "expires": 2028
+     },
+     {
+      "id": "cred:copc",
+      "year": 2020,
+      "expires": 2023
+     }
+    ],
+    "lead": {
+     "people": "1-5",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_customer_service.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json",
+    "teaches": "fixtures/teaches.json"
+   },
+   "note": "ITIL 4 credits ServiceNow, computers and problem solving at 0.7. COPC has expired, so monitoring and managing people count 0.4. Coordination is rated strong by the person, and their own rating wins over the expired credential.",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:43-1011.00",
+      "reach": "stretch",
+      "coverage": 0.59,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1232.00",
+      "reach": "adjacent",
+      "coverage": 0.76,
+      "flags": []
+     },
+     {
+      "id": "occ:41-3091.00",
+      "reach": "stretch",
+      "coverage": 0.42,
+      "flags": []
+     },
+     {
+      "id": "occ:13-1151.00",
+      "reach": "leap",
+      "coverage": 0.21,
+      "flags": []
+     },
+     {
+      "id": "occ:43-9061.00",
+      "reach": "leap",
+      "coverage": 0.21,
+      "flags": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "nurse-core",
+   "family": "Healthcare practitioners (29-)",
+   "summary": "Registered nurse, 8-12 years",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:29-1141.00",
+      "level": 4,
+      "industry": "other",
+      "years": "8-12",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.5.a",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.a",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.2.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.b",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.4.e",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:epic-ehr",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_registered_nurse.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "expect": {
+    "person_level": 4,
+    "roads": [
+     {
+      "id": "occ:29-1171.00",
+      "reach": "adjacent",
+      "coverage": 0.74,
+      "flags": []
+     },
+     {
+      "id": "occ:25-1072.00",
+      "reach": "stretch",
+      "coverage": 0.4,
+      "flags": []
+     },
+     {
+      "id": "occ:21-1091.00",
+      "reach": "leap",
+      "coverage": 0.33,
+      "flags": []
+     },
+     {
+      "id": "occ:11-9111.00",
+      "reach": "leap",
+      "coverage": 0.18,
+      "flags": []
+     },
+     {
+      "id": "occ:29-9021.00",
+      "reach": "leap",
+      "coverage": 0.39,
+      "flags": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "nurse-lead-short",
+   "family": "Healthcare practitioners (29-)",
+   "summary": "Senior nurse, 14+ years, leads 6-20; cares only about a short move",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:29-1141.00",
+      "level": 5,
+      "industry": "other",
+      "years": "12-18",
+      "current": true
+     },
+     {
+      "occ": "occ:29-1141.00",
+      "level": 2,
+      "industry": "other",
+      "years": "2-5",
+      "current": false
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.5.a",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.6",
+      "strength": "used",
+      "last": 2020
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.a",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.5.d",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.a",
+      "strength": "strong",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "6-20",
+     "budget": true,
+     "expert": false
+    },
+    "priorities": {
+     "pay": 0,
+     "ai_safe": 0,
+     "short_move": 5,
+     "demand": 0,
+     "enjoy": 3
+    }
+   },
+   "slice": "fixtures/slice_registered_nurse.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "note": "Only the short-move slider is set, so roads are in coverage order. The enjoy slider is ignored because the interest walk was not taken. Level: 14 years gives 5, leading people adds 1.",
+   "expect": {
+    "person_level": 6,
+    "roads": [
+     {
+      "id": "occ:25-1072.00",
+      "reach": "adjacent",
+      "coverage": 0.88,
+      "flags": []
+     },
+     {
+      "id": "occ:21-1091.00",
+      "reach": "adjacent",
+      "coverage": 0.85,
+      "flags": []
+     },
+     {
+      "id": "occ:11-9111.00",
+      "reach": "stretch",
+      "coverage": 0.52,
+      "flags": []
+     },
+     {
+      "id": "occ:29-1171.00",
+      "reach": "stretch",
+      "coverage": 0.44,
+      "flags": []
+     },
+     {
+      "id": "occ:29-9021.00",
+      "reach": "leap",
+      "coverage": 0.2,
+      "flags": []
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "matcher/result.schema.json",
+  "title": "Matcher result",
+  "description": "What match(profile, slice, opts) returns (matcher/README.md). Owned by the matcher lane, not a frozen contract. Numbers are rounded half up: coverage, values and norms to 4 decimals, score to 6.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "release", "from", "person", "weights", "stubs", "roads"],
+  "properties": {
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "release": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "from": { "type": "string", "pattern": "^occ:" },
+    "person": { "$ref": "#/$defs/level" },
+    "weights": { "$ref": "#/$defs/weights" },
+    "stubs": { "type": "array", "maxItems": 20, "items": { "type": "string", "minLength": 1, "maxLength": 40 } },
+    "roads": { "type": "array", "maxItems": 30, "items": { "$ref": "#/$defs/road" } }
+  },
+  "$defs": {
+    "level": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "years_total", "years_level", "lead_bonus", "title_override"],
+      "properties": {
+        "level": { "type": ["integer", "null"], "minimum": 1, "maximum": 6 },
+        "years_total": { "type": ["integer", "null"], "minimum": 0 },
+        "years_level": { "type": ["integer", "null"], "minimum": 1, "maximum": 6 },
+        "lead_bonus": { "type": "integer", "enum": [0, 1] },
+        "title_override": { "type": "null" }
+      }
+    },
+    "weights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pay", "ai_safe", "short", "demand", "enjoy"],
+      "properties": {
+        "pay": { "type": "number", "minimum": 0 },
+        "ai_safe": { "type": "number", "minimum": 0 },
+        "short": { "type": "number", "minimum": 0 },
+        "demand": { "type": "number", "minimum": 0 },
+        "enjoy": { "type": "number", "minimum": 0 }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "norm", "weight", "status"],
+      "properties": {
+        "value": { "type": "number", "minimum": 0, "maximum": 1 },
+        "norm": { "type": "number", "minimum": 0, "maximum": 1 },
+        "weight": { "type": "number", "minimum": 0 },
+        "status": { "type": "string", "enum": ["measured", "unknown", "not_yet_measured"] }
+      }
+    },
+    "gap_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "w", "cover", "ai", "people_do", "priority"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^(skl|tec):" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "w": { "type": "number", "minimum": 0, "maximum": 1 },
+        "cover": { "type": "number", "minimum": 0, "maximum": 1 },
+        "ai": { "type": "string", "enum": ["ai_does_much", "mixed", "people_do", "unknown"] },
+        "people_do": { "type": "boolean" },
+        "priority": { "type": "number", "minimum": 0, "maximum": 1.5 }
+      }
+    },
+    "road": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "via", "new_role", "reach", "coverage", "score", "components", "gap", "kind", "level", "flags", "bridges"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^occ:" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "via": { "type": "array", "maxItems": 4, "items": { "type": "string", "enum": ["close_to", "two_step", "same_cluster", "entry_from"] } },
+        "new_role": { "type": "boolean" },
+        "reach": { "type": "string", "enum": ["adjacent", "stretch", "leap"] },
+        "coverage": { "type": "number", "minimum": 0, "maximum": 1 },
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "components": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pay", "ai_safe", "short", "demand", "enjoy"],
+          "properties": {
+            "pay": { "$ref": "#/$defs/component" },
+            "ai_safe": { "$ref": "#/$defs/component" },
+            "short": { "$ref": "#/$defs/component" },
+            "demand": { "$ref": "#/$defs/component" },
+            "enjoy": { "$ref": "#/$defs/component" }
+          }
+        },
+        "gap": { "type": "array", "maxItems": 40, "items": { "$ref": "#/$defs/gap_item" } },
+        "kind": { "type": ["string", "null"], "enum": ["up", "across", "diagonal", "reset", "fork", null] },
+        "level": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["target", "fit"],
+          "properties": {
+            "target": { "type": ["integer", "null"], "minimum": 1, "maximum": 6 },
+            "fit": { "type": ["string", "null"], "enum": ["below", "in", "above", null] }
+          }
+        },
+        "flags": { "type": "array", "maxItems": 3, "items": { "type": "string", "enum": ["outside_time", "below_pay_floor", "needs_relocation"] } },
+        "bridges": { "type": ["array", "null"], "maxItems": 3, "items": { "type": "string", "pattern": "^cred:" } }
+      }
+    }
+  }
+}
