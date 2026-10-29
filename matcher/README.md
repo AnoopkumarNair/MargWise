@@ -8,12 +8,12 @@ Version 1.0.0 covers slice S1: coverage, gap, reach (adjacent, stretch, leap) an
 
 ```js
 import { match, coverage, level, MATCHER_VERSION, ALLOWED_INPUT_FIELDS } from './match.js';
-const result = match(profile, slice, { now: 2026, near, teaches });
+const result = match(profile, slice, { now: 2026, teaches });   // near comes from slice.near
 ```
 
 - `profile` follows `contracts/profile.schema.json`. `slice` follows `contracts/slice.schema.json`.
 - `opts.now` is the current year. The matcher never reads the clock. Without it, skills never turn rusty by age and credentials never expire.
-- `opts.near` is skill_near data: `{"skl:a": {"skl:b": 0.7}}`. It is read both ways, and values under 0.5 are ignored. The slice contract has no place for it, so the caller passes it.
+- skill_near data comes from the slice: `slice.near.pairs`, `[["skl:a", "skl:b", 0.7], ...]` (slice contract amendment A1). `opts.near` (`{"skl:a": {"skl:b": 0.7}}`) overrides it when given, which the tests use; `opts.near = {}` turns near off. Either way it is read both ways, and values under 0.5 are ignored. Adding this did not change any golden output, so the version stays 1.0.0.
 - `opts.teaches` is credential data: `{"cred:x": ["skl:a", ...]}`. Without it, credentials credit nothing.
 - `opts.walk` is `true` only after the interest walk. Until then the enjoy slider has no weight.
 
@@ -28,11 +28,11 @@ const result = match(profile, slice, { now: 2026, near, teaches });
 - `weights`: the slider weights used for `pay`, `ai_safe`, `short`, `demand` and `enjoy`.
 - `stubs`: the parts that are not worked out yet.
 - `roads`, best first. Each road has:
-  - `id`, `label`, `via` (how the slice found it), `new_role`;
+  - `id`, `label` (the slice's own label), `via` (how the slice found it), `new_role`;
   - `reach` and `coverage` (0 to 1, 4 decimals);
   - `score` (0 to 1, 6 decimals), the slider-weighted average of the components;
   - `components`: all five, each with `value`, `norm` (0 to 1 across the roads), `weight` and `status` (`measured`, `unknown` or `not_yet_measured`);
-  - `gap`: needs covered under 0.7, most important first;
+  - `gap`: needs covered under 0.7, most important first, each with the slice's own label and AI label;
   - `kind`, `level.target`, `level.fit` (all `null` for now), `flags` (empty for now) and `bridges` (`null` for now).
 
 ## Rules, and the choices SPEC leaves open
@@ -61,8 +61,8 @@ node matcher/tests/version_guard.mjs          # golden outputs against the lock
 node matcher/tests/version_guard.mjs --write  # after a MATCHER_VERSION bump, or to add a case
 ```
 
-- `tests/golden.json`: 8 hand-built cases across 4 occupation families. `tests/GOLDEN_TABLE.md` lists them for the owner.
-- `tests/fixtures/`: 4 test slices, plus skill_near and credential data. All made up; none of it is real data.
+- `tests/golden.json`: 9 cases across 4 occupation families: 8 on hand-built slices, and `csr-real-near` on a real-shape slice whose near pairs come from the slice. `tests/GOLDEN_TABLE.md` lists them for the owner.
+- `tests/fixtures/`: 4 made-up test slices, plus skill_near and credential data (none of it real data), and `slice_csr_real.json`, an extract of the real O*NET 31.0 slice for Customer Service Representatives (5 targets, with its near pairs).
 - Properties over 500 random profiles (seed 20261029). Coverage stays between 0 and 1. Adding a skill never lowers coverage. Strong is at least used, and used is at least rusty. Sliders reorder roads but never add or remove one. Constraints never remove a road. The same input always gives the same bytes.
 - `reference.py` must agree with `match.js` to 2 decimals on every golden and random case, with the same road order, reach and gap.
 - **Version guard.** `tests/golden.lock.json` holds a hash of each golden case's output. If any output changes while `MATCHER_VERSION` stays the same, the tests fail. Bump `MATCHER_VERSION` here and in `contracts/versions.js` (an architect change), then run the guard with `--write`.

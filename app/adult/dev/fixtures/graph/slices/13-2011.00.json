@@ -72,10 +72,28 @@
    "src": "fixture"
   },
   {
+   "id": "skl:4.A.2.a.4",
+   "label": "Analyzing Data or Information",
+   "kind": "activity",
+   "w": 0.77,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:4.A.3.b.6",
+   "label": "Documenting/Recording Information",
+   "kind": "activity",
+   "w": 0.75,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
    "id": "skl:2.A.1.a",
    "label": "Reading Comprehension",
    "kind": "skill",
-   "w": 0.77,
+   "w": 0.73,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -84,7 +102,7 @@
    "id": "skl:2.B.4.e",
    "label": "Judgment and Decision Making",
    "kind": "skill",
-   "w": 0.75,
+   "w": 0.71,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -93,7 +111,7 @@
    "id": "skl:2.A.1.c",
    "label": "Writing",
    "kind": "skill",
-   "w": 0.73,
+   "w": 0.69,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -102,7 +120,7 @@
    "id": "skl:2.C.7.a",
    "label": "English Language",
    "kind": "knowledge",
-   "w": 0.71,
+   "w": 0.67,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -111,7 +129,7 @@
    "id": "skl:2.A.1.b",
    "label": "Active Listening",
    "kind": "skill",
-   "w": 0.69,
+   "w": 0.65,
    "ai": "people_do",
    "as_of": "2023-06",
    "src": "fixture"
@@ -120,7 +138,7 @@
    "id": "skl:2.A.2.d",
    "label": "Monitoring",
    "kind": "skill",
-   "w": 0.67,
+   "w": 0.63,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -129,7 +147,7 @@
    "id": "tec:sap",
    "label": "SAP enterprise software",
    "kind": "technology",
-   "w": 0.65,
+   "w": 0.61,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -138,7 +156,7 @@
    "id": "skl:2.C.1.b",
    "label": "Administration and Management",
    "kind": "knowledge",
-   "w": 0.63,
+   "w": 0.58,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -147,7 +165,7 @@
    "id": "skl:2.A.1.d",
    "label": "Speaking",
    "kind": "skill",
-   "w": 0.61,
+   "w": 0.56,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -156,7 +174,7 @@
    "id": "skl:2.C.3.a",
    "label": "Computers and Electronics",
    "kind": "knowledge",
-   "w": 0.58,
+   "w": 0.54,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -165,7 +183,7 @@
    "id": "skl:2.B.5.a",
    "label": "Systems Analysis",
    "kind": "skill",
-   "w": 0.56,
+   "w": 0.52,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -174,7 +192,7 @@
    "id": "skl:2.C.1.e",
    "label": "Law and Government",
    "kind": "knowledge",
-   "w": 0.54,
+   "w": 0.5,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -183,7 +201,7 @@
    "id": "skl:2.A.2.b",
    "label": "Active Learning",
    "kind": "skill",
-   "w": 0.52,
+   "w": 0.48,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -192,7 +210,7 @@
    "id": "skl:2.B.1.b",
    "label": "Coordination",
    "kind": "skill",
-   "w": 0.5,
+   "w": 0.46,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -201,7 +219,7 @@
    "id": "skl:2.B.1.d",
    "label": "Negotiation",
    "kind": "skill",
-   "w": 0.48,
+   "w": 0.44,
    "ai": "people_do",
    "as_of": "2023-06",
    "src": "fixture"
@@ -210,7 +228,7 @@
    "id": "skl:2.C.1.c",
    "label": "Customer and Personal Service",
    "kind": "knowledge",
-   "w": 0.46,
+   "w": 0.42,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -219,7 +237,7 @@
    "id": "skl:2.B.5.b",
    "label": "Systems Evaluation",
    "kind": "skill",
-   "w": 0.44,
+   "w": 0.4,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -228,7 +246,7 @@
    "id": "skl:2.B.1.a",
    "label": "Social Perceptiveness",
    "kind": "skill",
-   "w": 0.42,
+   "w": 0.38,
    "ai": "people_do",
    "as_of": "2023-06",
    "src": "fixture"
@@ -237,7 +255,7 @@
    "id": "skl:2.B.1.c",
    "label": "Persuasion",
    "kind": "skill",
-   "w": 0.4,
+   "w": 0.35,
    "ai": "people_do",
    "as_of": "2023-06",
    "src": "fixture"
@@ -246,7 +264,7 @@
    "id": "tec:sql",
    "label": "SQL database queries",
    "kind": "technology",
-   "w": 0.38,
+   "w": 0.33,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -255,7 +273,7 @@
    "id": "tec:powerbi",
    "label": "Microsoft Power BI",
    "kind": "technology",
-   "w": 0.35,
+   "w": 0.31,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -264,7 +282,25 @@
    "id": "tec:jira",
    "label": "Jira issue tracking",
    "kind": "technology",
-   "w": 0.33,
+   "w": 0.29,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:4.A.4.a.3",
+   "label": "Communicating with People Outside the Organization",
+   "kind": "activity",
+   "w": 0.27,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:4.A.2.b.6",
+   "label": "Organizing, Planning, and Prioritizing Work",
+   "kind": "activity",
+   "w": 0.25,
    "ai": "mixed",
    "as_of": "2023-06",
    "src": "fixture"
@@ -284,6 +320,20 @@
    "ai_mode": "none",
    "as_of": "2026-03",
    "src": "fixture_ai"
+  },
+  {
+   "id": "tsk:f4",
+   "label": "Check that accounts follow the rules.",
+   "ai_mode": "used",
+   "as_of": "2026-03",
+   "src": "fixture_ai"
+  },
+  {
+   "id": "tsk:f5",
+   "label": "Advise managers on the costs of a plan.",
+   "ai_mode": "unknown",
+   "as_of": "2025-08",
+   "src": "fixture"
   }
  ],
  "signals": [
@@ -1294,5 +1344,47 @@
    "trust": "estimate",
    "as_of": "2026-03"
   }
- ]
+ ],
+ "near": {
+  "pairs": [
+   [
+    "skl:2.A.1.c",
+    "skl:2.A.1.d",
+    0.62
+   ],
+   [
+    "skl:2.A.1.e",
+    "skl:2.C.4.a",
+    0.82
+   ],
+   [
+    "skl:2.A.2.a",
+    "skl:2.B.4.e",
+    0.71
+   ],
+   [
+    "skl:2.B.1.c",
+    "skl:2.B.1.d",
+    0.76
+   ],
+   [
+    "skl:2.B.5.a",
+    "skl:2.B.5.b",
+    0.86
+   ],
+   [
+    "skl:2.B.5.a",
+    "skl:2.C.3.a",
+    0.55
+   ],
+   [
+    "skl:2.C.1.a",
+    "skl:4.A.2.a.4",
+    0.58
+   ]
+  ],
+  "as_of": "2025-08",
+  "src": "fixture",
+  "trust": "estimate"
+ }
 }

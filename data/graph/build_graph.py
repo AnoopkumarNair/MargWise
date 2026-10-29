@@ -208,10 +208,11 @@ def main():
         if p is not None: ea['pen'] = p
         if task_gwa.get(r['Task ID']): ea['gwa'] = sorted(task_gwa[r['Task ID']])
         add_edge('occ:' + o, tid, 'has_task', None, ea, SRC_ONET, 'official', d)
-        # AI use. The data has one penetration number per task and no automation/augmentation split, so used tasks are 'unknown' mode.
+        # AI use. The data has one penetration number per task and no automation/augmentation split: a task with use is 'used'
+        # (slice contract amendment A1), one with penetration 0 is 'none'. A task missing from the AI data gets no signal ('unknown' at export).
         if p is None: unmatched_tasks += 1
         else:
-            signals[(tid, 'ai_task_mode', 'latest')] = (tid, 'ai_task_mode', 'latest', 'none' if p == 0 else 'unknown', 'anthropic_task_penetration', 'official', ai_asof)
+            signals[(tid, 'ai_task_mode', 'latest')] = (tid, 'ai_task_mode', 'latest', 'none' if p == 0 else 'used', 'anthropic_task_penetration', 'official', ai_asof)
             n_pen_used += p > 0
     report['tasks_without_ai_data'] = unmatched_tasks; report['tasks_with_ai_use'] = n_pen_used
 

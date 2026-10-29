@@ -147,3 +147,74 @@ These came out of the S0 review. They are design choices the owner makes (DELIVE
 - Why: neither version had been released or stored, so there is nothing to migrate (as in D12). From the freeze on, every contract change bumps its version.
 - Effect: none on users. Later slices must bump a version for any contract change.
 - Decision: proposed
+
+### D14. S1 amendment A1 to the frozen slice contract, without a version bump
+- Slice and ticket: S1, T1.5 and T2.2 (contract change by the architect lane)
+- Date: 2026-10-29
+- Author: S1 integrator (architect hat)
+- Plan said: a change to `slice.schema.json` or to a band bumps `SLICE_V` (contracts/README); `node contracts/freeze.mjs --write` refuses until it is bumped (`contracts/FROZEN.md`).
+- We did: by owner decision 2026-10-29 (2), `SLICE_V` stays 1 and the change is additive. `slice.schema.json` gains an optional `near` object (`pairs: [[skill, skill, similarity]]`, `as_of`, `src`, `trust`), and task `ai_mode` gains `used` (AI use seen, no automation/augmentation split), separate from `none` (no use seen) and `unknown` (no data). `bands.json` `ai_task_mode` gains `used`. The validator gains `prefixItems` so the near pair is checked by position. To keep the freeze honest, `freeze.mjs` has an explicit amendment path: `contracts/amendments.json` lists the amendment (id, date, owner decision, files, the versions it keeps), `node contracts/freeze.mjs --write --amend A1` writes the lock only if the changed files are exactly the ones it names, and records it in `freeze.lock.json` so the id cannot be reused. It refuses a slice amendment once a graph release exists. The freeze test checks the lock and the list agree.
+- Why: no slice has been released, so nothing stored needs a migration; the owner chose an amendment over a bump.
+- Effect: every slice valid before is still valid. The data lane now writes `near` and `used`; the matcher and the app read them.
+- Decision: decided by owner 2026-10-29 (amendment mechanism proposed for confirmation)
+
+### D15. Slices are build outputs; --accept stores one compressed pack
+- Slice and ticket: S1, T1.5, T1.6, T4.1
+- Date: 2026-10-29
+- Author: S1 integrator
+- Plan said: BUILD_PLAN T1.6: `--accept` copies `slices/` to `data/releases/graph/`; the S1 data commit held `data/graph/slices/` (910 files).
+- We did: `data/graph/slices/` is git-ignored and removed from the index (`git rm --cached`); `python3 pipeline/run.py` (or `build_graph.py` then `export.py`) rebuilds it, and `export_report.json` (committed, checked by the CI drift step) holds its hashes and sizes. `--accept` writes `data/releases/graph/<release>/slices.jsonl.xz` (every slice, one per line, xz; about 1.3 MB instead of about 190 MB) plus `skills_index.json`, `titles.json` and a manifest with the pack hash and the slices folder hash. `app/adult/build.py` (release build) unpacks the pack and checks both hashes, then writes plain `.json` into `hosting/public/work/graph/<release>/`, so the web server can gzip it. `hosting/public/work/` is git-ignored (`hosting/.gitignore`), like the student game's `index.html`, so it must be built before each deploy. The release build stamps the graph release id (for example `onet-31-0-6148d5ec`) as the app's release id; before, it used the content release id from `data/releases/manifest.json`, and it read a folder layout that `--accept` never wrote. The app's `manifest.json` holds one folder hash for the slices instead of 910 file hashes.
+- Why: full-shape slices are about 210 KB raw each, about 190 MB per release; committed raw they would add that much on every graph change. The pack keeps each release at about 1.3 MB of history.
+- Effect: the 46 MB of slices in the earlier S1 commit stay in history; nothing new is added. The deploy step must run `python3 app/adult/build.py` (after `--accept`). CI rebuilds the graph to test it.
+- Decision: proposed
+
+### D16. Slice size limit is on the gzipped file; the trim is gone
+- Slice and ticket: S1, T1.5 (SPEC 5.3, 5.4; TEST_PLAN layers 1 and 8)
+- Date: 2026-10-29
+- Author: S1 integrator
+- Plan said: "slice files are under 60 KB each". The data lane read it as raw bytes and trimmed every slice to 12 or 16 targets with 20 needs and 30 tasks.
+- We did: by owner decision 2026-10-29 (1), the limit is 60,000 bytes gzipped (level 6). Every slice now has the SPEC 5.4 shape: 40 needs, all its tasks (at most 40 in O*NET 31.0), up to 30 targets with 40 needs each (895 slices have 30; 15 have 20 to 28 because there are not more candidates), plus `near`. Gzipped: largest 21,338 bytes, median 19,007. Raw: largest 218,361, median 209,922. The trim ladder stays only as a last resort and is counted in `export_report.json`; no slice uses it. SPEC 5.3/5.4, TEST_PLAN layers 1 and 8 and BUILD_PLAN T1.5/T1.6 now say gzipped. A shared label table inside the slice would cut the raw size, but it removes the per-need `label`, which is not an additive change, so it was left out.
+- Why: the browser downloads the gzipped file.
+- Effect: roads come from up to 30 targets instead of 12 to 16.
+- Decision: decided by owner 2026-10-29
+
+### D17. Matcher reads near from the slice; MATCHER_VERSION stays 1.0.0
+- Slice and ticket: S1, T2.2 to T2.4
+- Date: 2026-10-29
+- Author: S1 integrator
+- Plan said: SPEC 7.1 near(); the 1.0.0 matcher took skill_near only from `opts.near`.
+- We did: `match.js` and `reference.py` read `slice.near.pairs` when the caller passes no `opts.near` (which still overrides; `{}` turns it off). No golden output changed, so the version stays 1.0.0. A ninth golden case, `csr-real-near`, runs on a real-shape extract of the O*NET 31.0 Customer Service Representatives slice with its near pairs; the two implementations agree to 2 decimals. The version guard lock was rewritten only to add the case.
+- Why: owner decision 2026-10-29 (3).
+- Effect: with real data, near lifts coverage a lot: in `csr-real-near` it moves roads from 0.18-0.26 to 0.34-0.41. See D19 on why.
+- Decision: decided by owner 2026-10-29
+
+### D18. Data lane facts the owner should know (S1 graph)
+- Slice and ticket: S1, T1.1 to T1.5
+- Date: 2026-10-29
+- Author: data lane, logged by the S1 integrator
+- Plan said: SPEC 5.1 to 5.5 and BUILD_PLAN T1.1 to T1.5.
+- We did, item by item:
+  1. **O*NET 31.0 renamed files.** `Skills.txt` is now `Essential Skills.txt` (2.A.*) and `Transferable Skills.txt` (2.B.*); three linking files (`Tasks to DWAs.txt`, `Essential/Transferable Skills to Work Activities.txt`) were added to the SPEC 5.1 list, because they are the only link from tasks to skills for the SPEC 5.5 AI labels (`fetch_onet.py`).
+  2. **Technology ids are name slugs** (`tec:microsoft-excel`), not commodity codes: one O*NET commodity code covers many products. Ids are stable while O*NET keeps the product name.
+  3. **Financial and Investment Analysts (13-2051.00) has no skill ratings in O*NET 31.0.** It stays a graph node but has no slice; it is not offered on the title screen.
+  4. **`data/content.json` holds a stale SOC code**, 19-1020.01 for Biologist (career sci-2). O*NET 31.0 lists 19-1029.04. `data/graph/raw/soc_aliases.csv` maps it; `content.json` is not changed (student data). The owner should correct it at the next student release.
+  5. **T1.2 crosswalks are still outstanding.** `www.bls.gov` answered 403 again on 2026-10-29 (the proxy connects; the BLS server refuses the request), so there is no SOC 2018 to 2010 to ISCO-08 chain, no `occ.isco`, and no PLFS pay. Pay stays "not yet measured".
+  6. **The skill-vector cosine is weak** at telling occupations apart: 8,017 of 9,100 top-10 neighbours have a cosine that rounds (to 0.05) to 0.90 or more. `close_to` therefore takes O*NET's own related occupations first and adds a cosine pair only at 0.93 or more. skill_near has the same problem (most O*NET elements are needed together everywhere), which is why near lifts coverage so much (D17, D19).
+  7. **92 rating pairs that O*NET flags as low precision** are kept, marked `low_precision` on the edge.
+  8. **Technology cap:** at most a quarter of a needs list (10 of 40) is technology, so tools do not crowd out skills (all tools weigh 0.6 or 0.8 by rule). Even so, the tool list can look odd for a job (Adobe Illustrator for Customer Service Representatives is O*NET's own data).
+  9. **AI labels are mostly unknown.** In the slices, 82% of skill needs have no AI label (too few linked tasks with AI data), 13% "people still do this", 4% mixed, 1% "AI already does much". Tasks: 1,695 `used`, 16,735 `none`, 157 `unknown`. The app shows no AI label for unknown.
+  10. **Lists that need the owner's review:** `data/graph/raw/abbrev_in.csv` (144 rows) and `titles_in.csv` (34 rows) were drafted by the data lane; 19 terms in `abbrev_in_unmapped.csv` wait for S2.
+  11. **The slice trim is removed** (D16).
+- Why: each is a judgement or a gap in the public data.
+- Effect: as listed.
+- Decision: proposed (items 4, 5 and 10 need the owner)
+
+### D19. Skills screen shows up to 40 needs in groups; most roads are leaps when few skills are ticked
+- Slice and ticket: S1, T5.2 (frontend)
+- Date: 2026-10-29
+- Author: S1 integrator
+- Plan said: SPEC 7.1 coverage counts only what the person has; SPEC 7.3 reach thresholds (0.7, 0.4).
+- We did: the thresholds are unchanged. The skills screen lists all of the job's top needs (up to 40, before: 25) in four groups (skills, knowledge, work activities, tools), each with a "Tick all" button, and asks the person to tick everything they do ("Most people tick 15 or more"). It also lists the job's tasks with their AI use ("AI use seen", "No AI use seen", and no label when there is no data).
+- Why: with real slices, a person who ticks 10 skills sees only leaps. Measured on five jobs (accountant, software developer, customer service, registered nurse, marketing manager), counting adjacent/stretch/leap of 30 roads, with the slice's near pairs: 10 ticked as used: 0/0/30 for all five; 15 used: 0/0-5/25-30; 25 used: 0/13-30/0-17; 25 strong: 1-4/26-29/0; all 40 strong: 10-28/2-20/0. A skill ticked "used" counts 0.7, so adjacent (0.7) needs almost every need ticked; strong ratings and near do the rest.
+- Effect: the owner may want to revisit the thresholds or the "used" value after people tests; nothing changed here.
+- Decision: proposed

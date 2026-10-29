@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "contracts/slice.schema.json",
   "title": "Occupation slice",
-  "description": "One graph slice, data/graph/slices/<soc>.json (SPEC 5.4). Self-contained: the occupation, its top 40 needs, its tasks with AI use, its level, its signals, and up to 30 road targets each with their own top 40 needs. Every fact points at an entry in sources (src) and carries its own as_of. This is the canonical slice schema; BUILD_PLAN and TEST_PLAN call it matcher/slice.schema.json.",
+  "description": "One graph slice, data/graph/slices/<soc>.json (SPEC 5.4). Self-contained: the occupation, its top 40 needs, its tasks with AI use, its level, its signals, up to 30 road targets each with their own top 40 needs, and (S1 amendment A1) the skill_near pairs between the skills in those needs. Every fact points at an entry in sources (src) and carries its own as_of. The size limit (SPEC 5.3) is 60 KB gzipped per slice. This is the canonical slice schema; BUILD_PLAN and TEST_PLAN call it matcher/slice.schema.json.",
   "type": "object",
   "additionalProperties": false,
   "required": ["slice_v", "release", "occ", "needs", "tasks", "signals", "targets", "sources"],
@@ -76,6 +76,9 @@
       "items": {
         "$ref": "#/$defs/target"
       }
+    },
+    "near": {
+      "$ref": "#/$defs/near"
     },
     "sources": {
       "type": "array",
@@ -180,7 +183,8 @@
         },
         "ai_mode": {
           "type": "string",
-          "enum": ["automation", "augmentation", "none", "unknown"]
+          "enum": ["automation", "augmentation", "used", "none", "unknown"],
+          "description": "automation or augmentation: AI use seen, with that split. used: AI use seen in the task data (penetration above 0) but the data has no automation/augmentation split. none: the task is in the AI data and no use was seen (penetration 0). unknown: the task is not in the AI data. (S1 amendment A1 added used.)"
         },
         "as_of": {
           "type": "string",
@@ -345,6 +349,57 @@
           }
         }
       }
+    },
+    "near": {
+      "description": "skill_near (SPEC 5.2) for this slice, added by S1 amendment A1: each pair [a, b, similarity] once, a before b, both skills in the needs of the occupation or of a target. Similarity is read both ways. Only pairs of 0.5 or more are kept. The matcher reads this unless a caller passes its own near data.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pairs", "as_of", "src", "trust"],
+      "properties": {
+        "pairs": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 2000,
+          "items": {
+            "$ref": "#/$defs/near_pair"
+          }
+        },
+        "as_of": {
+          "type": "string",
+          "pattern": "^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$"
+        },
+        "src": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "trust": {
+          "type": "string",
+          "enum": ["official", "secondary", "estimate", "observed"]
+        }
+      }
+    },
+    "near_pair": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {
+          "type": "string",
+          "maxLength": 80,
+          "pattern": "^skl:[A-Za-z0-9]+([._-][A-Za-z0-9]+)*$"
+        },
+        {
+          "type": "string",
+          "maxLength": 80,
+          "pattern": "^skl:[A-Za-z0-9]+([._-][A-Za-z0-9]+)*$"
+        },
+        {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 1
+        }
+      ]
     }
   }
 }

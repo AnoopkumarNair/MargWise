@@ -4,3 +4,5 @@
 node_modules/
 public/index.html
 public/art/
+# adult app build output (app/adult/build.py), like public/index.html for the student game: built before each deploy, never committed (deviations D15)
+public/work/

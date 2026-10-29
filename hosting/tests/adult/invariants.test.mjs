@@ -31,8 +31,8 @@ const event = (db, tid, type, data) => sql(db, 'INSERT INTO events (tester_id, t
 
 test('a clean database passes; planned checks say when they start to apply', async () => {
   const r = await run(createFakeDb());
-  for (const id of [2, 6]) assert.equal(r[id].status, 'pass', id);
-  for (const id of [1, 3, 4, 5, 7, 8, 9]) { assert.equal(r[id].status, 'n/a', id); assert.match(r[id].note, /not applicable until T/, id); }
+  for (const id of [2, 6, 8]) assert.equal(r[id].status, 'pass', `${id}: ${r[id].violations}`);
+  for (const id of [1, 3, 4, 5, 7, 9]) { assert.equal(r[id].status, 'n/a', id); assert.match(r[id].note, /not applicable until T/, id); }
   const adult = await run(withAdult());
   for (const id of [1, 2, 4, 5, 9]) assert.equal(adult[id].status, 'pass', `${id}: ${adult[id].violations}`);
 });
@@ -137,4 +137,18 @@ test('the command line reads the .sql text from wrangler d1 export', () => {
   const bad = path.join(d, 'bad.sql'); writeFileSync(bad, readFileSync(good, 'utf8') + "INSERT INTO events (tester_id, ts, type, data) VALUES ('ghost', 1, 'x', '{}');\n");
   assert.equal(spawnSync(process.execPath, [TOOL, '--db', bad], { encoding: 'utf8' }).status, 1);
   assert.equal(spawnSync(process.execPath, [TOOL, '--db'], { encoding: 'utf8' }).status, 2);
+});
+
+test('8: the static check on matcher/match.js reads ALLOWED_INPUT_FIELDS and the source', async () => {
+  const { matcherInputProblems } = await import('../../tools/check_invariants.mjs');
+  const ok = ['roles', 'roles[].occ', 'skills', 'skills[].id'];
+  assert.deepEqual(matcherInputProblems('const a = profile.roles; const b = s.id; // a comment may say gender', ok), []);
+  assert.match(matcherInputProblems('const g = p.gender;', ok).join(), /reads \.gender/);
+  assert.match(matcherInputProblems('const c = x.commission;', ok).join(), /reads \.commission/);
+  assert.match(matcherInputProblems('const v = profile[k];', ok).join(), /computed key/);
+  assert.match(matcherInputProblems('const v = profile.creds;', ok).join(), /profile.creds, which is not in ALLOWED_INPUT_FIELDS/);
+  assert.match(matcherInputProblems('', [...ok, 'age_band']).join(), /lists age_band/);
+  assert.match(matcherInputProblems('', []).join(), /no ALLOWED_INPUT_FIELDS/);
+  const none = (await runInvariants(createFakeDb(), { matcherPath: '/nonexistent/match.js' })).find(r => r.id === 8);
+  assert.equal(none.status, 'n/a');
 });

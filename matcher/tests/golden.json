@@ -833,6 +833,124 @@
      }
     ]
    }
+  },
+  {
+   "id": "csr-real-near",
+   "family": "Office and administrative support (43-), real-shape slice",
+   "summary": "Customer service representative, 2-5 years in BPM, 12 skills ticked from the real O*NET 31.0 slice; skill_near comes from the slice itself (amendment A1), not from opts. 41-3091.00 is a leap at coverage 0.398, which shows as 0.40 to 2 decimals",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:43-4051.00",
+      "level": 2,
+      "industry": "bpm",
+      "years": "2-5",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.b",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.f",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.7.a",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.4.a.8",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.4.a.3",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.3.b.1",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-excel",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-outlook",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.2.a.2",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.1.a.1",
+      "strength": "used",
+      "last": 2026
+     }
+    ]
+   },
+   "slice": "fixtures/slice_csr_real.json",
+   "opts": {
+    "now": 2026
+   },
+   "expect": {
+    "person_level": 2,
+    "roads": [
+     {
+      "id": "occ:43-4081.00",
+      "reach": "stretch",
+      "coverage": 0.41,
+      "flags": []
+     },
+     {
+      "id": "occ:43-4041.00",
+      "reach": "leap",
+      "coverage": 0.38,
+      "flags": []
+     },
+     {
+      "id": "occ:41-9041.00",
+      "reach": "stretch",
+      "coverage": 0.4,
+      "flags": []
+     },
+     {
+      "id": "occ:41-3091.00",
+      "reach": "leap",
+      "coverage": 0.4,
+      "flags": []
+     },
+     {
+      "id": "occ:43-1011.00",
+      "reach": "leap",
+      "coverage": 0.34,
+      "flags": []
+     }
+    ]
+   }
   }
  ]
 }

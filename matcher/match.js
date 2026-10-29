@@ -77,7 +77,21 @@ function haves(p, opts) {
   return out;
 }
 
-// skill_near similarity, symmetric, from opts.near ({id: {id: sim}}). The slice contract does not carry it.
+// skill_near data as {id: {id: sim}}: opts.near when the caller passes it (tests, or data from elsewhere), otherwise the slice's own
+// near pairs (slice contract amendment A1: slice.near.pairs = [[a, b, sim], ...]), otherwise none.
+function nearOf(slice, opts) {
+  if (opts.near && typeof opts.near === 'object') return opts.near;
+  const pairs = slice && slice.near && Array.isArray(slice.near.pairs) ? slice.near.pairs : null;
+  if (!pairs) return null;
+  const out = Object.create(null);
+  for (const p of pairs) {
+    if (!Array.isArray(p) || typeof p[0] !== 'string' || typeof p[1] !== 'string' || num(p[2]) === null) continue;
+    (out[p[0]] || (out[p[0]] = Object.create(null)))[p[1]] = Math.max(p[2], out[p[0]][p[1]] ?? -1);
+  }
+  return out;
+}
+
+// skill_near similarity, symmetric, from {id: {id: sim}}.
 function sim(near, a, b) {
   const one = (x, y) => (near && Object.prototype.hasOwnProperty.call(near, x) && near[x] && Object.prototype.hasOwnProperty.call(near[x], y) ? num(near[x][y]) : null);
   const v = Math.max(one(a, b) ?? -1, one(b, a) ?? -1);
@@ -155,10 +169,11 @@ function weights(p, opts) {
 }
 
 // match(profile, slice, opts) -> {version, release, from, person, weights, stubs, roads} (SPEC 7).
-// opts: {now: year, near: {id: {id: sim}}, teaches: {cred id: [skill ids]}, walk: boolean}.
+// opts: {now: year, near: {id: {id: sim}} (default: slice.near), teaches: {cred id: [skill ids]}, walk: boolean}.
 export function match(profile, slice, opts = {}) {
   opts = opts || {};
   if (slice === null || typeof slice !== 'object' || !slice.occ) throw new TypeError('slice must be an occupation slice');
+  opts = { ...opts, near: nearOf(slice, opts) };
   const p = inputs(profile), have = haves(p, opts), w = weights(p, opts), from = slice.occ.id;
   const seen = new Set([from]), roads = [];
   for (const t of arr(slice.targets)) {

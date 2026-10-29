@@ -24,13 +24,24 @@ class Accept(unittest.TestCase):
         rid = graph_release.accept_graph(self.root, man)
         self.assertEqual(rid, 'onet-31-0-abcd1234')
         base = os.path.join(self.root, 'data', 'releases', 'graph')
-        self.assertTrue(os.path.exists(os.path.join(base, rid, 'slices', '15-1252.00.json')))
+        self.assertFalse(os.path.exists(os.path.join(base, rid, 'slices')), 'slices are packed, not copied one by one')
+        packed = graph_release.read_pack(os.path.join(base, rid, graph_release.PACK))
+        self.assertEqual(sorted(packed), ['13-2011.00.json', '15-1252.00.json'])
+        self.assertEqual(packed['15-1252.00.json'], open(os.path.join(self.root, 'data', 'graph', 'slices', '15-1252.00.json'), 'rb').read())
         m = json.load(open(os.path.join(base, rid, 'manifest.json')))
         self.assertEqual(m['ids'], ['occ:13-2011.00', 'occ:15-1252.00', 'skl:2.B.3.e'])
         self.assertEqual(json.load(open(os.path.join(base, 'latest.json'))), {'release_id': rid})
         self.assertEqual(man['graph']['release_id'], rid); self.assertIn('skills_index.json', man['graph']['files'])
+        self.assertEqual(m['files']['slices (folder)'], graph_release.slices_sha(packed))
+        self.assertEqual(m['files']['slices (folder)'], graph_release.tree_sha(os.path.join(self.root, 'data', 'graph', 'slices')))
+        self.assertIn(graph_release.PACK, m['files'])
         errs, n = check_registry.check_releases(json.load(open(self.reg_path)), self.root)
         self.assertEqual(errs, []); self.assertEqual(n, 1)
+
+    def test_refuses_a_slice_that_is_not_one_line(self):
+        json.dump({'occ': {'id': 'occ:13-2011.00'}}, open(os.path.join(self.root, 'data', 'graph', 'slices', '13-2011.00.json'), 'w'), indent=1)
+        with self.assertRaises(SystemExit) as cm: graph_release.accept_graph(self.root, {})
+        self.assertIn('one line', str(cm.exception))
 
     def test_refuses_when_registry_is_missing_an_id(self):
         json.dump({'registry_version': 1, 'entries': self.entries[:2]}, open(self.reg_path, 'w'))

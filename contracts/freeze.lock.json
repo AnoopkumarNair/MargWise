@@ -1,5 +1,5 @@
 {
-  "_doc": "Contract freeze lock (contracts/FROZEN.md). Written by node contracts/freeze.mjs --write; never edit by hand. contracts/tests/freeze.test.mjs fails when a contract file differs from its hash here, and --write refuses unless one of the versions in \"version\" went up.",
+  "_doc": "Contract freeze lock (contracts/FROZEN.md). Written by node contracts/freeze.mjs --write; never edit by hand. contracts/tests/freeze.test.mjs fails when a contract file differs from its hash here, and --write refuses unless one of the versions in \"version\" went up, or an owner amendment in amendments.json names the file (--write --amend <id>).",
   "frozen": "S0",
   "versions": {
     "MATCHER_VERSION": "1.0.0",
@@ -180,7 +180,7 @@
       ]
     },
     "bands.json": {
-      "sha256": "e41aa8bf5edbbc51bb21ec23374c53794d9fbee5a7465f8b8db0f78b442db44b",
+      "sha256": "0acc607adc63c53635ab84d4b67ce87383e20de5e8d3a7a05eaaa4aa7dad6615",
       "version": [
         "PROFILE_V",
         "SLICE_V",
@@ -218,10 +218,26 @@
       ]
     },
     "slice.schema.json": {
-      "sha256": "26efcab500535e7914757bbe1283814c9b0acf0ec697b3e45ef4d989328b59ff",
+      "sha256": "b135f530a15c0da6af93dce82a9deb26aa49109c9e778e68f935bb9040d38d81",
       "version": [
         "SLICE_V"
       ]
     }
-  }
+  },
+  "amendments": [
+    {
+      "id": "A1",
+      "date": "2026-10-29",
+      "files": {
+        "slice.schema.json": "b135f530a15c0da6af93dce82a9deb26aa49109c9e778e68f935bb9040d38d81",
+        "bands.json": "0acc607adc63c53635ab84d4b67ce87383e20de5e8d3a7a05eaaa4aa7dad6615"
+      },
+      "versions": {
+        "MATCHER_VERSION": "1.0.0",
+        "PROFILE_V": 1,
+        "SLICE_V": 1,
+        "API_V": 1
+      }
+    }
+  ]
 }

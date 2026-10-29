@@ -4,11 +4,18 @@
   "occ": {
     "id": "occ:13-2011.00",
     "label": "Accountants and Auditors",
-    "alt": ["Chartered Accountant"],
+    "alt": [
+      "Chartered Accountant"
+    ],
     "soc": "13-2011",
-    "isco": ["2411"],
+    "isco": [
+      "2411"
+    ],
     "job_zone": 4,
-    "typical_level": [3, 4],
+    "typical_level": [
+      3,
+      4
+    ],
     "ratings": {
       "oldest": "2021-07",
       "newest": "2024-06"
@@ -66,6 +73,13 @@
       "ai_mode": "none",
       "as_of": "2026-03",
       "src": "aei"
+    },
+    {
+      "id": "tsk:8065",
+      "label": "Examine financial records for accuracy.",
+      "ai_mode": "used",
+      "as_of": "2026-03",
+      "src": "aei"
     }
   ],
   "signals": [
@@ -86,7 +100,9 @@
         "as_of": "2025-08",
         "src": "onet"
       },
-      "via": ["close_to"],
+      "via": [
+        "close_to"
+      ],
       "needs": [
         {
           "id": "skl:2.A.2.a",
@@ -110,6 +126,18 @@
       "signals": []
     }
   ],
+  "near": {
+    "pairs": [
+      [
+        "skl:2.A.2.a",
+        "skl:2.C.1.a",
+        0.62
+      ]
+    ],
+    "as_of": "2025-08",
+    "src": "onet",
+    "trust": "estimate"
+  },
   "sources": [
     {
       "id": "onet",

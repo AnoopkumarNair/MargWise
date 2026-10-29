@@ -12,6 +12,7 @@ The shapes that the adult app, the API and the graph pipeline agree on (BACKEND 
 | `versions.json` | The same numbers for Python and people. A test keeps it equal to `versions.js` |
 | `bands.json` | The fixed value lists (years, budgets, city clusters, levels and so on). Each list says what it means in `_doc` |
 | `FROZEN.md`, `freeze.mjs`, `freeze.lock.json` | The S0 contract freeze: the lock holds a hash of every contract file, and a test fails when one changes without its version (see below) |
+| `amendments.json` | Owner-approved changes to a frozen contract that keep its version (`freeze.mjs --write --amend <id>`; FROZEN.md, Amendments). A1: slice `near` and task `ai_mode` `used` |
 | `profile.schema.json` | The stored adult profile document (SPEC 6). Ids and bands only. No demographic or commercial field (ADR-16). No `rev`: the edit counter lives in the `profiles` table and the API wrapper `{rev, data}` |
 | `slice.schema.json` | One graph slice, `data/graph/slices/<soc>.json` (SPEC 5.4). **This is the canonical slice schema.** BUILD_PLAN and TEST_PLAN call it `matcher/slice.schema.json`; use this file instead |
 | `skills_index.schema.json` | `data/graph/skills_index.json`, the dictionary used to find skills in text |
@@ -29,7 +30,7 @@ The shapes that the adult app, the API and the graph pipeline agree on (BACKEND 
 
 ## The validator
 
-It supports `type` (one type or a list, including `integer` and `null`), `required`, `properties`, `additionalProperties` (`false` or `true` only), `enum`, `items`, `minItems`, `maxItems`, `pattern`, `minLength`, `maxLength`, `minimum`, `maximum`, and `$ref` inside the same file (`#` or `#/$defs/name`). It refuses any other keyword with an error, so a schema can never look stricter than it is. There is no `oneOf`, `const`, `uniqueItems` or `format`.
+It supports `type` (one type or a list, including `integer` and `null`), `required`, `properties`, `additionalProperties` (`false` or `true` only), `enum`, `items`, `prefixItems` (a fixed tuple, one schema per position; not together with `items`), `minItems`, `maxItems`, `pattern`, `minLength`, `maxLength`, `minimum`, `maximum`, and `$ref` inside the same file (`#` or `#/$defs/name`). It refuses any other keyword with an error, so a schema can never look stricter than it is. There is no `oneOf`, `const`, `uniqueItems` or `format`.
 
 In code:
 
@@ -73,7 +74,7 @@ Bump the version in `versions.js` and `versions.json` in the same commit as the 
 | --- | --- |
 | Matcher behaviour or golden outputs | `MATCHER_VERSION` |
 | `profile.schema.json`, or a band the profile uses | `PROFILE_V`, plus an upgrade step in `profile_migrations.js` with a test, and the `v` enum in the schema |
-| `slice.schema.json` or `skills_index.schema.json` | `SLICE_V`, and the `slice_v` enum in the schema |
+| `slice.schema.json` or `skills_index.schema.json` | `SLICE_V`, and the `slice_v` enum in the schema (or, before any slice release and only with the owner's approval, an amendment: FROZEN.md) |
 | Anything in `api/`, `events.schema.json`, `extract.schema.json` or `event_schemas.js` | `API_V` |
 
 A contract change needs the architect's review and the owner's approval (DELIVERY, change control).

@@ -1,6 +1,6 @@
 # Golden cases, matcher 1.0.0 (slice S1)
 
-For the owner to read (BUILD_PLAN T2.4). Each row is a made-up person run against a hand-built test slice. The slices are test fixtures, not real data: the weights and AI shares are invented to exercise the rules.
+For the owner to read (BUILD_PLAN T2.4). Each row is a made-up person run against a test slice. The first 8 slices are hand-built test fixtures, not real data: the weights and AI shares are invented to exercise the rules. The ninth, csr-real-near, uses a real-shape slice: an extract of the O*NET 31.0 slice for Customer Service Representatives, frozen in `fixtures/slice_csr_real.json`.
 
 How to read it:
 
@@ -20,12 +20,14 @@ How to read it:
 | csr-creds | Office and administrative support (43-) | Customer service, 5-8 years, ITIL 4 (valid) and COPC (expired 2023) | 3 | 1. First-Line Supervisors of Office and Administrative Support Workers — stretch 0.59<br>2. Computer User Support Specialists — adjacent 0.76<br>3. Sales Representatives of Services — stretch 0.42<br>4. Training and Development Specialists — leap 0.21<br>5. Office Clerks, General — leap 0.21 |
 | nurse-core | Healthcare practitioners (29-) | Registered nurse, 8-12 years | 4 | 1. Nurse Practitioners — adjacent 0.74<br>2. Nursing Instructors and Teachers, Postsecondary — stretch 0.40<br>3. Health Education Specialists — leap 0.33<br>4. Medical and Health Services Managers — leap 0.18<br>5. Health Information Technologists and Medical Registrars — leap 0.39 |
 | nurse-lead-short | Healthcare practitioners (29-) | Senior nurse, 14+ years, leads 6-20; cares only about a short move | 6 | 1. Nursing Instructors and Teachers, Postsecondary — adjacent 0.88<br>2. Health Education Specialists — adjacent 0.85<br>3. Medical and Health Services Managers — stretch 0.52<br>4. Nurse Practitioners — stretch 0.44<br>5. Health Information Technologists and Medical Registrars — leap 0.20 |
+| csr-real-near | Office and administrative support (43-), real-shape slice | Customer service, 2-5 years in BPM, 12 skills ticked; near pairs from the slice itself | 2 | 1. Hotel, Motel, and Resort Desk Clerks — stretch 0.41<br>2. Credit Authorizers, Checkers, and Clerks — leap 0.38<br>3. Telemarketers — stretch 0.40<br>4. Sales Representatives of Services (41-3091.00) — leap 0.40 (0.398)<br>5. First-Line Supervisors of Office and Administrative Support Workers — leap 0.34 |
 
 What each case shows:
 
 - **acc-rusty:** skills last used more than 3 years ago count as rusty (0.4), so every road drops a band compared with acc-core. Excel is rated strong, so it keeps full credit.
 - **swdev-qa-near:** the person has no LLM evaluation skill, but has the nearby quality control skill. near() credits it at 0.35, which lifts the LLM Evaluation Specialist road from a leap (0.35) to a stretch (0.44).
 - **csr-creds:** ITIL 4 is valid, so it credits ServiceNow, computers and problem solving at 0.7. COPC expired in 2023, so its skills count 0.4. The person rated coordination strong, and their own rating wins.
+- **csr-real-near:** no near data is passed in; the matcher reads the slice's own skill_near pairs (slice amendment A1). Without them every road is a leap (coverage 0.18 to 0.26); with them two roads become stretches. Sales Representatives of Services is a leap at 0.398, which rounds to 0.40 on screen.
 - **nurse-lead-short:** only the short-move slider is on, so the roads are in coverage order. The enjoy slider is ignored, because the interest walk was not taken.
 
 **Please check one thing.** With the default sliders, AI safety counts as much as coverage. So a road with low coverage but low AI use can come before a closer road. In swdev-qa-near, a manager road with coverage 0.00 is second. In acc-core, Bookkeeping (adjacent, 0.77) is fifth because AI already does much of that work. This is what SPEC 7.3 says. Leaps are hidden by default, so on screen the person sees the adjacent and stretch roads first. Is this the order you want?

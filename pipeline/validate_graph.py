@@ -21,7 +21,8 @@ EDGE_KINDS = {'needs', 'has_task', 'close_to', 'co_occurs', 'teaches', 'asked_fo
 SIGNAL_KINDS = {'ai_obs', 'ai_tier', 'ai_task_mode', 'pay_band_in', 'demand_trend', 'skill_trend', 'entry_share', 'city_share', 'remote_share', 'pay_band_city'}
 ID_RE = {'occupation': r'occ:\d\d-\d{4}\.\d\d', 'skill': r'(skl:[0-9A-Za-z]+(\.[0-9A-Za-z]+)*|tec:[a-z0-9]+(-[a-z0-9]+)*)', 'task': r'tsk:\d+', 'title': r'ttl:[a-z0-9+# ]+', 'cluster': r'fld:[a-z]+'}
 ASOF_RE = re.compile(r'^\d{4}-\d{2}(-\d{2})?$')
-SLICE_MAX_BYTES = 60000
+SLICE_MAX_GZ = 60000        # bytes gzipped at level 6, what a browser downloads (SPEC 5.3, owner decision 2026-10-29)
+GZ_LEVEL = 6
 INDEX_MAX_GZ = 1500000
 
 
@@ -113,9 +114,11 @@ def check_exports(db_nodes, exp_dir, rep):
     ids = set(db_nodes)
     n_targets = 0
     for f in files:
-        path = os.path.join(sdir, f); size = os.path.getsize(path)
-        if size >= SLICE_MAX_BYTES: rep.fail('slice under 60 KB', '%s is %d bytes' % (f, size))
-        with open(path, encoding='utf8') as fh: s = json.load(fh)
+        path = os.path.join(sdir, f)
+        with open(path, 'rb') as fh: body = fh.read()
+        gz = len(gzip.compress(body, GZ_LEVEL, mtime=0))
+        if gz > SLICE_MAX_GZ: rep.fail('slice at most 60 KB gzipped', '%s is %d bytes gzipped' % (f, gz))
+        s = json.loads(body)
         if s['occ']['id'] != 'occ:' + f[:-5]: rep.fail('slice file name matches its occupation', f)
         refs = [s['occ']['id']] + [n['id'] for n in s['needs']] + [t['id'] for t in s['tasks']]
         for tg in s['targets']:
@@ -124,8 +127,18 @@ def check_exports(db_nodes, exp_dir, rep):
             if not tg['needs']: rep.fail('every road target carries its needs', '%s -> %s' % (f, tg['occ']['id']))
         for r in refs:
             if r not in ids: rep.fail('every id in a slice exists in the graph', '%s: %s' % (f, r))
+        nb = s.get('near')
+        if nb is not None:   # slice contract amendment A1
+            in_needs = {n['id'] for n in s['needs']} | {n['id'] for tg in s['targets'] for n in tg['needs']}
+            last = None
+            for p in nb['pairs']:
+                a, b, w = p
+                if a not in in_needs or b not in in_needs: rep.fail('near pairs only join skills in the slice needs', '%s: %s %s' % (f, a, b))
+                if not a < b or (last is not None and (a, b) <= last): rep.fail('near pairs are sorted, once each, a before b', '%s: %s %s' % (f, a, b))
+                if not 0.5 <= w <= 1: rep.fail('near similarity is 0.5 to 1', '%s: %s %s %r' % (f, a, b, w))
+                last = (a, b)
         have = {x['id'] for x in s['sources']}
-        used = {s['occ']['src']} | {n['src'] for n in s['needs']} | {t['src'] for t in s['tasks']} | {x['src'] for x in s['signals']}
+        used = {s['occ']['src']} | {n['src'] for n in s['needs']} | {t['src'] for t in s['tasks']} | {x['src'] for x in s['signals']} | ({s['near']['src']} if s.get('near') else set())
         if used - have: rep.fail('slice sources are listed', '%s uses %s' % (f, sorted(used - have)))
     # the contracts' own validator
     nd = node_cmd()

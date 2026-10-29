@@ -3,12 +3,13 @@
 // The command line tool is contracts/validate.js (node contracts/validate.js <schema.json> <file.json> ...).
 //
 // Supported keywords: type (string or list; integer, number, string, boolean, null, array, object), required,
-// properties, additionalProperties (false or true only), enum, items, minItems, maxItems, pattern,
+// properties, additionalProperties (false or true only), enum, items, prefixItems (one schema per position; with
+// maxItems it describes a fixed tuple such as [id, id, number]), minItems, maxItems, pattern,
 // minLength, maxLength, minimum, maximum, and $ref within the same file ("#" or "#/$defs/name").
 // Annotations ($schema, $id, $defs, $comment, title, description, examples, default, _doc) are ignored.
 // Any other keyword is an error, so a schema never looks stricter than it is.
 
-const KEYWORDS = new Set(['type', 'required', 'properties', 'additionalProperties', 'enum', 'items', 'minItems', 'maxItems',
+const KEYWORDS = new Set(['type', 'required', 'properties', 'additionalProperties', 'enum', 'items', 'prefixItems', 'minItems', 'maxItems',
   'pattern', 'minLength', 'maxLength', 'minimum', 'maximum', '$ref']);
 const ANNOTATIONS = new Set(['$schema', '$id', '$defs', '$comment', 'title', 'description', 'examples', 'default', '_doc']);
 const TYPES = new Set(['string', 'number', 'integer', 'boolean', 'null', 'array', 'object']);
@@ -50,6 +51,11 @@ function check(root, s, at) {
   if ('$ref' in s) resolve(root, s.$ref);
   if ('properties' in s) { if (!isObj(s.properties)) throw new Error(`${at}: properties must be an object`); for (const [k, v] of Object.entries(s.properties)) check(root, v, `${at}/properties/${k}`); }
   if ('items' in s) check(root, s.items, `${at}/items`);
+  if ('prefixItems' in s) {
+    if (!(Array.isArray(s.prefixItems) && s.prefixItems.length)) throw new Error(`${at}: prefixItems must be a non-empty list of schemas`);
+    if ('items' in s) throw new Error(`${at}: use prefixItems or items, not both`);   // the two-keyword form of 2020-12 is not in the subset
+    s.prefixItems.forEach((x, i) => check(root, x, `${at}/prefixItems/${i}`));
+  }
   if ('$defs' in s) { if (!isObj(s.$defs)) throw new Error(`${at}: $defs must be an object`); for (const [k, v] of Object.entries(s.$defs)) check(root, v, `${at}/$defs/${k}`); }
 }
 
@@ -84,6 +90,7 @@ function run(root, s, v, path, errs, rx, depth) {
     if ('minItems' in s && v.length < s.minItems) errs.push({ path, message: `must have at least ${s.minItems} items` });
     if ('maxItems' in s && v.length > s.maxItems) errs.push({ path, message: `must have at most ${s.maxItems} items` });
     if (s.items) v.forEach((x, i) => run(root, s.items, x, `${path}[${i}]`, errs, rx, depth + 1));
+    if (s.prefixItems) s.prefixItems.forEach((ps, i) => { if (i < v.length) run(root, ps, v[i], `${path}[${i}]`, errs, rx, depth + 1); });
   }
   if (isObj(v)) {
     for (const r of s.required || []) if (!Object.prototype.hasOwnProperty.call(v, r)) errs.push({ path: path + key(r), message: 'is required' });

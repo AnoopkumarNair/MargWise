@@ -4,6 +4,7 @@
 //   node hosting/tools/check_invariants.mjs --db export.sql      the same from the SQL text `wrangler d1 export` writes: it is loaded into a
 //                                                                 temporary in-memory database first (nothing is written to disk)
 // Exit code 0 = no violation, 1 = a violation, 2 = could not run. Output names tables, columns and counts, never values. Invariants that cannot apply yet say so.
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { inventoryProblems, INVENTORY } from '../core/data_inventory.js';
@@ -17,6 +18,23 @@ export const FREE_TEXT_STRING_MAX = 80;    // the longest id the contracts allow
 // and at most 80 characters. So a string with whitespace, or longer than 80, is free text.
 export const isFreeText = x => typeof x === 'string' && (x.length > FREE_TEXT_STRING_MAX || /\s/.test(x));
 const DAY = 86400000;
+const MATCHER = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'matcher', 'match.js');
+
+// Invariant 8 (ADR-16), a static check on matcher/match.js. The same rule as the matcher's own test (matcher/tests/match.test.mjs):
+// no property read and no allowed input field names anything demographic or commercial, and the profile is never read by computed key.
+export const FORBIDDEN_INPUT = /\b(age|age_band|birth|birth_year|dob|gender|sex|caste|religion|marital|name|email|phone|address|commission|referral|affiliate|sponsor|partner|paid|advert)\b/;
+export function matcherInputProblems(src, allowed) {
+  const v = [];
+  if (!Array.isArray(allowed) || !allowed.length) return ['matcher/match.js exports no ALLOWED_INPUT_FIELDS list'];
+  for (const f of allowed) if (FORBIDDEN_INPUT.test(f)) v.push(`ALLOWED_INPUT_FIELDS lists ${f}`);
+  const code = src.split('\n').filter(l => !l.trim().startsWith('//')).join('\n')
+    .replace(/'[^'\n]*'/g, m => (/^'(roles|skills|creds|lead|priorities|constraints)/.test(m) ? m : "''"));   // message strings are not reads
+  for (const m of code.matchAll(/\.([A-Za-z_][A-Za-z0-9_]*)/g)) if (FORBIDDEN_INPUT.test(m[1])) v.push(`match.js reads .${m[1]}`);
+  if (/profile\s*\[/.test(code)) v.push('match.js reads the profile by computed key');
+  const top = new Set(allowed.filter(f => !f.includes('.') && !f.includes('[')));
+  for (const m of code.matchAll(/\bprofile\.([A-Za-z_]+)/g)) if (!top.has(m[1])) v.push(`match.js reads profile.${m[1]}, which is not in ALLOWED_INPUT_FIELDS`);
+  return [...new Set(v)];
+}
 const ident = s => { if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(s)) throw new Error('unsafe identifier'); return '"' + s + '"'; };   // names come from the schema, never from users
 
 async function tableCols(db, t) { return (await db.prepare('SELECT name, type FROM pragma_table_info(?)').bind(t).all()).results; }
@@ -28,7 +46,7 @@ const fail = (id, title, violations) => ({ id, title, status: 'fail', note: '', 
 const na = (id, title, note) => ({ id, title, status: 'n/a', note, violations: [] });
 const verdict = (id, title, v) => v.length ? fail(id, title, v) : pass(id, title);
 
-export async function runInvariants(db, { now = Date.now(), profileV = versions.PROFILE_V } = {}) {
+export async function runInvariants(db, { now = Date.now(), profileV = versions.PROFILE_V, matcherPath = MATCHER } = {}) {
   const out = [];
   const adultReady = (await hasTable(db, 'testers')) && (await hasCol(db, 'testers', 'track'));
 
@@ -115,7 +133,14 @@ export async function runInvariants(db, { now = Date.now(), profileV = versions.
   }
 
   out.push(na(7, 'Every result event carries job_release and matcher_version', 'not applicable until T3.x/T5.x (adult result events; the adult event handler)'));
-  out.push(na(8, 'The matcher inputs contain no commercial or demographic field', 'not applicable until T2.x (matcher/match.js and its allowed-fields list); this is a static check on that file'));
+  { // 8 (static: the matcher source, not the database)
+    const id = 8, title = 'The matcher inputs contain no commercial or demographic field';
+    if (!fs.existsSync(matcherPath)) out.push(na(id, title, 'not applicable until T2.x (matcher/match.js and its allowed-fields list); this is a static check on that file'));
+    else {
+      const { ALLOWED_INPUT_FIELDS } = await import(new URL('file://' + path.resolve(matcherPath)).href);
+      out.push(verdict(id, title, matcherInputProblems(fs.readFileSync(matcherPath, 'utf8'), ALLOWED_INPUT_FIELDS)));
+    }
+  }
 
   { // 9 (data side; the query side is tested per endpoint in T3.x)
     const id = 9, title = 'No adult appears in any student or counsellor view, and no student in an adult view (data)';

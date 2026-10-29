@@ -10,6 +10,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
+import { gzipSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { startServer } from './server.mjs';
@@ -28,7 +29,7 @@ if (!process.env.MW_NO_BUILD) {
   const r = spawnSync('python3', [join(ROOT, 'app', 'adult', 'build.py'), '--dev'].concat(REAL ? [] : ['--fixtures']), { stdio: 'inherit' });
   assert.equal(r.status, 0, 'build failed');
 }
-const TICKS = 25; // the person ticks every skill listed and calls them strong: coverage needs 0.7 of every need to reach "adjacent" (SPEC 7.1, 7.3)
+const TICKS = 25; // the person ticks 25 skills and calls them strong: coverage needs 0.7 of every need to reach "adjacent" (SPEC 7.1, 7.3)
 let axeSrc = null;
 try { axeSrc = readFileSync(join(here, '..', 'node_modules', 'axe-core', 'axe.min.js'), 'utf8'); } catch { /* reported by the axe test */ }
 
@@ -119,9 +120,29 @@ for (const v of VIEWS) {
     ax.title = await axeCheck(page, 'title');
     await page.locator('#job-picks button', { hasText: 'Accountants and Auditors' }).click();
 
-    // 3. Skills
-    await page.locator('ul.skills').waitFor();
-    const nSk = await page.locator('ul.skills > li').count(); assert.ok(nSk <= 25 && nSk >= 21, 'skills listed: ' + nSk);
+    // 3. Skills: up to 40, in groups, with "tick all" per group
+    await page.locator('.skill-groups').waitFor();
+    const nSk = await page.locator('ul.skills > li').count(); assert.ok(nSk <= 40 && nSk >= (REAL ? 10 : 32), 'skills listed: ' + nSk);
+    if (!REAL) assert.equal(nSk, 32);
+    assert.ok(await page.locator('.skill-group h2').count() >= 2, 'skills are grouped');
+    assert.match(await page.locator('#tick-count').innerText(), /^0 of \d+ ticked\. Tick everything you do/);
+    // "tick all" in one group ticks every box in it, and a second click unticks them
+    const grp = page.locator('.skill-group').last(), inGrp = await grp.locator('input[type=checkbox]').count();
+    await grp.locator('button.tick-all').click();
+    assert.equal(await grp.locator('input[type=checkbox]:checked').count(), inGrp);
+    assert.match(await page.locator('#tick-count').innerText(), new RegExp('^' + inGrp + ' of '));
+    assert.match(await grp.locator('button.tick-all').innerText(), /Untick all/);
+    await grp.locator('button.tick-all').click();
+    assert.equal(await grp.locator('input[type=checkbox]:checked').count(), 0);
+    // the job's tasks and their AI use: "used" and "none" have labels, a task without AI data has none
+    await page.locator('#job-tasks summary').click();
+    const tasksText = await page.locator('#job-tasks').innerText();
+    assert.match(tasksText, /AI use was seen in \d+ of these \d+ tasks/);
+    if (!REAL) {
+      assert.match(tasksText, /AI use seen/); assert.match(tasksText, /No AI use seen/); assert.match(tasksText, /there is no AI data yet/);
+      assert.equal(await page.locator('#job-tasks li', { hasText: 'Advise managers' }).locator('.tag').count(), 0, 'unknown shows no label');
+    }
+    await page.locator('#job-tasks summary').click();
     const boxes = page.locator('ul.skills input[type=checkbox]');
     const nBoxes = Math.min(TICKS, await boxes.count());
     const ticked = [...Array(nBoxes).keys()].filter(i => i !== 20);
@@ -129,7 +150,7 @@ for (const v of VIEWS) {
     for (const i of ticked) await page.locator('ul.skills > li').nth(i).getByLabel('Strong').check();
     await page.locator('ul.skills > li').nth(2).getByLabel('Rusty').check();
     await page.locator('#years').selectOption('5-8');
-    assert.match(await page.locator('#tick-count').innerText(), new RegExp(ticked.length + ' ticked'));
+    assert.match(await page.locator('#tick-count').innerText(), new RegExp('^' + ticked.length + ' of \\d+ ticked\\.$'));
     // keyboard: Space toggles a checkbox
     await boxes.nth(20).focus(); await page.keyboard.press('Space');
     assert.equal(await boxes.nth(20).isChecked(), true);
@@ -233,7 +254,7 @@ test('the CSP header on /work/ blocks inline script and inline style', async () 
   await ctx.close();
 });
 
-test('budgets (TEST_PLAN layer 8): first load <= 300 KB, slice <= 60 KB, roads <= 200 ms at 4x CPU and fast 3G', async () => {
+test('budgets (TEST_PLAN layer 8): first load <= 300 KB, slice <= 60 KB gzipped, roads <= 200 ms at 4x CPU and fast 3G', async () => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const page = await ctx.newPage(); const w = watch(page);
   const cdp = await ctx.newCDPSession(page);
@@ -262,11 +283,13 @@ test('budgets (TEST_PLAN layer 8): first load <= 300 KB, slice <= 60 KB, roads <
   await page.locator('#start').click();
   await page.locator('#job-title').fill('accountant');
   await page.locator('#job-picks button').first().click();
-  await page.locator('ul.skills').waitFor();
+  await page.locator('.skill-groups').waitFor();
   const sl = sizes.find(s => /\/slices\/.+\.json$/.test(s.url));
   assert.ok(sl, 'a slice was fetched');
-  console.log(`  slice fetch: ${(sl.bytes / 1024).toFixed(1)} KB (${sl.url.split('/').pop()})`);
-  assert.ok(sl.bytes <= 60 * 1024, `slice ${sl.bytes} bytes`);
+  // The budget is the gzipped size, what a browser downloads from a web server that compresses (owner decision 2026-10-29; level 6 as export.py)
+  const gz = gzipSync(readFileSync(join(PUBLIC, new URL(sl.url).pathname)), { level: 6 }).length;
+  console.log(`  slice fetch: ${(gz / 1024).toFixed(1)} KB gzipped, ${(sl.bytes / 1024).toFixed(1)} KB raw (${sl.url.split('/').pop()})`);
+  assert.ok(gz <= 60000, `slice ${gz} bytes gzipped`);
   for (let i = 0; i < TICKS; i++) { await page.locator('ul.skills input[type=checkbox]').nth(i).check(); await page.locator('ul.skills > li').nth(i).getByLabel('Strong').check(); }
   await page.locator('#see-roads').click();
   await page.locator('ol.cards > li').first().waitFor();

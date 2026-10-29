@@ -164,19 +164,21 @@ CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai
 - No node or edge has an empty `source`, `trust` or `as_of`, and `trust` is in the allowed set.
 - Every one of the 83 existing careers' SOC codes is present as an occupation.
 - Every `needs` edge has a real collection date from O*NET (not the download date).
-- Slice files are under 60 KB each; `skills_index.json` is under 1.5 MB gzipped.
+- Each slice file is at most 60 KB **gzipped** (what a browser downloads; owner decision 2026-10-29). The raw file may be larger (about 200 KB). `skills_index.json` is under 1.5 MB gzipped.
 
 ### 5.4 Exports
 
 - **`slices/<soc>.json`:**
   - the occupation;
   - its top 40 `needs`, with labels and weights;
-  - its tasks, with AI use;
+  - its tasks, with AI use (`ai_mode`: `automation` or `augmentation` where the data has the split; `used` where AI use was seen without the split; `none` where the task is in the AI data and no use was seen; `unknown` where there is no data);
   - its job zone and level ladder (if known);
   - its signals;
   - its top 30 candidate road targets, from `close_to`, two-step paths with coverage of 0.4 or more, and same-cluster occupations.
 
   For each target, the slice also holds the target's top 40 `needs` (repeated, so a slice is self-contained).
+  The slice also holds `near`: the `skill_near` pairs between the skills in all those needs, as `[skill, skill, similarity]` (slice contract amendment A1), so the matcher needs no other file.
+  The size limit is on the gzipped file (5.3). If a slice were still too big, the export trims it by a fixed ladder (fewer tasks, then fewer target needs, then fewer targets) and counts every trim in `export_report.json`; with O*NET 31.0 no slice needs it.
 - **`skills_index.json`:** `[{id, label, alt:[...], kind}]` for skills and technology, plus the starter list of Indian abbreviations (`data/graph/raw/abbrev_in.csv`).
 - **`titles.json`:** `{normalised title: [occ ids]}` from O*NET alternate titles and approved user titles.
 
@@ -185,7 +187,7 @@ CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai
 | Signal | How it is computed |
 | --- | --- |
 | `ai_obs`, `ai_tier` | From the existing AI layer, per occupation |
-| `ai_task_mode` | Per task: automation, augmentation or none, from the Anthropic Economic Index task data where the split exists. `none` means no use was observed |
+| `ai_task_mode` | Per task: automation, augmentation, used or none, from the Anthropic Economic Index task data. Automation or augmentation only where the split exists; `used` means use was observed but the data has no split; `none` means the task is in the data and no use was observed. A task missing from the data is `unknown` in the slice |
 | Skill AI labels | Computed at export: a skill whose weighted share of tasks with AI use is 0.5 or more is "AI already does much of this"; 0.15 or less is "people still do this"; anything between is "mixed" |
 | `pay_band_in` | PLFS broad group, mapped through NCO to ISCO to SOC |
 | `demand_trend`, `skill_trend`, `entry_share` | Tables exist but are empty until D2 or D3 is answered. The UI shows "not yet measured" |

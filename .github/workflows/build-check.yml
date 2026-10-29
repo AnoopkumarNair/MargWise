@@ -17,7 +17,7 @@ jobs:
         run: python3 pipeline/run.py
         env: { RAW_STRICT: '1' }
       - name: Fail if the rebuild changed committed files
-        run: git diff --exit-code -- data/content.json data/releases/latest.json hosting/functions/api/_claims.json
+        run: git diff --exit-code -- data/content.json data/releases/latest.json hosting/functions/api/_claims.json data/graph/build_report.json data/graph/export_report.json
       - name: Build the game from the accepted release only
         run: python3 app/build.py
       - name: Fail if the build changed the vendored files (VERSIONS.md must survive the build)
@@ -60,26 +60,35 @@ jobs:
       - name: Registry unit tests
         run: |
           python3 -m unittest discover -s pipeline/tests -p "test_*.py"
-      - name: Validate the graph
+      # The graph and its exports are build outputs (graph.sqlite and data/graph/slices/ are git-ignored, deviations D15):
+      # rebuild them offline from the committed O*NET raw files, then check them. export_report.json holds the slice hashes.
+      - name: Build the graph and its exports
         run: |
-          if [ -e pipeline/validate_graph.py ]; then
-            python3 pipeline/validate_graph.py
-          else
-            echo "skip: pipeline/validate_graph.py does not exist yet"
-          fi
+          python3 data/graph/build_graph.py
+          python3 data/graph/export.py
+      - name: Fail if the graph or its exports changed (build_report.json and export_report.json are committed)
+        run: git diff --exit-code -- data/graph/build_report.json data/graph/export_report.json data/graph/skills_index.json data/graph/titles.json
+      - name: Validate the graph and the exports (slices at most 60 KB gzipped, contract check)
+        run: python3 pipeline/validate_graph.py --exports
+        env: { RAW_STRICT: '1' }
+      - name: Graph tests
+        run: python3 -m unittest discover -s data/graph/tests
+      # TODO after the owner's first --accept (data/releases/graph/latest.json exists): add
+      #   python3 app/adult/build.py            (release build from the accepted slice pack; checks every hash)
   matcher:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
-      - name: Matcher tests
-        run: |
-          if [ -e matcher/tests ]; then
-            node --test 'matcher/tests/*.test.mjs'
-          else
-            echo "skip: matcher/tests does not exist yet"
-          fi
+      - name: Matcher tests (golden, properties, reference agreement, invariant 8)
+        run: node --test 'matcher/tests/*.test.mjs'
+      - name: Independent Python reference agrees with the golden cases
+        run: python3 matcher/reference.py
+      - name: Version guard (a golden output changes only with MATCHER_VERSION)
+        run: node matcher/tests/version_guard.mjs
   api:
     runs-on: ubuntu-latest
     steps:
@@ -126,19 +135,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
-      - name: Install Chromium
+      - name: Install the test-only packages (axe-core, Playwright) and Chromium
+        working-directory: app/adult/tests
         run: |
-          if [ -e app/adult/tests/e2e ]; then
-            npx playwright install --with-deps chromium
-          else
-            echo "skip: app/adult/tests/e2e does not exist yet"
-          fi
-      - name: End-to-end tests
-        run: |
-          if [ -e app/adult/tests/e2e ]; then
-            node --test 'app/adult/tests/e2e/*.test.mjs'
-          else
-            echo "skip: app/adult/tests/e2e does not exist yet"
-          fi
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: App unit tests (adapter, lookup, safety, release build on a throwaway copy)
+        run: node --test 'app/adult/tests/unit/*.test.mjs'
+      - name: End-to-end tests on the test fixtures (the test builds with app/adult/build.py --dev --fixtures)
+        run: node --test 'app/adult/tests/e2e/*.test.mjs'
+      # Real data (MW_E2E_DATA=real) needs the pipeline outputs; run it locally (docs/adult/S1_DEMO.md). TODO after the first --accept:
+      # build with python3 app/adult/build.py (no --dev) and run the e2e on the accepted release.

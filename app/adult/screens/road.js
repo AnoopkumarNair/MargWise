@@ -18,7 +18,7 @@ export async function render(args) {
     h('h2', null, 'Skills you would still need'),
     r.gaps.length ? h('ol', { class: 'gap-list' }, r.gaps.map(g => h('li', null,
       h('strong', null, g.label),
-      h('span', { class: 'meta' }, (g.w == null ? '' : 'Importance in this job: ' + importance(g.w) + '. ') + AI_TEXT[g.ai] + '.'),
+      h('span', { class: 'meta' }, (g.w == null ? '' : 'Importance in this job: ' + importance(g.w) + '. ') + (AI_TEXT[g.ai] ? AI_TEXT[g.ai] + '.' : '')),
       h('span', { class: 'reason' }, g.reason)))) : h('p', null, 'None. You cover the main skills of this job.'),
     h('h2', null, 'Courses and credentials'),
     r.bridges.length ? h('ul', null, r.bridges.map(b => h('li', null, b.label))) : h('p', null, 'No reviewed course yet for these skills.'),

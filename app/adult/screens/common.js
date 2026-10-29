@@ -21,7 +21,10 @@ export async function computeRoads() {
 
 export const pct = x => Math.round(x * 100) + '%';
 export function importance(w) { return w >= 0.66 ? 'High' : w >= 0.33 ? 'Medium' : 'Low'; }
-export const AI_TEXT = { ai_does_much: 'AI already does much of this', mixed: 'AI helps with some of this', people_do: 'People still do this', unknown: 'AI use not yet measured' };
+// Skill AI labels (SPEC 5.5). 'unknown' has no label: the skill simply shows no AI line (not yet measured).
+export const AI_TEXT = { ai_does_much: 'AI already does much of this', mixed: 'AI helps with some of this', people_do: 'People still do this', unknown: '' };
+// Task AI use (slice amendment A1). 'used' is use seen without an automation/augmentation split; 'none' is no use seen; 'unknown' has no label.
+export const TASK_AI_TEXT = { automation: 'AI does this', augmentation: 'AI helps with this', used: 'AI use seen', none: 'No AI use seen', unknown: '' };
 
 export function badges(r) {
   return h('p', { class: 'badges' },

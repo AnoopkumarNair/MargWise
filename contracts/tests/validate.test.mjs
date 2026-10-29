@@ -110,6 +110,15 @@ test('schemas outside the subset are refused, so nothing looks stricter than it 
     assert.throws(() => checkSchema(s), undefined, JSON.stringify(s));
   for (const s of [{}, { title: 't', description: 'd', $comment: 'c', _doc: 'x', examples: [], default: 1, $schema: 's', $id: 'i' }]) checkSchema(s);
 });
+test('prefixItems checks a fixed tuple by position (the slice near pairs: [id, id, similarity])', () => {
+  const tuple = { type: 'array', minItems: 3, maxItems: 3, prefixItems: [{ type: 'string', pattern: '^skl:' }, { type: 'string', pattern: '^skl:' }, { type: 'number', minimum: 0.5, maximum: 1 }] };
+  assert.equal(validate(tuple, ['skl:a', 'skl:b', 0.7]).ok, true);
+  assert.deepEqual(validate(tuple, ['skl:a', 0.7, 'skl:b']).errors.map(e => e.path), ['$[1]', '$[2]']);
+  assert.match(validate(tuple, ['skl:a', 'skl:b', 0.2]).errors[0].message, /0.5 or more/);
+  assert.match(validate(tuple, ['skl:a', 'skl:b']).errors[0].message, /at least 3/);
+  assert.match(validate(tuple, ['skl:a', 'skl:b', 0.7, 1]).errors[0].message, /at most 3/);
+  for (const s of [{ prefixItems: [] }, { prefixItems: {} }, { prefixItems: [{}], items: {} }, { prefixItems: [{ oneOf: [] }] }]) assert.throws(() => checkSchema(s), undefined, JSON.stringify(s));
+});
 test('a bad schema throws even when the data would never reach the bad part', () => {
   assert.throws(() => validate({ type: 'object', properties: { a: { oneOf: [] } } }, {}), /unsupported keyword "oneOf"/);
 });

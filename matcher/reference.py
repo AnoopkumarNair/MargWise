@@ -114,9 +114,23 @@ def latest_ai_obs(signals):
     return None if found is None else min(1.0, max(0.0, found['value']))
 
 
+def slice_near(slice_):
+    """The slice's own skill_near pairs (slice contract amendment A1) as {a: {b: sim}}, or None."""
+    block = slice_.get('near')
+    if not isinstance(block, dict) or not isinstance(block.get('pairs'), list):
+        return None
+    near = {}
+    for p in block['pairs']:
+        if isinstance(p, list) and len(p) == 3 and isinstance(p[0], str) and isinstance(p[1], str) and is_number(p[2]):
+            row = near.setdefault(p[0], {})
+            row[p[1]] = max(p[2], row.get(p[1], -1))
+    return near
+
+
 def run(profile, slice_, opts):
     opts = opts or {}
-    now, near, teaches = opts.get('now'), opts.get('near'), opts.get('teaches')
+    now, teaches = opts.get('now'), opts.get('teaches')
+    near = opts['near'] if isinstance(opts.get('near'), dict) else slice_near(slice_)   # the caller's near data wins
     values = skill_values(profile, now, teaches)
     pri = profile.get('priorities') or {'pay': 1, 'ai_safe': 1, 'short_move': 1, 'demand': 1, 'enjoy': 0}
     weight = {}

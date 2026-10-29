@@ -70,8 +70,8 @@
     "values": ["ai_does_much", "mixed", "people_do", "unknown"]
   },
   "ai_task_mode": {
-    "_doc": "AI use on a task (SPEC 5.5). none = no use was observed; unknown = no data.",
-    "values": ["automation", "augmentation", "none", "unknown"]
+    "_doc": "AI use on a task (SPEC 5.5). automation or augmentation = use seen, with that split; used = use seen (penetration above 0) but the data has no split; none = the task is in the AI data and no use was observed; unknown = no data. used was added by S1 amendment A1 (contracts/amendments.json).",
+    "values": ["automation", "augmentation", "used", "none", "unknown"]
   },
   "road_kind": {
     "_doc": "Kind of move (SPEC 7.2).",

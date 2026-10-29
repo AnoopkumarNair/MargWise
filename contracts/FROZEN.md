@@ -28,3 +28,15 @@ Code in this folder (`validate_lib.js`, `validate.js`, `migrate_ids.js`, `profil
 
 - `contracts/tests/freeze.test.mjs` (in CI with the other contract tests) fails when a contract file differs from the lock, when a file is added or removed, when a version goes down, or when the lock is out of date.
 - `node contracts/freeze.mjs` runs the same check from the command line.
+
+## Amendments (a change without a version bump)
+
+The owner may approve an additive change to a frozen contract that keeps its version, but only before anything with that version has been released. It is never done silently:
+
+1. Add an entry to `amendments.json`: an id (`A1`, `A2`, ...), the date, the owner decision that approved it, a summary, the contract files it changes, and the versions it keeps.
+2. Edit the files, run `node contracts/sync.mjs`, then `node contracts/freeze.mjs --write --amend <id>`. It refuses if any other contract file changed, if a version does not match what the amendment keeps, if the id was used before, or, for a slice contract file, once a graph release exists (`data/releases/graph/latest.json`).
+3. The lock records the amendment (id, date, the new hashes, the versions). `freeze.test.mjs` fails if `amendments.json` and the lock disagree.
+
+| Id | Date | Files | Versions kept | Owner decision |
+| --- | --- | --- | --- | --- |
+| A1 | 2026-10-29 | `slice.schema.json`, `bands.json` | `SLICE_V` 1 (and `PROFILE_V`, `API_V` 1) | 2026-10-29, item (2): slice `near` pairs and task `ai_mode` `used` (deviations D14) |

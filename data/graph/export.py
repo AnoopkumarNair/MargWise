@@ -9,9 +9,14 @@ Writes (default DIR = data/graph/):
   titles.json              { normalised title: [occ ids] }
   export_report.json       sizes, trims, left-out occupations, hashes (committed; a change shows up in review)
 
-Size rules (SPEC 5.3): a slice is under 60,000 bytes; skills_index.json is under 1.5 MB gzipped.
-SPEC 5.4 asks for 40 needs per target and 30 targets. With this schema that is about 150 KB, so slices are trimmed by `LADDER` below
-until they fit, and each trim is counted in export_report.json.
+Size rules (SPEC 5.3, owner decision 2026-10-29): a slice is at most 60,000 bytes GZIPPED (what a browser downloads; gzip level 6,
+about what a web server uses); skills_index.json is under 1.5 MB gzipped. Slices have the full SPEC 5.4 shape: the occupation's top 40
+needs and up to 80 tasks, and up to 30 road targets each with its top 40 needs, plus the skill_near pairs between those skills
+(slice contract amendment A1). `LADDER` below is a last resort only: a slice that is still too big takes the first smaller step that
+fits, and every such trim is counted in export_report.json. With O*NET 31.0 no slice needs it.
+
+slices/ is a build output and is not committed (deviations D15): the pipeline rebuilds it, and export_report.json (committed) holds
+its hashes and sizes, so CI sees any change. --accept stores the accepted slices as one compressed pack in data/releases/graph/.
 """
 import argparse, collections, csv, gzip, hashlib, json, os, shutil, sqlite3, sys
 
@@ -20,7 +25,8 @@ sys.path.insert(0, HERE)
 from build_graph import norm_title  # noqa: E402
 
 SLICE_V = 1
-SLICE_MAX_BYTES = 60000
+SLICE_MAX_GZ = 60000        # bytes, gzipped (SPEC 5.3)
+GZ_LEVEL = 6
 INDEX_MAX_GZ = 1500000
 NEEDS_OWN = 40
 TASKS_OWN = 80
@@ -31,11 +37,9 @@ TWO_STEP_VIA = 10           # follow the 10 strongest close_to links, then their
 TWO_STEP_MIN_COVERAGE = 0.4
 AI_MIN_TASKS = 3            # a skill label needs at least this many tasks to look at
 AI_HI, AI_LO = 0.5, 0.15    # SPEC 5.5
-# Trim ladder: (targets, needs per target, tasks). The first step is the SPEC 5.4 shape. A slice takes the first step that fits.
-TASKS_KEPT = 30             # tasks are shown from S2 on; 30 per occupation (core tasks first) keeps room for the road targets
-LADDER = [(30, 40, 80), (30, 40, TASKS_KEPT), (30, 30, TASKS_KEPT), (24, 30, TASKS_KEPT), (24, 24, TASKS_KEPT), (20, 24, TASKS_KEPT), (20, 20, TASKS_KEPT),
-          (16, 20, TASKS_KEPT), (12, 20, TASKS_KEPT), (12, 16, TASKS_KEPT), (10, 16, TASKS_KEPT), (8, 16, TASKS_KEPT), (8, 12, TASKS_KEPT), (5, 12, TASKS_KEPT),
-          (5, 12, 15), (5, 8, 10), (0, 8, 10)]
+# Trim ladder, last resort only: (targets, needs per target, tasks). The first step is the SPEC 5.4 shape. A slice takes the first step
+# whose gzipped size fits; any step after the first is counted in export_report.json ('slices_trimmed') for the owner to see.
+LADDER = [(TARGETS, 40, TASKS_OWN), (TARGETS, 40, 40), (TARGETS, 30, 40), (24, 30, 30), (20, 24, 30), (12, 20, 30), (5, 12, 15), (0, 8, 10)]
 KIND = {'skill': 'skill', 'knowledge': 'knowledge', 'activity': 'activity', 'technology': 'technology'}
 
 SHORT = {'onet_database': 'onet', 'anthropic_task_penetration': 'aei_task', 'anthropic_job_exposure': 'aei_obs', 'bls_ai_exposure': 'bls_ai'}   # ids inside a slice are short, to save bytes
@@ -151,6 +155,25 @@ def task_rows(g, o, limit):
     return out
 
 
+def near_block(g, needs_lists):
+    """skill_near pairs (SPEC 5.2) between the skl: ids in these needs lists: [a, b, similarity] once each, a < b, best similarity of the two
+    directions (cosine is symmetric, but each skill keeps only its own top 10, so a pair can be stored in one direction only)."""
+    ids = sorted({n['id'] for lst in needs_lists for n in lst if n['id'].startswith('skl:')})
+    have = set(ids); best = {}; asof = None
+    for a in ids:
+        for d, w, at, ao in g.out[a]['skill_near']:
+            if d not in have or d == a: continue
+            k = (a, d) if a < d else (d, a)
+            if w > best.get(k, -1): best[k] = w
+            asof = max(asof or ao, ao)
+    pairs = [[a, b, round(w, 4)] for (a, b), w in sorted(best.items()) if w >= 0.5]
+    return {'pairs': pairs, 'as_of': asof or SRC_ASOF['onet_database'], 'src': SHORT['onet_database'], 'trust': 'estimate'}
+
+
+def gz_size(body):
+    return len(gzip.compress(body.encode('utf8'), GZ_LEVEL, mtime=0))
+
+
 def coverage(own, tgt_needs):
     """How much of the target's top needs the occupation's own profile reaches: sum(min(w_target, w_own)) / sum(w_target). Used to rank candidates only; the matcher computes the real coverage."""
     tot = sum(n['w'] for n in tgt_needs)
@@ -218,7 +241,8 @@ def build_slices(g, release):
         for step, (nt, nn, nk) in enumerate(LADDER):
             sl = {'slice_v': SLICE_V, 'release': release, 'occ': occ_obj(g, o, True), 'needs': top(o, NEEDS_OWN), 'tasks': task_rows(g, o, nk), 'signals': sig_rows(g, o), 'targets': []}
             for t in chosen[:nt]:
-                sl['targets'].append({'occ': occ_obj(g, t, False), 'via': via[t], 'needs': top(t, nn), 'signals': sig_rows(g, t)})
+                sl['targets'].append({'occ': occ_obj(g, t, False), 'via': via[t], 'needs': top(t, NEEDS_OWN)[:nn], 'signals': sig_rows(g, t)})
+            sl['near'] = near_block(g, [sl['needs']] + [tg['needs'] for tg in sl['targets']])
             ids = {SHORT['onet_database']}
             for blk in [sl['needs'], sl['tasks'], sl['signals']] + [x for tg in sl['targets'] for x in (tg['needs'], tg['signals'])]:
                 ids.update(r['src'] for r in blk)
@@ -227,11 +251,12 @@ def build_slices(g, release):
                 full = LONG[sid]; d = dict(SOURCES[full]); d['id'] = sid; d['as_of'] = SRC_ASOF[full]; srcs.append({k: d[k] for k in ('id', 'name', 'url', 'trust', 'as_of', 'licence')})
             sl['sources'] = srcs
             body = dump(sl)
-            if len(body.encode('utf8')) < SLICE_MAX_BYTES: break
+            gz = gz_size(body)
+            if gz <= SLICE_MAX_GZ: break
         else:
-            raise SystemExit('slice %s cannot be made small enough' % o)
+            raise SystemExit('slice %s is over %d bytes gzipped even at the last trim step' % (o, SLICE_MAX_GZ))
         if step: trims['targets_%d_needs_%d_tasks_%d' % (nt, nn, nk)] += 1
-        slices[o[4:]] = body; sizes[o[4:]] = (len(body.encode('utf8')), (nt, nn, nk), len(sl['targets']))
+        slices[o[4:]] = body; sizes[o[4:]] = (len(body.encode('utf8')), (nt, nn, nk), len(sl['targets']), gz, len(sl['near']['pairs']), len(sl['tasks']))
     return slices, sizes, trims, [o for o in occs if o not in rated_set]
 
 
@@ -313,22 +338,26 @@ def main():
     tj = {k: sorted(v) for k, v in sorted(titles.items()) if k}
     tbody = dump(tj).encode('utf8'); open(os.path.join(a.out, 'titles.json'), 'wb').write(tbody)
 
-    byt = [v[0] for v in sizes.values()]
+    byt = sorted(v[0] for v in sizes.values()); gzs = sorted(v[3] for v in sizes.values()); npairs = sorted(v[4] for v in sizes.values())
+    med = lambda xs: xs[len(xs) // 2]
     report = {
         'release': release, 'graph_hash': rep['graph_hash'], 'onet_version': rep['onet_version'],
-        'slices': len(slices), 'slice_bytes_max': max(byt), 'slice_bytes_median': sorted(byt)[len(byt) // 2], 'slice_bytes_total': sum(byt),
-        'slice_bytes_gz_total': sum(len(gzip.compress(slices[s].encode('utf8'), 9, mtime=0)) for s in slices),
-        'slice_shape_counts (targets_needs_tasks)': dict(sorted(trims.items())),
+        'slices': len(slices),
+        'slice_bytes_gz_max': gzs[-1], 'slice_bytes_gz_median': med(gzs), 'slice_bytes_gz_total': sum(gzs), 'slice_gz_level': GZ_LEVEL,
+        'slice_bytes_max': byt[-1], 'slice_bytes_median': med(byt), 'slice_bytes_total': sum(byt),
+        'slices_trimmed (targets_needs_tasks)': dict(sorted(trims.items())),
         'slices_at_full_spec_shape': sum(1 for v in sizes.values() if v[1] == LADDER[0]),
-        'targets_per_slice_histogram': dict(sorted(collections.Counter(v[2] for v in sizes.values()).items())),
+        'targets_per_slice_histogram': {str(k): n for k, n in sorted(collections.Counter(v[2] for v in sizes.values()).items())},
+        'tasks_per_slice_max': max(v[5] for v in sizes.values()),
+        'near_pairs_per_slice': {'max': npairs[-1], 'median': med(npairs), 'min': npairs[0]},
         'occupations_without_slice': no_slice,
         'skills_index': {'entries': len(idx), 'bytes': len(idx_body), 'bytes_gz': idx_gz, 'alt_terms': sum(len(e['alt']) for e in idx)},
         'titles': {'keys': len(tj), 'bytes': len(tbody), 'bytes_gz': len(gzip.compress(tbody, 9, mtime=0)), 'from_owner_review_lists': len(title_add)},
         'hashes': {'skills_index.json': sha(idx_body), 'titles.json': sha(tbody), 'slices (sha256 of the sorted name:sha lines)': sha('\n'.join('%s:%s' % (s, sha(slices[s].encode('utf8'))) for s in sorted(slices)).encode())},
-        'limits': {'slice_max_bytes': SLICE_MAX_BYTES, 'skills_index_max_gz': INDEX_MAX_GZ},
+        'limits': {'slice_max_bytes_gz': SLICE_MAX_GZ, 'skills_index_max_gz': INDEX_MAX_GZ},
     }
     json.dump(report, open(os.path.join(a.out, 'export_report.json'), 'w'), indent=1, sort_keys=True); open(os.path.join(a.out, 'export_report.json'), 'a').write('\n')
-    print('export ok: %d slices (max %d B), skills_index %d entries (%d B gz), titles %d keys' % (len(slices), max(byt), len(idx), idx_gz, len(tj)))
+    print('export ok: %d slices (gzipped max %d B, median %d B; raw max %d B), %d trimmed, skills_index %d entries (%d B gz), titles %d keys' % (len(slices), gzs[-1], med(gzs), byt[-1], sum(trims.values()), len(idx), idx_gz, len(tj)))
 
 
 if __name__ == '__main__':

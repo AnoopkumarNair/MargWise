@@ -1,39 +1,52 @@
 {
- "graph_hash": "32fbf9f5e7e82936af7ac9f10faeab1a201f6d05336c28788196e33f652f4315",
+ "graph_hash": "6148d5ec0287089b166af100f7ba232b039490a3f3a0e1d4f8f814e6c816467d",
  "hashes": {
   "skills_index.json": "a1eb6b0f7e92044b02f42c66b781ad0a82dcc2a3ea5798d66d300b54609dc5e4",
-  "slices (sha256 of the sorted name:sha lines)": "43531d9a5fcff7e0583e70e24ea0830be9a1c7ea5ce2414c00ff2f75e50e2c61",
+  "slices (sha256 of the sorted name:sha lines)": "3e30383d8cb936a5c70b63133e524f1c1affa8226eeb4bf2ca6960850bebee69",
   "titles.json": "5d3123812a80ace3649e0ea561b44918ca79bbc9c5f0ebafe0d74496a97e4674"
  },
  "limits": {
   "skills_index_max_gz": 1500000,
-  "slice_max_bytes": 60000
+  "slice_max_bytes_gz": 60000
+ },
+ "near_pairs_per_slice": {
+  "max": 650,
+  "median": 525,
+  "min": 405
  },
  "occupations_without_slice": [
   "occ:13-2051.00"
  ],
  "onet_version": "31.0",
- "release": "onet-31-0-32fbf9f5",
+ "release": "onet-31-0-6148d5ec",
  "skills_index": {
   "alt_terms": 58,
   "bytes": 926444,
   "bytes_gz": 173233,
   "entries": 8842
  },
- "slice_bytes_gz_total": 4964092,
- "slice_bytes_max": 59975,
- "slice_bytes_median": 49699,
- "slice_bytes_total": 45743835,
- "slice_shape_counts (targets_needs_tasks)": {
-  "targets_12_needs_20_tasks_30": 859,
-  "targets_16_needs_20_tasks_30": 51
- },
+ "slice_bytes_gz_max": 21338,
+ "slice_bytes_gz_median": 19007,
+ "slice_bytes_gz_total": 17287870,
+ "slice_bytes_max": 218361,
+ "slice_bytes_median": 209922,
+ "slice_bytes_total": 190193773,
+ "slice_gz_level": 6,
  "slices": 910,
- "slices_at_full_spec_shape": 0,
+ "slices_at_full_spec_shape": 910,
+ "slices_trimmed (targets_needs_tasks)": {},
  "targets_per_slice_histogram": {
-  "12": 859,
-  "16": 51
+  "20": 3,
+  "21": 1,
+  "22": 1,
+  "23": 1,
+  "25": 4,
+  "26": 2,
+  "27": 2,
+  "28": 1,
+  "30": 895
  },
+ "tasks_per_slice_max": 40,
  "titles": {
   "bytes": 1927728,
   "bytes_gz": 322558,

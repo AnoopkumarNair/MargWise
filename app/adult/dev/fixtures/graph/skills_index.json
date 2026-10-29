@@ -190,5 +190,29 @@
   "label": "Jira issue tracking",
   "alt": [],
   "kind": "technology"
+ },
+ {
+  "id": "skl:4.A.2.a.4",
+  "label": "Analyzing Data or Information",
+  "alt": [],
+  "kind": "activity"
+ },
+ {
+  "id": "skl:4.A.3.b.6",
+  "label": "Documenting/Recording Information",
+  "alt": [],
+  "kind": "activity"
+ },
+ {
+  "id": "skl:4.A.4.a.3",
+  "label": "Communicating with People Outside the Organization",
+  "alt": [],
+  "kind": "activity"
+ },
+ {
+  "id": "skl:4.A.2.b.6",
+  "label": "Organizing, Planning, and Prioritizing Work",
+  "alt": [],
+  "kind": "activity"
  }
 ]

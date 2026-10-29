@@ -59,6 +59,14 @@ input[type=text], select { width: 100%; min-height: 48px; padding: 8px 12px; fon
 .pick-note { font-size: .9rem; font-weight: 600; }
 
 /* skills */
+.skill-group { margin: 0 0 1.25em; }
+.group-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.group-head h2 { margin: .5em 0; }
+.tasks { margin: 1em 0; }
+.tasks summary { cursor: pointer; min-height: 44px; padding: 10px 0; font-weight: 700; }
+.task-list { padding-left: 1.2em; }
+.task-list li { margin: .4em 0; }
+.task-list .tag { margin-left: 8px; white-space: nowrap; }
 .skills { list-style: none; padding: 0; margin: 0 0 1em; border-top: 1px solid var(--line); }
 .skill { padding: 10px 0; border-bottom: 1px solid var(--line); }
 .skill-main { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }

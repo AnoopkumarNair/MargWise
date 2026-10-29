@@ -2,11 +2,17 @@
 // they were frozen at. A contract file may change only together with the version that governs it (contracts/README, "Version bumps").
 // Run: node contracts/freeze.mjs           check the files against the lock (exit 1 on any difference; the tests do the same)
 //      node contracts/freeze.mjs --write   rewrite the lock after a change. Refuses while a changed file's version is not bumped
+//      node contracts/freeze.mjs --write --amend A1
+//                                          rewrite the lock for an owner-approved amendment WITHOUT a version bump. Only for an additive
+//                                          change made before anything with that version was released. The amendment must be listed in
+//                                          amendments.json (id, date, owner decision, files, the versions it keeps); only the files it
+//                                          names may differ, and it is recorded in the lock so it cannot be reused (FROZEN.md)
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import { fileURLToPath } from 'node:url';
 import { versions } from './versions.js';
 
 export const DIR = path.dirname(fileURLToPath(import.meta.url));
 export const LOCK = 'freeze.lock.json';
+export const AMENDMENTS = 'amendments.json';
 const INT_VERSIONS = ['PROFILE_V', 'SLICE_V', 'API_V'];
 
 // The contract files: every schema outside examples/, the bands and the generated event module.
@@ -62,27 +68,81 @@ export function compare(lock, now) {
   return out;
 }
 
-export function lockFor(now, prev) {
+export function lockFor(now, prev, applied = null) {
   const files = {};
   for (const [f, sha256] of Object.entries(now.files)) files[f] = { sha256, version: governing(f) };
-  return {
-    _doc: 'Contract freeze lock (contracts/FROZEN.md). Written by node contracts/freeze.mjs --write; never edit by hand. contracts/tests/freeze.test.mjs fails when a contract file differs from its hash here, and --write refuses unless one of the versions in "version" went up.',
+  const amendments = [...((prev && prev.amendments) || [])];
+  if (applied) amendments.push({ id: applied.id, date: applied.date, files: Object.fromEntries(applied.files.map(f => [f, now.files[f] || null])), versions: { ...now.versions } });
+  const out = {
+    _doc: 'Contract freeze lock (contracts/FROZEN.md). Written by node contracts/freeze.mjs --write; never edit by hand. contracts/tests/freeze.test.mjs fails when a contract file differs from its hash here, and --write refuses unless one of the versions in "version" went up, or an owner amendment in amendments.json names the file (--write --amend <id>).',
     frozen: (prev && prev.frozen) || 'S0',
     versions: now.versions,
     files,
   };
+  if (amendments.length) out.amendments = amendments;
+  return out;
+}
+
+// ---- Amendments: an owner-approved change to a frozen contract without a version bump (FROZEN.md, "Amendments").
+export function readAmendments(dir = DIR) {
+  const p = path.join(dir, AMENDMENTS);
+  return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')).amendments || [] : [];
+}
+// True when a graph release has been accepted (data/releases/graph/latest.json). Then a slice contract change must bump SLICE_V.
+export function sliceReleased(dir = DIR) { return fs.existsSync(path.join(dir, '..', 'data', 'releases', 'graph', 'latest.json')); }
+
+// Why amendment `a` cannot be applied to go from `lock` to `now`. [] means it can. `released` says whether SLICE_V data was released.
+export function amendProblems(lock, now, a, released = false) {
+  const out = [];
+  if (!a) return ['no such amendment in amendments.json'];
+  if (!/^A[0-9]+$/.test(a.id || '')) out.push(`amendment id ${a.id} must look like A1`);
+  if (!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(a.date || '')) out.push(`amendment ${a.id}: date must be YYYY-MM-DD`);
+  if (typeof a.decision !== 'string' || !/owner/i.test(a.decision)) out.push(`amendment ${a.id}: decision must name the owner decision that approved it`);
+  if (typeof a.summary !== 'string' || a.summary.length < 10) out.push(`amendment ${a.id}: summary must say what changed`);
+  if (!Array.isArray(a.files) || !a.files.length) { out.push(`amendment ${a.id}: files must list the contract files it changes`); return out; }
+  if (((lock && lock.amendments) || []).some(x => x.id === a.id)) out.push(`amendment ${a.id} is already in ${LOCK}; a new change needs a new amendment`);
+  for (const [k, v] of Object.entries(a.versions || {})) if (now.versions[k] !== v) out.push(`amendment ${a.id} keeps ${k} at ${v}, but versions.js has ${now.versions[k]}`);
+  for (const p of compare(lock, now)) {
+    if (p.kind === 'down' || p.kind === 'unmapped') { out.push(p.message); continue; }
+    if (p.kind !== 'bump') continue;
+    if (!a.files.includes(p.file)) { out.push(`${p.file} changed but amendment ${a.id} does not name it`); continue; }
+    const gov = governing(p.file) || [];
+    if (!gov.every(k => k in (a.versions || {}))) out.push(`amendment ${a.id} must state the ${gov.join(', ')} it keeps for ${p.file}`);
+    if (released && gov.includes('SLICE_V')) out.push(`${p.file}: a graph release exists (data/releases/graph/latest.json), so this change must bump SLICE_V`);
+  }
+  return out;
+}
+
+// Every amendment in the lock is in amendments.json with the same date and files, and every listed amendment is applied.
+export function amendmentRecordProblems(lock, list) {
+  const out = [], inLock = (lock && lock.amendments) || [];
+  for (const x of inLock) {
+    const a = list.find(y => y.id === x.id);
+    if (!a) out.push(`${LOCK} records amendment ${x.id}, which is missing from ${AMENDMENTS}`);
+    else if (a.date !== x.date || JSON.stringify([...a.files].sort()) !== JSON.stringify(Object.keys(x.files).sort())) out.push(`amendment ${x.id} in ${AMENDMENTS} differs from the one recorded in ${LOCK}`);
+  }
+  for (const a of list) if (!inLock.some(x => x.id === a.id)) out.push(`amendment ${a.id} is listed in ${AMENDMENTS} but not applied: run node contracts/freeze.mjs --write --amend ${a.id}`);
+  return out;
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
   const write = process.argv.includes('--write'), lock = readLock(), now = current();
+  const ai = process.argv.indexOf('--amend'), amendId = ai > 0 ? process.argv[ai + 1] : null;
   const problems = lock ? compare(lock, now) : [];
   const blocking = problems.filter(p => p.kind !== 'stale');
-  if (write) {
-    if (blocking.length) { for (const p of blocking) console.error(p.message); console.error('freeze.lock.json not written'); process.exit(1); }
+  if (ai > 0 && !write) { console.error('--amend works only with --write'); process.exit(2); }
+  if (write && amendId) {
+    const a = readAmendments().find(x => x.id === amendId);
+    const bad = amendProblems(lock, now, a || null, sliceReleased());
+    if (bad.length) { for (const m of bad) console.error(m); console.error('freeze.lock.json not written'); process.exit(1); }
+    fs.writeFileSync(path.join(DIR, LOCK), JSON.stringify(lockFor(now, lock, a), null, 2) + '\n');
+    console.log(`wrote ${LOCK} with amendment ${a.id} (${a.files.join(', ')}); versions unchanged`);
+  } else if (write) {
+    if (blocking.length) { for (const p of blocking) console.error(p.message); console.error('freeze.lock.json not written (an owner amendment without a bump: --write --amend <id>, see FROZEN.md)'); process.exit(1); }
     fs.writeFileSync(path.join(DIR, LOCK), JSON.stringify(lockFor(now, lock), null, 2) + '\n');
     console.log(`wrote ${LOCK}: ${Object.keys(now.files).length} contract files`);
   } else {
-    const all = lock ? problems : compare(null, now);
+    const all = lock ? [...problems, ...amendmentRecordProblems(lock, readAmendments()).map(message => ({ message }))] : compare(null, now);
     for (const p of all) console.error(p.message);
     if (all.length) process.exit(1);
     console.log(`contracts match ${LOCK} (${Object.keys(now.files).length} files)`);

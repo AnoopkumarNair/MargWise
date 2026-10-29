@@ -62,6 +62,19 @@ test('golden: near() is what lifts the LLM evaluation road in swdev-qa-near', ()
   assert.equal(withNear.new_role, true);
 });
 
+test('golden: csr-real-near reads skill_near from the slice; opts.near still overrides it', () => {
+  const c = G.cases.find(x => x.id === 'csr-real-near');
+  const [p, s, o] = caseInputs(c);
+  assert.ok(s.near.pairs.length > 100 && !('near' in o));
+  const fromSlice = covById(match(p, s, o)), none = covById(match(p, { ...s, near: undefined }, o)), override = covById(match(p, s, { ...o, near: {} }));
+  for (const id of Object.keys(fromSlice)) { assert.ok(fromSlice[id] > none[id], id); assert.equal(override[id], none[id], id); }
+  assert.deepEqual(match(p, s, o).roads.filter(r => r.reach === 'stretch').map(r => r.id), ['occ:43-4081.00', 'occ:41-9041.00']);
+  assert.equal(match(p, { ...s, near: undefined }, o).roads.filter(r => r.reach !== 'leap').length, 0);
+  // gap labels are the slice's own need labels
+  const t = s.targets.find(x => x.occ.id === 'occ:43-4081.00'), lab = Object.fromEntries(t.needs.map(n => [n.id, n.label]));
+  for (const g of match(p, s, o).roads.find(r => r.id === t.occ.id).gap) assert.equal(g.label, lab[g.id]);
+});
+
 test('golden: rusty by age, credential credit and expiry, own rating wins', () => {
   const now = { now: 2026 };
   const one = (skills, needs, opts = now, creds) => coverage({ v: 1, roles: [], skills, creds }, needs, opts);

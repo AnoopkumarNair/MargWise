@@ -125,7 +125,7 @@ Rules for slicing:
 
 **T1.4 Graph checks.** `pipeline/validate_graph.py`: every check in SPEC 5.3, printing counts by node and edge kind.
 
-**T1.5 Exports.** `data/graph/export.py` writes `slices/<soc>.json`, `skills_index.json` and `titles.json` as in SPEC 5.4.
+**T1.5 Exports.** `data/graph/export.py` writes `slices/<soc>.json`, `skills_index.json` and `titles.json` as in SPEC 5.4. Each slice is at most 60 KB gzipped (SPEC 5.3); the export fails if one is not, after the last-resort trim ladder. Slices are build outputs and are not committed (deviation D15).
 
 - **Indian abbreviations and titles.** Add a starter list at `data/graph/raw/abbrev_in.csv` (columns: `term,maps_to_id,note`) focused on the three industries (SPEC 3), about 80 terms:
   - **IT:** SDE, SDET, DevOps, SRE, L1/L2/L3 support, delivery manager, scrum master and SAP modules (FICO, MM, SD, ABAP, BASIS);
@@ -139,7 +139,7 @@ Rules for slicing:
 **T1.6 Wire into the pipeline and release.**
 
 - **`pipeline/run.py`:** add stages `9 build graph`, `10 graph checks` and `11 export graph`, and add `--fetch` support for T1.1.
-- **`--accept`:** also copies `slices/`, `skills_index.json` and `titles.json` to `data/releases/graph/`, with their hashes in `manifest.json` under `graph`.
+- **`--accept`:** also stores the slices (as one xz pack, `slices.jsonl.xz`), `skills_index.json` and `titles.json` in `data/releases/graph/<release>/`, with their hashes in `manifest.json` under `graph` (deviation D15). `app/adult/build.py` unpacks the slices as plain `.json` for the web server, which gzips them on the way.
 - **`build-check.yml`:** extend the drift check to `data/releases/graph/`.
 - **Done when:** a full run passes and CI on the branch passes.
 
