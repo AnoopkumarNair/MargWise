@@ -1,0 +1,145 @@
+term,maps_to_id,note
+ABAP,tec:advanced-business-application-programming-abap,needs owner review: SAP programming language
+accounting,skl:2.C.1.c,needs owner review: knowledge area Economics and Accounting
+AML,occ:13-1041.00,needs owner review: anti-money laundering compliance; judgement
+AP executive,occ:43-3031.00,needs owner review: accounts payable
+AR executive,occ:43-3011.00,needs owner review: accounts receivable; judgement
+AWS,tec:amazon-web-services-aws-software,needs owner review: short form
+Azure,tec:microsoft-azure-software,needs owner review: short form
+BASIS,tec:sap-netweaver,needs owner review: SAP Basis administration runs on NetWeaver; ambiguous (the English word basis)
+bookkeeper,occ:43-3031.00,needs owner review
+business analyst,occ:13-1111.00,needs owner review: non-IT business analyst; judgement
+business analyst,occ:15-1211.00,needs owner review: IT business analyst; judgement
+BW,tec:sap-netweaver-bw,needs owner review: SAP business warehouse; ambiguous without the word SAP nearby
+CA,occ:13-2011.00,needs owner review: chartered accountant; ambiguous
+chartered accountant,occ:13-2011.00,needs owner review: CA; the same as the career in the student game
+CI/CD,tec:continuous-integration-software,needs owner review: continuous integration only; judgement
+claims executive,occ:13-1031.00,needs owner review: insurance claims
+client management,skl:2.C.1.e,needs owner review: closest knowledge: Customer and Personal Service; judgement
+coding,skl:2.B.3.e,needs owner review: everyday word for Programming
+collections,occ:43-3011.00,needs owner review: bill and account collectors
+collections executive,occ:43-3011.00,needs owner review
+communication skills,skl:2.A.1.d,needs owner review: closest skill: Speaking; judgement
+Confluence,tec:atlassian-confluence,needs owner review: short form
+credit analyst,occ:13-2041.00,needs owner review
+credit underwriting,occ:13-2041.00,needs owner review: credit analysis; judgement
+credit underwriting,occ:13-2053.00,needs owner review: underwriting; judgement
+CSR,occ:43-4051.00,needs owner review: customer service representative
+customer care executive,occ:43-4051.00,needs owner review: common BPM title
+customer service,skl:2.C.1.e,needs owner review: closest knowledge
+customer support executive,occ:43-4051.00,needs owner review: common BPM title
+data analyst,occ:15-2051.00,needs owner review: closest by duties; judgement
+data engineer,occ:15-1252.00,needs owner review: closest by duties; judgement
+DBA,occ:15-1242.00,needs owner review: database administrator
+delivery manager,occ:11-3021.00,needs owner review: IT delivery; judgement
+delivery manager,occ:13-1082.00,needs owner review: IT delivery; judgement
+DevOps,occ:15-1244.00,needs owner review: no DevOps occupation in O*NET; closest by duties; judgement
+DevOps,occ:15-1252.00,needs owner review: no DevOps occupation in O*NET; closest by duties; judgement
+email writing,skl:2.A.1.c,needs owner review: closest skill: Writing
+Excel,tec:microsoft-excel,needs owner review: ambiguous without a spreadsheet context word
+F&A,occ:13-2011.00,needs owner review: finance and accounting process; judgement
+F&A,occ:43-3031.00,needs owner review: finance and accounting process; judgement
+FICO,tec:sap-erp-financials,needs owner review: SAP finance and controlling module; judgement
+finance,skl:2.C.1.c,needs owner review: knowledge area Economics and Accounting; ambiguous (very broad)
+GCP,tec:google-cloud-software,needs owner review: short form
+Google Cloud,tec:google-cloud-software,needs owner review: short form
+GST executive,occ:13-2082.00,needs owner review: GST returns; judgement
+HR operations,occ:13-1071.00,needs owner review: HR service delivery; judgement
+HTML,tec:hypertext-markup-language-html,needs owner review: short form
+infosec,occ:15-1212.00,needs owner review: information security
+ITSM tool,tec:servicenow,needs owner review: judgement; one of several tools
+Java,tec:oracle-java,needs owner review: the language
+JIRA,tec:atlassian-jira,needs owner review: spelling variant
+JS,tec:javascript,needs owner review: short form; ambiguous
+k8s,tec:kubernetes,needs owner review: short form
+KYC,occ:13-1041.00,needs owner review: KYC analyst; judgement
+KYC,occ:13-2061.00,needs owner review: KYC analyst; judgement
+L1 support,occ:15-1232.00,needs owner review: first-line IT support
+L2 support,occ:15-1232.00,needs owner review: second-line IT support
+L3 support,occ:15-1231.00,needs owner review: third-line IT support; judgement
+L3 support,occ:15-1244.00,needs owner review: third-line IT support; judgement
+loan officer,occ:13-2072.00,needs owner review
+MIS,tec:microsoft-excel,"needs owner review: In BPM and BFSI, MIS reporting usually means Excel reports; ambiguous"
+MIS executive,occ:43-9021.00,needs owner review: data entry and reports; very rough; judgement
+MIS reporting,skl:2.C.1.b,needs owner review: closest knowledge: Administrative; judgement
+ML engineer,occ:15-2051.00,needs owner review: closest by duties; judgement
+MM,tec:sap-erp-operations,needs owner review: SAP materials management module; ambiguous without the word SAP nearby
+MS Excel,tec:microsoft-excel,needs owner review: spelling variant
+MS Office,tec:microsoft-office-software,needs owner review: spelling variant
+MS Outlook,tec:microsoft-outlook,needs owner review: spelling variant
+MS PowerPoint,tec:microsoft-powerpoint,needs owner review: spelling variant
+MS SQL,tec:microsoft-sql-server,needs owner review: spelling variant
+MS Teams,tec:microsoft-teams,needs owner review: spelling variant
+MS Word,tec:microsoft-word,needs owner review: spelling variant
+network engineer,occ:15-1244.00,needs owner review: closest; judgement
+non voice process,occ:43-4051.00,"needs owner review: chat, email and back-office service; judgement"
+non-voice process,occ:43-4051.00,"needs owner review: chat, email and back-office service; judgement"
+O2C,occ:43-3011.00,needs owner review: order to cash: collections; judgement
+O2C,occ:43-3021.00,needs owner review: order to cash: billing and posting; judgement
+P2P,occ:43-3031.00,needs owner review: procure to pay: accounts payable; judgement
+payroll executive,occ:43-3051.00,needs owner review: payroll
+people management,skl:2.B.5.d,needs owner review: closest skill: Management of Personnel Resources
+PMO,occ:13-1082.00,needs owner review: project office; judgement
+Power BI,tec:microsoft-power-bi,needs owner review: spelling variant
+PowerBI,tec:microsoft-power-bi,needs owner review: spelling variant
+PPT,tec:microsoft-powerpoint,needs owner review: spelling variant
+process associate,occ:43-4051.00,needs owner review: BPM entry title; judgement
+programmer analyst,occ:15-1211.00,needs owner review: common in IT services
+programmer analyst,occ:15-1252.00,needs owner review: common in IT services; also fits systems analyst
+programming,skl:2.B.3.e,needs owner review: same label
+project manager,occ:13-1082.00,needs owner review: IT and non-IT project work
+QA engineer,occ:15-1253.00,needs owner review: quality assurance in software
+QC,skl:2.B.3.m,needs owner review: quality control; ambiguous
+quality analyst,occ:43-1011.00,needs owner review: BPM quality analyst; very rough; judgement
+R2R,occ:13-2011.00,needs owner review: record to report; judgement
+R2R,occ:43-3031.00,needs owner review: record to report; judgement
+RCA,skl:2.B.3.k,needs owner review: root cause analysis; ambiguous (also a company name)
+relationship manager,occ:13-2052.00,needs owner review: bank or wealth relationship manager; judgement
+relationship manager,occ:41-3031.00,needs owner review: bank or broking relationship manager; judgement
+Remedy,tec:bmc-software-remedy-it-service-management-suite,needs owner review: short form
+root cause analysis,skl:2.B.3.k,needs owner review: closest skill; judgement
+Salesforce,tec:salesforce-software,needs owner review: short form
+SAP,tec:sap-software,needs owner review: SAP in general
+SAP BASIS,tec:sap-netweaver,needs owner review: SAP Basis administration runs on NetWeaver
+SAP BW,tec:sap-netweaver-bw,needs owner review: SAP business warehouse
+SAP FICO,tec:sap-erp-financials,needs owner review: SAP finance and controlling module; judgement
+SAP HR,tec:sap-erp-human-capital-management,needs owner review: SAP HR / HCM module
+SAP MM,tec:sap-erp-operations,needs owner review: SAP materials management module
+SAP SD,tec:sap-erp-operations,needs owner review: SAP sales and distribution module
+scrum master,occ:13-1082.00,needs owner review: closest by duties; judgement
+SD,tec:sap-erp-operations,needs owner review: SAP sales and distribution module; ambiguous without the word SAP nearby
+SDE,occ:15-1252.00,needs owner review: software development engineer
+SDE I,occ:15-1252.00,needs owner review
+SDE II,occ:15-1252.00,needs owner review
+SDE III,occ:15-1252.00,needs owner review
+SDE-1,occ:15-1252.00,needs owner review: level 1
+SDE-2,occ:15-1252.00,needs owner review: level 2
+SDE-3,occ:15-1252.00,needs owner review: level 3
+SDET,occ:15-1253.00,needs owner review: software development engineer in test
+senior process associate,occ:43-4051.00,needs owner review: BPM entry title; judgement
+service desk,occ:15-1232.00,needs owner review: IT help desk
+ServiceNow,tec:servicenow,needs owner review: spelling variant
+SFDC,tec:salesforce-software,needs owner review: short form
+SNOW,tec:servicenow,needs owner review: short form used in IT support; ambiguous
+SOC analyst,occ:15-1212.00,needs owner review: security operations centre analyst; ambiguous (SOC also means the occupation code)
+software engineer,occ:15-1252.00,needs owner review: the usual Indian title for O*NET software developers
+SQL,tec:structured-query-language-sql,needs owner review: the query language
+SQL Server,tec:microsoft-sql-server,needs owner review: spelling variant
+SRE,occ:15-1244.00,needs owner review: site reliability engineer; judgement
+SRE,occ:15-1252.00,needs owner review: site reliability engineer; judgement
+stakeholder management,skl:2.B.1.b,needs owner review: closest skill: Coordination; judgement
+SWE,occ:15-1252.00,needs owner review: short form
+sysadmin,occ:15-1244.00,needs owner review: system administrator
+system design,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+tax executive,occ:13-2082.00,needs owner review: GST and TDS return work; judgement
+TDS,occ:13-2082.00,needs owner review: tax deducted at source work; judgement; ambiguous
+team lead,occ:43-1011.00,needs owner review: BPM team lead; judgement
+team leader,occ:43-1011.00,needs owner review: BPM team lead; judgement
+team management,skl:2.B.5.d,needs owner review: closest skill: Management of Personnel Resources
+technical support,occ:15-1232.00,needs owner review: IT help desk
+test engineer,occ:15-1253.00,needs owner review: software testing; ambiguous (also hardware)
+treasury operations,occ:11-3031.00,needs owner review: closest by duties; judgement
+treasury ops,occ:11-3031.00,needs owner review: closest by duties; judgement
+troubleshooting,skl:2.B.3.k,needs owner review: same label
+underwriter,occ:13-2053.00,needs owner review: insurance or loan underwriting
+voice process,occ:43-4051.00,needs owner review: customer service by phone

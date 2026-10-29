@@ -1,0 +1,20 @@
+term,note
+AHT,average handling time. A BPM measure, not a skill or an occupation in O*NET
+CSAT,customer satisfaction score. A BPM measure
+NPS,net promoter score. A BPM measure
+SLA,service level agreement. A BPM measure
+TAT,turnaround time. A BPM measure
+GST,India goods and services tax. No O*NET knowledge area; needs a skill node from postings
+TDS,India tax deducted at source (also mapped to a tax occupation in abbrev_in.csv). No skill node
+ITR,income tax return. No skill node
+Tally,Indian accounting package. Not in O*NET technology lists (only unrelated TallyWorks products)
+ITIL,IT service management framework. Not in the O*NET 31.0 technology list
+Scrum,agile method. Not in the O*NET 31.0 technology list
+UiPath,robotic process automation tool. Not in the O*NET 31.0 technology list
+Genesys,contact-centre platform. Only unrelated Genesys products are in O*NET
+Five9,contact-centre platform. Not in O*NET
+Zendesk,help desk tool. Not in O*NET
+Terraform,infrastructure tool. O*NET lists only IBM Terraform; not mapped to avoid a wrong match
+Treasury,no knowledge area; see occupation mappings in abbrev_in.csv
+NISM,securities exams (S2 credentials catalogue)
+IIBF,banking exams (S2 credentials catalogue)

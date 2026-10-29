@@ -1,0 +1,2 @@
+old_soc,new_soc,note
+19-1020.01,19-1029.04,"content.json (career sci-2, Biologist) holds 19-1020.01, a code that is not in O*NET 31.0. O*NET lists Biologists as 19-1029.04. Checked in Occupation Data.txt. Needs the owner to correct content.json at the next student release."

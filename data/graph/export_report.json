@@ -1,0 +1,43 @@
+{
+ "graph_hash": "32fbf9f5e7e82936af7ac9f10faeab1a201f6d05336c28788196e33f652f4315",
+ "hashes": {
+  "skills_index.json": "a1eb6b0f7e92044b02f42c66b781ad0a82dcc2a3ea5798d66d300b54609dc5e4",
+  "slices (sha256 of the sorted name:sha lines)": "43531d9a5fcff7e0583e70e24ea0830be9a1c7ea5ce2414c00ff2f75e50e2c61",
+  "titles.json": "5d3123812a80ace3649e0ea561b44918ca79bbc9c5f0ebafe0d74496a97e4674"
+ },
+ "limits": {
+  "skills_index_max_gz": 1500000,
+  "slice_max_bytes": 60000
+ },
+ "occupations_without_slice": [
+  "occ:13-2051.00"
+ ],
+ "onet_version": "31.0",
+ "release": "onet-31-0-32fbf9f5",
+ "skills_index": {
+  "alt_terms": 58,
+  "bytes": 926444,
+  "bytes_gz": 173233,
+  "entries": 8842
+ },
+ "slice_bytes_gz_total": 4964092,
+ "slice_bytes_max": 59975,
+ "slice_bytes_median": 49699,
+ "slice_bytes_total": 45743835,
+ "slice_shape_counts (targets_needs_tasks)": {
+  "targets_12_needs_20_tasks_30": 859,
+  "targets_16_needs_20_tasks_30": 51
+ },
+ "slices": 910,
+ "slices_at_full_spec_shape": 0,
+ "targets_per_slice_histogram": {
+  "12": 859,
+  "16": 51
+ },
+ "titles": {
+  "bytes": 1927728,
+  "bytes_gz": 322558,
+  "from_owner_review_lists": 410,
+  "keys": 40419
+ }
+}

@@ -1,0 +1,35 @@
+title,maps_to,levels,note
+software engineer,occ:15-1252.00,Y,needs owner review: IT
+software developer,occ:15-1252.00,Y,needs owner review: IT
+developer,occ:15-1252.00,Y,needs owner review: IT
+full stack developer,occ:15-1252.00|occ:15-1254.00,Y,needs owner review: IT
+backend developer,occ:15-1252.00,Y,needs owner review: IT
+frontend developer,occ:15-1254.00|occ:15-1255.00,Y,needs owner review: IT
+application developer,occ:15-1252.00,Y,needs owner review: IT
+tester,occ:15-1253.00,Y,needs owner review: IT
+support engineer,occ:15-1232.00,Y,needs owner review: IT
+systems engineer,occ:15-1244.00|occ:15-1211.00,Y,needs owner review: IT; the TCS/Infosys style title; judgement
+technology consultant,occ:15-1211.00|occ:13-1111.00,Y,needs owner review: IT services
+business analyst,occ:15-1211.00|occ:13-1111.00,Y,needs owner review: IT or business; judgement
+data analyst,occ:15-2051.00|occ:13-1111.00,Y,needs owner review: judgement
+project manager,occ:13-1082.00|occ:11-3021.00,Y,needs owner review: IT or other
+customer support executive,occ:43-4051.00,Y,needs owner review: BPM
+customer service executive,occ:43-4051.00,Y,needs owner review: BPM
+accountant,occ:13-2011.00,Y,needs owner review: BFSI and BPM
+accounts executive,occ:43-3031.00|occ:13-2011.00,Y,needs owner review: BPM
+credit analyst,occ:13-2041.00,Y,needs owner review: BFSI
+compliance analyst,occ:13-1041.00,Y,needs owner review: BFSI
+risk analyst,occ:13-2061.00|occ:13-1041.00,Y,needs owner review: BFSI; judgement
+operations executive,occ:43-4051.00|occ:43-9021.00,Y,needs owner review: BPM; very rough; judgement
+HR executive,occ:13-1071.00,Y,needs owner review: HR
+recruiter,occ:13-1071.00,Y,needs owner review: HR; judgement
+analyst,occ:15-1211.00|occ:13-1111.00|occ:15-2051.00|occ:13-2041.00|occ:13-1041.00,N,needs owner review: Too general: a pick list. Judgement
+senior analyst,occ:15-1211.00|occ:13-1111.00|occ:15-2051.00|occ:13-2041.00|occ:13-1041.00,N,needs owner review: Too general: a pick list. Judgement
+associate,occ:43-4051.00|occ:13-1111.00|occ:43-3031.00,N,needs owner review: Too general: a pick list. Judgement
+senior associate,occ:43-4051.00|occ:13-1111.00|occ:43-3031.00,N,needs owner review: Too general: a pick list. Judgement
+consultant,occ:13-1111.00|occ:15-1211.00,N,needs owner review: Too general: a pick list. Judgement
+senior consultant,occ:13-1111.00|occ:15-1211.00,N,needs owner review: Too general: a pick list. Judgement
+lead,occ:43-1011.00|occ:11-3021.00|occ:13-1082.00,N,needs owner review: Too general: a pick list. Judgement
+manager,occ:11-1021.00|occ:11-3021.00|occ:13-1082.00,N,needs owner review: Too general: a pick list. Judgement
+AVP,occ:11-1021.00|occ:11-3031.00|occ:11-3021.00,N,needs owner review: Too general: a pick list. Judgement
+VP,occ:11-1021.00|occ:11-3031.00|occ:11-3021.00,N,needs owner review: Too general: a pick list. Judgement
