@@ -1,10 +1,13 @@
 // Every example document validates against its schema; every invalid one fails. Run: node --test contracts/tests/
 // Naming: contracts/examples/<schema path without .schema.json>--<label>.json, and the same under examples/invalid/.
-// Events (events.schema.json, api/event.request.schema.json) are checked in two steps: the envelope, then data
-// against #/$defs/<type>, as the handler does. email_verify.request is checked whole, then against #/$defs/by_link or by_code.
+// Stored events (events.schema.json) are checked in two steps: the envelope, then data against #/$defs/<type>.
+// Event requests (api/event/<type>.request.schema.json) are checked in one step against the schema for their file's type, and
+// an example named for its body's type must also pass checkEvent (contracts/event_schemas.js), as the handler does.
+// email_verify.request is checked whole, then against #/$defs/by_link or by_code.
 import test from 'node:test'; import assert from 'node:assert/strict';
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
 import { validate } from '../validate_lib.js';
+import { checkEvent, EVENT_TYPES } from '../event_schemas.js';
 
 const DIR = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const ROOT = path.dirname(DIR);
@@ -12,13 +15,15 @@ const EX = path.join(DIR, 'examples');
 const read = f => JSON.parse(fs.readFileSync(f, 'utf8'));
 const list = d => fs.readdirSync(d, { recursive: true }).filter(f => f.endsWith('.json')).map(f => f.split(path.sep).join('/')).sort();
 const schemaFor = rel => rel.replace(/--[^/]+\.json$/, '.schema.json');
-const EVENT_SCHEMAS = new Set(['events.schema.json', 'api/event.request.schema.json']);
+const EVENT_SCHEMAS = new Set(['events.schema.json']);
 // email/verify is also two steps: the whole body, then exactly one form (by_link when link is present, else by_code).
 const verifyForm = body => body && Object.prototype.hasOwnProperty.call(body, 'link') ? '#/$defs/by_link' : '#/$defs/by_code';
 
 function check(schemaRel, doc) {
   const schema = read(path.join(DIR, schemaRel));
   const r = validate(schema, doc);
+  // The handler's path: checkEvent picks the schema by the body's type, so it must agree with the file's schema when the types match.
+  if (schemaRel === `api/event/${doc.type}.request.schema.json`) assert.equal(checkEvent(doc).ok, r.ok, `checkEvent disagrees with ${schemaRel}`);
   if (!r.ok) return r;
   if (EVENT_SCHEMAS.has(schemaRel)) return validate(schema, doc.data, '#/$defs/' + doc.type);
   if (schemaRel === 'api/email_verify.request.schema.json') return validate(schema, doc, verifyForm(doc));
@@ -60,13 +65,17 @@ test('SPEC 9: request fields in the API table match the request schemas', () => 
   assert.ok(rows.length >= 11, `found ${rows.length} endpoint rows`);
   for (const [, method, route, req] of rows) {
     const name = route === 'me/profile' ? `me_profile_${method.toLowerCase()}` : route.replace(/[/-]/g, '_');
-    const file = path.join(DIR, 'api', `${name}.request.schema.json`);
-    assert.ok(fs.existsSync(file), `no request schema for ${method} ${route} (${name})`);
+    // POST /api/v1/event has one strict request schema per event type (deviations D6).
+    const files = name === 'event' ? EVENT_TYPES.map(t => path.join(DIR, 'api', 'event', `${t}.request.schema.json`)) : [path.join(DIR, 'api', `${name}.request.schema.json`)];
+    assert.ok(files.length, name);
     assert.ok(fs.existsSync(path.join(DIR, 'api', `${name}.response.schema.json`)), `no response schema for ${name}`);
-    const props = read(file).properties || {};
     const fields = [...req.matchAll(/`\{([^}]*)\}`/g)].flatMap(x => x[1].split(',')).map(s => s.split(':')[0].trim()).filter(Boolean);
-    for (const f of fields) assert.ok(f in props, `${name}: SPEC 9 field "${f}" is not in the request schema`);
-    if (!fields.length) assert.deepEqual(Object.keys(props), [], `${name}: SPEC 9 lists no body, so the schema should allow none`);
+    for (const file of files) {
+      assert.ok(fs.existsSync(file), `no request schema for ${method} ${route} (${path.relative(DIR, file)})`);
+      const props = read(file).properties || {};
+      for (const f of fields) assert.ok(f in props, `${name}: SPEC 9 field "${f}" is not in ${path.relative(DIR, file)}`);
+      if (!fields.length) assert.deepEqual(Object.keys(props), [], `${name}: SPEC 9 lists no body, so the schema should allow none`);
+    }
   }
 });
 

@@ -20,8 +20,8 @@ const REG = [
   entry('tec:loop-a', 'skill', 'tombstone', ['tec:loop-b']), entry('tec:loop-b', 'skill', 'tombstone', ['tec:loop-a']),
   entry('cred:aws-saa', 'credential'), entry('cred:aws-saa-c02', 'credential', 'tombstone', ['cred:aws-saa'])
 ];
-const base = (skills = [], roles = [{ occ: 'occ:13-2011.00', level: 3, industry: 'bfsi', years: '3-7', current: true }], creds = []) =>
-  ({ v: 1, rev: 3, roles, skills, creds, job_release: 'abc123', matcher_version: '1.0.0' });
+const base = (skills = [], roles = [{ occ: 'occ:13-2011.00', level: 3, industry: 'bfsi', years: '5-8', current: true }], creds = []) =>
+  ({ v: 1, roles, skills, creds, job_release: 'abc123', matcher_version: '1.0.0' });
 
 test('live ids are unchanged, and nothing is reported', () => {
   const p = base([{ id: 'skl:2.A.2.a', strength: 'strong', last: 2026 }], undefined, [{ id: 'cred:aws-saa', year: 2024, expires: 2027 }]);
@@ -41,7 +41,7 @@ test('a tombstone without a replacement is removed and listed in dropped', () =>
   assert.deepEqual(r.dropped, ['tec:old-tool', 'tec:gone-empty']); assert.deepEqual(r.mapped, []); assert.equal(r.changed, true);
 });
 test('an unknown id is kept as it is and reported in unknown', () => {
-  const p = base([{ id: 'tec:never-published', strength: 'used' }], [{ occ: 'occ:99-9999.00', level: 1, industry: 'it', years: '0-1', current: true }]);
+  const p = base([{ id: 'tec:never-published', strength: 'used' }], [{ occ: 'occ:99-9999.00', level: 1, industry: 'it', years: '0-2', current: true }]);
   const r = migrateIds(p, REG);
   assert.deepEqual(r.profile, p);
   assert.deepEqual(r.unknown, ['occ:99-9999.00', 'tec:never-published']); assert.equal(r.changed, false);
@@ -52,7 +52,7 @@ test('an empty registry never empties a profile', () => {
   assert.deepEqual(r.profile, p); assert.equal(r.unknown.length, 2); assert.deepEqual(r.dropped, []);
 });
 test('the input is never changed', () => {
-  const p = base([{ id: 'skl:2.A.2.z', strength: 'used' }, { id: 'tec:old-tool', strength: 'used' }], [{ occ: 'occ:13-2011.01', level: 3, industry: 'bfsi', years: '3-7', current: true }], [{ id: 'cred:aws-saa-c02', year: 2021, expires: 2024 }]);
+  const p = base([{ id: 'skl:2.A.2.z', strength: 'used' }, { id: 'tec:old-tool', strength: 'used' }], [{ occ: 'occ:13-2011.01', level: 3, industry: 'bfsi', years: '5-8', current: true }], [{ id: 'cred:aws-saa-c02', year: 2021, expires: 2024 }]);
   const copy = structuredClone(p), reg = structuredClone(REG);
   migrateIds(p, REG);
   assert.deepEqual(p, copy); assert.deepEqual(REG, reg);
@@ -75,7 +75,7 @@ test('duplicates: a direct entry wins, then the stronger mapped one', () => {
   assert.deepEqual(r2.profile.skills, [{ id: 'tec:python', strength: 'strong', last: 2024 }, { id: 'tec:pandas', strength: 'strong', last: 2024 }]);
 });
 test('roles: a tombstoned occupation is mapped; a split one takes the first and asks', () => {
-  const r = migrateIds(base([], [{ occ: 'occ:13-2011.01', level: 3, industry: 'bfsi', years: '3-7', current: true }, { occ: 'occ:13-2099.01', level: 2, industry: 'it', years: '1-3', current: false }]), REG);
+  const r = migrateIds(base([], [{ occ: 'occ:13-2011.01', level: 3, industry: 'bfsi', years: '5-8', current: true }, { occ: 'occ:13-2099.01', level: 2, industry: 'it', years: '2-5', current: false }]), REG);
   assert.deepEqual(r.profile.roles.map(x => x.occ), ['occ:13-2011.00', 'occ:13-2051.00']);
   assert.equal(r.profile.roles[1].level, 2);
   assert.deepEqual(r.mapped, [{ from: 'occ:13-2011.01', to: ['occ:13-2011.00'], field: 'roles', index: 0 }, { from: 'occ:13-2099.01', to: ['occ:13-2051.00', 'occ:13-2041.00'], field: 'roles', index: 1, pick: true }]);
@@ -90,7 +90,7 @@ test('a Map registry works the same as an array, and other shapes are refused', 
   assert.throws(() => migrateIds(p, { ids: REG }), TypeError);
 });
 test('the mapped profile still validates against the profile contract', () => {
-  const p = base([{ id: 'tec:pydata', strength: 'strong', last: 2025 }, { id: 'tec:old-tool', strength: 'used' }], [{ occ: 'occ:13-2099.01', level: 2, industry: 'it', years: '1-3', current: true }], [{ id: 'cred:aws-saa-c02', year: 2021, expires: null }]);
+  const p = base([{ id: 'tec:pydata', strength: 'strong', last: 2025 }, { id: 'tec:old-tool', strength: 'used' }], [{ occ: 'occ:13-2099.01', level: 2, industry: 'it', years: '2-5', current: true }], [{ id: 'cred:aws-saa-c02', year: 2021, expires: null }]);
   const r = migrateIds(p, REG);
   const v = validate(PROFILE, r.profile); assert.ok(v.ok, JSON.stringify(v.errors));
 });
@@ -100,9 +100,9 @@ test('profiles without the optional lists are fine', () => {
 });
 
 // ---- B4: nothing is merged away silently; roles are never merged ----
-const role = (occ, extra = {}) => ({ occ, level: 3, industry: 'it', years: '3-7', current: false, ...extra });
+const role = (occ, extra = {}) => ({ occ, level: 3, industry: 'it', years: '5-8', current: false, ...extra });
 test('roles with the same occupation are all kept (direct, mapped, and a split that lands on an existing one)', () => {
-  const roles = [role('occ:13-2011.00', { current: true }), role('occ:13-2011.00', { years: '1-3' }), role('occ:13-2011.01', { level: 2 }), role('occ:13-2051.00'), role('occ:13-2099.01', { level: 5 })];
+  const roles = [role('occ:13-2011.00', { current: true }), role('occ:13-2011.00', { years: '2-5' }), role('occ:13-2011.01', { level: 2 }), role('occ:13-2051.00'), role('occ:13-2099.01', { level: 5 })];
   const r = migrateIds(base([], roles), REG);
   assert.equal(r.profile.roles.length, 5);
   assert.deepEqual(r.profile.roles.map(x => x.occ), ['occ:13-2011.00', 'occ:13-2011.00', 'occ:13-2011.00', 'occ:13-2051.00', 'occ:13-2051.00']);

@@ -18,63 +18,63 @@ Copy this block, one per deviation, newest last.
 - Decision: <proposed | accepted by owner on YYYY-MM-DD | rejected, to be reverted>
 ```
 
-## Awaiting owner decision
+## Decisions
 
-These came out of the S0 review. They are design choices the owner makes (DELIVERY, change control), so S0 leaves the current files as they are. Each lists what was built and the reviewer's proposal. Their ids (D1 to D6) are reserved here, so the deviations below start at D7.
+These came out of the S0 review. They are design choices the owner makes (DELIVERY, change control). The owner decided all six on 2026-10-29, and the contracts were then frozen (`contracts/FROZEN.md`). Their ids (D1 to D6) are kept, so the deviations below start at D7.
 
 ### D1. Sign-in token format
-- Slice and ticket: S0 (F0.1 contracts); used by T3.x
-- Date: 2026-10-28
-- Author: S0 fix lane
-- Plan said: SPEC 9 and BACKEND name a signed token and a signed 30-minute `pending` token, without a byte format.
-- We did: nothing yet; the contracts only check the token's length and characters.
-- Reviewer's proposal: token `v<keyver>.<tester_id>.<iat>.<mac>`, with the MAC over `track|id|iat|keyver`. Define the `pending` token the same way (its own track value, the email hash, invite and age band, and an expiry).
-- Decision: awaiting owner decision
+- Slice and ticket: S0 (F0.1 contracts); used by T3.3 and T3.4
+- Date: 2026-10-28, decided 2026-10-29
+- Author: S0 fix lane; architect lane
+- Plan said: SPEC 9 and BACKEND name a signed token and a signed 30-minute `pending` token, without a byte format. ADR-04 said `v1.<issued-at>.<mac>`.
+- We did: BACKEND ADR-20 (ADR-04's token line is marked superseded). Session token `v<keyver>.<tester_id>.<iat>.<mac>`, with the MAC over `adult|tester_id|iat|keyver`, so adult tokens only work for `track=adult`. Pending token `p<keyver>.<email_hash>.<invite_id>.<age_band>.<iat>.<mac>`, with the MAC over `pending|...|keyver` and a key derived from `SIGN_KEY` for this purpose only. MACs are lower-case hex HMAC-SHA256; `iat` is Unix milliseconds. The patterns are in `api/email_verify.response`, `email_complete.request` and `email_complete.response`, with tests that each token is refused where the other is expected.
+- Effect: no code yet (`hosting/core/keys.js` is T3.3). The student token in `hosting/functions/api/_util.js` is unchanged.
+- Decision: decided by owner 2026-10-29
 
 ### D2. Year bands versus levels
 - Slice and ticket: S0 (F0.1, `bands.json` `years`)
-- Date: 2026-10-28
-- Author: S0 fix lane
-- Plan said: SPEC 7.2 sets the level thresholds in years; SPEC 6 shows `years: "3-7"`.
-- We did: `years` bands `0-1, 1-3, 3-7, 7-12, 12+` per role.
-- Reviewer's proposal: align the role year bands to the SPEC 7.2 thresholds, or store one total-years band for the person.
-- Decision: awaiting owner decision
+- Date: 2026-10-28, decided 2026-10-29
+- Author: S0 fix lane; architect lane
+- Plan said: SPEC 7.2 sets the level thresholds in years (`<2, 2-5, 5-8, 8-12, 12-18, 18+`); SPEC 6 showed `years: "3-7"`.
+- We did: role `years` bands are now `0-2, 2-5, 5-8, 8-12, 12-18, 18+` (`0-2` is under 2 years; each band includes its lower bound). Updated `bands.json`, the profile schema and its copies, the examples, the SPEC 6 example (`5-8`) and the SPEC 7.2 text. A test reads the thresholds from SPEC 7.2 and checks they equal the bands and the levels.
+- Effect: the app's years question and the matcher use these bands.
+- Decision: decided by owner 2026-10-29
 
 ### D3. City ids
 - Slice and ticket: S0 (F0.1, `bands.json` `city`, `open_to`)
-- Date: 2026-10-28
-- Author: S0 fix lane
+- Date: 2026-10-28, decided 2026-10-29
+- Author: S0 fix lane; architect lane
 - Plan said: SPEC 5.9 city clusters, without an id format.
-- We did: bare ids (`blr`, `hyd`, ...).
-- Reviewer's proposal: prefixed ids (`city:blr`) like every other graph id, and rename the band `city_cluster`.
-- Decision: awaiting owner decision
+- We did: cluster ids are prefixed (`city:blr`, ..., `city:other`) and the band is `city_cluster`. The profile field is still `constraints.city`. `open_to` also allows three choices that are not a city, prefixed `open:` so they can never clash with a city id: `open:india`, `open:remote`, `open:abroad`. Updated `bands.json`, the schemas, the examples and SPEC 5.9 and 6.
+- Effect: `data/graph/raw/cities.json` (T1.9) must use the `city:` ids.
+- Decision: decided by owner 2026-10-29
 
 ### D4. Where `rev` lives
 - Slice and ticket: S0 (F0.1, `profile.schema.json`)
-- Date: 2026-10-28
-- Author: S0 fix lane
+- Date: 2026-10-28, decided 2026-10-29
+- Author: S0 fix lane; architect lane
 - Plan said: profile writes use `rev` (ADR-09); the profile is one JSON document (ADR-06).
-- We did: `rev` is an optional field inside the profile document, and SPEC 10 also plans a `profiles.rev` column.
-- Reviewer's proposal: drop `rev` from the document, or have the server always overwrite it, so the two can never disagree.
-- Decision: awaiting owner decision
+- We did: `rev` is removed from the stored profile document; the schema refuses it. It stays in the `profiles` table, in the API wrapper `{rev, data}` and in a conflict's `current`. The server overwrites it on every write. Updated the SPEC 6 example and table, a note in ADR-06, the schemas, the examples and the tests.
+- Effect: the app must not put `rev` inside `data`.
+- Decision: decided by owner 2026-10-29
 
 ### D5. Prompt version on AI calls
 - Slice and ticket: S0, for T3.1 (`0001_adult.sql`) and T6.x
-- Date: 2026-10-28
-- Author: S0 fix lane
+- Date: 2026-10-28, decided 2026-10-29
+- Author: S0 fix lane; architect lane
 - Plan said: SPEC 10 designs `ai_calls (tester_id, day, n, tokens)`, with no prompt version column.
-- We did: nothing yet (`0001_adult.sql` does not exist).
-- Reviewer's proposal: add `prompt_version` to `ai_calls` in `0001_adult.sql`.
-- Decision: awaiting owner decision
+- We did: SPEC 10 adds `prompt_version TEXT` to `ai_calls` (the prompt of the latest call that day, such as `extract_v1`). It is a planned field in `hosting/core/data_inventory.js`, and ADR-17 has a note.
+- Effect: T3.1 creates the column in `0001_adult.sql` and flips the inventory entry to live.
+- Decision: decided by owner 2026-10-29
 
 ### D6. Event shape strategy
 - Slice and ticket: S0 (F0.1, `events.schema.json`, `api/event.request.schema.json`)
-- Date: 2026-10-28
-- Author: S0 fix lane
+- Date: 2026-10-28, decided 2026-10-29
+- Author: S0 fix lane; architect lane
 - Plan said: ADR-08, one events table with typed `data`.
-- We did: one envelope whose `data` is the union of all types, plus a mandatory second check against `#/$defs/<type>`.
-- Reviewer's proposal: either one request schema per event type, or keep the union and make the two-step check mandatory and tested in the handler.
-- Decision: awaiting owner decision
+- We did: one strict request schema per type, `contracts/api/event/<type>.request.schema.json`, generated from `events.schema.json` by `contracts/sync.mjs`, and the same schemas in `contracts/event_schemas.js` with `schemaForType(type)` and `checkEvent(body)`. The validator has no `oneOf`, so the handler picks the schema by `type`; an unknown type is `bad_request`. `api/event.request.schema.json` (the union) is removed. Tests show that a field from another type is refused for every type, and that result events still require `job_release` and `matcher_version`. `events.schema.json` stays as the source and as the two-step check for stored events.
+- Effect: the T3.x event handler imports `event_schemas.js`.
+- Decision: decided by owner 2026-10-29
 
 ## Deviations
 
@@ -136,4 +136,14 @@ These came out of the S0 review. They are design choices the owner makes (DELIVE
 - We did: kept `API_V = 1` and `SLICE_V = 1` while fixing the error codes, the health shape, the email verify forms, the no-@ rule for feedback text and the nickname, and the anchored slice source url.
 - Why: no version of these contracts has been released or stored anywhere yet, so there is nothing to migrate.
 - Effect: none. From the first release on, every contract change bumps its version.
+- Decision: proposed
+
+### D13. Owner decisions D1 to D6 without a version bump, then the freeze
+- Slice and ticket: S0, contract freeze
+- Date: 2026-10-29
+- Author: architect lane
+- Plan said: a change to `profile.schema.json` or a band the profile uses bumps `PROFILE_V`; a change in `api/` or `events.schema.json` bumps `API_V` (contracts/README).
+- We did: kept `PROFILE_V = 1` and `API_V = 1` while applying D1 to D6, then froze the contracts (`contracts/FROZEN.md`). `contracts/freeze.lock.json` holds a hash of every contract file; `contracts/tests/freeze.test.mjs` fails when one changes without its version, and `node contracts/freeze.mjs --write` refuses to update the lock until the version goes up.
+- Why: neither version had been released or stored, so there is nothing to migrate (as in D12). From the freeze on, every contract change bumps its version.
+- Effect: none on users. Later slices must bump a version for any contract change.
 - Decision: proposed

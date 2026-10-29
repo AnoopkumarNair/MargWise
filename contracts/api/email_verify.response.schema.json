@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "contracts/api/email_verify.response.schema.json",
   "title": "email_verify response",
-  "description": "A known address gets token. A new address gets needsProfile: true and pending, a signed 30-minute token holding the email hash, invite and age band.",
+  "description": "A known address gets token. A new address gets needsProfile: true and pending. Both formats are fixed by BACKEND ADR-20: token is the adult session token v<keyver>.<tester_id>.<iat>.<mac> (MAC over adult|tester_id|iat|keyver with SIGN_KEY version keyver); pending is the 30-minute token p<keyver>.<email_hash>.<invite_id>.<age_band>.<iat>.<mac>, signed with the separate pending key. The patterns check the shape only; the server checks the MAC, the age and tok_after.",
   "type": "object",
   "additionalProperties": false,
   "required": ["ok"],
@@ -12,16 +12,18 @@
     },
     "token": {
       "type": "string",
-      "minLength": 20,
-      "maxLength": 512
+      "minLength": 100,
+      "maxLength": 160,
+      "pattern": "^v[1-9][0-9]{0,2}\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.[0-9]{13}\\.[0-9a-f]{64}$"
     },
     "needsProfile": {
       "enum": [true]
     },
     "pending": {
       "type": "string",
-      "minLength": 20,
-      "maxLength": 512
+      "minLength": 140,
+      "maxLength": 200,
+      "pattern": "^p[1-9][0-9]{0,2}\\.[0-9a-f]{64}\\.[1-9][0-9]{0,11}\\.(18-24|25-34|35-44|45-54|55-64|65\\+)\\.[0-9]{13}\\.[0-9a-f]{64}$"
     }
   }
 }

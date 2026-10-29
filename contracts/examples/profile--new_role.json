@@ -1,19 +1,18 @@
 {
   "v": 1,
-  "rev": 1,
   "roles": [
     {
       "occ": "occ:15-1253.00",
       "level": 3,
       "industry": "it",
-      "years": "3-7",
+      "years": "5-8",
       "current": true
     },
     {
       "occ": "occ:ai-llm-evaluator",
       "level": 3,
       "industry": "it",
-      "years": "0-1",
+      "years": "0-2",
       "current": false
     }
   ],
@@ -42,8 +41,8 @@
     "expert": true
   },
   "constraints": {
-    "city": "other",
-    "open_to": ["india", "remote"],
+    "city": "city:other",
+    "open_to": ["open:india", "open:remote"],
     "mode": "any"
   },
   "job_release": "dev-unaccepted",

@@ -1,12 +1,11 @@
 {
   "v": 1,
-  "rev": 3,
   "roles": [
     {
       "occ": "occ:13-2011.00",
       "level": 3,
       "industry": "bfsi",
-      "years": "3-7",
+      "years": "5-8",
       "current": true
     }
   ],
@@ -33,7 +32,7 @@
     "hours_month": "5-10",
     "course_budget": "10k-50k",
     "city": "Bengaluru",
-    "open_to": ["blr", "hyd", "remote"],
+    "open_to": ["city:blr", "city:hyd", "open:remote"],
     "pay_floor_pct": -10,
     "mode": "hybrid"
   },

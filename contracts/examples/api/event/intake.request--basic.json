@@ -1,0 +1,12 @@
+{
+  "type": "intake",
+  "eid": "e-intake-0001",
+  "data": {
+    "source": "upload",
+    "mode": "on_device",
+    "n_roles": 2,
+    "n_found": 31,
+    "n_confirmed": 24,
+    "ms": 182000
+  }
+}

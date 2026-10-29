@@ -86,6 +86,7 @@ export const INVENTORY = [
   }),
   table('ai_calls', 'planned', { purpose: 'How many AI reads a person made per day, for the daily limit and cost.', retention: 'Same as the tester.', who: ['owner'], deletion: D, erase: { key: 'tester_id' } }, {
     tester_id: 'Who.', day: 'Day (UTC).', n: 'Calls.', tokens: 'Tokens used (cost).',
+    prompt_version: { purpose: "Which extraction prompt the latest call that day used, such as 'extract_v1' (ADR-17).", planned: true },
   }),
   table('ops_daily', 'planned', { purpose: 'Daily counters for operations: sign-ups, codes, AI calls, errors.', retention: 'Kept as long as the service runs.', who: ['owner'], deletion: 'Not about a person; counts only.', erase: { key: null } }, {
     day: 'Day (UTC).', metric: 'Counter name.', n: 'Count.',

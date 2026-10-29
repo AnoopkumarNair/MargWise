@@ -280,8 +280,8 @@ Include low-cost Indian routes where they exist: NPTEL and SWAYAM courses with c
 ### 5.9 Location
 
 - **Who it is for.** The pilot starts in metros through the founder's network, because that is where most of these jobs are: Bengaluru alone was reported as about 30 percent of GCC hiring, and metros about 88 percent of GCC activity. Tier-2 cities are growing fastest, so none is excluded.
-- **City clusters.** `raw/cities.json` lists Bengaluru, Hyderabad, Pune, Chennai, Delhi NCR, Mumbai, Kolkata, Ahmedabad, a tier-2 list (for example Coimbatore, Kochi, Jaipur, Indore, Bhubaneswar, Visakhapatnam, Thiruvananthapuram, Chandigarh, Nagpur, Mysuru) and "other". Each cluster has a state. Only the **cluster** is stored, never an address.
-- **Inputs.** The profile records the person's current cluster and their openness: same city, these cities, anywhere in India, remote only, abroad.
+- **City clusters.** `raw/cities.json` lists Bengaluru, Hyderabad, Pune, Chennai, Delhi NCR, Mumbai, Kolkata, Ahmedabad, a tier-2 list (for example Coimbatore, Kochi, Jaipur, Indore, Bhubaneswar, Visakhapatnam, Thiruvananthapuram, Chandigarh, Nagpur, Mysuru) and "other". Each cluster has a state. Only the **cluster** is stored, never an address. Cluster ids have the prefix `city:` like every other graph id (`city:blr`, `city:hyd`, ..., `city:other`); the list is `city_cluster` in `contracts/bands.json`.
+- **Inputs.** The profile records the person's current cluster and their openness: same city, these cities, anywhere in India, remote only, abroad. The three choices that are not a city are stored as `open:india`, `open:remote` and `open:abroad`.
 - **Signals.** Once postings are connected, demand and pay are recorded per occupation per cluster, with a "remote or hybrid share". Each road shows "Where these jobs are: mostly Bengaluru, Hyderabad, Pune; 20 percent remote". Until then it shows "not yet measured". A road where most openings are outside the person's acceptable places gets the `needs_relocation` flag. It is never hidden.
 - **Pay by city.** Postings that show pay, per cluster, with `secondary` trust. PLFS has no city-level occupation pay, so it stays a broad national band.
 
@@ -291,12 +291,12 @@ Stored in D1 as JSON, holding ids and bands only:
 
 ```json
 {
-  "v": 1, "rev": 3,
-  "roles": [{"occ": "occ:13-2011.00", "level": 3, "industry": "bfsi", "years": "3-7", "current": true}],
+  "v": 1,
+  "roles": [{"occ": "occ:13-2011.00", "level": 3, "industry": "bfsi", "years": "5-8", "current": true}],
   "skills": [{"id": "skl:2.A.2.a", "strength": "strong", "last": 2026}],
   "creds": [{"id": "cred:aws-saa", "year": 2024, "expires": 2027}],
   "lead": {"people": "1-5", "budget": false, "expert": true},
-  "constraints": {"hours_month": "5-10", "course_budget": "10k-50k", "city": "blr", "open_to": ["blr", "hyd", "remote"], "pay_floor_pct": -10, "mode": "hybrid"},
+  "constraints": {"hours_month": "5-10", "course_budget": "10k-50k", "city": "city:blr", "open_to": ["city:blr", "city:hyd", "open:remote"], "pay_floor_pct": -10, "mode": "hybrid"},
   "priorities": {"pay": 1, "ai_safe": 1, "short_move": 1, "demand": 1, "enjoy": 0},
   "job_release": "abc123", "matcher_version": "1.0.0"
 }
@@ -307,7 +307,9 @@ Stored in D1 as JSON, holding ids and bands only:
 | `strength` | `used`, `strong`, `rusty` |
 | `level` | 1 to 6 (section 7.2) |
 | Bands | Fixed strings from the lists in `contracts/bands.json` |
-| `rev` | Increases on every save. Used for optimistic concurrency (BACKEND ADR-06) |
+| `years` | Years in that role: `0-2`, `2-5`, `5-8`, `8-12`, `12-18`, `18+`. The same bands as the level thresholds in 7.2. `a-b` means at least `a` and under `b` years |
+| `city`, `open_to` | City cluster ids with the prefix `city:` (5.9). `open_to` also allows `open:india` (anywhere in India), `open:remote` and `open:abroad` |
+| `rev` | Not part of this document. The edit counter lives in the `profiles` table and in the API wrapper `{rev, data}`, and the server sets it on every save (BACKEND ADR-06) |
 | Ids | Must be live or tombstoned-with-replacement in `id_registry.json`. Mapped on read by `contracts/migrate_ids.js` (ADR-05) |
 
 ## 7. Matcher v1 (`matcher/match.js`, mirrored by `matcher/reference.py`)
@@ -328,7 +330,7 @@ gap = needs with cover(s) < 0.7, ordered by w_s * (1 + 0.5 if skill label is "pe
 ### 7.2 Levels
 
 - **Person's level, from 1 to 6:**
-  - start from total years (`<2:1, 2-5:2, 5-8:3, 8-12:4, 12-18:5, 18+:6`);
+  - start from total years, in the year bands of `contracts/bands.json` (`0-2:1, 2-5:2, 5-8:3, 8-12:4, 12-18:5, 18+:6`; `0-2` means under 2 years, and each band includes its lower bound). Each role's `years` (section 6) uses the same bands;
   - add 1 if they lead 6 or more people or own a budget, capped at 6;
   - the current title's seniority word overrides when present (`associate:1-2, senior:3, lead:4, manager:4, senior manager:5, head|director|vp:6`).
 - **Target's typical level:** from the job zone (`zone 1-2: 1-2, 3: 2-3, 4: 3-4, 5: 4-5`) until posting ladders exist.
@@ -416,7 +418,7 @@ Every response is `{ok:true,...}` or `{ok:false, error:{code, message}}`, and ca
 | Endpoint | Request | Behaviour |
 | --- | --- | --- |
 | `POST /api/v1/email/start` | `{invite, birthYear, email, turnstile}` | Verify Turnstile. Check the age on the server. Under 18: count a refusal for the invite, store nothing else, and return `refused_age`. Otherwise the invite must be active with `track=adult`. Limits per address (3 an hour, 10 a day), per IP bucket and site-wide. Store `email_codes`, send the code and link. Always answer "If this address can sign in, we have sent a code" |
-| `POST /api/v1/email/verify` | `{email, code}` or `{link}` | At most 5 tries, then the code is void. New address: `{needsProfile:true, pending}`, where `pending` is a signed 30-minute token holding the email hash, invite and age band. Known address: `{token}` |
+| `POST /api/v1/email/verify` | `{email, code}` or `{link}` | At most 5 tries, then the code is void. New address: `{needsProfile:true, pending}`, where `pending` is a signed 30-minute token holding the email hash, invite and age band (format in BACKEND ADR-20). Known address: `{token}` |
 | `POST /api/v1/email/complete` | `{pending, nickname, consent:true, research:bool}` | Creates the tester. **Idempotent:** the unique `email_hash` index means a repeat returns a token for the same tester |
 | `GET /api/v1/me/profile` | | Returns the profile, upgraded to the current `v` and with ids mapped (ADR-05/06) |
 | `PUT /api/v1/me/profile` | `{rev, data}` | Validates the contract, checks ids against the current release's id list (loaded with `env.ASSETS.fetch` and cached), writes with `WHERE rev = ?`. On a mismatch, `409 conflict` with the current document |
@@ -424,7 +426,7 @@ Every response is `{ok:true,...}` or `{ok:false, error:{code, message}}`, and ca
 | `POST /api/v1/me/delete` | `{confirm:"DELETE"}` | Deletes across every table in the inventory, revokes sessions, and writes an audit row with no identity |
 | `POST /api/v1/me/logout-all` | | Sets `tok_after` |
 | `POST /api/v1/ai/read` | `{text, turnstile}` | Requires login. Text at most 20,000 characters. The provider is called with the extraction prompt. The output must validate against `contracts/extract.schema.json`, unknown ids are dropped, and any output containing an email or phone pattern is rejected. Limits: 10 a person a day, a site daily cap, a 20-second timeout. Never logs the text |
-| `POST /api/v1/event` | `{type, eid, data}` | Adult event types `intake`, `profile_saved`, `roads_viewed`, `road_opened`, `road_added` and `feedback`. Ids and numbers only, plus the capped feedback text. Deduplicated by `eid`. Capped per tester per day |
+| `POST /api/v1/event` | `{type, eid, data}` | Adult event types `intake`, `profile_saved`, `roads_viewed`, `road_opened`, `road_added` and `feedback`. Each type has its own strict request schema, chosen by `type` (`contracts/event_schemas.js`); an unknown type or a field from another type is `bad_request`. Ids and numbers only, plus the capped feedback text. Deduplicated by `eid`. Capped per tester per day |
 | `GET /api/v1/health` | | Database reachable, release id, `API_V`, AI enabled, email configured |
 
 **Secrets, per environment (ADR-02 and ADR-04):** `SIGN_KEY`, `EMAIL_KEY`, `CODE_KEY`, `IP_KEY`, `TURNSTILE_SECRET`, `EMAIL_FROM`, `AI_API_KEY`, plus the settings `AI_ENABLED`, `AI_DAILY_CAP`, `EMAIL_DRY_RUN` and `RETENTION_DAYS`.
@@ -448,7 +450,8 @@ CREATE TABLE IF NOT EXISTS email_sends (email_hash TEXT NOT NULL, day TEXT NOT N
 CREATE TABLE IF NOT EXISTS profiles (tester_id TEXT PRIMARY KEY, v INTEGER NOT NULL, rev INTEGER NOT NULL, data TEXT NOT NULL,
   job_release TEXT, matcher_version TEXT, updated_at INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS under18 (invite_id INTEGER, day TEXT, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (invite_id, day));
-CREATE TABLE IF NOT EXISTS ai_calls (tester_id TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, tokens INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (tester_id, day));
+CREATE TABLE IF NOT EXISTS ai_calls (tester_id TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, tokens INTEGER NOT NULL DEFAULT 0,
+  prompt_version TEXT, PRIMARY KEY (tester_id, day));        -- prompt_version: the extraction prompt of the latest call that day, e.g. 'extract_v1' (ADR-17)
 CREATE TABLE IF NOT EXISTS ops_daily (day TEXT NOT NULL, metric TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, metric));
 ```
 

@@ -1,0 +1,9 @@
+{
+  "type": "road_opened",
+  "eid": "e-roadopened-0002",
+  "data": {
+    "from": "occ:13-2011.00",
+    "to": "occ:13-2051.00",
+    "matcher_version": "1.0.0"
+  }
+}

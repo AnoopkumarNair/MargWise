@@ -1,0 +1,8 @@
+{
+  "type": "road_added",
+  "eid": "e-feedback-0002",
+  "data": {
+    "about": "road",
+    "rating": 4
+  }
+}

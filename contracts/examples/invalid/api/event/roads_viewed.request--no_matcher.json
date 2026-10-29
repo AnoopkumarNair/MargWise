@@ -1,0 +1,9 @@
+{
+  "type": "roads_viewed",
+  "eid": "e-roadsviewed-0002",
+  "data": {
+    "from": "occ:13-2011.00",
+    "roads": ["occ:13-2051.00"],
+    "job_release": "abc123"
+  }
+}

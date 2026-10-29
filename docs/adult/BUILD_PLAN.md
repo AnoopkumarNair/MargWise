@@ -202,7 +202,7 @@ Every endpoint is a pure handler in `hosting/core/` with a one-line adapter in `
 - **`admin.js`:** creating an invite accepts `track` (`student` or `adult`), and the invite list shows it.
 - **`join.js`:** refuses adult codes, with "Use the link for working adults: /work/".
 
-**T3.3 Keys and tokens (ADR-04).** `hosting/core/keys.js` uses a separate key per purpose (`SIGN_KEY`, `EMAIL_KEY`, `CODE_KEY` and `IP_KEY`), with versioned adult tokens `v1.<iat>.<mac>`, overlap acceptance during rotation, and `tok_after`. Email normalisation follows ADR-04. Tests cover rotation and the overlap window.
+**T3.3 Keys and tokens (ADR-04).** `hosting/core/keys.js` uses a separate key per purpose (`SIGN_KEY`, `EMAIL_KEY`, `CODE_KEY` and `IP_KEY`), with versioned adult session and `pending` tokens in the ADR-20 format (`v<keyver>.<tester_id>.<iat>.<mac>`), overlap acceptance during rotation, and `tok_after`. Email normalisation follows ADR-04. Tests cover rotation and the overlap window.
 
 **T3.4 Email sign-in.** `hosting/core/email_start.js`, `email_verify.js` and `email_complete.js`, as in SPEC 9 and ADR-04.
 
@@ -211,7 +211,7 @@ Every endpoint is a pure handler in `hosting/core/` with a one-line adapter in `
 - **Age check on the server:** under 18 counts in `under18` only.
 - **Limits:** per address (`email_sends`), per IP bucket and site-wide.
 - **No account discovery:** the same queries run for known and unknown addresses.
-- **`pending` tokens:** signed, valid for 30 minutes.
+- **`pending` tokens:** signed with the pending key, valid for 30 minutes (format in ADR-20).
 - **Idempotent completion:** a repeat returns the same tester, because of the unique index.
 - **Sending:** `hosting/core/email_send.js` wraps Cloudflare Email Service. `EMAIL_DRY_RUN=1` records the message for tests.
 - **Done when:** every case in TEST_PLAN layer 5 for email passes.

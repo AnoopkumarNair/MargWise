@@ -13,7 +13,7 @@
       "table": "profiles",
       "columns": ["v", "rev", "data", "job_release", "matcher_version", "updated_at"],
       "rows": [
-        [1, 3, "{\"v\":1,\"rev\":3,\"roles\":[{\"occ\":\"occ:13-2011.00\",\"level\":3,\"industry\":\"bfsi\",\"years\":\"3-7\",\"current\":true}],\"skills\":[{\"id\":\"skl:2.A.2.a\",\"strength\":\"strong\",\"last\":2026}],\"creds\":[{\"id\":\"cred:aws-saa\",\"year\":2024,\"expires\":2027}],\"lead\":{\"people\":\"1-5\",\"budget\":false,\"expert\":true},\"constraints\":{\"hours_month\":\"5-10\",\"course_budget\":\"10k-50k\",\"city\":\"blr\",\"open_to\":[\"blr\",\"hyd\",\"remote\"],\"pay_floor_pct\":-10,\"mode\":\"hybrid\"},\"priorities\":{\"pay\":1,\"ai_safe\":1,\"short_move\":1,\"demand\":1,\"enjoy\":0},\"job_release\":\"abc123\",\"matcher_version\":\"1.0.0\"}", "abc123", "1.0.0", 1761600000000]
+        [1, 3, "{\"v\":1,\"roles\":[{\"occ\":\"occ:13-2011.00\",\"level\":3,\"industry\":\"bfsi\",\"years\":\"5-8\",\"current\":true}],\"skills\":[{\"id\":\"skl:2.A.2.a\",\"strength\":\"strong\",\"last\":2026}],\"creds\":[{\"id\":\"cred:aws-saa\",\"year\":2024,\"expires\":2027}],\"lead\":{\"people\":\"1-5\",\"budget\":false,\"expert\":true},\"constraints\":{\"hours_month\":\"5-10\",\"course_budget\":\"10k-50k\",\"city\":\"city:blr\",\"open_to\":[\"city:blr\",\"city:hyd\",\"open:remote\"],\"pay_floor_pct\":-10,\"mode\":\"hybrid\"},\"priorities\":{\"pay\":1,\"ai_safe\":1,\"short_move\":1,\"demand\":1,\"enjoy\":0},\"job_release\":\"abc123\",\"matcher_version\":\"1.0.0\"}", "abc123", "1.0.0", 1761600000000]
       ]
     }
   ]
