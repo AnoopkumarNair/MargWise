@@ -26,6 +26,7 @@ REL = os.path.join(ROOT, 'data', 'releases')
 GRAPH_DEV = os.path.join(ROOT, 'data', 'graph')
 FIXTURES = os.path.join(APP, 'dev', 'fixtures')
 RELEASE_RE = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')
+ONET_RE = re.compile(r'^onet-([0-9]+)-([0-9]+)-[0-9a-f]+$')   # a slice's release id, such as onet-31-0-6148d5ec
 sys.path.insert(0, os.path.join(ROOT, 'data', 'graph'))
 import graph_release  # noqa: E402  (PACK, read_pack, slices_sha: the release pack format)
 
@@ -169,7 +170,7 @@ def main():
     # 3. graph files, paired with the release id by their folder name (ADR-12)
     gbase = os.path.join('graph', release_id)
     gout = {}
-    occs, srcs = {}, {}
+    occs, srcs, onet = {}, {}, set()
     for f in gfiles:
         dst = os.path.join(OUT, gbase, f)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
@@ -181,6 +182,8 @@ def main():
         # occupations.json: every occupation named in a slice (as the start of one, or as a road target), for the title search fallback.
         # Labels only: alternative names are already in titles.json, and listing them here would add about 100 KB for nothing
         o = s['occ']; occs[o['id']] = {'id': o['id'], 'label': o['label'], 'slice': f}
+        m = ONET_RE.match(s.get('release') or '')
+        if m: onet.add(m.group(1) + '.' + m.group(2))
         for t in s.get('targets', []):
             to = t['occ']
             occs.setdefault(to['id'], {'id': to['id'], 'label': to['label'], 'slice': None})
@@ -189,6 +192,7 @@ def main():
             cur = srcs.get(so['id'])
             if cur is None or so['as_of'] > cur['as_of']:
                 srcs[so['id']] = {k: so[k] for k in ('id', 'name', 'trust', 'as_of')}
+    if len(onet) > 1: die('the slices come from more than one O*NET version: %s' % sorted(onet))
     occ_list = [occs[k] for k in sorted(occs)]
     slice_names = [f for f in gfiles if f.startswith('slices/')]
     op = os.path.join(OUT, gbase, 'occupations.json')
@@ -199,6 +203,8 @@ def main():
         'app': 'adult', 'slice': 'S1', 'release_id': release_id, 'dev_build': args.dev, 'fixture_data': is_fixture,
         'built_at': None,  # no clock, so a rebuild of the same inputs gives the same bytes
         'sources': [srcs[k] for k in sorted(srcs)],
+        # the O*NET version the slices were built from (their release id 'onet-31-0-<hash>'), so a dev build's footer can show it too
+        'onet_version': (sorted(onet)[0] if len(onet) == 1 else None),
         # The browser loads this file first, so it holds one folder hash for the slices rather than 910 file hashes (about 80 KB)
         'graph': {'base': gbase.replace(os.sep, '/') + '/', 'source': glabel, 'slices': len(slice_names),
                   'files': dict({k: v for k, v in gout.items() if not k.startswith('slices/')},

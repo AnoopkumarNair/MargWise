@@ -1,7 +1,7 @@
 // Shared by the roads and road-detail screens.
 import { h } from '../dom.js';
 import { state, buildProfile, checkProfile } from '../state.js';
-import { loadMatcher, runMatch, TIER_LABEL, MOVE_LABEL } from '../matcher_adapter.js';
+import { loadMatcher, runMatch, coveragePercent, TIER_LABEL, MOVE_LABEL } from '../matcher_adapter.js';
 
 let matchFn = null;
 export const timing = { ms: null };
@@ -20,6 +20,8 @@ export async function computeRoads() {
 }
 
 export const pct = x => Math.round(x * 100) + '%';
+// Coverage next to a reach badge: floored, so 0.3969 (a leap) never shows as 40% (the stretch line).
+export const coverPct = x => coveragePercent(x) + '%';
 export function importance(w) { return w >= 0.66 ? 'High' : w >= 0.33 ? 'Medium' : 'Low'; }
 // Skill AI labels (SPEC 5.5). 'unknown' has no label: the skill simply shows no AI line (not yet measured).
 export const AI_TEXT = { ai_does_much: 'AI already does much of this', mixed: 'AI helps with some of this', people_do: 'People still do this', unknown: '' };
@@ -34,9 +36,9 @@ export function badges(r) {
 
 export function coverageBar(r) {
   const bar = h('span', { class: 'bar-fill' });
-  bar.style.width = pct(r.coverage); // CSSOM, allowed by a strict style-src (no style attribute in the markup)
+  bar.style.width = coverPct(r.coverage); // CSSOM, allowed by a strict style-src (no style attribute in the markup)
   return h('div', { class: 'cover' },
-    h('span', { class: 'cover-num' }, pct(r.coverage), ' covered'),
+    h('span', { class: 'cover-num' }, coverPct(r.coverage), ' covered'),
     h('span', { class: 'bar', role: 'presentation' }, bar));
 }
 

@@ -39,8 +39,9 @@ export function buildProfile() {
   return p;
 }
 
-// The profile must match contracts/profile.schema.json before the matcher sees it.
+// The profile must match contracts/profile.schema.json before the matcher sees it. Fails closed: if the schema did not load,
+// the profile is not checked, so it is refused (data.js tries to load the schema again on the next screen).
 export function checkProfile(profile) {
-  if (!state.schema) return { ok: true, errors: [] };
+  if (!state.schema) return { ok: false, errors: [{ path: '', message: 'the profile schema did not load, so the profile cannot be checked' }] };
   return validate(state.schema, profile);
 }

@@ -36,8 +36,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }   # check_freeze_history.mjs compares with main; under CI=true it fails if main cannot be read
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
+      - name: Freeze history (amendments only appended, lock changes need a bump or an amendment, additive only, owner decision logged)
+        run: node contracts/check_freeze_history.mjs
       - name: Contract tests
         run: |
           if [ -e contracts/tests ]; then
@@ -75,6 +78,7 @@ jobs:
         run: python3 -m unittest discover -s data/graph/tests
       # TODO after the owner's first --accept (data/releases/graph/latest.json exists): add
       #   python3 app/adult/build.py            (release build from the accepted slice pack; checks every hash)
+      # (open item in docs/adult/S1_DEMO.md)
   matcher:
     runs-on: ubuntu-latest
     steps:

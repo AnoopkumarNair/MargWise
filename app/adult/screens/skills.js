@@ -68,7 +68,7 @@ export async function render() {
   updateCount();
   return h('section', { class: 'screen' },
     h('h1', { tabindex: '-1' }, 'What do you do as ' + state.occ.label + '?'),
-    h('p', { class: 'lead' }, 'These are the ' + top.length + ' things that matter most in this job. Tick everything you do, even if only now and then. Most people tick 15 or more.'),
+    h('p', { class: 'lead' }, 'These are the ' + top.length + ' things that matter most in this job. Tick everything you do, even if only now and then. Your roads are more useful with 15 or more ticked.'),
     h('p', { class: 'hint' }, 'Your roads are worked out only from what you tick, so a skill you leave out counts as one you do not have. Use “Tick all” for a group you do, then untick what you do not.'),
     h('p', { class: 'hint' }, 'For each one you tick, pick how well you know it. Used: you use it now. Strong: you could teach it. Rusty: you have used it, but not lately.'),
     h('div', { class: 'skill-groups' }, groups),

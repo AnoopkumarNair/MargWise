@@ -1,7 +1,7 @@
 // Screen: one road in full (SPEC 8 screen 10, T5.3 without "Add this road", which needs sign-in).
 import { h } from '../dom.js';
 import { state } from '../state.js';
-import { computeRoads, pct, importance, AI_TEXT, badges, coverageBar, signalList, flagList } from './common.js';
+import { computeRoads, coverPct, importance, AI_TEXT, badges, coverageBar, signalList, flagList } from './common.js';
 
 export function title() { return 'Road detail'; }
 export async function render(args) {
@@ -35,6 +35,6 @@ export async function render(args) {
         h('th', { scope: 'row' }, c.label),
         h('td', { class: c.measured ? '' : 'nm' }, c.measured ? c.value.toFixed(2) : 'not yet measured'),
         h('td', null, String(state.priorities[c.key])))))),
-    h('p', null, 'Score: ', h('strong', null, r.score.toFixed(2)), '. Coverage: ', pct(r.coverage), '.'),
+    h('p', null, 'Score: ', h('strong', null, r.score.toFixed(2)), '. Coverage: ', coverPct(r.coverage), '.'),
     h('p', null, h('a', { href: '#/roads' }, 'Back to roads')));
 }

@@ -1,11 +1,11 @@
 // Margwise adult matcher v1 (SPEC 7). A plain ES module with no dependencies, for the browser and for Node.
 // matcher/reference.py is an independent Python version of the same rules; matcher/tests/ checks that they agree.
 // Deterministic: no clock, no randomness, no dictionary-order dependence. The year 'now' comes from opts, never from Date.
-// Scope of 1.0.0 (slice S1, BUILD_PLAN T2.2): coverage, gap, reach (adjacent, stretch, leap) and order.
+// Scope of 1.0.x (slice S1, BUILD_PLAN T2.2; 1.0.1 has the same rules as 1.0.0, see matcher/README.md): coverage, gap, reach (adjacent, stretch, leap) and order.
 // Road kind, target level, experience fit, bridges, pay, demand and the constraint flags are stubs: they come back as
 // null or "not_yet_measured", because the S1 slices and contracts do not carry the data they need. See matcher/README.md.
 
-export const MATCHER_VERSION = '1.0.0';   // must equal contracts/versions.js (a test checks it)
+export const MATCHER_VERSION = '1.0.1';   // must equal contracts/versions.js (a test checks it)
 
 // The only profile fields this file reads (ADR-16, invariant 8). Nothing demographic or commercial. City and openness to
 // move are allowed only for the needs_relocation flag; 1.0.0 reads none of the constraints because the flags are stubs.

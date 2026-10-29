@@ -2,7 +2,8 @@
 import datetime, json, os, shutil, subprocess, unittest
 from common import ROOT
 from build_graph import norm_title, slug, mmyyyy, need_weight, cosine
-from export import ai_share_label, coverage
+import collections
+from export import ai_share_label, ai_labels, coverage, need_rows, tec_scores
 import freshness
 
 
@@ -64,6 +65,74 @@ class AiLabels(unittest.TestCase):
     def test_boundary_015(self):
         self.assertEqual(ai_share_label([0.9] * 3 + [0.0] * 17), 'people_do')      # exactly 0.15
         self.assertEqual(ai_share_label([0.9] * 4 + [0.0] * 16), 'mixed')
+
+    def test_tasks_without_ai_data_are_left_out(self):
+        # None = the task has no AI data. It is unknown, not 'no use' (review finding S4)
+        self.assertEqual(ai_share_label([None] * 5 + [0.0, 0.0]), 'unknown')          # only 2 tasks with data
+        self.assertEqual(ai_share_label([None] * 9 + [0.9, 0.0, 0.0]), 'mixed')        # 1 of 3, not 1 of 12 (people_do)
+        self.assertEqual(ai_share_label([None, 0.9, 0.9, 0.0, 0.0]), 'ai_does_much')   # 2 of 4
+
+    def test_graph_label_skips_tasks_without_pen(self):
+        g = FakeGraph()
+        g.node['skl:4.A.1'] = {'kind': 'skill', 'label': 'Act', 'attrs': {'skill_kind': 'activity'}}
+        g.node['skl:2.A.1'] = {'kind': 'skill', 'label': 'Skill', 'attrs': {'skill_kind': 'skill', 'acts': ['4.A.1']}}
+        g.out['occ:x']['has_task'] = [('tsk:%d' % i, None, {'gwa': ['4.A.1'], **({'pen': p} if p is not None else {})}, '2026-08')
+                                      for i, p in enumerate([0.5, 0.0, 0.0, None, None, None, None, None, None, None])]
+        lab = ai_labels(g, 'occ:x')
+        self.assertEqual(lab('skl:4.A.1'), 'mixed')   # 1 of 3 tasks with data; counting the 7 without data as 'no use' gave people_do
+        self.assertEqual(lab('skl:2.A.1'), 'mixed')
+
+
+class FakeGraph:
+    def __init__(self):
+        self.node = {}
+        self.out = collections.defaultdict(lambda: collections.defaultdict(list))
+
+    def occ(self, soc):
+        self.node['occ:' + soc] = {'kind': 'occupation', 'label': soc, 'attrs': {}}
+        return 'occ:' + soc
+
+    def tool(self, occ, tid, label, w=0.6, in_demand=False):
+        self.node.setdefault(tid, {'kind': 'skill', 'label': label, 'attrs': {'skill_kind': 'technology'}})
+        self.out[occ]['needs'].append((tid, w, {'in_demand': True} if in_demand else {}, '2026-08'))
+
+    def skills(self, occ, k):
+        for i in range(k):
+            self.node.setdefault('skl:2.A.%d' % i, {'kind': 'skill', 'label': 'S%d' % i, 'attrs': {'skill_kind': 'skill'}})
+            self.out[occ]['needs'].append(('skl:2.A.%d' % i, 0.5, {}, '2026-08'))
+
+
+class ToolRanking(unittest.TestCase):
+    """Review finding B1: tools are picked by In Demand, then how typical they are of the SOC minor group, then label; never by id alone."""
+    def graph(self):
+        g = FakeGraph()
+        devs = [g.occ('15-1252.00'), g.occ('15-1253.00'), g.occ('15-1254.00')]
+        others = [g.occ('43-4051.00'), g.occ('43-4171.00'), g.occ('29-1141.00')]
+        for o in devs + others: g.tool(o, 'tec:office', 'Microsoft Office software', 0.8)   # every job lists it
+        for o in devs: g.tool(o, 'tec:git', 'Git')                                          # the whole 15-12 group lists it
+        g.tool(devs[0], 'tec:aardvark', 'Aardvark Paint', 0.8)                                 # only this job, sorts first by id
+        g.tool(devs[1], 'tec:aardvark', 'Aardvark Paint', 0.8)
+        g.tool(others[0], 'tec:aardvark', 'Aardvark Paint', 0.8)
+        g.tool(devs[0], 'tec:zeta', 'Zeta CI', in_demand=True)
+        return g, devs[0]
+
+    def test_scores(self):
+        g, o = self.graph(); sc = tec_scores(g)[o]
+        self.assertEqual(sc['tec:office'], 0.0)                     # listed everywhere: log(6/6) = 0
+        self.assertGreater(sc['tec:git'], sc['tec:aardvark'])        # 3 of 3 in the group and rarer elsewhere
+        self.assertGreater(sc['tec:aardvark'], sc['tec:office'])
+
+    def test_order_of_the_tool_slots(self):
+        g, o = self.graph(); g.skills(o, 6); sc = tec_scores(g)
+        picked = [n['id'] for n in need_rows(g, o, 8, lambda e: 'unknown', sc)]   # 8 // 4 = 2 tool slots, 6 skills
+        tools = sorted(x for x in picked if x.startswith('tec:'))
+        self.assertEqual(tools, ['tec:git', 'tec:zeta'])   # In Demand first, then the group tool; not Aardvark (first by id) or Office
+
+    def test_ties_go_by_label(self):
+        g = FakeGraph(); o = g.occ('11-1011.00'); g.occ('11-1021.00')
+        g.tool(o, 'tec:b', 'Alpha'); g.tool(o, 'tec:a', 'Beta'); g.skills(o, 3)
+        out = need_rows(g, o, 4, lambda e: 'unknown', tec_scores(g))   # one tool slot, both tools score the same
+        self.assertEqual([n['id'] for n in out if n['id'].startswith('tec:')], ['tec:b'])
 
 
 class Coverage(unittest.TestCase):

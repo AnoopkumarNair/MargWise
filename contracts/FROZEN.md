@@ -28,6 +28,8 @@ Code in this folder (`validate_lib.js`, `validate.js`, `migrate_ids.js`, `profil
 
 - `contracts/tests/freeze.test.mjs` (in CI with the other contract tests) fails when a contract file differs from the lock, when a file is added or removed, when a version goes down, or when the lock is out of date.
 - `node contracts/freeze.mjs` runs the same check from the command line.
+- `node contracts/check_freeze_history.mjs` (CI, contracts job, with the full git history) compares `freeze.lock.json` and `amendments.json` with `main`: amendments are only appended and never edited, a lock change needs a bumped version or a new amendment that names the file, a change without a bump must be additive (no removed property, no new required field, no removed enum or band value, no tighter limit), and every amendment's deviation entry in `docs/adult/deviations.md` names it and is "decided by owner". The additive check compares the same JSON paths only: it does not follow `$ref` or judge `pattern`, `format` or `oneOf` changes. If `main` cannot be read it warns, and under `CI=true` it fails. Changes under `contracts/` need the owner's review (`.github/CODEOWNERS`).
+- `MATCHER_VERSION` is 1.0.1 since the S1 review fixes (the rules did not change; a golden fixture did, see `matcher/README.md`).
 
 ## Amendments (a change without a version bump)
 

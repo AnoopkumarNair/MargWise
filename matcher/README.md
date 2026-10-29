@@ -2,7 +2,7 @@
 
 `match.js` turns a profile and an occupation slice into a list of roads. `reference.py` is a second, independent version in Python. The tests check that the two agree.
 
-Version 1.0.0 covers slice S1: coverage, gap, reach (adjacent, stretch, leap) and order. Road kind, target level, experience fit, bridges, pay, demand and the flags are stubs. They come back as `null` or `"not_yet_measured"`, because the S1 slices do not hold the data they need. The result lists them in `stubs`.
+Version 1.0.1 covers slice S1 (its rules are the same as 1.0.0; see "Versions" below): coverage, gap, reach (adjacent, stretch, leap) and order. Road kind, target level, experience fit, bridges, pay, demand and the flags are stubs. They come back as `null` or `"not_yet_measured"`, because the S1 slices do not hold the data they need. The result lists them in `stubs`.
 
 ## Use
 
@@ -13,7 +13,7 @@ const result = match(profile, slice, { now: 2026, teaches });   // near comes fr
 
 - `profile` follows `contracts/profile.schema.json`. `slice` follows `contracts/slice.schema.json`.
 - `opts.now` is the current year. The matcher never reads the clock. Without it, skills never turn rusty by age and credentials never expire.
-- skill_near data comes from the slice: `slice.near.pairs`, `[["skl:a", "skl:b", 0.7], ...]` (slice contract amendment A1). `opts.near` (`{"skl:a": {"skl:b": 0.7}}`) overrides it when given, which the tests use; `opts.near = {}` turns near off. Either way it is read both ways, and values under 0.5 are ignored. Adding this did not change any golden output, so the version stays 1.0.0.
+- skill_near data comes from the slice: `slice.near.pairs`, `[["skl:a", "skl:b", 0.7], ...]` (slice contract amendment A1). `opts.near` (`{"skl:a": {"skl:b": 0.7}}`) overrides it when given, which the tests use; `opts.near = {}` turns near off. Either way it is read both ways, and values under 0.5 are ignored. Adding this did not change any golden output, so it stayed in 1.0.0.
 - `opts.teaches` is credential data: `{"cred:x": ["skl:a", ...]}`. Without it, credentials credit nothing.
 - `opts.walk` is `true` only after the interest walk. Until then the enjoy slider has no weight.
 
@@ -40,7 +40,7 @@ const result = match(profile, slice, { now: 2026, teaches });   // near comes fr
 - **have:** strong 1.0, used 0.7, rusty 0.4. A used skill last used more than 3 years before `now` counts as rusty. A strong skill never does.
 - **Credentials:** a held credential credits the skills it teaches at 0.7, or 0.4 if it expired (its `expires` year is before `now`). The person's own rating of a skill always wins, even when it is lower.
 - **near:** the best `0.5 x similarity x have` over the person's other skills, including skills credited by credentials.
-- **Coverage:** `sum(w x cover) / sum(w)` over the target's needs, rounded half up to 4 decimals. Reach uses the rounded value. If every weight is 0, coverage is 0. The slice weights are used as given: the data lane applies the rating-age discount (SPEC 5.6) before export.
+- **Coverage:** `sum(w x cover) / sum(w)` over the target's needs, rounded half up to 4 decimals. Reach uses the rounded value. If every weight is 0, coverage is 0. The slice weights are used as given. In S1 they are NOT discounted for the age of the O*NET rating (SPEC 5.6): BUILD_PLAN puts that discount in S2, and `data/graph/export.py` does not apply it yet. Each need carries the date of its rating (`as_of`); tool needs carry the O*NET release month (deviations D20).
 - **Gap order:** weight, times 1.5 for "people still do this", then id.
 - **Level:** adds the lower bound of each role's year band (0, 2, 5, 8, 12, 18), then uses the SPEC 7.2 thresholds. Plus 1 for leading 6 or more people or owning a budget, up to 6. No roles gives `null`.
 - **Roads:** every slice target except the slice's own occupation, once each. Nothing is filtered out: not leaps, not flags.
@@ -50,7 +50,7 @@ const result = match(profile, slice, { now: 2026, teaches });   // near comes fr
 
 ## Fair inputs (ADR-16, invariant 8)
 
-`ALLOWED_INPUT_FIELDS` lists every profile field the matcher may read. Two tests enforce it. One scans `match.js` for any demographic or commercial name. The other runs the matcher on a watched profile and fails if it reads any field not on the list. City and openness to move are on the list only for the future relocation flag; 1.0.0 does not read them.
+`ALLOWED_INPUT_FIELDS` lists every profile field the matcher may read. Two tests enforce it. One scans `match.js` for any demographic or commercial name. The other runs the matcher on a watched profile and fails if it reads any field not on the list. City and openness to move are on the list only for the future relocation flag; 1.0.x does not read them.
 
 ## Tests
 
@@ -64,5 +64,10 @@ node matcher/tests/version_guard.mjs --write  # after a MATCHER_VERSION bump, or
 - `tests/golden.json`: 9 cases across 4 occupation families: 8 on hand-built slices, and `csr-real-near` on a real-shape slice whose near pairs come from the slice. `tests/GOLDEN_TABLE.md` lists them for the owner.
 - `tests/fixtures/`: 4 made-up test slices, plus skill_near and credential data (none of it real data), and `slice_csr_real.json`, an extract of the real O*NET 31.0 slice for Customer Service Representatives (5 targets, with its near pairs).
 - Properties over 500 random profiles (seed 20261029). Coverage stays between 0 and 1. Adding a skill never lowers coverage. Strong is at least used, and used is at least rusty. Sliders reorder roads but never add or remove one. Constraints never remove a road. The same input always gives the same bytes.
-- `reference.py` must agree with `match.js` to 2 decimals on every golden and random case, with the same road order, reach and gap.
+- `reference.py` must agree with `match.js` to 2 decimals on every golden and random case, with the same road order, reach and gap. It is independent code, but it was written from the same reading of SPEC, so it shares the open choices listed above: it cannot catch a choice that both make the same way. Two of them matter most: the level uses the lower bound of each year band (0, 2, 5, 8, 12, 18), and a component that is equal on every road keeps its raw value instead of a 0..1 score.
 - **Version guard.** `tests/golden.lock.json` holds a hash of each golden case's output. If any output changes while `MATCHER_VERSION` stays the same, the tests fail. Bump `MATCHER_VERSION` here and in `contracts/versions.js` (an architect change), then run the guard with `--write`.
+
+## Versions
+
+- **1.0.0** (S1): the first matcher.
+- **1.0.1** (S1 review fixes): no change to `match.js` or `reference.py` rules. The real-shape fixture `tests/fixtures/slice_csr_real.json` was re-extracted (`tests/fixtures/make_csr_real.py`) after the export changed how it picks a job's tools and dropped tasks with no AI data from the skill AI labels (deviations D20). That changed the csr-real-near output, and the version guard allows a changed output only with a new version.

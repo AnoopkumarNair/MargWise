@@ -3,7 +3,8 @@
 // Needs Playwright with Chromium (require('playwright') must work) and `npm install` in app/adult/tests/ for axe-core.
 // Builds the dev app first, with the small hand-written fixtures (`build.py --dev --fixtures`), so the assertions are exact and fast.
 //   MW_E2E_DATA=real   build from data/graph/ instead (generic assertions only: same journey, no job-specific checks)
-//   MW_SHOTS=1         also write the phone screenshots to e2e/screenshots/ (a real-data run does this by itself)
+//   MW_SHOTS=commit    also write the phone screenshots to e2e/screenshots/ (committed). Without it every screenshot goes to
+//                      tests/out/ only (git-ignored), so a real-data run never overwrites the committed ones
 //   MW_NO_BUILD=1      use whatever is in hosting/public/work/ now
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -25,6 +26,7 @@ const SHOTS = join(here, 'screenshots');        // committed: phone width only
 mkdirSync(OUT, { recursive: true }); mkdirSync(SHOTS, { recursive: true });
 
 const REAL = process.env.MW_E2E_DATA === 'real';
+const ONET_V = REAL ? JSON.parse(readFileSync(join(ROOT, 'data', 'graph', 'build_report.json'), 'utf8')).onet_version : null;   // 31.0
 if (!process.env.MW_NO_BUILD) {
   const r = spawnSync('python3', [join(ROOT, 'app', 'adult', 'build.py'), '--dev'].concat(REAL ? [] : ['--fixtures']), { stdio: 'inherit' });
   assert.equal(r.status, 0, 'build failed');
@@ -60,7 +62,7 @@ async function axeCheck(page, label) {
 
 async function shot(page, v, name) {
   await page.screenshot({ path: join(OUT, `s1-${name}-${v.name}.png`), fullPage: true });
-  if (v.phone && (REAL || process.env.MW_SHOTS)) await page.screenshot({ path: join(SHOTS, `s1-${name}-${v.name}.png`), fullPage: true });
+  if (v.phone && process.env.MW_SHOTS === 'commit') await page.screenshot({ path: join(SHOTS, `s1-${name}-${v.name}.png`), fullPage: true });
 }
 
 async function footerOk(page) {
@@ -69,6 +71,9 @@ async function footerOk(page) {
   assert.match(t, /O\*NET OnLine, U\.S\. Department of Labor/);
   assert.match(t, /Margwise has modified this information\. USDOL\/ETA has not approved, endorsed or tested these modifications\. O\*NET® is a trademark of USDOL\/ETA\./);
   assert.match(t, /as of 20\d\d/);
+  // the O*NET version shows in a dev build too (from the slices' release id); the hand-written fixtures have none
+  if (REAL) assert.match(t, new RegExp('O\\*NET version:\\s*' + ONET_V.replace('.', '\\.'))); else assert.doesNotMatch(t, /O\*NET version:/);
+  assert.doesNotMatch(t, /broad averages/);   // S1 has no India data (review finding S2)
 }
 
 for (const v of VIEWS) {

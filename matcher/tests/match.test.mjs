@@ -68,7 +68,10 @@ test('golden: csr-real-near reads skill_near from the slice; opts.near still ove
   assert.ok(s.near.pairs.length > 100 && !('near' in o));
   const fromSlice = covById(match(p, s, o)), none = covById(match(p, { ...s, near: undefined }, o)), override = covById(match(p, s, { ...o, near: {} }));
   for (const id of Object.keys(fromSlice)) { assert.ok(fromSlice[id] > none[id], id); assert.equal(override[id], none[id], id); }
-  assert.deepEqual(match(p, s, o).roads.filter(r => r.reach === 'stretch').map(r => r.id), ['occ:43-4081.00', 'occ:41-9041.00']);
+  // With the slice's tool picks (export.py, review finding B1) every road is a leap, and one sits just under the stretch line:
+  // 0.3969 shows as 0.40 to 2 decimals, which is why the app floors the percent (app/adult/screens/common.js)
+  assert.equal(match(p, s, o).roads.filter(r => r.reach !== 'leap').length, 0);
+  assert.equal(match(p, s, o).roads.find(r => r.id === 'occ:43-4041.00').coverage, 0.3969);
   assert.equal(match(p, { ...s, near: undefined }, o).roads.filter(r => r.reach !== 'leap').length, 0);
   // gap labels are the slice's own need labels
   const t = s.targets.find(x => x.occ.id === 'occ:43-4081.00'), lab = Object.fromEntries(t.needs.map(n => [n.id, n.label]));

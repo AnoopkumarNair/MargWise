@@ -1,6 +1,6 @@
 {
  "_doc": "Hand-built golden cases for the adult matcher (SPEC 7.5, TEST_PLAN layer 2). Each case names a fixture slice and the skill_near and credential data it uses (paths relative to matcher/tests/). expect holds the person level, then the roads in order with reach, coverage to 2 decimals, and flags. Fixtures are made up for tests, not real data. A change to any expected output needs a MATCHER_VERSION bump (tests/version_guard.mjs).",
- "matcher_version": "1.0.0",
+ "matcher_version": "1.0.1",
  "cases": [
   {
    "id": "acc-core",
@@ -837,7 +837,7 @@
   {
    "id": "csr-real-near",
    "family": "Office and administrative support (43-), real-shape slice",
-   "summary": "Customer service representative, 2-5 years in BPM, 12 skills ticked from the real O*NET 31.0 slice; skill_near comes from the slice itself (amendment A1), not from opts. 41-3091.00 is a leap at coverage 0.398, which shows as 0.40 to 2 decimals",
+   "summary": "Customer service representative, 2-5 years in BPM, 12 skills ticked from the real O*NET 31.0 slice; skill_near comes from the slice itself (amendment A1), not from opts. With the slice's tool picks (review finding B1) every road is a leap; 43-4041.00 is a leap at coverage 0.3969, which shows as 0.40 to 2 decimals",
    "profile": {
     "v": 1,
     "roles": [
@@ -920,33 +920,33 @@
     "person_level": 2,
     "roads": [
      {
-      "id": "occ:43-4081.00",
-      "reach": "stretch",
-      "coverage": 0.41,
-      "flags": []
-     },
-     {
       "id": "occ:43-4041.00",
       "reach": "leap",
-      "coverage": 0.38,
+      "coverage": 0.4,
       "flags": []
      },
      {
       "id": "occ:41-9041.00",
-      "reach": "stretch",
-      "coverage": 0.4,
-      "flags": []
-     },
-     {
-      "id": "occ:41-3091.00",
       "reach": "leap",
-      "coverage": 0.4,
+      "coverage": 0.39,
       "flags": []
      },
      {
       "id": "occ:43-1011.00",
       "reach": "leap",
-      "coverage": 0.34,
+      "coverage": 0.36,
+      "flags": []
+     },
+     {
+      "id": "occ:43-4081.00",
+      "reach": "leap",
+      "coverage": 0.35,
+      "flags": []
+     },
+     {
+      "id": "occ:41-3091.00",
+      "reach": "leap",
+      "coverage": 0.37,
       "flags": []
      }
     ]

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { normaliseRoad, normaliseResult, runMatch, tierFromCoverage } from '../../matcher_adapter.js';
+import { normaliseRoad, normaliseResult, runMatch, tierFromCoverage, coveragePercent } from '../../matcher_adapter.js';
 import { validate } from '../../../../contracts/validate_lib.js';
 
 const J = p => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
@@ -17,11 +17,19 @@ test('tierFromCoverage uses the SPEC 7.3 cut-offs', () => {
   assert.equal(tierFromCoverage(0.4), 'stretch'); assert.equal(tierFromCoverage(0.399), 'leap');
 });
 
+test('the coverage percent never contradicts the reach badge (floored, review finding S3)', () => {
+  assert.equal(coveragePercent(0.3969), 39); assert.equal(tierFromCoverage(0.3969), 'leap');   // csr-real-near: rounding showed 40% on a Leap
+  assert.equal(coveragePercent(0.398), 39); assert.equal(coveragePercent(0.4), 40); assert.equal(coveragePercent(0.6999), 69); assert.equal(coveragePercent(0.7), 70);
+  assert.equal(coveragePercent(0.29), 29); assert.equal(coveragePercent(0.57), 57); assert.equal(coveragePercent(1), 100); assert.equal(coveragePercent(0), 0);
+  const badgeFromPercent = p => p >= 70 ? 'adjacent' : p >= 40 ? 'stretch' : 'leap';
+  for (let i = 0; i <= 10000; i++) { const c = i / 10000; assert.equal(badgeFromPercent(coveragePercent(c)), tierFromCoverage(c), String(c)); }
+});
+
 test('the profile the app builds passes contracts/profile.schema.json', () => {
   const r = validate(schema, profile(5)); assert.ok(r.ok, JSON.stringify(r.errors));
 });
 
-test('normaliseRoad reads the matcher 1.0.0 shape (reach, gap, status)', () => {
+test('normaliseRoad reads the matcher 1.0.x shape (reach, gap, status)', () => {
   const raw = { id: 'occ:13-2051.00', label: 'Financial and Investment Analysts', reach: 'stretch', coverage: 0.5, score: 0.61, kind: null, flags: [], bridges: null, level: { target: null, fit: null },
     gap: [{ id: 'tec:sql', label: 'SQL database queries', w: 0.4, cover: 0, ai: 'mixed', people_do: false }, { id: 'skl:2.B.1.c', w: 0.2, cover: 0.3, ai: 'people_do', people_do: true }],
     components: { pay: { value: 0.5, norm: 0.5, weight: 1, status: 'not_yet_measured' }, ai_safe: { value: 0.62, norm: 1, weight: 1, status: 'measured' }, short: { value: 0.5, norm: 0, weight: 1, status: 'measured' }, demand: { value: 0.5, norm: 0.5, weight: 1, status: 'not_yet_measured' }, enjoy: { value: 0.5, norm: 0.5, weight: 0, status: 'not_yet_measured' } } };
@@ -35,20 +43,21 @@ test('normaliseRoad reads the matcher 1.0.0 shape (reach, gap, status)', () => {
   assert.equal(r.signals.pay.value.startsWith('PLFS'), true); assert.equal(r.signals.demand, null); assert.equal(r.signals.ai.value, 0.38);
 });
 
-test('normaliseRoad also reads the older draft shape (kind=tier, gaps as ids, numeric components)', () => {
-  const r = normaliseRoad({ id: 'occ:13-2051.00', kind: 'adjacent', coverage: 0.8, gaps: ['tec:sql'], flags: ['needs_relocation'], components: { pay: 0.5, short: 0.8 }, score: 0.7 }, slice, profile(3));
-  assert.equal(r.tier, 'adjacent'); assert.equal(r.gaps[0].label, 'SQL database queries'); assert.match(r.flags[0].text, /move to another city/);
-  assert.equal(r.components.find(c => c.key === 'short_move').value, 0.8);
+test('normaliseRoad reads flags, kind, bridges and fit in the result.schema.json shape', () => {
+  const r = normaliseRoad({ id: 'occ:13-2051.00', reach: 'adjacent', coverage: 0.8, gap: [], kind: 'up', level: { target: 3, fit: 'in' }, flags: ['needs_relocation'], bridges: ['cred:x'], components: {}, score: 0.7 }, slice, profile(3));
+  assert.equal(r.tier, 'adjacent'); assert.equal(r.move, 'up'); assert.equal(r.fit, 'in'); assert.deepEqual(r.bridges, [{ label: 'cred:x' }]);
+  assert.match(r.flags[0].text, /move to another city/);
+  assert.ok(r.components.every(c => c.measured === false && c.value === null));   // no component given: nothing is measured
 });
 
-test('a road kind from SPEC 7.2 becomes `move`, and the tier comes from coverage', () => {
-  const r = normaliseRoad({ id: 'occ:13-2051.00', kind: 'Up', coverage: 0.45, gaps: [], components: {}, score: 0 }, slice, profile(3));
-  assert.equal(r.move, 'up'); assert.equal(r.tier, 'stretch');
+test('without a reach the tier comes from coverage', () => {
+  const r = normaliseRoad({ id: 'occ:13-2051.00', kind: null, coverage: 0.45, gap: [], components: {}, score: 0 }, slice, profile(3));
+  assert.equal(r.move, null); assert.equal(r.tier, 'stretch');
 });
 
 test('normaliseResult keeps a steady order: score, then coverage, then id', () => {
   const a = { id: 'occ:b', coverage: 0.5, score: 0.5 }, b = { id: 'occ:a', coverage: 0.5, score: 0.5 }, c = { id: 'occ:c', coverage: 0.9, score: 0.9 };
-  const r = normaliseResult({ version: '1.0.0', roads: [a, b, c] }, slice, profile(1));
+  const r = normaliseResult({ version: '1.0.1', roads: [a, b, c] }, slice, profile(1));
   assert.deepEqual(r.roads.map(x => x.id), ['occ:c', 'occ:a', 'occ:b']);
 });
 

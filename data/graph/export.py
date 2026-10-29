@@ -18,7 +18,7 @@ fits, and every such trim is counted in export_report.json. With O*NET 31.0 no s
 slices/ is a build output and is not committed (deviations D15): the pipeline rebuilds it, and export_report.json (committed) holds
 its hashes and sizes, so CI sees any change. --accept stores the accepted slices as one compressed pack in data/releases/graph/.
 """
-import argparse, collections, csv, gzip, hashlib, json, os, shutil, sqlite3, sys
+import argparse, collections, csv, gzip, hashlib, json, math, os, shutil, sqlite3, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -33,6 +33,11 @@ TASKS_OWN = 80
 TARGETS = 30
 MIX = (18, 8, 4)            # target slots: close_to, two_step, same_cluster; unused slots are refilled from the rest in rank order
 TEC_SHARE = 4               # at most n // 4 of a needs list are technologies, so tools do not crowd out skills (tools all weigh 0.6 or 0.8)
+# Which tools fill those slots (review finding B1): an occupation's own O*NET 'In Demand' tools first, then the tools most typical of the
+# occupation's SOC minor group (the first four digits, such as 15-12) compared with all occupations: a TF-IDF style score,
+#   (occupations in the same minor group that list the tool / occupations in the group) * ln(occupations listing any tool / occupations listing it)
+# so a tool that every job lists (Microsoft Office) scores low and a tool shared by the job's neighbours scores high. Ties by label, then id.
+# The tool weights (0.8 Hot Technology, 0.6 other) are not changed here: that is owner decision O3 (deviations).
 TWO_STEP_VIA = 10           # follow the 10 strongest close_to links, then their close_to links
 TWO_STEP_MIN_COVERAGE = 0.4
 AI_MIN_TASKS = 3            # a skill label needs at least this many tasks to look at
@@ -78,18 +83,23 @@ class Graph:
 
 
 def ai_share_label(pens):
-    """SPEC 5.5 on a list of task penetrations: 0.5 or more with AI use = ai_does_much, 0.15 or less = people_do, between = mixed. Fewer than 3 tasks = unknown."""
+    """SPEC 5.5 on a list of task penetrations, only tasks that have AI data: a share of 0.5 or more with AI use = ai_does_much, 0.15 or
+    less = people_do, between = mixed. Fewer than 3 such tasks = unknown. A task without AI data is left out (None), never counted as no use."""
+    pens = [p for p in pens if p is not None]
     if len(pens) < AI_MIN_TASKS: return 'unknown'
     share = sum(1 for p in pens if p > 0) / len(pens)
     return 'ai_does_much' if share >= AI_HI else 'people_do' if share <= AI_LO else 'mixed'
 
 
 def ai_labels(g, occ):
-    """SPEC 5.5. For a skill or work activity: the share of the occupation's tasks (linked through the detailed work activity) that have AI use."""
+    """SPEC 5.5. For a skill or work activity: the share of the occupation's tasks (linked through the detailed work activity) that have AI
+    use, over the linked tasks that have AI data. 'Weighted share' is implemented as: a task counts once per linked activity, so a task that
+    reaches the skill through two activities counts twice. Tasks with no AI data are unknown and left out of both counts (review finding S4)."""
     tasks = [(d, at) for d, w, at, ao in g.out[occ]['has_task']]
     by_gwa = collections.defaultdict(list)
     for d, at in tasks:
-        for gw in at.get('gwa', []): by_gwa[gw].append(at.get('pen') or 0.0)
+        if at.get('pen') is None: continue   # no AI data for this task: unknown, not 'no use'
+        for gw in at.get('gwa', []): by_gwa[gw].append(at['pen'])
     cache = {}
     def label(e):
         if e in cache: return cache[e]
@@ -102,11 +112,39 @@ def ai_labels(g, occ):
     return label
 
 
-def need_rows(g, occ, n, label_fn):
+def minor_group(soc):
+    """SOC minor group: the first four digits, '15-1252.00' -> '15-12'."""
+    return soc[:5]
+
+
+def tec_scores(g):
+    """{occ: {tec id: score}} for the TF-IDF style tool ranking described at TEC_SHARE. Deterministic: plain counts and one log."""
+    lists = {o: sorted({d for d, w, at, ao in g.out[o]['needs'] if d.startswith('tec:')}) for o, n in g.node.items() if n['kind'] == 'occupation'}
+    lists = {o: t for o, t in lists.items() if t}
+    N = len(lists)
+    df = collections.Counter(t for ts in lists.values() for t in ts)
+    group = collections.defaultdict(list)
+    for o in lists: group[minor_group(o[4:])].append(o)
+    gdf = {k: collections.Counter(t for o in os_ for t in lists[o]) for k, os_ in group.items()}
+    out = {}
+    for o, ts in lists.items():
+        k = minor_group(o[4:]); size = len(group[k])
+        out[o] = {t: round(gdf[k][t] / size * math.log(N / df[t]), 9) for t in ts}
+    return out
+
+
+def tec_key(r, scores):
+    """Sort key for an occupation's tool rows (d, w, attrs, as_of, node): In Demand first, then the score, then label, then id. Never id alone."""
+    d, w, at, ao, nd = r
+    return (not at.get('in_demand'), -scores.get(d, 0.0), nd['label'], d)
+
+
+def need_rows(g, occ, n, label_fn, scores=None):
     rows = []
     for d, w, at, ao in g.out[occ]['needs']:
         nd = g.node[d]; rows.append((d, w, at, ao, nd))
-    tec = sorted((r for r in rows if r[0].startswith('tec:')), key=lambda r: (-r[1], not r[2].get('in_demand'), r[0]))
+    sc = (scores or {}).get(occ, {})
+    tec = sorted((r for r in rows if r[0].startswith('tec:')), key=lambda r: tec_key(r, sc))
     oth = sorted((r for r in rows if not r[0].startswith('tec:')), key=lambda r: (-r[1], r[0]))
     cap = n // TEC_SHARE
     take_oth = oth[:max(n - min(cap, len(tec)), 0)]
@@ -188,9 +226,10 @@ def build_slices(g, release):
     for o in occs:
         for d, w, at, ao in g.out[o]['in_cluster']: cluster[o].add(d); members[d].add(o)
     labels = {o: ai_labels(g, o) for o in rated}
+    scores = tec_scores(g)
     top_cache = {}
     def top(o, n):
-        if (o, n) not in top_cache: top_cache[(o, n)] = need_rows(g, o, n, labels[o])
+        if (o, n) not in top_cache: top_cache[(o, n)] = need_rows(g, o, n, labels[o], scores)
         return top_cache[(o, n)]
     own_w = {o: {d: w for d, w, at, ao in g.out[o]['needs']} for o in rated}
     close = {o: sorted([(d, w, at) for d, w, at, ao in g.out[o]['close_to'] if d in rated_set and d != o], key=lambda r: (-r[1], -(r[2].get('cos') or 0), r[0])) for o in rated}

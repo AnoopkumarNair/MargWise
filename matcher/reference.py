@@ -12,7 +12,7 @@ and flags are stubs in both implementations (see matcher/README.md).
 """
 import json, math, os, sys
 
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 STRENGTH_VALUE = {'strong': 1.0, 'used': 0.7, 'rusty': 0.4}

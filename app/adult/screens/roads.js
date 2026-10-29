@@ -1,7 +1,7 @@
 // Screen: roads (SPEC 8 screen 9, T5.2). Priority sliders re-sort the list live. Leaps stay hidden until asked for.
 import { h, mount } from '../dom.js';
 import { state, PRIORITIES } from '../state.js';
-import { computeRoads, timing, pct, badges, coverageBar, signalList, flagList } from './common.js';
+import { computeRoads, timing, badges, coverageBar, signalList, flagList } from './common.js';
 
 export function title() { return 'Your roads'; }
 export async function render() {
@@ -53,7 +53,7 @@ export async function render() {
 
   const root = h('section', { class: 'screen' },
     h('h1', { tabindex: '-1' }, 'Roads from ' + state.occ.label),
-    h('p', { class: 'lead' }, 'Coverage is the share of each job’s skills that you already cover. A higher number is a shorter move.'),
+    h('p', { class: 'lead' }, 'Coverage is how much of each job’s top skills you already cover, with the skills that matter most counting most. A higher number is a shorter move.'),
     sliders, h('h2', null, 'Jobs you could move to'), count, list, h('p', null, leapBtn),
     h('p', null, h('a', { href: '#/skills' }, 'Change my skills')));
   await refresh();
