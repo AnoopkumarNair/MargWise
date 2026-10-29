@@ -10,5 +10,5 @@ database_id = "638e0a4f-cfbc-495d-b1a5-ffa3559efcd9"
 # migrations_dir is read relative to THIS file, so "migrations" means hosting/migrations. The baseline (0000) must never be
 # applied to the production database: mark it as applied instead (see the runbook). Owner runs migrations; agents never do.
 migrations_dir = "migrations"
-# OWNER ASK (BACKEND ADR-02): create the D1 database `margwise-preview`, then put its id here for branch previews.
-# preview_database_id = "<owner: id of margwise-preview>"
+# Branch previews use the separate empty database `margwise-preview` (BACKEND ADR-02), created 2026-10-29. No SQL has been applied to it yet.
+preview_database_id = "fdd227d1-a201-49bc-ae78-6911a978877f"
