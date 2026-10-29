@@ -1,0 +1,8 @@
+{
+  "name": "margwise-adult-app-tests",
+  "private": true,
+  "description": "Test-only dependencies for the adult app. Never shipped: app/adult/build.py does not copy this folder.",
+  "devDependencies": {
+    "axe-core": "4.10.2"
+  }
+}

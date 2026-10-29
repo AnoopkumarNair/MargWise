@@ -1,0 +1,194 @@
+[
+ {
+  "id": "skl:2.A.1.a",
+  "label": "Reading Comprehension",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.A.1.b",
+  "label": "Active Listening",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.A.1.c",
+  "label": "Writing",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.A.1.d",
+  "label": "Speaking",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.A.1.e",
+  "label": "Mathematics",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.A.2.a",
+  "label": "Critical Thinking",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.A.2.b",
+  "label": "Active Learning",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.B.1.a",
+  "label": "Social Perceptiveness",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.B.1.b",
+  "label": "Coordination",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.B.1.c",
+  "label": "Persuasion",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.B.1.d",
+  "label": "Negotiation",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.B.4.e",
+  "label": "Judgment and Decision Making",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.B.5.a",
+  "label": "Systems Analysis",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.B.5.b",
+  "label": "Systems Evaluation",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.A.2.d",
+  "label": "Monitoring",
+  "alt": [],
+  "kind": "skill"
+ },
+ {
+  "id": "skl:2.C.1.a",
+  "label": "Economics and Accounting",
+  "alt": [],
+  "kind": "knowledge"
+ },
+ {
+  "id": "skl:2.C.1.b",
+  "label": "Administration and Management",
+  "alt": [],
+  "kind": "knowledge"
+ },
+ {
+  "id": "skl:2.C.1.c",
+  "label": "Customer and Personal Service",
+  "alt": [],
+  "kind": "knowledge"
+ },
+ {
+  "id": "skl:2.C.3.a",
+  "label": "Computers and Electronics",
+  "alt": [],
+  "kind": "knowledge"
+ },
+ {
+  "id": "skl:2.C.4.a",
+  "label": "Mathematics knowledge",
+  "alt": [],
+  "kind": "knowledge"
+ },
+ {
+  "id": "skl:2.C.7.a",
+  "label": "English Language",
+  "alt": [],
+  "kind": "knowledge"
+ },
+ {
+  "id": "skl:2.C.1.e",
+  "label": "Law and Government",
+  "alt": [],
+  "kind": "knowledge"
+ },
+ {
+  "id": "tec:excel",
+  "label": "Microsoft Excel",
+  "alt": [],
+  "kind": "technology"
+ },
+ {
+  "id": "tec:tally",
+  "label": "Tally accounting software",
+  "alt": [],
+  "kind": "technology"
+ },
+ {
+  "id": "tec:sap",
+  "label": "SAP enterprise software",
+  "alt": [],
+  "kind": "technology"
+ },
+ {
+  "id": "tec:sql",
+  "label": "SQL database queries",
+  "alt": [],
+  "kind": "technology"
+ },
+ {
+  "id": "tec:python",
+  "label": "Python",
+  "alt": [],
+  "kind": "technology"
+ },
+ {
+  "id": "tec:powerbi",
+  "label": "Microsoft Power BI",
+  "alt": [],
+  "kind": "technology"
+ },
+ {
+  "id": "tec:tableau",
+  "label": "Tableau",
+  "alt": [],
+  "kind": "technology"
+ },
+ {
+  "id": "tec:js",
+  "label": "JavaScript",
+  "alt": [],
+  "kind": "technology"
+ },
+ {
+  "id": "tec:git",
+  "label": "Git version control",
+  "alt": [],
+  "kind": "technology"
+ },
+ {
+  "id": "tec:jira",
+  "label": "Jira issue tracking",
+  "alt": [],
+  "kind": "technology"
+ }
+]
