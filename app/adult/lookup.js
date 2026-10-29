@@ -85,3 +85,31 @@ export function findOccupations(titles, occupations, typed, limit = 8) {
   searchOccupations(occupations, typed, limit).forEach(o => push(o.id));
   return { source: items.length ? 'label' : 'none', exact: false, items: items.slice(0, limit) };
 }
+
+// Search the skills dictionary (skills_index.json: [{ id, label, alt, kind }]) for the "add a skill" box on the confirm screen.
+// Rank: exact name, name starts with the typed text, a word starts with it, the name contains it. Other names (alt) count one point less.
+// Skills in `skip` (a Set of ids the person already has) are left out.
+export function findSkills(index, typed, limit = 8, skip) {
+  const key = normalise(typed);
+  if (key.length < 2 || !index) return [];
+  const words = key.split(' ');
+  const out = [];
+  for (const s of index) {
+    if (skip && skip.has(s.id)) continue;
+    let best = 0;
+    for (const name of [s.label].concat(s.alt || [])) {
+      const n = normalise(name);
+      if (!n) continue;
+      let r = 0;
+      if (n === key) r = 100;
+      else if (n.startsWith(key)) r = 80;
+      else if (words.every(w => n.split(' ').some(x => x.startsWith(w)))) r = 60;
+      else if (n.includes(key)) r = 40;
+      if (r && name !== s.label) r -= 1;
+      if (r > best) best = r;
+    }
+    if (best) out.push({ s, r: best });
+  }
+  out.sort((a, b) => b.r - a.r || a.s.label.length - b.s.label.length || (a.s.label < b.s.label ? -1 : 1));
+  return out.slice(0, limit).map(x => x.s);
+}

@@ -1,4 +1,6 @@
-// In-memory state for slice S1. Nothing is written to storage and nothing is sent anywhere: reload the page and it is gone.
+// In-memory state (slices S1 and S3). Nothing is written to storage and nothing is sent anywhere: reload the page and it is gone.
+// The resume path (S3) keeps what the reader found here too, including source lines. Those lines are shown on screen and are never
+// put in the profile: buildProfile() below copies ids, bands and numbers only.
 import { validate } from './contracts/validate_lib.js';
 
 export const YEARS = ['0-2', '2-5', '5-8', '8-12', '12-18', '18+'];
@@ -24,9 +26,18 @@ export const state = {
   showLeaps: false,
   matcherVersion: null,
   schema: null,
+  // Resume path (S3). All of this is memory only.
+  path: null,       // 'resume' | 'title' | null
+  reading: null,    // what the reader found, then edited on the confirm screen (see intake_profile.js): { roles, skills, creds, warnings, ... }
+  roles: null,      // confirmed roles for the profile: [{ occ, level, industry, years, current }]; null on the title path (one role from occ + years)
+  skillLast: new Map(), // skill id -> last year used (a number), from the resume
+  lead: null,       // { people, budget, expert } or null
+  pretick: false,   // title path: the occupation's top needs have been pre-ticked once for this pick
 };
 
-export function resetPick() { state.occ = null; state.slice = null; state.skills = new Map(); }
+export function resetPick() { state.occ = null; state.slice = null; state.skills = new Map(); state.roles = null; state.skillLast = new Map(); state.lead = null; state.reading = null; state.pretick = false; }
+// "Start again": drops the resume reading, the picks and the profile. The router calls this on the welcome screen.
+export function resetAll() { resetPick(); state.path = null; state.years = '2-5'; state.priorities = { ...DEFAULT_PRIORITIES }; state.showLeaps = false; state.matcherVersion = null; }
 
 // SPEC 7.2: the level starts from the years band (0-2 is level 1 ... 18+ is level 6).
 export function levelFromYears(years) { return Math.max(1, YEARS.indexOf(years) + 1); }
@@ -34,11 +45,17 @@ export function levelFromYears(years) { return Math.max(1, YEARS.indexOf(years) 
 export function buildProfile() {
   const p = {
     v: 1,
-    roles: [{ occ: state.occ.id, level: levelFromYears(state.years), industry: 'other', years: state.years, current: true }],
-    skills: [...state.skills].map(([id, strength]) => ({ id, strength })),
+    roles: state.roles ? state.roles.map(r => ({ occ: r.occ, level: r.level, industry: r.industry, years: r.years, current: r.current })) :
+      [{ occ: state.occ.id, level: levelFromYears(state.years), industry: 'other', years: state.years, current: true }],
+    skills: [...state.skills].map(([id, strength]) => {
+      const o = { id, strength }; const last = state.skillLast.get(id);
+      if (Number.isInteger(last) && last >= 1950 && last <= 2100) o.last = last;
+      return o;
+    }),
     priorities: { ...state.priorities },
     job_release: state.manifest.release_id,
   };
+  if (state.lead) p.lead = { people: state.lead.people, budget: !!state.lead.budget, expert: !!state.lead.expert };
   if (state.matcherVersion && /^[0-9]+\.[0-9]+\.[0-9]+$/.test(state.matcherVersion)) p.matcher_version = state.matcherVersion;
   return p;
 }

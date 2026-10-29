@@ -111,6 +111,34 @@ input[type=checkbox], input[type=radio] { width: 24px; height: 24px; accent-colo
 .comps { border-collapse: collapse; width: 100%; margin-bottom: 1em; }
 .comps th, .comps td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
 
+
+/* resume path (S3): intake choice and confirm screen */
+.choice { background: var(--card); border: 2px solid var(--line); border-radius: 8px; padding: 4px 14px 8px; margin: 0 0 14px; }
+.choice.rec { border-color: var(--sky-mid); }
+.choice h2 { margin-top: .8rem; }
+.rec-tag { color: var(--teal-ink); border-color: var(--teal-ink); font-weight: 800; vertical-align: middle; }
+input[type=file] { width: 100%; font: 600 1rem var(--body); color: var(--ink); padding: 6px 0; }
+input[type=file]::file-selector-button { min-height: 44px; padding: 10px 20px; margin-right: 12px; border: 2px solid var(--sky-mid); border-radius: 8px; background: var(--sky-mid); color: var(--cream); font: 700 1rem var(--body); cursor: pointer; }
+textarea { width: 100%; min-height: 12rem; padding: 10px 12px; font: 600 1rem/1.4 var(--body); color: var(--ink); background: #fff; border: 2px solid var(--ink-soft); border-radius: 8px; resize: vertical; }
+.src { margin: .2em 0 .2em 34px; color: var(--ink-soft); font-size: .95rem; overflow-wrap: anywhere; }
+.src-tag { font-weight: 800; }
+.role-card { background: var(--card); border: 2px solid var(--line); border-left: 8px solid var(--sky-mid); border-radius: 8px; padding: 4px 14px 12px; margin: 0 0 14px; }
+.role-card.off { border-left-color: var(--line); opacity: .8; }
+.role-card h3 { margin-top: .6rem; }
+.role-card h4 { margin: 1em 0 .3em; font-size: 1.05rem; }
+.roles { display: grid; gap: 4px; }
+.field.inline { display: flex; align-items: center; gap: 10px; }
+.field.inline label { display: inline; margin: 0; }
+.occ-pick { border: 0; padding: 0; margin: .4em 0; display: grid; gap: 8px; }
+.occ-pick legend { font-weight: 800; padding: 0; margin-bottom: 4px; }
+.seg.wide { display: flex; width: 100%; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 1em; }
+.chip { min-height: 44px; padding: 8px 14px; border: 2px solid var(--teal-ink); border-radius: 99px; background: var(--card); color: var(--teal-ink); font: 700 1rem var(--body); cursor: pointer; }
+.chip:hover { background: var(--cream); }
+.lead-box { display: grid; gap: 10px; margin-bottom: 1em; }
+.lead-q { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.lead-q legend { font-weight: 800; padding: 0; margin-bottom: 4px; width: 100%; }
+
 /* footer */
 .foot { margin-top: 2.5rem; padding-top: 1rem; padding-bottom: 2rem; border-top: 2px solid var(--line); font-size: .95rem; color: var(--ink-soft); }
 .foot ul { padding-left: 1.2em; }

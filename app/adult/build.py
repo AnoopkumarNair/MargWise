@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the adult app (slice S1) into hosting/public/work/.
+"""Build the adult app (slices S1 and S3) into hosting/public/work/.
 
   python3 app/adult/build.py --dev   build from the working files in data/graph/ (or the test fixtures in app/adult/dev/fixtures/ while
                                      that folder has no slices yet); stamps the release id 'dev-unaccepted'. Never deploy this.
@@ -7,7 +7,7 @@
   python3 app/adult/build.py         build from the owner-accepted release in data/releases/graph/<release>/ (BACKEND ADR-12): unpacks
                                      slices.jsonl.xz and checks every hash in that release's manifest.json
 
-Inputs : app/adult/*.js, index.html, styles.css, screens/ ; matcher/*.js ; contracts/validate_lib.js, profile.schema.json ;
+Inputs : app/adult/*.js, index.html, styles.css, screens/, intake/ (the resume reader) ; matcher/*.js ; contracts/validate_lib.js, profile.schema.json ;
          graph files: slices/*.json, skills_index.json, titles.json
 Output : hosting/public/work/ (the app), hosting/public/work/graph/<release_id>/ (raw .json graph files and occupations.json), manifest.json
 The app and its graph files always carry the same release id (ADR-12): the graph release id (for example onet-31-0-6148d5ec), or
@@ -125,6 +125,18 @@ def collect_matcher(dev):
     return {'matcher/match.js': os.path.join(FIXTURES, 'match_stub.js')}, 'app/adult/dev/fixtures/match_stub.js (STUB)'
 
 
+def collect_intake(dev):
+    """Returns ({output path: source path}, label). The resume reader is app/adult/intake/*.js (tier 1, written by the intake lane). A dev build
+    falls back to the stand-in reader while read.js does not exist; a release build needs the real one."""
+    idir = os.path.join(APP, 'intake')
+    if os.path.exists(os.path.join(idir, 'read.js')):
+        return {'intake/' + os.path.basename(p): p for p in sorted(glob.glob(os.path.join(idir, '*.js')))}, 'app/adult/intake'
+    if not dev:
+        die('app/adult/intake/read.js does not exist. A release build needs the real resume reader.')
+    print('note: app/adult/intake/read.js does not exist yet. Using the STAND-IN reader in app/adult/dev/fixtures/intake_stub/read.js (tests only).')
+    return {'intake/read.js': os.path.join(FIXTURES, 'intake_stub', 'read.js')}, 'app/adult/dev/fixtures/intake_stub/read.js (STUB)'
+
+
 def main():
     ap = argparse.ArgumentParser(description='Build the adult app into hosting/public/work/')
     ap.add_argument('--dev', action='store_true', help="build from the working data files (never deploy this); stamps 'dev-unaccepted'")
@@ -139,6 +151,7 @@ def main():
     if not any(f.startswith('slices/') for f in gfiles) or 'titles.json' not in gfiles or 'skills_index.json' not in gfiles:
         die('graph source %s must hold slices/*.json, skills_index.json and titles.json' % glabel)
     mfiles, mlabel = collect_matcher(args.dev)
+    mfiles_intake, ilabel = collect_intake(args.dev)
 
     shutil.rmtree(OUT, ignore_errors=True)
     os.makedirs(OUT)
@@ -151,7 +164,8 @@ def main():
         app_files[rel] = sha(dst)
 
     # 1. the app: everything at the top of app/adult/ that the browser needs, and screens/
-    for name in ('styles.css', 'app.js', 'dom.js', 'lookup.js', 'matcher_adapter.js', 'state.js', 'data.js', 'footer.js'):
+    for name in ('styles.css', 'app.js', 'dom.js', 'lookup.js', 'matcher_adapter.js', 'state.js', 'data.js', 'footer.js',
+                 'intake_file.js', 'intake_profile.js', 'intake_read.js'):
         put(name, os.path.join(APP, name))
     for p in sorted(glob.glob(os.path.join(APP, 'screens', '*.js'))):
         put('screens/' + os.path.basename(p), p)
@@ -160,6 +174,10 @@ def main():
     stamped = html.replace('__RELEASE__', release_id)
     open(os.path.join(OUT, 'index.html'), 'w', encoding='utf8').write(stamped)
     app_files['index.html'] = sha(os.path.join(OUT, 'index.html'))
+
+    # 1b. the resume reader (S3): app/adult/intake/*.js, or the stand-in reader in a dev build while the real one does not exist
+    for rel, src in sorted(mfiles_intake.items()):
+        put(rel, src)
 
     # 2. contracts the page uses (profile check) and the matcher
     for name in ('validate_lib.js', 'profile.schema.json'):
@@ -200,7 +218,7 @@ def main():
     gout['occupations.json'] = sha(op)
 
     manifest = {
-        'app': 'adult', 'slice': 'S1', 'release_id': release_id, 'dev_build': args.dev, 'fixture_data': is_fixture,
+        'app': 'adult', 'slice': 'S3', 'release_id': release_id, 'dev_build': args.dev, 'fixture_data': is_fixture,
         'built_at': None,  # no clock, so a rebuild of the same inputs gives the same bytes
         'sources': [srcs[k] for k in sorted(srcs)],
         # the O*NET version the slices were built from (their release id 'onet-31-0-<hash>'), so a dev build's footer can show it too
@@ -210,13 +228,14 @@ def main():
                   'files': dict({k: v for k, v in gout.items() if not k.startswith('slices/')},
                                 **{'slices (folder)': graph_release.slices_sha({k[7:]: gdata[k] for k in slice_names})})},
         'matcher': {'source': mlabel, 'sha256': app_files['matcher/match.js']},
+        'intake': {'source': ilabel, 'sha256': app_files['intake/read.js']},
         'app_files': app_files,
     }
     json.dump(manifest, open(os.path.join(OUT, 'manifest.json'), 'w', encoding='utf8'), indent=1, sort_keys=True)
     if args.dev:
         open(os.path.join(OUT, '.gitignore'), 'w').write('# dev build output: never commit. A release build (no --dev) does not write this file.\n*\n')
     size = sum(os.path.getsize(os.path.join(OUT, f)) for f in app_files)
-    print('built hosting/public/work/  release=%s  graph=%s  matcher=%s  app=%d files, %d KB' % (release_id, glabel, mlabel, len(app_files), size // 1024))
+    print('built hosting/public/work/  release=%s  graph=%s  matcher=%s  intake=%s  app=%d files, %d KB' % (release_id, glabel, mlabel, ilabel, len(app_files), size // 1024))
 
 
 if __name__ == '__main__':

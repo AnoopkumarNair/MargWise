@@ -98,6 +98,9 @@ for (const v of VIEWS) {
     assert.notEqual(await page.evaluate(() => getComputedStyle(document.activeElement).outlineStyle), 'none');
     await page.keyboard.press('Enter');
 
+    // 1b. Intake choice (S3): the title-only path is the "No resume" link
+    await page.locator('#choose-title').click();
+
     // 2. Title entry
     await page.locator('#job-title').waitFor();
     await page.locator('#job-status', { hasText: 'Two letters are enough' }).waitFor();
@@ -127,10 +130,17 @@ for (const v of VIEWS) {
 
     // 3. Skills: up to 40, in groups, with "tick all" per group
     await page.locator('.skill-groups').waitFor();
+    // The lighter start (S3, owner decision 2026-10-29): the top 12 are ticked as Used, 18 are shown, "Show all" reveals the rest
+    assert.equal(await page.locator('ul.skills input[type=checkbox]:checked').count(), 12, 'the top 12 start ticked');
+    assert.equal(await page.locator('ul.skills > li:not([hidden])').count(), 18, '18 are shown first');
+    await page.locator('#show-all').click();
+    assert.equal(await page.locator('ul.skills > li:not([hidden])').count(), REAL ? await page.locator('ul.skills > li').count() : 32);
+    assert.equal(await page.locator('#show-all').isHidden(), true);
     const nSk = await page.locator('ul.skills > li').count(); assert.ok(nSk <= 40 && nSk >= (REAL ? 10 : 32), 'skills listed: ' + nSk);
     if (!REAL) assert.equal(nSk, 32);
     assert.ok(await page.locator('.skill-group h2').count() >= 2, 'skills are grouped');
-    assert.match(await page.locator('#tick-count').innerText(), /^0 of \d+ ticked\. Tick everything you do/);
+    assert.match(await page.locator('#tick-count').innerText(), /^12 of \d+ ticked\. Tick everything you do/);
+    for (const i of [...Array(await page.locator('ul.skills input[type=checkbox]').count()).keys()]) await page.locator('ul.skills input[type=checkbox]').nth(i).uncheck();   // start from nothing, so the counts below are exact
     // "tick all" in one group ticks every box in it, and a second click unticks them
     const grp = page.locator('.skill-group').last(), inGrp = await grp.locator('input[type=checkbox]').count();
     await grp.locator('button.tick-all').click();
@@ -214,7 +224,7 @@ for (const v of VIEWS) {
     await page.locator('ol.cards > li').first().waitFor();
 
     // Reload loses the profile (kept in memory only) and sends the person back to the start of the pick.
-    await page.reload(); await page.locator('#job-title').waitFor();
+    await page.reload(); await page.locator('#resume-file').waitFor();
 
     // 6. Privacy and safety
     assert.deepEqual(w.errors, [], 'console errors');
@@ -229,11 +239,11 @@ for (const v of VIEWS) {
   });
 }
 
-test('direct visit to a deep link without a profile goes back to the title screen', async () => {
+test('direct visit to a deep link without a profile goes back to the intake screen', async () => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } }); const page = await ctx.newPage(); const w = watch(page);
   await page.goto(`http://127.0.0.1:${srv.port}/work/#/roads`);
-  await page.locator('#job-title').waitFor();
-  assert.match(page.url(), /#\/title$/);
+  await page.locator('#resume-file').waitFor();
+  assert.match(page.url(), /#\/intake$/);
   assert.deepEqual(w.errors, []);
   await ctx.close();
 });
@@ -286,9 +296,11 @@ test('budgets (TEST_PLAN layer 8): first load <= 300 KB, slice <= 60 KB gzipped,
   assert.ok(appBytes <= 300 * 1024, 'whole app ' + appBytes);
   // walk to the roads
   await page.locator('#start').click();
+  await page.locator('#choose-title').click();
   await page.locator('#job-title').fill('accountant');
   await page.locator('#job-picks button').first().click();
   await page.locator('.skill-groups').waitFor();
+  await page.locator('#show-all').click();
   const sl = sizes.find(s => /\/slices\/.+\.json$/.test(s.url));
   assert.ok(sl, 'a slice was fetched');
   // The budget is the gzipped size, what a browser downloads from a web server that compresses (owner decision 2026-10-29; level 6 as export.py)

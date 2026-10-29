@@ -8,7 +8,7 @@ async function getJson(url, init) {
   return r.json();
 }
 
-let pTitles = null; let pOccs = null;
+let pTitles = null; let pOccs = null; let pSkills = null;
 const slices = new Map();
 
 export async function loadManifest() {
@@ -26,6 +26,8 @@ function base() { return state.manifest.graph.base; }
 
 export function loadTitles() { return pTitles || (pTitles = loadManifest().then(() => getJson(base() + 'titles.json')).catch(e => { pTitles = null; throw e; })); }
 export function loadOccupations() { return pOccs || (pOccs = loadManifest().then(() => getJson(base() + 'occupations.json')).catch(e => { pOccs = null; throw e; })); }
+// The skills dictionary (about 0.9 MB). Loaded only when the person reads a resume or adds a skill by name.
+export function loadSkillsIndex() { return pSkills || (pSkills = loadManifest().then(() => getJson(base() + 'skills_index.json')).catch(e => { pSkills = null; throw e; })); }
 export async function loadSlice(file) {
   await loadManifest();
   if (!slices.has(file)) slices.set(file, await getJson(base() + file));

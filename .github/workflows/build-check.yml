@@ -150,7 +150,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: App unit tests (adapter, lookup, safety, release build on a throwaway copy)
         run: node --test 'app/adult/tests/unit/*.test.mjs'
-      - name: End-to-end tests on the test fixtures (the test builds with app/adult/build.py --dev --fixtures)
-        run: node --test 'app/adult/tests/e2e/*.test.mjs'
+      - name: End-to-end tests on the test fixtures (each test file builds the app into the same folder, so one file at a time)
+        run: node --test --test-concurrency=1 'app/adult/tests/e2e/*.test.mjs' 'app/adult/tests/privacy/*.e2e.mjs'
       # Real data (MW_E2E_DATA=real) needs the pipeline outputs; run it locally (docs/adult/S1_DEMO.md). TODO after the first --accept:
       # build with python3 app/adult/build.py (no --dev) and run the e2e on the accepted release.

@@ -16,7 +16,7 @@ export async function render() {
     status.textContent = 'Loading ' + o.label + '…';
     try {
       const slice = await loadSlice(o.slice);
-      resetPick(); state.occ = { id: o.id, label: o.label }; state.slice = slice;
+      resetPick(); state.path = 'title'; state.occ = { id: o.id, label: o.label }; state.slice = slice;
       location.hash = '#/skills';
     } catch (e) { status.textContent = 'We could not load that job. Check your connection and try again.'; }
   }
@@ -44,5 +44,5 @@ export async function render() {
   return h('section', { class: 'screen' },
     h('h1', { tabindex: '-1' }, 'What is your job title?'),
     form,
-    h('p', null, h('a', { href: '#/' }, 'Back')));
+    h('p', null, h('a', { href: '#/intake' }, 'Back')));
 }

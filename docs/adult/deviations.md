@@ -112,6 +112,16 @@ These are design choices the owner makes (DELIVERY, change control). D1 to D6 ca
 - Effect: roads are closer to coverage order by default. For an accountant with 25 needs ticked Used, the top 5 are Tax Examiners and Collectors, and Revenue Agents (stretch 0.52), Tax Preparers (0.49), Budget Analysts (0.48), Insurance Underwriters (0.47) and Financial Examiners (0.46). Under 1.0.1 Tax Preparers was not in the top 5, and Compensation and Benefits Managers (0.42) was fifth.
 - Decision: decided by owner 2026-10-29
 
+### O8. S3 (resume on the device) is built before S2
+- Slice and ticket: S3 and S2 order, T4.3, T4.6, T4.7
+- Date: 2026-10-29, decided 2026-10-29
+- Author: owner; recorded by the frontend lane
+- Plan said: BUILD_PLAN delivery slices: S1, S2 (deeper labels), S3 (resume on the device).
+- We did: the slice table in BUILD_PLAN now lists S3 before S2, with a note. The resume path is the main flow: the welcome screen leads to the intake choice (screen 4: upload, paste, or "No resume: type your job title"), then the confirm screen (screen 6), then the existing roads and road screens. The title-and-tick path is the fallback and is lighter: the occupation's top 12 needs start ticked as Used, 18 are shown first, and "Show all" reveals the rest (up to 40). S3 offers only the on-device way; "Most accurate" is S6. The constraints part of T4.6 is not in S3 (it stays in S2), and credentials are shown but not saved because the graph has no credentials list yet (T1.8 is in S2).
+- Why: the owner wants to try the resume path first, and wants a lighter fallback.
+- Effect: the S1 e2e test now clicks "No resume: type your job title" after Start, and expects the 12 pre-ticked skills and "Show all" (S1 behaviour otherwise unchanged). The slice names stay S1 to S7 so nothing else in the plan or tests is renumbered.
+- Decision: decided by owner 2026-10-29
+
 All four decisions together make matcher 1.1.0 (D23).
 
 ## Deviations

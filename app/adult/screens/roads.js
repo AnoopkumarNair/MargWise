@@ -56,7 +56,7 @@ export async function render() {
     h('h1', { tabindex: '-1' }, 'Roads from ' + state.occ.label),
     h('p', { class: 'lead' }, 'Coverage is how much of each job’s top skills you already cover, with the skills that matter most counting most. A higher number is a shorter move.'),
     sliders, h('h2', null, 'Jobs you could move to'), count, list, h('p', null, leapBtn),
-    h('p', null, h('a', { href: '#/skills' }, 'Change my skills')));
+    h('p', null, h('a', { href: state.path === 'resume' ? '#/confirm' : '#/skills', id: 'change-skills' }, state.path === 'resume' ? 'Change what we found' : 'Change my skills'), ' · ', h('a', { href: '#/', id: 'start-again' }, 'Start again')));
   await refresh();
   return root;
 }
