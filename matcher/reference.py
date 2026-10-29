@@ -7,15 +7,18 @@ Run:
                                           write one summary per line: person level, and per road the id, reach,
                                           coverage, score and gap ids, in order
 
-Version 1.0.0 covers what slice S1 needs: coverage, gap, reach and order. Road kind, target level, bridges, pay, demand
-and flags are stubs in both implementations (see matcher/README.md).
+Version 1.1.0 covers what slice S1 needs: coverage, gap, reach and order, with the owner decisions of 2026-10-29: used counts
+0.85 (O1), a near skill counts only if it is one of the 3 closest neighbours of the skill it credits and at least 0.90 similar
+(O2), and the default sliders are short move 3, pay 1, AI safety 1, demand 1, enjoy 0 (O4). Road kind, target level, bridges,
+pay, demand and flags are stubs in both implementations (see matcher/README.md).
 """
 import json, math, os, sys
 
-VERSION = '1.0.1'
+VERSION = '1.1.0'
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-STRENGTH_VALUE = {'strong': 1.0, 'used': 0.7, 'rusty': 0.4}
+STRENGTH_VALUE = {'strong': 1.0, 'used': 0.85, 'rusty': 0.4}
+DEFAULT_PRIORITIES = {'pay': 1, 'ai_safe': 1, 'short_move': 3, 'demand': 1, 'enjoy': 0}
 YEAR_BAND_START = {'0-2': 0, '2-5': 2, '5-8': 5, '8-12': 8, '12-18': 12, '18+': 18}
 SLIDERS = (('pay', 'pay'), ('ai_safe', 'ai_safe'), ('short', 'short_move'), ('demand', 'demand'), ('enjoy', 'enjoy'))
 
@@ -63,7 +66,7 @@ def skill_values(profile, now, teaches):
         if not isinstance(taught, list):
             continue
         expires = c.get('expires')
-        value = 0.4 if (is_number(now) and is_number(expires) and expires < now) else 0.7
+        value = STRENGTH_VALUE['rusty'] if (is_number(now) and is_number(expires) and expires < now) else STRENGTH_VALUE['used']
         for sid in taught:
             if sid not in rated:
                 credited[sid] = max(credited.get(sid, 0.0), value)
@@ -72,28 +75,35 @@ def skill_values(profile, now, teaches):
     return merged
 
 
-def similarity(near, a, b):
-    best = None
-    for x, y in ((a, b), (b, a)):
-        row = (near or {}).get(x)
-        if isinstance(row, dict) and is_number(row.get(y)):
-            best = row[y] if best is None else max(best, row[y])
-    if best is None or best < 0.5:
-        return None
-    return min(best, 1.0)
+def neighbours(near, skill):
+    """Every skill paired with `skill` in the near data, with the similarity (both directions, the larger, capped at 1)."""
+    found = {}
+    for x, row in (near or {}).items():
+        if not isinstance(row, dict):
+            continue
+        for y, v in row.items():
+            if not is_number(v) or x == y or skill not in (x, y):
+                continue
+            other = y if x == skill else x
+            found[other] = max(found.get(other, float('-inf')), min(v, 1.0))
+    return found
+
+
+def allowed_near(near, skill):
+    """Owner decision O2: the 3 closest neighbours of `skill` (similarity high to low, then id), and only those at 0.90 or more."""
+    ranked = sorted(neighbours(near, skill).items(), key=lambda kv: (-kv[1], kv[0]))[:3]
+    return {k: v for k, v in ranked if v >= 0.9}
 
 
 def cover_needs(values, needs, near):
     """SPEC 7.1 coverage and gap for one list of needs."""
-    held = sorted(values)
     weighted = total = 0.0
     gap = []
     for need in needs:
         w = need.get('w') if is_number(need.get('w')) else 0.0
         w = max(0.0, w)
         direct = values.get(need['id'], 0.0)
-        candidates = [0.5 * similarity(near, k, need['id']) * values[k]
-                      for k in held if k != need['id'] and similarity(near, k, need['id']) is not None]
+        candidates = [0.5 * sim * values[k] for k, sim in allowed_near(near, need['id']).items() if k in values]
         nearby = max(candidates) if candidates else 0.0
         cover = max(direct, nearby)
         total += w
@@ -132,7 +142,7 @@ def run(profile, slice_, opts):
     now, teaches = opts.get('now'), opts.get('teaches')
     near = opts['near'] if isinstance(opts.get('near'), dict) else slice_near(slice_)   # the caller's near data wins
     values = skill_values(profile, now, teaches)
-    pri = profile.get('priorities') or {'pay': 1, 'ai_safe': 1, 'short_move': 1, 'demand': 1, 'enjoy': 0}
+    pri = profile.get('priorities') or DEFAULT_PRIORITIES
     weight = {}
     for comp, key in SLIDERS:
         v = pri.get(key)

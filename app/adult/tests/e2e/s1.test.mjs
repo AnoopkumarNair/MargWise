@@ -31,7 +31,7 @@ if (!process.env.MW_NO_BUILD) {
   const r = spawnSync('python3', [join(ROOT, 'app', 'adult', 'build.py'), '--dev'].concat(REAL ? [] : ['--fixtures']), { stdio: 'inherit' });
   assert.equal(r.status, 0, 'build failed');
 }
-const TICKS = 25; // the person ticks 25 skills and calls them strong: coverage needs 0.7 of every need to reach "adjacent" (SPEC 7.1, 7.3)
+const TICKS = 25; // the person ticks 25 skills and calls them strong: "adjacent" needs coverage 0.7 or more, and Used counts 0.85, so a close road needs most needs ticked (SPEC 7.1, 7.3)
 let axeSrc = null;
 try { axeSrc = readFileSync(join(here, '..', 'node_modules', 'axe-core', 'axe.min.js'), 'utf8'); } catch { /* reported by the axe test */ }
 

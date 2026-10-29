@@ -114,11 +114,11 @@ Rules for slicing:
 
 - **Occupations:** all O*NET-SOC occupations with data, with `attrs` holding the job zone, SOC, ISCO (where mapped) and description.
 - **Skills:** `needs` edges from Skills, Knowledge and Work Activities, with the weight formula in SPEC 5.2.
-- **Technology:** Technology Skills become `tec:` nodes and `needs` edges (weight 0.6, or 0.8 when the O*NET `Hot Technology` flag is set).
+- **Technology:** Technology Skills become `tec:` nodes and `needs` edges (weight 0.6, or 0.8 when the O*NET `Hot Technology` flag is set). The export caps them in each slice list at the median weight of the other needs (SPEC 5.4, owner decision O3).
 - **Tasks:** `has_task` edges. Attach AI use from `data/ai/task_pen.csv` and `data/ai/tasks.json` as `signal(kind='ai_task_mode')`.
 - **Titles:** Alternate Titles become `ttl:` nodes and `is_title_of` edges. Titles are normalised: lower case, punctuation stripped, whitespace collapsed.
 - **`close_to`:** from Related Occupations.
-- **`skill_near`:** computed. Cosine over occupation vectors, keep the top 10 per skill with similarity of 0.5 or more.
+- **`skill_near`:** computed. Cosine over occupation vectors, keep the top 10 per skill with similarity of 0.5 or more. A slice keeps only the pairs the matcher can count (SPEC 5.4 and 7.1, owner decision O2).
 - **Clusters:** `in_cluster` edges from `data/content.json` careers to `fld:` nodes.
 - **Pay:** the PLFS band, as `signal(kind='pay_band_in')` through ISCO. If NCO is missing, attach it only to the 83 careers that already carry PLFS groups.
 - **Done when:** the script runs offline from the raw files in under 2 minutes, and its outputs are deterministic (two runs give identical counts and hashes).

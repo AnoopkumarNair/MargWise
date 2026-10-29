@@ -11,10 +11,10 @@ const G = golden();
 const RESULT = readJson(path.join(MATCHER, 'result.schema.json'));
 const PROFILE = readJson(path.join(ROOT, 'contracts', 'profile.schema.json'));
 const SLICE = readJson(path.join(ROOT, 'contracts', 'slice.schema.json'));
-const NEAR = fixture('fixtures/near.json'), TEACHES = fixture('fixtures/teaches.json');
+const NEAR = fixture('fixtures/near.json'), NEAR_RANK = fixture('fixtures/near_rank.json'), TEACHES = fixture('fixtures/teaches.json');
 const SEED = 20261029, N = 500;
 const R = rng(SEED), U = skillUniverse();
-const RANDOM = Array.from({ length: N }, () => randomInput(R, U, NEAR, TEACHES));
+const RANDOM = Array.from({ length: N }, () => randomInput(R, U, [NEAR, NEAR_RANK], TEACHES));
 const ids = res => res.roads.map(r => r.id);
 const covById = res => Object.fromEntries(res.roads.map(r => [r.id, r.coverage]));
 
@@ -65,14 +65,15 @@ test('golden: near() is what lifts the LLM evaluation road in swdev-qa-near', ()
 test('golden: csr-real-near reads skill_near from the slice; opts.near still overrides it', () => {
   const c = G.cases.find(x => x.id === 'csr-real-near');
   const [p, s, o] = caseInputs(c);
-  assert.ok(s.near.pairs.length > 100 && !('near' in o));
+  assert.ok(s.near.pairs.length > 50 && !('near' in o));
   const fromSlice = covById(match(p, s, o)), none = covById(match(p, { ...s, near: undefined }, o)), override = covById(match(p, s, { ...o, near: {} }));
   for (const id of Object.keys(fromSlice)) { assert.ok(fromSlice[id] > none[id], id); assert.equal(override[id], none[id], id); }
-  // With the slice's tool picks (export.py, review finding B1) every road is a leap, and one sits just under the stretch line:
-  // 0.3969 shows as 0.40 to 2 decimals, which is why the app floors the percent (app/adult/screens/common.js)
-  assert.equal(match(p, s, o).roads.filter(r => r.reach !== 'leap').length, 0);
-  assert.equal(match(p, s, o).roads.find(r => r.id === 'occ:43-4041.00').coverage, 0.3969);
+  // Matcher 1.1.0 (used 0.85, near only from the 3 closest at 0.90 or more) on the exported slice (tool weights capped): one road is a
+  // stretch with the slice's near pairs, none without them
+  assert.deepEqual(match(p, s, o).roads.filter(r => r.reach !== 'leap').map(r => [r.id, r.coverage]), [['occ:43-4041.00', 0.4087]]);
   assert.equal(match(p, { ...s, near: undefined }, o).roads.filter(r => r.reach !== 'leap').length, 0);
+  // the export keeps only pairs that can count: 0.90 or more (owner decision O2)
+  assert.ok(s.near.pairs.every(([, , w]) => w >= 0.9));
   // gap labels are the slice's own need labels
   const t = s.targets.find(x => x.occ.id === 'occ:43-4081.00'), lab = Object.fromEntries(t.needs.map(n => [n.id, n.label]));
   for (const g of match(p, s, o).roads.find(r => r.id === t.occ.id).gap) assert.equal(g.label, lab[g.id]);
@@ -83,13 +84,13 @@ test('golden: rusty by age, credential credit and expiry, own rating wins', () =
   const one = (skills, needs, opts = now, creds) => coverage({ v: 1, roles: [], skills, creds }, needs, opts);
   const need = [{ id: 'tec:x', label: 'X', w: 1, ai: 'mixed' }];
   assert.equal(one([{ id: 'tec:x', strength: 'used', last: 2022 }], need).coverage, 0.4);    // 4 years since last use: rusty
-  assert.equal(one([{ id: 'tec:x', strength: 'used', last: 2023 }], need).coverage, 0.7);    // exactly 3 years: still used
-  assert.equal(one([{ id: 'tec:x', strength: 'used', last: 2022 }], need, {}).coverage, 0.7); // no 'now': the age rule cannot run
+  assert.equal(one([{ id: 'tec:x', strength: 'used', last: 2023 }], need).coverage, 0.85);   // exactly 3 years: still used (owner decision O1)
+  assert.equal(one([{ id: 'tec:x', strength: 'used', last: 2022 }], need, {}).coverage, 0.85); // no 'now': the age rule cannot run
   assert.equal(one([{ id: 'tec:x', strength: 'strong', last: 2000 }], need).coverage, 1);
   const teaches = { 'cred:a': ['tec:x'] };
-  assert.equal(one([], need, { now: 2026, teaches }, [{ id: 'cred:a', expires: 2030 }]).coverage, 0.7);
+  assert.equal(one([], need, { now: 2026, teaches }, [{ id: 'cred:a', expires: 2030 }]).coverage, 0.85);   // valid: the used level
   assert.equal(one([], need, { now: 2026, teaches }, [{ id: 'cred:a', expires: 2025 }]).coverage, 0.4);
-  assert.equal(one([], need, { now: 2026, teaches }, [{ id: 'cred:a', expires: null }]).coverage, 0.7);
+  assert.equal(one([], need, { now: 2026, teaches }, [{ id: 'cred:a', expires: null }]).coverage, 0.85);
   assert.equal(one([], need, { now: 2026 }, [{ id: 'cred:a' }]).coverage, 0);                // no teaches data: no credit
   assert.equal(one([{ id: 'tec:x', strength: 'rusty' }], need, { now: 2026, teaches }, [{ id: 'cred:a' }]).coverage, 0.4);
 });
@@ -100,8 +101,47 @@ test('gap: below 0.7, ordered by weight with the 1.5x boost for "people still do
     { id: 'skl:c', label: 'C', w: 0.9, ai: 'ai_does_much' }, { id: 'skl:d', label: 'D', w: 0.9, ai: 'mixed' },
   ];
   const r = coverage({ v: 1, roles: [], skills: [{ id: 'skl:c', strength: 'used' }, { id: 'skl:d', strength: 'rusty' }] }, needs, {});
-  assert.deepEqual(r.gap.map(g => g.id), ['skl:d', 'skl:b', 'skl:a']);   // 0.9, 0.75, 0.6; skl:c is covered at 0.7
+  assert.deepEqual(r.gap.map(g => g.id), ['skl:d', 'skl:b', 'skl:a']);   // 0.9, 0.75, 0.6; skl:c is covered at 0.85
   assert.equal(r.gap[1].priority, 0.75);
+});
+
+test('near (owner decision O2): only the 3 closest neighbours of the skill being credited, and only at 0.90 or more', () => {
+  const need = id => [{ id, label: id, w: 1, ai: 'unknown' }];
+  const cov = (skills, id, near) => coverage({ v: 1, roles: [], skills: skills.map(([k, st]) => ({ id: k, strength: st })) }, need(id), { near });
+  const near = { 'skl:t': { 'skl:a': 0.97, 'skl:b': 0.95, 'skl:c': 0.95, 'skl:d': 0.94 } };
+  assert.equal(cov([['skl:d', 'strong']], 'skl:t', near).coverage, 0);                   // fourth closest: never counts
+  assert.equal(cov([['skl:c', 'strong']], 'skl:t', near).coverage, q(0.5 * 0.95, 4));      // third: b and c tie at 0.95, b sorts first
+  assert.equal(cov([['skl:c', 'strong'], ['skl:d', 'strong']], 'skl:t', near).needs[0].near_via, 'skl:c');
+  assert.equal(cov([['skl:b', 'used']], 'skl:t', near).coverage, q(0.5 * 0.95 * 0.85, 4));
+  assert.equal(cov([['skl:a', 'strong']], 'skl:t', { 'skl:a': { 'skl:t': 0.89 } }).coverage, 0);    // under the floor
+  assert.equal(cov([['skl:a', 'strong']], 'skl:t', { 'skl:a': { 'skl:t': 0.9 } }).coverage, 0.45);  // the floor counts
+  assert.equal(cov([['skl:a', 'strong']], 'skl:t', { 'skl:t': { 'skl:a': 0.5 }, 'skl:a': { 'skl:t': 0.95 } }).coverage, q(0.5 * 0.95, 4));   // both ways: the larger
+  // the rank is the credited skill's: skl:d is fourth for skl:t, but skl:t is skl:d's only neighbour, so skl:t credits skl:d
+  assert.equal(cov([['skl:t', 'strong']], 'skl:d', near).coverage, 0.47);
+  // golden near-rank: systems analysis is credited from Java (third), not from SQL (fourth, rated strong)
+  const c = G.cases.find(x => x.id === 'near-rank'), [p, s, o] = caseInputs(c);
+  const sa = coverage(p, s.targets.find(t => t.occ.id === 'occ:15-1211.00').needs, o).needs.find(n => n.id === 'skl:2.B.4.g');
+  assert.equal(sa.near_via, 'tec:java'); assert.equal(sa.near, q(0.5 * 0.95 * 0.85, 4));
+  const cs = coverage(p, s.targets.find(t => t.occ.id === 'occ:15-1242.00').needs, o).needs.find(n => n.id === 'skl:2.C.3.a');
+  assert.equal(cs.near, 0);
+});
+
+test('acc-real-tools: the fixture was exported with every tool weight capped at the median of the other needs in its list (owner decision O3)', () => {
+  const s = fixture('fixtures/slice_acc_real.json');
+  const median = xs => { const v = xs.slice().sort((a, b) => a - b), n = v.length; return n % 2 ? v[(n - 1) / 2] : (v[n / 2 - 1] + v[n / 2]) / 2; };
+  for (const list of [s.needs, ...s.targets.map(t => t.needs)]) {
+    const cap = q(median(list.filter(n => !n.id.startsWith('tec:')).map(n => n.w)), 4);
+    const tools = list.filter(n => n.id.startsWith('tec:'));
+    assert.ok(tools.length > 0);
+    for (const n of tools) assert.ok(n.w <= cap, n.id + ' ' + n.w + ' > ' + cap);
+  }
+});
+
+test('default sliders (owner decision O4): short move 3, pay 1, AI safety 1, demand 1, enjoy 0', () => {
+  const c = G.cases.find(x => x.id === 'acc-core'), [p, s, o] = caseInputs(c);
+  assert.ok(!p.priorities);
+  assert.deepEqual(match(p, s, o).weights, { pay: 1, ai_safe: 1, short: 3, demand: 1, enjoy: 0 });
+  assert.deepEqual(match({ ...p, priorities: { pay: 1, ai_safe: 1, short_move: 3, demand: 1, enjoy: 0 } }, s, o), match(p, s, o));
 });
 
 test('level(): year bands, lead bonus, cap at 6, no title override', () => {

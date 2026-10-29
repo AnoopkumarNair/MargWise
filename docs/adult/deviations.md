@@ -20,7 +20,7 @@ Copy this block, one per deviation, newest last.
 
 ## Decisions
 
-These came out of the S0 review. They are design choices the owner makes (DELIVERY, change control). The owner decided all six on 2026-10-29, and the contracts were then frozen (`contracts/FROZEN.md`). Their ids (D1 to D6) are kept, so the deviations below start at D7.
+These are design choices the owner makes (DELIVERY, change control). D1 to D6 came out of the S0 review; the owner decided all six on 2026-10-29, and the contracts were then frozen (`contracts/FROZEN.md`). Their ids (D1 to D6) are kept, so the deviations below start at D7. O1 to O4 came out of the S1 review (they were listed under "Awaiting owner decision"); the owner decided them on 2026-10-29, and they keep their O ids.
 
 ### D1. Sign-in token format
 - Slice and ticket: S0 (F0.1 contracts); used by T3.3 and T3.4
@@ -75,6 +75,44 @@ These came out of the S0 review. They are design choices the owner makes (DELIVE
 - We did: one strict request schema per type, `contracts/api/event/<type>.request.schema.json`, generated from `events.schema.json` by `contracts/sync.mjs`, and the same schemas in `contracts/event_schemas.js` with `schemaForType(type)` and `checkEvent(body)`. The validator has no `oneOf`, so the handler picks the schema by `type`; an unknown type is `bad_request`. `api/event.request.schema.json` (the union) is removed. Tests show that a field from another type is refused for every type, and that result events still require `job_release` and `matcher_version`. `events.schema.json` stays as the source and as the two-step check for stored events.
 - Effect: the T3.x event handler imports `event_schemas.js`.
 - Decision: decided by owner 2026-10-29
+
+### O1. "Used" counts 0.85
+- Slice and ticket: S1 review, T2.2 to T2.4 (matcher)
+- Date: 2026-10-29, decided 2026-10-29
+- Author: architect lane, matcher lane
+- Plan said: SPEC 7.1, `have(s)` = 1.0 strong, 0.7 used, 0.4 rusty; SPEC 5.8, a valid credential credits at the used level (0.7). Reach thresholds 0.7 and 0.4 (SPEC 7.3). With used at 0.7, a road was close only when nearly every need was ticked or marked strong (D19).
+- We did: option (c). Used is 0.85; strong 1.0 and rusty 0.4 are unchanged, and so are the reach thresholds. A valid credential credits at the used level, so 0.85; an expired one at 0.4. Updated SPEC 7.1 and 5.8, `matcher/README.md`, `match.js`, `reference.py`, the skills screen copy ("Used: you do it in your work now; this counts almost as much as Strong") and the golden outputs. Matcher 1.1.0.
+- Effect: coverage rises for anyone who ticks Used. A person who ticks everything as Used reaches at most 0.85, so a close move still needs some Strong ratings or near credit. Measured effect in D19.
+- Decision: decided by owner 2026-10-29
+
+### O2. Near only from the 3 closest neighbours, at 0.90 or more
+- Slice and ticket: S1 review, T1.5 and T2.2
+- Date: 2026-10-29, decided 2026-10-29
+- Author: architect lane, matcher lane, data lane
+- Plan said: SPEC 7.1, `near(s)` = the best `0.5 x sim(k, s) x have(k)` over the person's skills k with `skill_near(k, s) >= 0.5`. O*NET skill vectors are alike for most jobs (D18 item 6), so near lifted coverage a lot (D17).
+- We did: the formula stays. A near skill k counts for s only when the pair is among the 3 closest neighbours of s (the skill being credited; ranked by similarity, ties by id) and the similarity is 0.90 or more. The matcher applies the rank and the floor to the pairs it is given (`slice.near` stays the pair source; `opts.near` still overrides it). The export (`data/graph/export.py`, `countable_pairs`) now leaves out the pairs that can never count: under 0.90, or outside the top 3 of both skills. This is a clean change: no contract file changes, and dropping such a pair changes no result (a unit test checks this on random pairs, and a one-off check on 102 old slices with 3 random profiles each gave identical results). `pipeline/validate_graph.py --exports` now checks every near pair is 0.90 to 1. Updated SPEC 5.2, 5.4 and 7.1, TEST_PLAN layer 1, BUILD_PLAN T1.3, `matcher/README.md`, both implementations, `fixtures/near.json` (quality control to LLM evaluation from 0.7 to 0.92, so swdev-qa-near still shows near) and a new golden case `near-rank`.
+- Effect: near pairs per slice fell from a median of 527 to 102 (max 662 to 115). Slices are smaller: gzipped max 22,425 to 19,798 bytes, median 19,983 to 17,757; raw median 211,273 to 195,038. Near still lifts coverage on real data (csr-real-near: about 0.2 to 0.27 without near, 0.33 to 0.41 with it), because many O*NET pairs are above 0.90.
+- Decision: decided by owner 2026-10-29
+
+### O3. Tool weights capped at the median of the other needs
+- Slice and ticket: S1 review, T1.3 and T1.5
+- Date: 2026-10-29, decided 2026-10-29
+- Author: architect lane, data lane
+- Plan said: BUILD_PLAN T1.3, tool `needs` weigh 0.8 (Hot Technology) or 0.6, by rule; the only check was the cap of 10 tools in 40 needs (D18 item 8, D20).
+- We did: an export rule in `data/graph/export.py` (`cap_tool_weights`). In each needs list written to a slice (the occupation's own list and each target's list, separately), a tool's weight is at most the median weight of the non-tool needs in that list (for an even count, the mean of the two middle values; 4 decimals). The graph is unchanged: `graph.sqlite` keeps 0.8 and 0.6, and `build_report.json` and the graph release id do not change. Which tools fill the 10 places, and which targets a slice has, do not change either: candidate targets are still ranked with the graph weights (checked: all 910 slices have the same targets and the same need ids as before; only tool weights moved). `export_report.json` now counts the tools: 242,866 of 248,309 tool needs were lowered. Updated SPEC 5.2 and 5.4, BUILD_PLAN T1.3, `matcher/README.md`, the real-shape fixtures (`make_csr_real.py` now also writes `slice_acc_real.json`) and a new golden case `acc-real-tools`. Unit tests in `data/graph/tests/test_units.py`. The hand-built matcher fixtures and the app's dev fixtures keep their made-up weights: the matcher uses weights as given.
+- Effect: for a typical list the cap is about 0.33 to 0.50, so a tool now weighs about as much as a middle-ranked skill. The skills screen orders needs by weight, so tools move down the list. A person who ticks only tools gets less coverage (acc-real-tools: 0.29 to 0.35 instead of 0.31 to 0.38).
+- Decision: decided by owner 2026-10-29
+
+### O4. Default sliders: short move 3
+- Slice and ticket: S1 review, T2.2 and T5.2
+- Date: 2026-10-29, decided 2026-10-29
+- Author: architect lane, matcher lane, frontend lane
+- Plan said: SPEC 7.3 and the SPEC 6 example: every slider 1 except enjoy 0, so AI safety counted as much as coverage and a low-coverage road with little AI use could come before a closer road.
+- We did: option (b), stronger. When the profile has no priorities, and when the app starts, the sliders are short move 3, pay 1, AI safety 1, demand 1, enjoy 0. Updated SPEC 6 (example) and 7.3, `match.js` and `reference.py` defaults, `app/adult/state.js` (`DEFAULT_PRIORITIES`, which a unit test keeps equal to the matcher's), the roads screen ("We start with Short move at 3 and the others at 1, so the jobs closest to what you do now come first"), the golden outputs and `GOLDEN_TABLE.md` (its open question is removed). `profile.schema.json` already allows 0 to 5 for each slider, so no contract file changed and none needed an amendment; the only contract-folder changes are `MATCHER_VERSION` in `versions.js`, `versions.json` and the lock (`freeze.mjs --write`, versions only).
+- Effect: roads are closer to coverage order by default. For an accountant with 25 needs ticked Used, the top 5 are Tax Examiners and Collectors, and Revenue Agents (stretch 0.52), Tax Preparers (0.49), Budget Analysts (0.48), Insurance Underwriters (0.47) and Financial Examiners (0.46). Under 1.0.1 Tax Preparers was not in the top 5, and Compensation and Benefits Managers (0.42) was fifth.
+- Decision: decided by owner 2026-10-29
+
+All four decisions together make matcher 1.1.0 (D23).
 
 ## Deviations
 
@@ -217,6 +255,17 @@ These came out of the S0 review. They are design choices the owner makes (DELIVE
 - We did: the thresholds are unchanged. The skills screen lists all of the job's top needs (up to 40, before: 25) in four groups (skills, knowledge, work activities, tools), each with a "Tick all" button, and asks the person to tick everything they do ("Your roads are more useful with 15 or more ticked"; an earlier draft said "Most people tick 15 or more", which no data supports, and was changed in the S1 review). It also lists the job's tasks with their AI use ("AI use seen", "No AI use seen", and no label when there is no data).
 - Why: with real slices, a person who ticks 10 skills sees only leaps. Measured on five jobs (accountant, software developer, customer service, registered nurse, marketing manager), counting adjacent/stretch/leap of 30 roads, with the slice's near pairs: 10 ticked as used: 0/0/30 for all five; 15 used: 0/0-5/25-30; 25 used: 0/13-30/0-17; 25 strong: 1-4/26-29/0; all 40 strong: 10-28/2-20/0. A skill ticked "used" counts 0.7, so adjacent (0.7) needs almost every need ticked; strong ratings and near do the rest.
 - Effect: the owner may want to revisit the thresholds or the "used" value after people tests; nothing changed here.
+- Update 2026-10-29, matcher 1.1.0 (owner decisions O1 to O4): measured again on the same five jobs, 30 roads each, with the slice's near pairs. Each profile ticks the job's top N needs by weight (the order of the skills screen before grouping), all at one strength, 5-8 years. adjacent/stretch/leap:
+
+  | Job | 10 Used | 15 Used | 25 Used | 25 Strong | 40 Strong | Used ticks for 1 close or stretch road | for 5 |
+  | --- | --- | --- | --- | --- | --- | --- | --- |
+  | Accountant (13-2011.00) | 0/0/30 | 0/1/29 | 0/23/7 | 0/30/0 | 26/4/0 | 14 | 20 |
+  | Software developer (15-1252.00) | 0/0/30 | 0/23/7 | 0/26/4 | 2/28/0 | 12/18/0 | 12 | 13 |
+  | Customer service (43-4051.00) | 0/1/29 | 0/23/7 | 0/30/0 | 0/30/0 | 18/12/0 | 9 | 11 |
+  | Registered nurse (29-1141.00) | 0/0/30 | 0/9/21 | 0/24/6 | 0/30/0 | 6/24/0 | 12 | 14 |
+  | Marketing manager (11-2021.00) | 0/0/30 | 0/3/27 | 0/20/10 | 0/29/1 | 18/12/0 | 14 | 17 |
+
+  The same measure with matcher 1.0.1 on the slices before O2 and O3: 10 Used 0/0-1/29-30; 15 Used 0/0-8/22-30; 25 Used 0/10-27/3-20; 25 Strong 0-4/26-29/0-1; 40 Strong 6-25/5-24/0. Fewest Used ticks for 5 close or stretch roads, 1.0.1 then 1.1.0: accountant 17 then 20, software developer 19 then 13, customer service 20 then 11, nurse 14 then 14, marketing manager 17 then 17. So 1.1.0 helps most where tools used to weigh a lot and the job's top needs are skills; it is a little harder for the accountant, whose top needs now hold fewer tools. With all 40 needs Strong, four of the five jobs have more close roads (the nurse has 6 instead of 11); with 25 Strong there are slightly fewer close roads (0-2 instead of 0-4), because tools weigh less and near counts less. Used alone never makes a close move (at most 0.85 of a need). The skills screen nudge now says "Your roads are more useful with 20 or more ticked" (before: 15), because about 20 Used ticks of the top needs gave at least 5 close or stretch roads on all five jobs. A person who ticks other needs than the top ones needs more.
 - Decision: proposed
 
 ### D20. S1 review fixes to the exports: tool picks, AI labels, tool dates; matcher 1.0.1
@@ -265,25 +314,19 @@ These came out of the S0 review. They are design choices the owner makes (DELIVE
 - Effect: copy only, plus the fail-closed check. Open items (CI never run on GitHub, the release build in CI after the first `--accept`, manual checks on Android Chrome, iPhone Safari and a non-Chrome desktop browser) are listed in `docs/adult/S1_DEMO.md`.
 - Decision: proposed
 
+### D23. Matcher 1.1.0: owner decisions O1, O2 and O4 in the matcher, O3 and the near filter in the export
+- Slice and ticket: S1, T1.5, T2.2 to T2.4, T5.2
+- Date: 2026-10-29
+- Author: architect, matcher, data and frontend fix lane
+- Plan said: SPEC 7.5 and the version guard: a golden output changes only with a new `MATCHER_VERSION`. TEST_PLAN layer 2: `reference.py` and `match.js` agree to 2 decimals.
+- We did: `MATCHER_VERSION` 1.0.1 to 1.1.0 in `match.js`, `reference.py`, `contracts/versions.js`, `versions.json`, `golden.json` and `contracts/freeze.lock.json` (`node contracts/freeze.mjs --write`, versions only: no contract file changed). The golden expectations were regenerated with `reference.py` first, then `match.js` was checked against them (all 11 cases, and 500 random profiles, agree to 2 decimals with the same order, reach and gap). `node matcher/tests/version_guard.mjs --write` rewrote the lock for 1.1.0. The 9 existing cases are kept; 2 are new (`near-rank`, `acc-real-tools`). `data/graph/export.py` caps tool weights (O3) and drops near pairs that can never count (O2), so every slice changed and `export_report.json` changed; `graph.sqlite`, `build_report.json` and the graph release id (`onet-31-0-6148d5ec`) did not. The app's dev fixtures (`app/adult/dev/fixtures/`) are hand-written and were not changed; the stand-in matcher there now uses 0.85 and the new defaults. Screenshots in `app/adult/tests/e2e/screenshots/` were taken again (`MW_SHOTS=commit`, real data). `docs/adult/S1_DEMO.md` step 9 now says what to expect with 1.1.0.
+- Why: owner decisions O1 to O4.
+- Effect: every result and event from now on carries matcher version 1.1.0. Old results (1.0.x) are not comparable and are not stored anywhere yet.
+- Decision: proposed
+
 ## Awaiting owner decision
 
-Questions from the S1 review that only the owner can answer. Nothing below was changed by an agent. Each lists the reviewer's options.
-
-### O1. Reach thresholds against the "used" value
-- The question: a skill ticked "used" counts 0.7, and "adjacent" needs coverage of 0.7, so a road is close only when nearly every need is ticked or marked strong (D19).
-- Options: (a) keep 0.7 and 0.4 and used = 0.7, and wait for the people test; (b) lower the thresholds (for example 0.6 and 0.35); (c) raise "used" (for example 0.8); (d) count coverage over the top 20 needs instead of 40. Any of (b) to (d) changes golden outputs and needs a `MATCHER_VERSION` bump.
-
-### O2. Near is noisy
-- The question: O*NET skill vectors are alike for most jobs (D18 item 6), so skill_near pairs at 0.5 or more are common and near lifts coverage a lot (D17, D19: csr-real-near goes from about 0.2 to about 0.4).
-- Options: (a) keep near as it is; (b) raise the similarity floor (for example 0.8 or 0.9); (c) lower the near credit (0.5 x similarity x have, for example to 0.3); (d) turn near off in S1 and revisit with better skill data.
-
-### O3. Tool weights
-- The question: every tool weighs 0.8 (Hot Technology) or 0.6 by rule (BUILD_PLAN T1.3), so tools rank above many rated skills, and the cap of 10 of 40 is what keeps them in check. D20 changed only which tools fill the 10 places.
-- Options: (a) keep 0.8 and 0.6 with the cap; (b) lower both (for example 0.5 and 0.3); (c) weight by the D20 score or by In Demand; (d) move tools to their own list outside coverage.
-
-### O4. Road order
-- The question: with the default sliders, AI safety counts as much as coverage, so a low-coverage road with little AI use can come before a closer one (`matcher/tests/GOLDEN_TABLE.md`, "Please check one thing").
-- Options: (a) keep SPEC 7.3 as written; (b) make coverage (short move) count double by default; (c) sort by reach first (close, stretch, leap) and use the score only inside each group.
+Questions from the S1 review that only the owner can answer. Nothing below was changed by an agent. Each lists the reviewer's options. O1 to O4 were decided on 2026-10-29 and moved to "Decisions".
 
 ### O5. Review lists
 - The question: `data/graph/raw/abbrev_in.csv` (144 rows) and `titles_in.csv` (34 rows) were drafted by the data lane and are live in the title search; 19 terms in `abbrev_in_unmapped.csv` wait (D18 item 10).

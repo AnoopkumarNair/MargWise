@@ -2,7 +2,7 @@
  "graph_hash": "6148d5ec0287089b166af100f7ba232b039490a3f3a0e1d4f8f814e6c816467d",
  "hashes": {
   "skills_index.json": "a1eb6b0f7e92044b02f42c66b781ad0a82dcc2a3ea5798d66d300b54609dc5e4",
-  "slices (sha256 of the sorted name:sha lines)": "5a82bfd09aaa32fccb8b8592f71c9ac5b673c87acab7cab034c47762f966add5",
+  "slices (sha256 of the sorted name:sha lines)": "668e0b3ece55a751f176d64ab079dde095aea63ccdddb6cf16d551311596e014",
   "titles.json": "5d3123812a80ace3649e0ea561b44918ca79bbc9c5f0ebafe0d74496a97e4674"
  },
  "limits": {
@@ -10,9 +10,13 @@
   "slice_max_bytes_gz": 60000
  },
  "near_pairs_per_slice": {
-  "max": 662,
-  "median": 527,
-  "min": 401
+  "max": 115,
+  "median": 102,
+  "min": 83
+ },
+ "near_rule": {
+  "floor": 0.9,
+  "rank": 3
  },
  "occupations_without_slice": [
   "occ:13-2051.00"
@@ -25,12 +29,12 @@
   "bytes_gz": 173233,
   "entries": 8842
  },
- "slice_bytes_gz_max": 22425,
- "slice_bytes_gz_median": 19983,
- "slice_bytes_gz_total": 18083072,
- "slice_bytes_max": 219513,
- "slice_bytes_median": 211273,
- "slice_bytes_total": 191235601,
+ "slice_bytes_gz_max": 19798,
+ "slice_bytes_gz_median": 17757,
+ "slice_bytes_gz_total": 16056459,
+ "slice_bytes_max": 202281,
+ "slice_bytes_median": 195038,
+ "slice_bytes_total": 176830797,
  "slice_gz_level": 6,
  "slices": 910,
  "slices_at_full_spec_shape": 910,
@@ -53,5 +57,10 @@
   "bytes_gz": 322558,
   "from_owner_review_lists": 410,
   "keys": 40419
+ },
+ "tool_weight_cap": {
+  "rule": "median of the non-tool needs in the same list",
+  "tool_needs": 248309,
+  "tool_needs_capped": 242866
  }
 }

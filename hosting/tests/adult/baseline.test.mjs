@@ -25,7 +25,8 @@ test('wrangler.toml points migrations_dir at the migrations folder, relative to 
   const toml = readFileSync(MIGRATIONS_DIR + '/../wrangler.toml', 'utf8');
   const m = /^migrations_dir\s*=\s*"([^"]+)"/m.exec(toml); assert.ok(m, 'migrations_dir is set');
   assert.equal(path.resolve(MIGRATIONS_DIR, '..', m[1]), MIGRATIONS_DIR);
-  assert.ok(!/^preview_database_id\s*=/m.test(toml), 'the preview id is an owner action; it must not be invented');
+  assert.match(toml, /^preview_database_id\s*=\s*"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/m, 'the preview id was set by the owner (2026-10-29) and must be a D1 uuid');
+  assert.ok(!toml.includes('database_id = "fdd227d1'), 'the preview database must not be the live binding');
 });
 
 import { splitStatements } from '../migration_guard.mjs';

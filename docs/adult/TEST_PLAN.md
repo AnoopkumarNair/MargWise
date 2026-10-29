@@ -37,7 +37,7 @@ Every slice in `BUILD_PLAN.md` ships with the tests listed for it here. A slice 
 - **Exports:**
   - every slice validates against `contracts/slice.schema.json` (the canonical slice schema, deviation D7) and is at most 60 KB **gzipped** (level 6, what a browser downloads; the raw file may be about 200 KB);
   - every slice has the SPEC 5.4 shape (40 needs, up to 30 targets with their 40 needs), and any trim from the last-resort ladder is listed in `export_report.json`;
-  - every `near` pair joins two skills in the slice's needs, once, with a similarity from 0.5 to 1;
+  - every `near` pair joins two skills in the slice's needs, once, with a similarity from 0.9 to 1 (the export keeps only pairs the matcher can count, owner decision O2);
   - every road target in a slice carries its needs;
   - every id in a slice exists in the graph;
   - `skills_index.json` has no duplicate term pointing at two ids unless the term is marked ambiguous.

@@ -1,15 +1,17 @@
 {
  "_doc": "Written by node matcher/tests/version_guard.mjs --write. Do not edit by hand.",
- "matcher_version": "1.0.1",
+ "matcher_version": "1.1.0",
  "cases": {
-  "acc-core": "fd0c45aa5bff3900835f9b20c73e81626e0dc852f2e48a54acc49d353bbcf5c8",
-  "acc-rusty": "211a4370545b9e21f8e401bcbbc475b342f9fe536137fce0c8190e724f6bea75",
-  "swdev-data": "54f0a5db31f9e8a140a48f89c7ff18b56499db2fbc9b44813ab639f026a5057e",
-  "swdev-qa-near": "1a8899460dac3a3502f9f828bc3bab4eff120555d235a3ef5fa83c36e166cabf",
-  "csr-voice": "6e0d299bc699b2d735a65e658e2cb727f69c1d1f6eeb35c20609b7eea62cb030",
-  "csr-creds": "83f32a2ca41173a9973077624823531944258610f69f7ab90abce1b964d22742",
-  "nurse-core": "a13a8c3b0e950bd1aca40492f622d865b417c8c1130bd15f1eb4c9dc1611d6ff",
-  "nurse-lead-short": "f42f53d40cc40974fb759e9d414e10bf904710a81e9515e193b32cb74df9d6a7",
-  "csr-real-near": "ed538a44c49b37b373dce24ba229f564705642e5398cc8b54ec00c203747adae"
+  "acc-core": "8789350aa21100ad81ca4dba740e2a579ff7cec7ff1f2944a8d733485d90c447",
+  "acc-rusty": "2d9e06230f81c6bf7bee7cd31ad4703f5cf44089e016e7e2ff8deb49f915acfd",
+  "swdev-data": "a99dc6d9c7789c24d37bd4b424d35301bc7075f91c1714f3697a5adfad22e95e",
+  "swdev-qa-near": "76b76fe76c3771bd9bddb7ed4085568e94be90811e5d3c3626b282d06cb12bf7",
+  "csr-voice": "2e19f0f3ea59f323d0a5839bae9be032700dc487af0273749c76b530fed903a3",
+  "csr-creds": "f52403e82ae6312cdac198e6a82e4d84ac15ca061c39b94af24d440d1c90cee4",
+  "nurse-core": "3f8216d4b9537935a2485d87643c548e8fb190d5df4edf445474860c41f83469",
+  "nurse-lead-short": "b54e93edb3ee51389a6987d8356d762b84909e666ae3d8c97ace524024a89982",
+  "csr-real-near": "207aaf8745118a6eff158c6789a743b6d29760748125137b09dcaa96f0581eeb",
+  "near-rank": "8128f26acb29809e62cf1e8ed6323e281237bfa278ee5439f1ac9e24983117ce",
+  "acc-real-tools": "78d1bd95e3c7eff182669051ac7dfaefcb14f89c945de806e949f7d2c2fabd9a"
  }
 }

@@ -39,7 +39,7 @@
   "priorities": {
     "pay": 1,
     "ai_safe": 1,
-    "short_move": 1,
+    "short_move": 3,
     "demand": 1,
     "enjoy": 0
   },

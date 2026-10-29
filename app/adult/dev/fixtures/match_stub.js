@@ -1,10 +1,10 @@
 // STAND-IN MATCHER, TESTS ONLY. Used by `build.py --dev` only when matcher/match.js does not exist yet. Never copied by a release build.
 // It follows SPEC 7.1 (coverage, gap) and 7.3 (order) loosely, with no "near" skills, no levels and no bridges.
 // The real matcher is matcher/match.js (matcher lane). If this file ever disagrees with it, the real one wins.
-const HAVE = { strong: 1.0, used: 0.7, rusty: 0.4 };
+const HAVE = { strong: 1.0, used: 0.85, rusty: 0.4 };
 export function match(profile, slice, opts) {
-  const mine = new Map(profile.skills.map(s => [s.id, HAVE[s.strength] || 0.7]));
-  const pr = profile.priorities || { pay: 1, ai_safe: 1, short_move: 1, demand: 1, enjoy: 0 };
+  const mine = new Map(profile.skills.map(s => [s.id, HAVE[s.strength] || 0.85]));
+  const pr = profile.priorities || { pay: 1, ai_safe: 1, short_move: 3, demand: 1, enjoy: 0 };
   const roads = slice.targets.map(t => {
     const needs = t.needs.slice(0, 40);
     const tw = needs.reduce((a, n) => a + n.w, 0) || 1;

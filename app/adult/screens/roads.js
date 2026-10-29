@@ -43,6 +43,7 @@ export async function render() {
   const sliders = h('fieldset', { class: 'prios' },
     h('legend', null, 'What matters to you?'),
     h('p', { class: 'hint' }, '0 is not at all. 5 is very much. The list re-orders as you move a slider.'),
+    h('p', { class: 'hint', id: 'prio-default' }, 'We start with Short move at 3 and the others at 1, so the jobs closest to what you do now come first.'),
     PRIORITIES.map(([k, label]) => {
       const out = h('output', { for: 'pr-' + k, id: 'out-' + k }, String(state.priorities[k]));
       const inp = h('input', { type: 'range', id: 'pr-' + k, min: '0', max: '5', step: '1', value: String(state.priorities[k]) });

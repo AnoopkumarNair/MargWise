@@ -33,3 +33,13 @@ test('checkProfile passes a good profile and refuses a bad one once the schema i
   assert.equal(S.checkProfile(S.buildProfile()).ok, true);
   assert.equal(S.checkProfile({ ...S.buildProfile(), gender: 'x' }).ok, false);
 });
+
+test('the sliders start at the matcher defaults (SPEC 7.3, owner decision O4)', async () => {
+  assert.deepEqual(S.state.priorities, { pay: 1, ai_safe: 1, short_move: 3, demand: 1, enjoy: 0 });
+  assert.deepEqual({ ...S.DEFAULT_PRIORITIES }, S.state.priorities);
+  const { match } = await import(pathToFileURL(join(ROOT, 'matcher', 'match.js')).href);
+  const slice = JSON.parse(readFileSync(join(APP, 'dev', 'fixtures', 'graph', 'slices', '13-2011.00.json'), 'utf8'));
+  fill(); const p = S.buildProfile(); delete p.priorities;
+  const w = match(p, slice, {}).weights;
+  assert.deepEqual({ pay: w.pay, ai_safe: w.ai_safe, short_move: w.short, demand: w.demand, enjoy: w.enjoy }, S.state.priorities);
+});

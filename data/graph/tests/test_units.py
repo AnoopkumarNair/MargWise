@@ -3,7 +3,8 @@ import datetime, json, os, shutil, subprocess, unittest
 from common import ROOT
 from build_graph import norm_title, slug, mmyyyy, need_weight, cosine
 import collections
-from export import ai_share_label, ai_labels, coverage, need_rows, tec_scores
+from export import ai_share_label, ai_labels, coverage, need_rows, tec_scores, cap_tool_weights, countable_pairs
+import random
 import freshness
 
 
@@ -133,6 +134,62 @@ class ToolRanking(unittest.TestCase):
         g.tool(o, 'tec:b', 'Alpha'); g.tool(o, 'tec:a', 'Beta'); g.skills(o, 3)
         out = need_rows(g, o, 4, lambda e: 'unknown', tec_scores(g))   # one tool slot, both tools score the same
         self.assertEqual([n['id'] for n in out if n['id'].startswith('tec:')], ['tec:b'])
+
+
+class ToolCap(unittest.TestCase):
+    """Owner decision O3: in each needs list as written, a tool weighs at most the median of the non-tool needs in that list."""
+    def n(self, i, w): return {'id': i, 'label': i, 'kind': 'technology' if i.startswith('tec:') else 'skill', 'w': w}
+
+    def test_cap_is_the_median_of_the_other_needs(self):
+        out = cap_tool_weights([self.n('tec:a', 0.8), self.n('skl:1', 0.9), self.n('tec:b', 0.6), self.n('skl:2', 0.5), self.n('skl:3', 0.3), self.n('tec:c', 0.2)])
+        w = {x['id']: x['w'] for x in out}
+        self.assertEqual((w['tec:a'], w['tec:b'], w['tec:c']), (0.5, 0.5, 0.2))     # median of 0.9, 0.5, 0.3; a lower tool keeps its weight
+        self.assertEqual((w['skl:1'], w['skl:2'], w['skl:3']), (0.9, 0.5, 0.3))     # other needs never change
+        self.assertEqual([x['id'] for x in out], ['skl:1', 'skl:2', 'tec:a', 'tec:b', 'skl:3', 'tec:c'])   # weight, then id
+
+    def test_even_count_uses_the_mean_of_the_middle_two(self):
+        out = cap_tool_weights([self.n('tec:a', 0.8), self.n('skl:1', 0.6), self.n('skl:2', 0.4)])
+        self.assertEqual(out[1]['w'], 0.5)
+
+    def test_tools_only_list_is_left_alone(self):
+        self.assertEqual([x['w'] for x in cap_tool_weights([self.n('tec:a', 0.8), self.n('tec:b', 0.6)])], [0.8, 0.6])
+
+    def test_real_slices_are_capped(self):
+        d = os.path.join(ROOT, 'data', 'graph', 'slices')
+        if not os.path.isdir(d): self.skipTest('no exports yet')
+        for f in sorted(os.listdir(d))[::40]:
+            s = json.load(open(os.path.join(d, f), encoding='utf8'))
+            for lst in [s['needs']] + [t['needs'] for t in s['targets']]:
+                other = sorted(x['w'] for x in lst if not x['id'].startswith('tec:')); k = len(other)
+                cap = round(other[k // 2] if k % 2 else (other[k // 2 - 1] + other[k // 2]) / 2, 4)
+                self.assertTrue(all(x['w'] <= cap for x in lst if x['id'].startswith('tec:')), f)
+
+
+class NearPairs(unittest.TestCase):
+    """Owner decision O2: the export keeps only the near pairs the matcher can count (3 closest of one of the skills, 0.90 or more)."""
+    @staticmethod
+    def allowed(pairs, s):
+        nb = sorted([(-w, b if a == s else a) for a, b, w in pairs if s in (a, b)])[:3]
+        return {(k, -w) for w, k in nb if -w >= 0.9}
+
+    def test_examples(self):
+        pairs = [['a', 't', 0.97], ['b', 't', 0.95], ['c', 't', 0.95], ['d', 't', 0.94], ['e', 'f', 0.89], ['g', 'h', 0.9]]
+        kept = countable_pairs(pairs)
+        self.assertIn(['d', 't', 0.94], kept)        # fourth for t, but t is d's only neighbour
+        self.assertNotIn(['e', 'f', 0.89], kept)     # under the floor
+        self.assertIn(['g', 'h', 0.9], kept)         # the floor counts
+
+    def test_dropped_pair_changes_no_skill_top_three(self):
+        rnd = random.Random(20261029)
+        ids = ['skl:%02d' % i for i in range(30)]
+        for _ in range(200):
+            best = {}
+            for _ in range(rnd.randint(5, 150)):
+                a, b = sorted(rnd.sample(ids, 2)); best[(a, b)] = round(rnd.choice([rnd.uniform(0.5, 1.0), rnd.choice([0.9, 0.95, 0.97])]), 2)
+            pairs = [[a, b, w] for (a, b), w in sorted(best.items())]
+            kept = countable_pairs(pairs)
+            self.assertTrue(all(w >= 0.9 for a, b, w in kept))
+            for s in ids: self.assertEqual(self.allowed(pairs, s), self.allowed(kept, s), s)
 
 
 class Coverage(unittest.TestCase):

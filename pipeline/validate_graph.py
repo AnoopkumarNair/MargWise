@@ -135,7 +135,7 @@ def check_exports(db_nodes, exp_dir, rep):
                 a, b, w = p
                 if a not in in_needs or b not in in_needs: rep.fail('near pairs only join skills in the slice needs', '%s: %s %s' % (f, a, b))
                 if not a < b or (last is not None and (a, b) <= last): rep.fail('near pairs are sorted, once each, a before b', '%s: %s %s' % (f, a, b))
-                if not 0.5 <= w <= 1: rep.fail('near similarity is 0.5 to 1', '%s: %s %s %r' % (f, a, b, w))
+                if not 0.9 <= w <= 1: rep.fail('near similarity is 0.9 to 1 (only pairs the matcher can count, owner decision O2)', '%s: %s %s %r' % (f, a, b, w))
                 last = (a, b)
         have = {x['id'] for x in s['sources']}
         used = {s['occ']['src']} | {n['src'] for n in s['needs']} | {t['src'] for t in s['tasks']} | {x['src'] for x in s['signals']} | ({s['near']['src']} if s.get('near') else set())

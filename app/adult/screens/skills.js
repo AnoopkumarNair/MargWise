@@ -7,7 +7,7 @@ import { TASK_AI_TEXT } from './common.js';
 const GROUPS = [['skill', 'Skills'], ['knowledge', 'Knowledge'], ['activity', 'Work activities'], ['technology', 'Tools and software']];
 const STRENGTH = [['used', 'Used'], ['strong', 'Strong'], ['rusty', 'Rusty']];
 const MAX = 40;        // the slice holds the occupation's top 40 needs (SPEC 5.4)
-const NUDGE_BELOW = 15;
+const NUDGE_BELOW = 20;   // measured on five real jobs with matcher 1.1.0: about 20 ticks as Used give 5 or more close or stretch roads (deviations D19)
 
 export function title() { return 'Your skills'; }
 export async function render() {
@@ -68,9 +68,9 @@ export async function render() {
   updateCount();
   return h('section', { class: 'screen' },
     h('h1', { tabindex: '-1' }, 'What do you do as ' + state.occ.label + '?'),
-    h('p', { class: 'lead' }, 'These are the ' + top.length + ' things that matter most in this job. Tick everything you do, even if only now and then. Your roads are more useful with 15 or more ticked.'),
+    h('p', { class: 'lead' }, 'These are the ' + top.length + ' things that matter most in this job. Tick everything you do, even if only now and then. Your roads are more useful with 20 or more ticked.'),
     h('p', { class: 'hint' }, 'Your roads are worked out only from what you tick, so a skill you leave out counts as one you do not have. Use “Tick all” for a group you do, then untick what you do not.'),
-    h('p', { class: 'hint' }, 'For each one you tick, pick how well you know it. Used: you use it now. Strong: you could teach it. Rusty: you have used it, but not lately.'),
+    h('p', { class: 'hint' }, 'For each one you tick, pick how well you know it. Used: you do it in your work now; this counts almost as much as Strong. Strong: you could teach it. Rusty: you have done it, but not in the last few years.'),
     h('div', { class: 'skill-groups' }, groups),
     count,
     taskBlock(state.slice.tasks || []),

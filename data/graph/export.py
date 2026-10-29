@@ -11,8 +11,8 @@ Writes (default DIR = data/graph/):
 
 Size rules (SPEC 5.3, owner decision 2026-10-29): a slice is at most 60,000 bytes GZIPPED (what a browser downloads; gzip level 6,
 about what a web server uses); skills_index.json is under 1.5 MB gzipped. Slices have the full SPEC 5.4 shape: the occupation's top 40
-needs and up to 80 tasks, and up to 30 road targets each with its top 40 needs, plus the skill_near pairs between those skills
-(slice contract amendment A1). `LADDER` below is a last resort only: a slice that is still too big takes the first smaller step that
+needs and up to 80 tasks, and up to 30 road targets each with its top 40 needs, plus the skill_near pairs between those skills that
+the matcher can count (slice contract amendment A1; owner decision O2). Tool weights are capped per needs list (owner decision O3). `LADDER` below is a last resort only: a slice that is still too big takes the first smaller step that
 fits, and every such trim is counted in export_report.json. With O*NET 31.0 no slice needs it.
 
 slices/ is a build output and is not committed (deviations D15): the pipeline rebuilds it, and export_report.json (committed) holds
@@ -37,7 +37,12 @@ TEC_SHARE = 4               # at most n // 4 of a needs list are technologies, s
 # occupation's SOC minor group (the first four digits, such as 15-12) compared with all occupations: a TF-IDF style score,
 #   (occupations in the same minor group that list the tool / occupations in the group) * ln(occupations listing any tool / occupations listing it)
 # so a tool that every job lists (Microsoft Office) scores low and a tool shared by the job's neighbours scores high. Ties by label, then id.
-# The tool weights (0.8 Hot Technology, 0.6 other) are not changed here: that is owner decision O3 (deviations).
+# The graph keeps the tool weights of BUILD_PLAN T1.3 (0.8 Hot Technology, 0.6 other). The export caps them (owner decision O3,
+# 2026-10-29, deviations): in each needs list it writes (the occupation's own list, and each target's list, separately), a tool's weight
+# is at most the median weight of the non-tool needs in that same list. See cap_tool_weights. Candidate ranking uses the graph weights.
+# skill_near pairs (owner decision O2): the matcher counts a near skill only when the pair is among the 3 closest neighbours of the skill
+# being credited and its similarity is 0.90 or more. A pair that can never count is left out of the slice (near_block).
+NEAR_RANK, NEAR_FLOOR = 3, 0.9
 TWO_STEP_VIA = 10           # follow the 10 strongest close_to links, then their close_to links
 TWO_STEP_MIN_COVERAGE = 0.4
 AI_MIN_TASKS = 3            # a skill label needs at least this many tasks to look at
@@ -157,6 +162,22 @@ def need_rows(g, occ, n, label_fn, scores=None):
     return out
 
 
+def median(xs):
+    xs = sorted(xs); n = len(xs)
+    return xs[n // 2] if n % 2 else (xs[n // 2 - 1] + xs[n // 2]) / 2
+
+
+def cap_tool_weights(needs):
+    """Owner decision O3: in one needs list as written to a slice, a tool's (tec:) weight is at most the median weight of the non-tool
+    needs in that list (rounded to 4 decimals; for an even count, the mean of the two middle values). A list with no non-tool need is left
+    as it is. Returns a new list in the usual order (weight, then id); the graph's own weights are not changed."""
+    other = [n['w'] for n in needs if not n['id'].startswith('tec:')]
+    if not other: return [dict(n) for n in needs]
+    cap = round(median(other), 4)
+    out = [dict(n, w=min(n['w'], cap)) if n['id'].startswith('tec:') else dict(n) for n in needs]
+    return sorted(out, key=lambda n: (-n['w'], n['id']))
+
+
 def occ_obj(g, o, full):
     n = g.node[o]; a = n['attrs']
     ob = {'id': o, 'label': n['label'][:200]}
@@ -195,7 +216,8 @@ def task_rows(g, o, limit):
 
 def near_block(g, needs_lists):
     """skill_near pairs (SPEC 5.2) between the skl: ids in these needs lists: [a, b, similarity] once each, a < b, best similarity of the two
-    directions (cosine is symmetric, but each skill keeps only its own top 10, so a pair can be stored in one direction only)."""
+    directions (cosine is symmetric, but each skill keeps only its own top 10, so a pair can be stored in one direction only), then only
+    the pairs the matcher can count (countable_pairs, owner decision O2)."""
     ids = sorted({n['id'] for lst in needs_lists for n in lst if n['id'].startswith('skl:')})
     have = set(ids); best = {}; asof = None
     for a in ids:
@@ -205,7 +227,29 @@ def near_block(g, needs_lists):
             if w > best.get(k, -1): best[k] = w
             asof = max(asof or ao, ao)
     pairs = [[a, b, round(w, 4)] for (a, b), w in sorted(best.items()) if w >= 0.5]
-    return {'pairs': pairs, 'as_of': asof or SRC_ASOF['onet_database'], 'src': SHORT['onet_database'], 'trust': 'estimate'}
+    return {'pairs': countable_pairs(pairs), 'as_of': asof or SRC_ASOF['onet_database'], 'src': SHORT['onet_database'], 'trust': 'estimate'}
+
+
+def countable_pairs(pairs):
+    """Owner decision O2: the matcher credits skill s from a near skill k only when k is among the NEAR_RANK closest neighbours of s in
+    the slice's pairs (by similarity, then id) and the similarity is NEAR_FLOOR or more. Keep only the pairs that can count for one of
+    their two skills. This changes no match result: a dropped pair ranks below the top NEAR_RANK of both its skills, or is under the floor
+    (and so is everything ranked after it), so no skill's top NEAR_RANK above the floor changes."""
+    nb = collections.defaultdict(list)
+    for a, b, w in pairs: nb[a].append((-w, b)); nb[b].append((-w, a))
+    keep = set()
+    for x, lst in nb.items():
+        for negw, y in sorted(lst)[:NEAR_RANK]:
+            if -negw >= NEAR_FLOOR: keep.add((x, y) if x < y else (y, x))
+    return [p for p in pairs if (p[0], p[1]) in keep]
+
+
+def tool_counts(g, o, targets, sl):
+    """(tool needs written, tool needs whose weight the O3 cap lowered) in one slice, for export_report.json."""
+    graph_w = lambda occ: {d: w for d, w, at, ao in g.out[occ]['needs']}
+    lists = [(o, sl['needs'])] + [(tg['occ']['id'], tg['needs']) for tg in sl['targets']]
+    tools = [(graph_w(occ)[n['id']], n['w']) for occ, lst in lists for n in lst if n['id'].startswith('tec:')]
+    return len(tools), sum(1 for gw, w in tools if w < round(gw, 4))
 
 
 def gz_size(body):
@@ -278,9 +322,9 @@ def build_slices(g, release):
         chosen, via = candidates(o)
         used_src = set()
         for step, (nt, nn, nk) in enumerate(LADDER):
-            sl = {'slice_v': SLICE_V, 'release': release, 'occ': occ_obj(g, o, True), 'needs': top(o, NEEDS_OWN), 'tasks': task_rows(g, o, nk), 'signals': sig_rows(g, o), 'targets': []}
+            sl = {'slice_v': SLICE_V, 'release': release, 'occ': occ_obj(g, o, True), 'needs': cap_tool_weights(top(o, NEEDS_OWN)), 'tasks': task_rows(g, o, nk), 'signals': sig_rows(g, o), 'targets': []}
             for t in chosen[:nt]:
-                sl['targets'].append({'occ': occ_obj(g, t, False), 'via': via[t], 'needs': top(t, NEEDS_OWN)[:nn], 'signals': sig_rows(g, t)})
+                sl['targets'].append({'occ': occ_obj(g, t, False), 'via': via[t], 'needs': cap_tool_weights(top(t, NEEDS_OWN)[:nn]), 'signals': sig_rows(g, t)})
             sl['near'] = near_block(g, [sl['needs']] + [tg['needs'] for tg in sl['targets']])
             ids = {SHORT['onet_database']}
             for blk in [sl['needs'], sl['tasks'], sl['signals']] + [x for tg in sl['targets'] for x in (tg['needs'], tg['signals'])]:
@@ -295,7 +339,7 @@ def build_slices(g, release):
         else:
             raise SystemExit('slice %s is over %d bytes gzipped even at the last trim step' % (o, SLICE_MAX_GZ))
         if step: trims['targets_%d_needs_%d_tasks_%d' % (nt, nn, nk)] += 1
-        slices[o[4:]] = body; sizes[o[4:]] = (len(body.encode('utf8')), (nt, nn, nk), len(sl['targets']), gz, len(sl['near']['pairs']), len(sl['tasks']))
+        slices[o[4:]] = body; sizes[o[4:]] = (len(body.encode('utf8')), (nt, nn, nk), len(sl['targets']), gz, len(sl['near']['pairs']), len(sl['tasks']), *tool_counts(g, o, chosen[:nt], sl))
     return slices, sizes, trims, [o for o in occs if o not in rated_set]
 
 
@@ -389,6 +433,8 @@ def main():
         'targets_per_slice_histogram': {str(k): n for k, n in sorted(collections.Counter(v[2] for v in sizes.values()).items())},
         'tasks_per_slice_max': max(v[5] for v in sizes.values()),
         'near_pairs_per_slice': {'max': npairs[-1], 'median': med(npairs), 'min': npairs[0]},
+        'near_rule': {'rank': NEAR_RANK, 'floor': NEAR_FLOOR},
+        'tool_weight_cap': {'rule': 'median of the non-tool needs in the same list', 'tool_needs': sum(v[6] for v in sizes.values()), 'tool_needs_capped': sum(v[7] for v in sizes.values())},
         'occupations_without_slice': no_slice,
         'skills_index': {'entries': len(idx), 'bytes': len(idx_body), 'bytes_gz': idx_gz, 'alt_terms': sum(len(e['alt']) for e in idx)},
         'titles': {'keys': len(tj), 'bytes': len(tbody), 'bytes_gz': len(gzip.compress(tbody, 9, mtime=0)), 'from_owner_review_lists': len(title_add)},

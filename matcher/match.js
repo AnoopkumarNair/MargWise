@@ -1,11 +1,12 @@
 // Margwise adult matcher v1 (SPEC 7). A plain ES module with no dependencies, for the browser and for Node.
 // matcher/reference.py is an independent Python version of the same rules; matcher/tests/ checks that they agree.
 // Deterministic: no clock, no randomness, no dictionary-order dependence. The year 'now' comes from opts, never from Date.
-// Scope of 1.0.x (slice S1, BUILD_PLAN T2.2; 1.0.1 has the same rules as 1.0.0, see matcher/README.md): coverage, gap, reach (adjacent, stretch, leap) and order.
+// Scope of 1.x (slice S1, BUILD_PLAN T2.2): coverage, gap, reach (adjacent, stretch, leap) and order. 1.1.0 applies owner decisions
+// O1 (used = 0.85), O2 (near only from the 3 closest neighbours at 0.90 or more) and O4 (default sliders); see matcher/README.md.
 // Road kind, target level, experience fit, bridges, pay, demand and the constraint flags are stubs: they come back as
 // null or "not_yet_measured", because the S1 slices and contracts do not carry the data they need. See matcher/README.md.
 
-export const MATCHER_VERSION = '1.0.1';   // must equal contracts/versions.js (a test checks it)
+export const MATCHER_VERSION = '1.1.0';   // must equal contracts/versions.js (a test checks it)
 
 // The only profile fields this file reads (ADR-16, invariant 8). Nothing demographic or commercial. City and openness to
 // move are allowed only for the needs_relocation flag; 1.0.0 reads none of the constraints because the flags are stubs.
@@ -18,15 +19,15 @@ export const ALLOWED_INPUT_FIELDS = Object.freeze([
   'constraints', 'constraints.hours_month', 'constraints.pay_floor_pct', 'constraints.city', 'constraints.open_to',
 ]);
 
-const HAVE = { strong: 1.0, used: 0.7, rusty: 0.4 };   // SPEC 7.1
-const CRED_VALID = 0.7, CRED_EXPIRED = 0.4;            // SPEC 5.8
+const HAVE = { strong: 1.0, used: 0.85, rusty: 0.4 };  // SPEC 7.1 (owner decision O1: used 0.7 -> 0.85)
+const CRED_VALID = HAVE.used, CRED_EXPIRED = HAVE.rusty; // SPEC 5.8: a valid credential credits at the used level, an expired one at rusty
 const RUSTY_AFTER = 3;                                 // years since last use
-const NEAR_MIN = 0.5, NEAR_FACTOR = 0.5;
+const NEAR_RANK = 3, NEAR_MIN = 0.9, NEAR_FACTOR = 0.5;   // SPEC 7.1 (owner decision O2)
 const GAP_BELOW = 0.7, PEOPLE_DO_BOOST = 0.5;
 const ADJACENT = 0.7, STRETCH = 0.4;                   // SPEC 7.3 reach
 const YEARS_LOW = { '0-2': 0, '2-5': 2, '5-8': 5, '8-12': 8, '12-18': 12, '18+': 18 };   // bands.json years (D2)
 const LEVEL_FROM = [[18, 6], [12, 5], [8, 4], [5, 3], [2, 2], [0, 1]];                  // SPEC 7.2
-const DEFAULT_PRIORITIES = { pay: 1, ai_safe: 1, short_move: 1, demand: 1, enjoy: 0 }; // SPEC 6 example
+const DEFAULT_PRIORITIES = { pay: 1, ai_safe: 1, short_move: 3, demand: 1, enjoy: 0 }; // SPEC 7.3 defaults (owner decision O4)
 const COMPONENTS = ['pay', 'ai_safe', 'short', 'demand', 'enjoy'];
 const SLIDER = { pay: 'pay', ai_safe: 'ai_safe', short: 'short_move', demand: 'demand', enjoy: 'enjoy' };
 
@@ -91,24 +92,46 @@ function nearOf(slice, opts) {
   return out;
 }
 
-// skill_near similarity, symmetric, from {id: {id: sim}}.
-function sim(near, a, b) {
-  const one = (x, y) => (near && Object.prototype.hasOwnProperty.call(near, x) && near[x] && Object.prototype.hasOwnProperty.call(near[x], y) ? num(near[x][y]) : null);
-  const v = Math.max(one(a, b) ?? -1, one(b, a) ?? -1);
-  return v >= NEAR_MIN ? Math.min(v, 1) : null;
+// For each skill s, the near skills that may credit it (SPEC 7.1, owner decision O2): s's NEAR_RANK closest neighbours in the near data
+// (similarity read both ways, the larger if both are given, capped at 1; ranked by similarity, then id), kept only at NEAR_MIN or more.
+// Returns Map(s -> [[k, sim], ...] sorted by k). match() builds it once per call.
+function nearIndex(near) {
+  if (!near || typeof near !== 'object') return new Map();
+  const simOf = new Map();   // 'a\u0000b' with a < b -> sim
+  for (const x of Object.keys(near).sort(cmpStr)) {
+    const row = near[x];
+    if (!row || typeof row !== 'object') continue;
+    for (const y of Object.keys(row).sort(cmpStr)) {
+      const v = num(row[y]);
+      if (v === null || x === y) continue;
+      const key = x < y ? x + '\u0000' + y : y + '\u0000' + x;
+      simOf.set(key, Math.max(Math.min(v, 1), simOf.get(key) ?? -Infinity));
+    }
+  }
+  const lists = new Map();
+  for (const [key, v] of simOf) {
+    const [a, b] = key.split('\u0000');
+    (lists.get(a) || lists.set(a, []).get(a)).push([b, v]);
+    (lists.get(b) || lists.set(b, []).get(b)).push([a, v]);
+  }
+  const out = new Map();
+  for (const [s, lst] of lists) {
+    lst.sort((p, r) => r[1] - p[1] || cmpStr(p[0], r[0]));
+    const ok = lst.slice(0, NEAR_RANK).filter(([, v]) => v >= NEAR_MIN).sort((p, r) => cmpStr(p[0], r[0]));
+    if (ok.length) out.set(s, ok);
+  }
+  return out;
 }
 
 function coverWith(have, needs, opts) {
-  const ids = [...have.keys()].sort(cmpStr);
+  const index = opts.nearIndex || nearIndex(opts.near);
   let sw = 0, sc = 0;
   const rows = arr(needs).map(n => {
     const w = Math.max(0, num(n.w) ?? 0);
     const h = have.has(n.id) ? have.get(n.id).have : 0;
     let nr = 0, via = null;
-    for (const k of ids) {
-      if (k === n.id) continue;
-      const s = sim(opts.near, k, n.id);
-      if (s === null) continue;
+    for (const [k, s] of index.get(n.id) || []) {   // sorted by id, so a tie goes to the smaller id
+      if (!have.has(k)) continue;
       const v = NEAR_FACTOR * s * have.get(k).have;
       if (v > nr) { nr = v; via = k; }
     }
@@ -173,7 +196,8 @@ function weights(p, opts) {
 export function match(profile, slice, opts = {}) {
   opts = opts || {};
   if (slice === null || typeof slice !== 'object' || !slice.occ) throw new TypeError('slice must be an occupation slice');
-  opts = { ...opts, near: nearOf(slice, opts) };
+  const near = nearOf(slice, opts);
+  opts = { ...opts, near, nearIndex: nearIndex(near) };
   const p = inputs(profile), have = haves(p, opts), w = weights(p, opts), from = slice.occ.id;
   const seen = new Set([from]), roads = [];
   for (const t of arr(slice.targets)) {

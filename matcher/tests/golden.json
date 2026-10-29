@@ -1,6 +1,6 @@
 {
  "_doc": "Hand-built golden cases for the adult matcher (SPEC 7.5, TEST_PLAN layer 2). Each case names a fixture slice and the skill_near and credential data it uses (paths relative to matcher/tests/). expect holds the person level, then the roads in order with reach, coverage to 2 decimals, and flags. Fixtures are made up for tests, not real data. A change to any expected output needs a MATCHER_VERSION bump (tests/version_guard.mjs).",
- "matcher_version": "1.0.1",
+ "matcher_version": "1.1.0",
  "cases": [
   {
    "id": "acc-core",
@@ -75,25 +75,13 @@
      {
       "id": "occ:13-2031.00",
       "reach": "adjacent",
-      "coverage": 0.71,
+      "coverage": 0.76,
       "flags": []
      },
      {
       "id": "occ:13-2041.00",
-      "reach": "stretch",
-      "coverage": 0.68,
-      "flags": []
-     },
-     {
-      "id": "occ:13-2051.00",
-      "reach": "stretch",
-      "coverage": 0.66,
-      "flags": []
-     },
-     {
-      "id": "occ:11-3031.01",
-      "reach": "leap",
-      "coverage": 0.24,
+      "reach": "adjacent",
+      "coverage": 0.73,
       "flags": []
      },
      {
@@ -103,9 +91,21 @@
       "flags": []
      },
      {
+      "id": "occ:13-2051.00",
+      "reach": "stretch",
+      "coverage": 0.67,
+      "flags": []
+     },
+     {
+      "id": "occ:11-3031.01",
+      "reach": "leap",
+      "coverage": 0.24,
+      "flags": []
+     },
+     {
       "id": "occ:15-2051.00",
       "reach": "leap",
-      "coverage": 0.16,
+      "coverage": 0.19,
       "flags": []
      }
     ]
@@ -170,25 +170,19 @@
      {
       "id": "occ:13-2031.00",
       "reach": "stretch",
-      "coverage": 0.46,
+      "coverage": 0.49,
       "flags": []
      },
      {
       "id": "occ:13-2041.00",
       "reach": "stretch",
-      "coverage": 0.45,
+      "coverage": 0.49,
       "flags": []
      },
      {
       "id": "occ:13-2051.00",
       "reach": "stretch",
-      "coverage": 0.5,
-      "flags": []
-     },
-     {
-      "id": "occ:11-3031.01",
-      "reach": "leap",
-      "coverage": 0.1,
+      "coverage": 0.49,
       "flags": []
      },
      {
@@ -200,7 +194,13 @@
      {
       "id": "occ:15-2051.00",
       "reach": "leap",
-      "coverage": 0.13,
+      "coverage": 0.16,
+      "flags": []
+     },
+     {
+      "id": "occ:11-3031.01",
+      "reach": "leap",
+      "coverage": 0.1,
       "flags": []
      }
     ]
@@ -273,27 +273,27 @@
     "person_level": 2,
     "roads": [
      {
-      "id": "occ:15-2051.00",
-      "reach": "stretch",
-      "coverage": 0.53,
+      "id": "occ:15-1242.00",
+      "reach": "adjacent",
+      "coverage": 0.72,
       "flags": []
      },
      {
-      "id": "occ:15-1242.00",
+      "id": "occ:15-2051.00",
       "reach": "stretch",
-      "coverage": 0.67,
+      "coverage": 0.61,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1211.00",
+      "reach": "stretch",
+      "coverage": 0.52,
       "flags": []
      },
      {
       "id": "occ:11-3021.00",
       "reach": "leap",
       "coverage": 0.2,
-      "flags": []
-     },
-     {
-      "id": "occ:15-1211.00",
-      "reach": "stretch",
-      "coverage": 0.49,
       "flags": []
      },
      {
@@ -305,7 +305,7 @@
      {
       "id": "occ:ai-llm-evaluator",
       "reach": "leap",
-      "coverage": 0.12,
+      "coverage": 0.15,
       "flags": []
      }
     ]
@@ -364,14 +364,32 @@
     "now": 2026,
     "near": "fixtures/near.json"
    },
-   "note": "near() matters: LLM evaluation is credited 0.5 x 0.7 x 1.0 = 0.35 through quality control analysis, which lifts the LLM Evaluation Specialist road from a leap (0.35) to a stretch (0.44).",
+   "note": "near() matters: LLM evaluation is credited 0.5 x 0.92 x 1.0 = 0.46 through quality control analysis (its closest neighbour, at 0.92, over the 0.90 floor), which lifts the LLM Evaluation Specialist road from a leap (0.37) to a stretch (0.49). The Selenium pair (0.6) no longer counts.",
    "expect": {
     "person_level": 3,
     "roads": [
      {
       "id": "occ:15-1253.00",
       "reach": "adjacent",
-      "coverage": 0.71,
+      "coverage": 0.76,
+      "flags": []
+     },
+     {
+      "id": "occ:ai-llm-evaluator",
+      "reach": "stretch",
+      "coverage": 0.49,
+      "flags": []
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "leap",
+      "coverage": 0.27,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1211.00",
+      "reach": "leap",
+      "coverage": 0.27,
       "flags": []
      },
      {
@@ -381,27 +399,9 @@
       "flags": []
      },
      {
-      "id": "occ:15-2051.00",
-      "reach": "leap",
-      "coverage": 0.22,
-      "flags": []
-     },
-     {
-      "id": "occ:15-1211.00",
-      "reach": "leap",
-      "coverage": 0.23,
-      "flags": []
-     },
-     {
-      "id": "occ:ai-llm-evaluator",
-      "reach": "stretch",
-      "coverage": 0.44,
-      "flags": []
-     },
-     {
       "id": "occ:15-1242.00",
       "reach": "leap",
-      "coverage": 0.11,
+      "coverage": 0.13,
       "flags": []
      }
     ]
@@ -481,25 +481,25 @@
      {
       "id": "occ:41-3091.00",
       "reach": "stretch",
-      "coverage": 0.55,
+      "coverage": 0.58,
+      "flags": []
+     },
+     {
+      "id": "occ:43-9061.00",
+      "reach": "adjacent",
+      "coverage": 0.7,
       "flags": []
      },
      {
       "id": "occ:43-1011.00",
       "reach": "leap",
-      "coverage": 0.32,
+      "coverage": 0.34,
       "flags": []
      },
      {
       "id": "occ:15-1232.00",
-      "reach": "stretch",
-      "coverage": 0.44,
-      "flags": []
-     },
-     {
-      "id": "occ:43-9061.00",
-      "reach": "stretch",
-      "coverage": 0.62,
+      "reach": "leap",
+      "coverage": 0.39,
       "flags": []
      },
      {
@@ -589,20 +589,20 @@
     "near": "fixtures/near.json",
     "teaches": "fixtures/teaches.json"
    },
-   "note": "ITIL 4 credits ServiceNow, computers and problem solving at 0.7. COPC has expired, so monitoring and managing people count 0.4. Coordination is rated strong by the person, and their own rating wins over the expired credential.",
+   "note": "ITIL 4 credits ServiceNow, computers and problem solving at the used level, 0.85. COPC has expired, so monitoring and managing people count 0.4. Coordination is rated strong by the person, and their own rating wins over the expired credential.",
    "expect": {
     "person_level": 3,
     "roads": [
      {
-      "id": "occ:43-1011.00",
-      "reach": "stretch",
-      "coverage": 0.59,
+      "id": "occ:15-1232.00",
+      "reach": "adjacent",
+      "coverage": 0.88,
       "flags": []
      },
      {
-      "id": "occ:15-1232.00",
-      "reach": "adjacent",
-      "coverage": 0.76,
+      "id": "occ:43-1011.00",
+      "reach": "stretch",
+      "coverage": 0.59,
       "flags": []
      },
      {
@@ -690,7 +690,7 @@
      {
       "id": "occ:29-1171.00",
       "reach": "adjacent",
-      "coverage": 0.74,
+      "coverage": 0.76,
       "flags": []
      },
      {
@@ -706,15 +706,15 @@
       "flags": []
      },
      {
-      "id": "occ:11-9111.00",
-      "reach": "leap",
-      "coverage": 0.18,
+      "id": "occ:29-9021.00",
+      "reach": "stretch",
+      "coverage": 0.43,
       "flags": []
      },
      {
-      "id": "occ:29-9021.00",
+      "id": "occ:11-9111.00",
       "reach": "leap",
-      "coverage": 0.39,
+      "coverage": 0.18,
       "flags": []
      }
     ]
@@ -816,7 +816,7 @@
      {
       "id": "occ:11-9111.00",
       "reach": "stretch",
-      "coverage": 0.52,
+      "coverage": 0.59,
       "flags": []
      },
      {
@@ -837,7 +837,7 @@
   {
    "id": "csr-real-near",
    "family": "Office and administrative support (43-), real-shape slice",
-   "summary": "Customer service representative, 2-5 years in BPM, 12 skills ticked from the real O*NET 31.0 slice; skill_near comes from the slice itself (amendment A1), not from opts. With the slice's tool picks (review finding B1) every road is a leap; 43-4041.00 is a leap at coverage 0.3969, which shows as 0.40 to 2 decimals",
+   "summary": "Customer service representative, 2-5 years in BPM, 12 skills ticked from the real O*NET 31.0 slice; skill_near comes from the slice itself (amendment A1), not from opts. Matcher 1.1.0 on the re-exported slice (tool weights capped, only near pairs that can count): Credit Authorizers is a stretch at 0.41, the rest are leaps",
    "profile": {
     "v": 1,
     "roles": [
@@ -921,32 +921,257 @@
     "roads": [
      {
       "id": "occ:43-4041.00",
-      "reach": "leap",
-      "coverage": 0.4,
-      "flags": []
-     },
-     {
-      "id": "occ:41-9041.00",
-      "reach": "leap",
-      "coverage": 0.39,
-      "flags": []
-     },
-     {
-      "id": "occ:43-1011.00",
-      "reach": "leap",
-      "coverage": 0.36,
+      "reach": "stretch",
+      "coverage": 0.41,
       "flags": []
      },
      {
       "id": "occ:43-4081.00",
       "reach": "leap",
+      "coverage": 0.39,
+      "flags": []
+     },
+     {
+      "id": "occ:41-9041.00",
+      "reach": "leap",
       "coverage": 0.35,
+      "flags": []
+     },
+     {
+      "id": "occ:43-1011.00",
+      "reach": "leap",
+      "coverage": 0.33,
       "flags": []
      },
      {
       "id": "occ:41-3091.00",
       "reach": "leap",
-      "coverage": 0.37,
+      "coverage": 0.34,
+      "flags": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "near-rank",
+   "family": "Computer and mathematical (15-)",
+   "summary": "Software developer, 2-5 years, strong in programming, SQL and complex problem solving, uses Java and Git; near data built to test the near rule",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:15-1252.00",
+      "level": 2,
+      "industry": "it",
+      "years": "2-5",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.B.3.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:java",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:sql",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.2.i",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:git",
+      "strength": "used",
+      "last": 2026
+     }
+    ]
+   },
+   "slice": "fixtures/slice_software_developer.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near_rank.json"
+   },
+   "note": "Owner decision O2 (matcher 1.1.0). Systems analysis is credited from Java (third closest, 0.95), not from SQL (fourth, 0.94), though SQL is rated strong. Computers and electronics gets nothing from complex problem solving (0.89, under 0.90). Quality control is credited from programming at exactly 0.90.",
+   "expect": {
+    "person_level": 2,
+    "roads": [
+     {
+      "id": "occ:15-1242.00",
+      "reach": "stretch",
+      "coverage": 0.59,
+      "flags": []
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "stretch",
+      "coverage": 0.49,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1211.00",
+      "reach": "stretch",
+      "coverage": 0.43,
+      "flags": []
+     },
+     {
+      "id": "occ:15-1253.00",
+      "reach": "leap",
+      "coverage": 0.3,
+      "flags": []
+     },
+     {
+      "id": "occ:11-3021.00",
+      "reach": "leap",
+      "coverage": 0.0,
+      "flags": []
+     },
+     {
+      "id": "occ:ai-llm-evaluator",
+      "reach": "leap",
+      "coverage": 0.1,
+      "flags": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "acc-real-tools",
+   "family": "Business and financial (13-), real-shape slice",
+   "summary": "Accountant, 5-8 years, ticks all 10 tools of the real slice and 5 core skills; near pairs from the slice itself",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:13-2011.00",
+      "level": 3,
+      "industry": "bfsi",
+      "years": "5-8",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "tec:fund-accounting-software",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:intuit-quickbooks",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:intuit-turbotax",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:lexisnexis",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-excel",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-office-software",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-outlook",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-powerpoint",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:sap-software",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:tax-software",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.c",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.1.a.1",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.2.a.4",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.2.a.2",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.4.a",
+      "strength": "used",
+      "last": 2026
+     }
+    ]
+   },
+   "slice": "fixtures/slice_acc_real.json",
+   "opts": {
+    "now": 2026
+   },
+   "note": "Owner decision O3: the slice was exported with each tool weight capped at the median weight of the other needs in its list, so ticking every tool lifts coverage less than it would with the graph weights (0.8 and 0.6). See GOLDEN_TABLE.md.",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:13-2031.00",
+      "reach": "leap",
+      "coverage": 0.35,
+      "flags": []
+     },
+     {
+      "id": "occ:13-2082.00",
+      "reach": "leap",
+      "coverage": 0.31,
+      "flags": []
+     },
+     {
+      "id": "occ:43-3031.00",
+      "reach": "leap",
+      "coverage": 0.3,
+      "flags": []
+     },
+     {
+      "id": "occ:13-2061.00",
+      "reach": "leap",
+      "coverage": 0.29,
+      "flags": []
+     },
+     {
+      "id": "occ:11-3031.01",
+      "reach": "leap",
+      "coverage": 0.3,
       "flags": []
      }
     ]

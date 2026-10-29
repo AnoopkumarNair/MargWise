@@ -154,7 +154,8 @@ CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai
 **Edge weights:**
 
 - `needs`: `(IM-1)/4 * (LV/7)`, clipped to the range 0 to 1, kept only where `IM >= 2.5`.
-- `skill_near`: cosine similarity of the occupations that need both skills, kept if 0.5 or more (computed).
+- `needs` to a technology (`tec:`): 0.8 for an O*NET Hot Technology and 0.6 for any other tool, by rule (O*NET gives tools no rating). The graph keeps these weights; the export caps them in each slice list (5.4).
+- `skill_near`: cosine similarity of the occupations that need both skills, kept if 0.5 or more (computed). The export keeps only the pairs the matcher can count (5.4, 7.1).
 - `close_to`: O*NET related occupations (`weight` 1 for primary-short and 0.7 for the rest), plus the skill-vector cosine.
 
 ### 5.3 Checks (added to `pipeline/validate.py`, failure blocks the build)
@@ -177,7 +178,8 @@ CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai
   - its top 30 candidate road targets, from `close_to`, two-step paths with coverage of 0.4 or more, and same-cluster occupations.
 
   For each target, the slice also holds the target's top 40 `needs` (repeated, so a slice is self-contained).
-  The slice also holds `near`: the `skill_near` pairs between the skills in all those needs, as `[skill, skill, similarity]` (slice contract amendment A1), so the matcher needs no other file.
+  The slice also holds `near`: the `skill_near` pairs between the skills in all those needs, as `[skill, skill, similarity]` (slice contract amendment A1), so the matcher needs no other file. It keeps only the pairs the matcher can count (7.1): similarity 0.90 or more, and among the 3 closest neighbours of at least one of the two skills. Leaving the others out changes no result and makes the file smaller (owner decision O2, 2026-10-29).
+- **Tool weights in a slice (owner decision O3, 2026-10-29).** In each needs list the export writes (the occupation's own list, and each target's list, on its own), a tool's weight is at most the median weight of the other needs in that list (for an even count, the mean of the two middle values; 4 decimals). This is an export rule: the graph keeps 0.8 and 0.6 (5.2), and the candidate targets are still ranked with the graph weights.
   The size limit is on the gzipped file (5.3). If a slice were still too big, the export trims it by a fixed ladder (fewer tasks, then fewer target needs, then fewer targets) and counts every trim in `export_report.json`; with O*NET 31.0 no slice needs it.
 - **`skills_index.json`:** `[{id, label, alt:[...], kind}]` for skills and technology, plus the starter list of Indian abbreviations (`data/graph/raw/abbrev_in.csv`).
 - **`titles.json`:** `{normalised title: [occ ids]}` from O*NET alternate titles and approved user titles.
@@ -274,7 +276,7 @@ Include low-cost Indian routes where they exist: NPTEL and SWAYAM courses with c
 
 **How the matcher uses them:**
 
-- **Skills credited.** A certification the person holds, and that has not expired, credits its `teaches` skills at the `used` level (0.7), unless the person rated those skills themselves. Their own rating wins.
+- **Skills credited.** A certification the person holds, and that has not expired, credits its `teaches` skills at the `used` level (0.85, owner decision O1), unless the person rated those skills themselves. Their own rating wins.
 - **Expired certifications** credit at the `rusty` level (0.4) and are labelled "expired, renew?".
 - **Screening flags.** An `asked_for` certification that the person lacks is shown as a separate screening note on the road ("Often asked for: CKA, in 31 percent of postings"). It does not change coverage, which measures skills only.
 - **Bridges** (7.4) choose from certifications first. Each bridge shows cost, hours, validity, and the official link.
@@ -299,7 +301,7 @@ Stored in D1 as JSON, holding ids and bands only:
   "creds": [{"id": "cred:aws-saa", "year": 2024, "expires": 2027}],
   "lead": {"people": "1-5", "budget": false, "expert": true},
   "constraints": {"hours_month": "5-10", "course_budget": "10k-50k", "city": "city:blr", "open_to": ["city:blr", "city:hyd", "open:remote"], "pay_floor_pct": -10, "mode": "hybrid"},
-  "priorities": {"pay": 1, "ai_safe": 1, "short_move": 1, "demand": 1, "enjoy": 0},
+  "priorities": {"pay": 1, "ai_safe": 1, "short_move": 3, "demand": 1, "enjoy": 0},
   "job_release": "abc123", "matcher_version": "1.0.0"
 }
 ```
@@ -321,13 +323,16 @@ Stored in D1 as JSON, holding ids and bands only:
 For person P and target T, with need weights `w_s` from T's slice:
 
 ```
-have(s) = 1.0 if strong, 0.7 if used, 0.4 if rusty (or last-used more than 3 years ago and not strong)
-          if the person did not rate s but holds a credential that teaches s: 0.7 if valid, 0.4 if expired (5.8)
-near(s) = max over P's skills k with skill_near(k, s) >= 0.5 of 0.5 * sim(k, s) * have(k)
+have(s) = 1.0 if strong, 0.85 if used, 0.4 if rusty (or last-used more than 3 years ago and not strong)
+          if the person did not rate s but holds a credential that teaches s: 0.85 if valid, 0.4 if expired (5.8)
+near(s) = max over P's skills k that are among the 3 closest neighbours of s (by sim, ties by id)
+          and have sim(k, s) >= 0.90, of 0.5 * sim(k, s) * have(k)
 cover(s) = max(have(s), near(s))
 coverage = sum(w_s * cover(s)) / sum(w_s)          over T's top 40 needs
 gap = needs with cover(s) < 0.7, ordered by w_s * (1 + 0.5 if skill label is "people still do this") desc
 ```
+
+Owner decisions of 2026-10-29 (deviations, Decisions O1 and O2; matcher 1.1.0): "used" counts 0.85 (it was 0.7), and a near skill counts only when it is one of the 3 closest neighbours of the skill being credited, among the near pairs the slice holds, and is at least 0.90 similar (before: any pair at 0.5 or more). The rank is the credited skill's own: k may be in the top 3 for s while s is not in the top 3 for k.
 
 ### 7.2 Levels
 
@@ -359,6 +364,8 @@ components (each normalised to 0..1 across the candidate set):
   enjoy     = interest fit (0 weight unless the walk was taken)
 score = sum(priority_i * component_i) / sum(priority_i)
 ```
+
+Default priorities, when the profile has none and when the app starts (owner decision O4, 2026-10-29): short move 3, pay 1, AI safety 1, demand 1, enjoy 0. So a closer road counts three times as much as AI safety, and a low-coverage road with little AI use no longer comes before a much closer one by default. The person can move every slider from 0 to 5.
 
 Kinds: **adjacent** (coverage 0.7 or more), **stretch** (0.4 to 0.7), **leap** (under 0.4, hidden behind "show leaps"). Constraint flags (`outside_time`, `below_pay_floor`, `needs_relocation`) are shown and never hide a road. Every road displays its components.
 

@@ -9,7 +9,7 @@ const slice = J('../../dev/fixtures/graph/slices/13-2011.00.json');
 const schema = J('../../../../contracts/profile.schema.json');
 const top = slice.needs.slice().sort((a, b) => b.w - a.w).slice(0, 25);
 const profile = (n, strength = 'used') => ({ v: 1, roles: [{ occ: slice.occ.id, level: 2, industry: 'other', years: '2-5', current: true }],
-  skills: top.slice(0, n).map(s => ({ id: s.id, strength })), priorities: { pay: 1, ai_safe: 1, short_move: 1, demand: 1, enjoy: 0 }, job_release: 'dev-unaccepted' });
+  skills: top.slice(0, n).map(s => ({ id: s.id, strength })), priorities: { pay: 1, ai_safe: 1, short_move: 3, demand: 1, enjoy: 0 }, job_release: 'dev-unaccepted' });
 const real = existsSync(new URL('../../../../matcher/match.js', import.meta.url)) ? (await import('../../../../matcher/match.js')).match : null;
 
 test('tierFromCoverage uses the SPEC 7.3 cut-offs', () => {

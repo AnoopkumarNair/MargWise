@@ -10,13 +10,17 @@ export const PRIORITIES = [
   ['demand', 'Demand'],
 ];
 
+// The sliders when the app starts: the matcher's defaults (SPEC 7.3, owner decision O4). A short move counts three times as much as
+// pay, AI safety or demand; the enjoy slider stays at 0 until the interest walk exists.
+export const DEFAULT_PRIORITIES = Object.freeze({ pay: 1, ai_safe: 1, short_move: 3, demand: 1, enjoy: 0 });
+
 export const state = {
   manifest: null,   // from ./manifest.json
   occ: null,        // { id, label } the person picked
   slice: null,      // slice of that occupation
   years: '2-5',
   skills: new Map(),// skill id -> 'used' | 'strong' | 'rusty'
-  priorities: { pay: 1, ai_safe: 1, short_move: 1, demand: 1, enjoy: 0 },
+  priorities: { ...DEFAULT_PRIORITIES },
   showLeaps: false,
   matcherVersion: null,
   schema: null,

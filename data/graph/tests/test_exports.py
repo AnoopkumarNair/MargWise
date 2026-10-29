@@ -53,7 +53,7 @@ class RealExports(unittest.TestCase):
         self.assertTrue(modes <= {'used', 'none', 'unknown'}, modes)   # the AI data has no automation/augmentation split
         self.assertIn('used', modes)
         skl = {n['id'] for n in s['needs']} | {n['id'] for t in s['targets'] for n in t['needs']}
-        self.assertTrue(all(a in skl and b in skl and a < b and 0.5 <= w <= 1 for a, b, w in s['near']['pairs']))
+        self.assertTrue(all(a in skl and b in skl and a < b and 0.9 <= w <= 1 for a, b, w in s['near']['pairs']))
 
     def test_no_slice_for_an_occupation_without_skill_ratings(self):
         self.assertFalse(os.path.exists(os.path.join(GRAPH_DIR, 'slices', '13-2051.00.json')))

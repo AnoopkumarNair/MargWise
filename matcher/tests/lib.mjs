@@ -82,7 +82,7 @@ export function randomInput(r, universe, near, teaches) {
   if (r() < 0.5) p.constraints = randomConstraints(r);
   const opts = {};
   if (r() < 0.8) opts.now = 2026;
-  if (r() < 0.8) opts.near = near;
+  if (r() < 0.8) opts.near = Array.isArray(near) ? pick(near) : near;
   if (r() < 0.6) opts.teaches = teaches;
   if (r() < 0.2) opts.walk = true;
   return [p, sl, opts];
