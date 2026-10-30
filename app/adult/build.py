@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the adult app (slices S1 and S3) into hosting/public/work/.
+"""Build the adult app (slices S1, S3 and S2) into hosting/public/work/.
 
   python3 app/adult/build.py --dev   build from the working files in data/graph/ (or the test fixtures in app/adult/dev/fixtures/ while
                                      that folder has no slices yet); stamps the release id 'dev-unaccepted'. Never deploy this.
@@ -165,7 +165,7 @@ def main():
 
     # 1. the app: everything at the top of app/adult/ that the browser needs, and screens/
     for name in ('styles.css', 'app.js', 'dom.js', 'lookup.js', 'matcher_adapter.js', 'state.js', 'data.js', 'footer.js',
-                 'intake_file.js', 'intake_profile.js', 'intake_read.js'):
+                 'intake_file.js', 'intake_profile.js', 'intake_read.js', 'constraints_model.js', 'today_model.js'):
         put(name, os.path.join(APP, name))
     for p in sorted(glob.glob(os.path.join(APP, 'screens', '*.js'))):
         put('screens/' + os.path.basename(p), p)
@@ -218,7 +218,7 @@ def main():
     gout['occupations.json'] = sha(op)
 
     manifest = {
-        'app': 'adult', 'slice': 'S3', 'release_id': release_id, 'dev_build': args.dev, 'fixture_data': is_fixture,
+        'app': 'adult', 'slice': 'S2', 'release_id': release_id, 'dev_build': args.dev, 'fixture_data': is_fixture,
         'built_at': None,  # no clock, so a rebuild of the same inputs gives the same bytes
         'sources': [srcs[k] for k in sorted(srcs)],
         # the O*NET version the slices were built from (their release id 'onet-31-0-<hash>'), so a dev build's footer can show it too

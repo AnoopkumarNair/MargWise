@@ -2,6 +2,7 @@
 // The resume path (S3) keeps what the reader found here too, including source lines. Those lines are shown on screen and are never
 // put in the profile: buildProfile() below copies ids, bands and numbers only.
 import { validate } from './contracts/validate_lib.js';
+import { cleanConstraints } from './constraints_model.js';
 
 export const YEARS = ['0-2', '2-5', '5-8', '8-12', '12-18', '18+'];
 export const YEARS_LABEL = { '0-2': 'Under 2 years', '2-5': '2 to 5 years', '5-8': '5 to 8 years', '8-12': '8 to 12 years', '12-18': '12 to 18 years', '18+': '18 years or more' };
@@ -23,6 +24,8 @@ export const state = {
   years: '2-5',
   skills: new Map(),// skill id -> 'used' | 'strong' | 'rusty'
   priorities: { ...DEFAULT_PRIORITIES },
+  constraints: {},  // the six quick questions (S2): only values the person chose. Empty means skipped. They add flags and never change the order.
+  focus: null,      // drill (S2): { occ, slice } of another job whose roads are shown with the same profile; null means the person's own job
   showLeaps: false,
   matcherVersion: null,
   schema: null,
@@ -35,9 +38,12 @@ export const state = {
   pretick: false,   // title path: the occupation's top needs have been pre-ticked once for this pick
 };
 
-export function resetPick() { state.occ = null; state.slice = null; state.skills = new Map(); state.roles = null; state.skillLast = new Map(); state.lead = null; state.reading = null; state.pretick = false; }
+export function resetPick() { state.focus = null; state.occ = null; state.slice = null; state.skills = new Map(); state.roles = null; state.skillLast = new Map(); state.lead = null; state.reading = null; state.pretick = false; }
 // "Start again": drops the resume reading, the picks and the profile. The router calls this on the welcome screen.
-export function resetAll() { resetPick(); state.path = null; state.years = '2-5'; state.priorities = { ...DEFAULT_PRIORITIES }; state.showLeaps = false; state.matcherVersion = null; }
+export function resetAll() { resetPick(); state.path = null; state.years = '2-5'; state.priorities = { ...DEFAULT_PRIORITIES }; state.constraints = {}; state.showLeaps = false; state.matcherVersion = null; }
+
+// The job whose roads are on screen: the person's own, or the one picked in the drill.
+export function active() { return state.focus || { occ: state.occ, slice: state.slice }; }
 
 // SPEC 7.2: the level starts from the years band (0-2 is level 1 ... 18+ is level 6).
 export function levelFromYears(years) { return Math.max(1, YEARS.indexOf(years) + 1); }
@@ -55,6 +61,8 @@ export function buildProfile() {
     priorities: { ...state.priorities },
     job_release: state.manifest.release_id,
   };
+  const cons = cleanConstraints(state.constraints);
+  if (Object.keys(cons).length) p.constraints = cons;
   if (state.lead) p.lead = { people: state.lead.people, budget: !!state.lead.budget, expert: !!state.lead.expert };
   if (state.matcherVersion && /^[0-9]+\.[0-9]+\.[0-9]+$/.test(state.matcherVersion)) p.matcher_version = state.matcherVersion;
   return p;

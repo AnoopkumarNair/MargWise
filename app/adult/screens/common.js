@@ -1,7 +1,7 @@
 // Shared by the roads and road-detail screens.
 import { h } from '../dom.js';
-import { state, buildProfile, checkProfile } from '../state.js';
-import { loadMatcher, runMatch, coveragePercent, TIER_LABEL, MOVE_LABEL } from '../matcher_adapter.js';
+import { state, buildProfile, checkProfile, active } from '../state.js';
+import { loadMatcher, runMatch, coveragePercent, TIER_LABEL, MOVE_LABEL, MOVE_EXPLAIN } from '../matcher_adapter.js';
 
 let matchFn = null;
 export const timing = { ms: null };
@@ -13,7 +13,7 @@ export async function computeRoads() {
   const v = checkProfile(profile);
   if (!v.ok) throw new Error('Profile does not match the contract: ' + v.errors.map(e => e.path + ' ' + e.message).join('; '));
   const t0 = performance.now();
-  const res = runMatch(matchFn, profile, state.slice, {});
+  const res = runMatch(matchFn, profile, active().slice, {});
   timing.ms = Math.round((performance.now() - t0) * 10) / 10;
   state.matcherVersion = res.version;
   return res;
@@ -28,10 +28,18 @@ export const AI_TEXT = { ai_does_much: 'AI already does much of this', mixed: 'A
 // Task AI use (slice amendment A1). 'used' is use seen without an automation/augmentation split; 'none' is no use seen; 'unknown' has no label.
 export const TASK_AI_TEXT = { automation: 'AI does this', augmentation: 'AI helps with this', used: 'AI use seen', none: 'No AI use seen', unknown: '' };
 
+// Where "back to roads" goes: the person's own job, or the job picked in the drill.
+export const roadsHref = () => state.focus ? '#/roads/' + encodeURIComponent(state.focus.occ.id) : '#/roads';
+export const drillHref = id => '#/drill/' + encodeURIComponent(id);
+
 export function badges(r) {
   return h('p', { class: 'badges' },
     h('span', { class: 'badge tier-' + r.tier }, TIER_LABEL[r.tier]),
-    r.move ? h('span', { class: 'badge' }, MOVE_LABEL[r.move]) : null);
+    r.move ? h('span', { class: 'badge move move-' + r.move }, MOVE_LABEL[r.move]) : null);
+}
+// The kind of move in words (SPEC 7.2). With no kind from the matcher, nothing is shown.
+export function moveNote(r) {
+  return r.move ? h('p', { class: 'move-note' }, h('strong', null, MOVE_LABEL[r.move] + ': '), MOVE_EXPLAIN[r.move]) : null;
 }
 
 export function coverageBar(r) {
@@ -42,18 +50,16 @@ export function coverageBar(r) {
     h('span', { class: 'bar', role: 'presentation' }, bar));
 }
 
-const NM = 'not yet measured';
+// Figures we do not have are left out, not listed as "not yet measured" (owner decision 2026-10-30). Dates and sources live on the "About this data" page.
 export function signalText(kind, s) {
-  if (!s) return NM;
-  if (kind === 'ai') return typeof s.value === 'number' ? 'AI use seen in ' + pct(s.value) + ' of the work (as of ' + s.as_of + ')' : String(s.value);
-  return String(s.value) + ' (as of ' + s.as_of + ')';
+  if (kind === 'ai') return typeof s.value === 'number' ? 'AI use seen in ' + pct(s.value) + ' of the work' : String(s.value);
+  return String(s.value);
 }
+export const NO_FIGURES = 'Pay and demand figures are coming.';
 export function signalList(r) {
-  return h('dl', { class: 'signals' },
-    h('div', null, h('dt', null, 'Pay'), h('dd', { class: r.signals.pay ? '' : 'nm' }, signalText('pay', r.signals.pay))),
-    h('div', null, h('dt', null, 'Demand'), h('dd', { class: r.signals.demand ? '' : 'nm' }, signalText('demand', r.signals.demand))),
-    h('div', null, h('dt', null, 'AI'), h('dd', { class: r.signals.ai ? '' : 'nm' }, signalText('ai', r.signals.ai))));
+  const rows = [['pay', 'Pay', r.signals.pay], ['demand', 'Demand', r.signals.demand], ['ai', 'AI', r.signals.ai]].filter(x => x[2]);
+  return rows.length ? h('dl', { class: 'signals' }, rows.map(([k, label, s]) => h('div', null, h('dt', null, label), h('dd', null, signalText(k, s))))) : null;
 }
 export function flagList(r) {
-  return r.flags.length ? h('ul', { class: 'flags' }, r.flags.map(f => h('li', null, f.text))) : null;
+  return r.flags.length ? h('ul', { class: 'flags', 'aria-label': 'Notes on this road' }, r.flags.map(f => h('li', { 'data-flag': f.id }, f.text))) : null;
 }

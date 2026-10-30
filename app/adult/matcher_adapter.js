@@ -13,6 +13,20 @@ export const TIERS = ['adjacent', 'stretch', 'leap'];
 export const TIER_LABEL = { adjacent: 'Close move', stretch: 'Stretch', leap: 'Leap' };
 export const MOVES = ['up', 'across', 'diagonal', 'reset', 'fork'];
 export const MOVE_LABEL = { up: 'Step up', across: 'Sideways move', diagonal: 'Step up and sideways', reset: 'Start again lower', fork: 'Fork in the same field' };
+// A plain-word explanation for each kind of move (SPEC 7.2).
+export const MOVE_EXPLAIN = {
+  up: 'The same line of work, one level above yours.',
+  across: 'A different line of work, at about your level.',
+  diagonal: 'A different line of work, one level above yours.',
+  reset: 'A job at least two levels below yours, where you cover less than half of the skills.',
+  fork: 'A management job, or a specialist step, in your own line of work.',
+};
+// Experience fit: your years against the years this job's level usually asks for (SPEC 7.2).
+export const FIT_TEXT = {
+  below: 'You have fewer years of experience than this job’s level usually asks for.',
+  in: 'Your years of experience fit this job’s level.',
+  above: 'You have more years of experience than this job’s level usually asks for.',
+};
 export const FLAG_TEXT = {
   outside_time: 'Needs more study time than you said you have.',
   below_pay_floor: 'Pay may fall below your lowest pay change.',
@@ -61,7 +75,10 @@ export function normaliseRoad(raw, slice, profile) {
       reason: gapReason(g),
     };
   });
-  const flags = (raw.flags || []).map(id => ({ id, text: FLAG_TEXT[id] || id }));
+  const flags = (raw.flags || []).map(f => { const id = typeof f === 'string' ? f : (f && f.id) || ''; return { id, text: FLAG_TEXT[id] || id }; }).filter(f => f.id);
+  const lvl = raw.level || {};
+  const fit = ['below', 'in', 'above'].includes(lvl.fit) ? lvl.fit : null;
+  const bridges = (Array.isArray(raw.bridges) ? raw.bridges : []).map(b => ({ label: typeof b === 'string' ? b : (b && (b.label || b.name)) || '' })).filter(b => b.label);
   const comps = raw.components || {};
   const components = COMP.map(([key, label]) => {
     const c = comps[key === 'short_move' ? 'short' : key];
@@ -74,8 +91,10 @@ export function normaliseRoad(raw, slice, profile) {
     tier, move, coverage,
     score: typeof raw.score === 'number' ? raw.score : 0,
     gaps, flags, components, signals,
-    bridges: (raw.bridges || []).map(b => ({ label: b })),
-    fit: (raw.level && raw.level.fit) || null,
+    bridges,
+    fit, fitText: fit ? FIT_TEXT[fit] : null,
+    targetLevel: lvl.target === undefined ? null : lvl.target,
+    newRole: !!raw.new_role,
     via: t ? t.via : [],
   };
 }
@@ -84,7 +103,8 @@ export function normaliseResult(res, slice, profile) {
   const roads = (res.roads || []).map(r => normaliseRoad(r, slice, profile));
   // Stable order: score, then coverage, then id. The matcher already sorts; this keeps the screen steady if it does not.
   roads.sort((a, b) => b.score - a.score || b.coverage - a.coverage || (a.id < b.id ? -1 : 1));
-  return { version: res.version || null, roads };
+  const person = res.person && typeof res.person === 'object' ? res.person : null;
+  return { version: res.version || null, roads, personLevel: person && Number.isInteger(person.level) ? person.level : null };
 }
 
 // Runs the matcher and returns the normalised result. `matchFn` is match() from the matcher module.
