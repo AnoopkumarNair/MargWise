@@ -1,0 +1,15 @@
+[
+  {
+    "id": "skl:2.A.2.a",
+    "label": "Critical Thinking",
+    "alt": [],
+    "kind": "skill"
+  },
+  {
+    "id": "tec:excel",
+    "label": "Microsoft Excel",
+    "alt": ["MS Excel", "Excel", "MIS"],
+    "kind": "technology",
+    "ambiguous": ["Excel"]
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "ok": true,
+  "result": {
+    "roles": [
+      {
+        "title": "Senior Accountant",
+        "occ": "occ:13-2011.00",
+        "employer": "[EMPLOYER_1]",
+        "start": "2019-06",
+        "end": "present"
+      },
+      {
+        "title": "Audit Associate",
+        "employer": null,
+        "start": "2016",
+        "end": "2019-05"
+      }
+    ],
+    "skills": [
+      {
+        "id": "tec:excel",
+        "line": "Built monthly MIS reports in Excel for [EMPLOYER_1].",
+        "role": 0
+      },
+      {
+        "id": "skl:2.A.2.a",
+        "line": "Reviewed vendor reconciliations and flagged exceptions."
+      }
+    ],
+    "creds": [
+      {
+        "id": "cred:aws-saa",
+        "line": "AWS Certified Solutions Architect - Associate (2024)",
+        "year": 2024
+      }
+    ]
+  },
+  "dropped": 1,
+  "prompt_v": 1
+}

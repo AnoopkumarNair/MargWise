@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/email_complete.response.schema.json",
+  "title": "email_complete response",
+  "description": "The adult session token for the new (or existing) tester, in the BACKEND ADR-20 format v<keyver>.<tester_id>.<iat>.<mac>. The pattern checks the shape only; the server checks the MAC, the age and tok_after.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok", "token"],
+  "properties": {
+    "ok": {
+      "enum": [true]
+    },
+    "token": {
+      "type": "string",
+      "minLength": 100,
+      "maxLength": 160,
+      "pattern": "^v[1-9][0-9]{0,2}\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.[0-9]{13}\\.[0-9a-f]{64}$"
+    }
+  }
+}

@@ -22,12 +22,14 @@ Read `docs/adult/SPEC.md` first. It is the source of truth. **Build in the verti
 
 S0 comes first and is short. Slices 1 to 3 store nothing on a server and need no sign-in, so the owner can show them to people from their network straight away, with no legal blockers. Slice 4 adds accounts.
 
+**Order change (owner decision 2026-10-29, `deviations.md` O8): S3 now comes before S2.** The resume path is the main way in, and the title-and-tick path is the fallback, so the owner wants to try the resume on the device first. The rows below keep their numbers; build S1, then S3, then S2. S3 does not need anything from S2: the constraints screen (T4.6, constraints part) and the credentials list (T1.8) stay in S2, and the confirm screen drops credentials it cannot match to an id.
+
 | Slice | The owner can try | Tickets (detail below) | Tests (TEST_PLAN) |
 | --- | --- | --- | --- |
 | **S0. Foundations** | Nothing visible yet, but the base everything else stands on: contracts, the id registry, migrations, portable handlers, logging, the invariant checker and the CI skeleton | F0.1 to F0.8 (**ASK**: create the preview D1 database and Turnstile keys) | Contract-validator tests; baseline-equals-current-schema test; migration guard; handler and health tests; inventory test; CI green |
 | **S1. Title to roads** | Open `/work/`, type a job title, tick skills, see adjacent, stretch and leap roads with coverage and gaps, open one | T0.2; T1.1; T1.2 (SOC to ISCO only); T1.3 without PLFS; T1.4; T1.5 without embeddings; T1.6; T2.1; T2.2 with coverage, gap and kinds only (levels and bridges stubbed); T2.3; T2.4 with 8 cases; T4.1 without sign-in; T4.7; T5.2 basic; plus `matcher/slice.schema.json` | Layer 1 all, layer 2 (8 golden cases and properties), layer 7 S1 script, layer 8 budgets for the first load and slices, layer 9 |
+| **S3. Resume on the device** (built before S2) | Upload a PDF or DOCX, or paste text; see found roles and skills with source lines; confirm; roads. Nothing leaves the device; the profile lives in memory only. The title-and-tick path stays as the fallback and starts with the top 12 skills ticked | T4.3; T4.4; T4.6 confirm screen; the fixture generator scripts and fixtures | Layer 3 all fixtures, layer 4 (on-device network and storage tests, canaries), layer 7 S3, layer 8 intake budget; **people test after S3** |
 | **S2. Deeper and honest labels** | "Your job today" (skills with AI labels, tasks by AI use, pay band, data age), level labels (up, across, diagonal, reset, fork), constraints and priority sliders, road detail, drill | T1.3 PLFS and freshness (SPEC 5.5, 5.6); T2.2 levels (SPEC 7.2) and order (7.3); T2.4 grown to 15 cases (**ASK**: the owner reads them); T4.6 constraints part; T5.1; T5.3 (bridges show "no reviewed course yet" unless credentials are curated); **T1.7 new AI-era roles**; **T1.8 certifications**; **T1.9 city clusters** | Layers 1 and 2 extended, layer 7 S2, layer 8 a11y; **people test after S2** |
-| **S3. Resume on the device** | Upload a PDF or DOCX, or paste text; see found roles and skills with source lines; confirm; roads. Nothing leaves the device; the profile lives in memory only | T4.3; T4.4; T4.6 confirm screen; the fixture generator scripts and fixtures | Layer 3 all fixtures, layer 4 (on-device network and storage tests, canaries), layer 7 S3, layer 8 intake budget; **people test after S3** |
 | **S4. Accounts and saving** | Sign up with email (birth year first), save the profile, log in on another device, export, delete | T3.1 to T3.7; T4.2 (**ASK**: notice wording); T5.4; the adult panel of T7.2 | Layers 5 and 7 S4; `fakedb.mjs` |
 | **S5. Better reading on the device** | Tier 2 suggestions for implied skills; the owner runs the 30-resume evaluation | T4.5; T7.3 | Layer 3 extended (tier 2 fixtures), layer 8 model-size and consent check; the 30-person evaluation |
 | **S6. "Most accurate"** | Redacted preview, then large-model reading, with fallbacks | T6.1 to T6.5 (**ASK**: R2 or Hugging Face for model files; the provider and spend cap) | Layers 4 (canaries in the preview and in the AI request), 6, 7 S6 |
@@ -114,18 +116,18 @@ Rules for slicing:
 
 - **Occupations:** all O*NET-SOC occupations with data, with `attrs` holding the job zone, SOC, ISCO (where mapped) and description.
 - **Skills:** `needs` edges from Skills, Knowledge and Work Activities, with the weight formula in SPEC 5.2.
-- **Technology:** Technology Skills become `tec:` nodes and `needs` edges (weight 0.6, or 0.8 when the O*NET `Hot Technology` flag is set).
+- **Technology:** Technology Skills become `tec:` nodes and `needs` edges (weight 0.6, or 0.8 when the O*NET `Hot Technology` flag is set). The export caps them in each slice list at the median weight of the other needs (SPEC 5.4, owner decision O3).
 - **Tasks:** `has_task` edges. Attach AI use from `data/ai/task_pen.csv` and `data/ai/tasks.json` as `signal(kind='ai_task_mode')`.
 - **Titles:** Alternate Titles become `ttl:` nodes and `is_title_of` edges. Titles are normalised: lower case, punctuation stripped, whitespace collapsed.
 - **`close_to`:** from Related Occupations.
-- **`skill_near`:** computed. Cosine over occupation vectors, keep the top 10 per skill with similarity of 0.5 or more.
+- **`skill_near`:** computed. Cosine over occupation vectors, keep the top 10 per skill with similarity of 0.5 or more. A slice keeps only the pairs the matcher can count (SPEC 5.4 and 7.1, owner decision O2).
 - **Clusters:** `in_cluster` edges from `data/content.json` careers to `fld:` nodes.
 - **Pay:** the PLFS band, as `signal(kind='pay_band_in')` through ISCO. If NCO is missing, attach it only to the 83 careers that already carry PLFS groups.
 - **Done when:** the script runs offline from the raw files in under 2 minutes, and its outputs are deterministic (two runs give identical counts and hashes).
 
 **T1.4 Graph checks.** `pipeline/validate_graph.py`: every check in SPEC 5.3, printing counts by node and edge kind.
 
-**T1.5 Exports.** `data/graph/export.py` writes `slices/<soc>.json`, `skills_index.json` and `titles.json` as in SPEC 5.4.
+**T1.5 Exports.** `data/graph/export.py` writes `slices/<soc>.json`, `skills_index.json` and `titles.json` as in SPEC 5.4. Each slice is at most 60 KB gzipped (SPEC 5.3); the export fails if one is not, after the last-resort trim ladder. Slices are build outputs and are not committed (deviation D15).
 
 - **Indian abbreviations and titles.** Add a starter list at `data/graph/raw/abbrev_in.csv` (columns: `term,maps_to_id,note`) focused on the three industries (SPEC 3), about 80 terms:
   - **IT:** SDE, SDET, DevOps, SRE, L1/L2/L3 support, delivery manager, scrum master and SAP modules (FICO, MM, SD, ABAP, BASIS);
@@ -139,7 +141,7 @@ Rules for slicing:
 **T1.6 Wire into the pipeline and release.**
 
 - **`pipeline/run.py`:** add stages `9 build graph`, `10 graph checks` and `11 export graph`, and add `--fetch` support for T1.1.
-- **`--accept`:** also copies `slices/`, `skills_index.json` and `titles.json` to `data/releases/graph/`, with their hashes in `manifest.json` under `graph`.
+- **`--accept`:** also stores the slices (as one xz pack, `slices.jsonl.xz`), `skills_index.json` and `titles.json` in `data/releases/graph/<release>/`, with their hashes in `manifest.json` under `graph` (deviation D15). `app/adult/build.py` unpacks the slices as plain `.json` for the web server, which gzips them on the way.
 - **`build-check.yml`:** extend the drift check to `data/releases/graph/`.
 - **Done when:** a full run passes and CI on the branch passes.
 
@@ -202,7 +204,7 @@ Every endpoint is a pure handler in `hosting/core/` with a one-line adapter in `
 - **`admin.js`:** creating an invite accepts `track` (`student` or `adult`), and the invite list shows it.
 - **`join.js`:** refuses adult codes, with "Use the link for working adults: /work/".
 
-**T3.3 Keys and tokens (ADR-04).** `hosting/core/keys.js` uses a separate key per purpose (`SIGN_KEY`, `EMAIL_KEY`, `CODE_KEY` and `IP_KEY`), with versioned adult tokens `v1.<iat>.<mac>`, overlap acceptance during rotation, and `tok_after`. Email normalisation follows ADR-04. Tests cover rotation and the overlap window.
+**T3.3 Keys and tokens (ADR-04).** `hosting/core/keys.js` uses a separate key per purpose (`SIGN_KEY`, `EMAIL_KEY`, `CODE_KEY` and `IP_KEY`), with versioned adult session and `pending` tokens in the ADR-20 format (`v<keyver>.<tester_id>.<iat>.<mac>`), overlap acceptance during rotation, and `tok_after`. Email normalisation follows ADR-04. Tests cover rotation and the overlap window.
 
 **T3.4 Email sign-in.** `hosting/core/email_start.js`, `email_verify.js` and `email_complete.js`, as in SPEC 9 and ADR-04.
 
@@ -211,7 +213,7 @@ Every endpoint is a pure handler in `hosting/core/` with a one-line adapter in `
 - **Age check on the server:** under 18 counts in `under18` only.
 - **Limits:** per address (`email_sends`), per IP bucket and site-wide.
 - **No account discovery:** the same queries run for known and unknown addresses.
-- **`pending` tokens:** signed, valid for 30 minutes.
+- **`pending` tokens:** signed with the pending key, valid for 30 minutes (format in ADR-20).
 - **Idempotent completion:** a repeat returns the same tester, because of the unique index.
 - **Sending:** `hosting/core/email_send.js` wraps Cloudflare Email Service. `EMAIL_DRY_RUN=1` records the message for tests.
 - **Done when:** every case in TEST_PLAN layer 5 for email passes.

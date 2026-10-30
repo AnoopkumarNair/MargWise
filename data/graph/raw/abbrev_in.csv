@@ -1,0 +1,619 @@
+term,maps_to_id,note
+ABAP,tec:advanced-business-application-programming-abap,needs owner review: SAP programming language
+accounting,skl:2.C.1.c,needs owner review: knowledge area Economics and Accounting
+Accounts payable,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Accounts receivable,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Accounts receivables,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Actimize,tec:actimize-brokerage-compliance-solutions,needs owner review: short form; judgement
+Active Directory,tec:microsoft-active-directory,needs owner review: spelling variant
+ADF,tec:microsoft-azure-data-factory,needs owner review: short form; ambiguous
+Administrative support,skl:2.C.1.b,needs owner review: closest knowledge: Administrative
+ADP,tec:adp-software,needs owner review: short form
+Advance tax,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Advanced Excel,tec:microsoft-excel,needs owner review: the usual way to write it
+Airflow,tec:apache-airflow,needs owner review: short form
+Amazon S3,tec:amazon-simple-storage-service-s3,needs owner review: short form
+Amazon Web Services,tec:amazon-web-services-aws-software,needs owner review: spelling variant
+AML,skl:2.C.8.b,needs owner review: anti-money laundering; closest knowledge: Law and Government; judgement
+Analytical skills,skl:4.A.2.a.4,needs owner review: closest activity: Analyzing Data or Information; judgement
+Analytical thinking,skl:2.A.2.a,needs owner review: closest skill: Critical Thinking; judgement
+Angular,tec:google-angular,needs owner review: short form
+Angular JS,tec:google-angular,needs owner review: closest node: Google Angular; judgement
+AngularJS,tec:google-angular,needs owner review: closest node: Google Angular; judgement
+Ansible,tec:ansible-software,needs owner review: short form
+Anti money laundering,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+AP executive,occ:43-3031.00,needs owner review: accounts payable
+Applicant tracking,tec:applicant-tracking-software,needs owner review: the practice; closest tool category
+Application development,skl:2.B.3.e,needs owner review: closest skill: Programming; judgement
+Application support,skl:2.B.3.k,needs owner review: closest skill: Troubleshooting; judgement
+AR executive,occ:43-3011.00,needs owner review: accounts receivable; judgement
+Artificial Intelligence,tec:artificial-intelligence-software,needs owner review: spelling variant
+ATS,tec:applicant-tracking-software,needs owner review: short form; ambiguous
+Audit support,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+AWS,tec:amazon-web-services-aws-software,needs owner review: short form
+Azure,tec:microsoft-azure-software,needs owner review: short form
+Azure DevOps,tec:microsoft-azure-devops-services,needs owner review: short form
+Back office operations,skl:2.C.1.b,needs owner review: closest knowledge: Administrative; judgement
+Balance sheet,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Bank reconciliation,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Banking operations,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Basel III,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+Bash scripting,tec:bash,needs owner review: spelling variant
+BASIS,tec:sap-netweaver,needs owner review: SAP Basis administration runs on NetWeaver; ambiguous (the English word basis)
+BI reporting,tec:business-intelligence-software,needs owner review: judgement
+Bit Bucket,tec:atlassian-bitbucket,needs owner review: spelling variant
+Bloomberg,tec:bloomberg-professional,needs owner review: short form
+Bloomberg Terminal,tec:bloomberg-professional,needs owner review: spelling variant
+Book keeping,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+bookkeeper,occ:43-3031.00,needs owner review
+Bookkeeping,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Branch banking,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Budgeting,tec:budgeting-software,needs owner review: the practice; closest tool category; judgement
+Bug tracking,tec:defect-tracking-software,needs owner review: the practice; closest tool category
+Business analysis,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+business analyst,occ:13-1111.00,needs owner review: non-IT business analyst; judgement
+business analyst,occ:15-1211.00,needs owner review: IT business analyst; judgement
+Business development,skl:2.C.1.d,needs owner review: closest knowledge: Sales and Marketing; judgement
+Business English,skl:2.C.7.a,needs owner review: knowledge area English Language; judgement
+Business intelligence,tec:business-intelligence-software,needs owner review: the practice; closest tool category
+Business writing,skl:2.A.1.c,needs owner review: closest skill: Writing
+BusinessObjects,tec:sap-business-objects,needs owner review: spelling variant
+Busy accounting,tec:financial-accounting-software,needs owner review: Indian accounting package; closest tool category; the product has no node of its own
+BW,tec:sap-netweaver-bw,needs owner review: SAP business warehouse; ambiguous without the word SAP nearby
+CA,occ:13-2011.00,needs owner review: chartered accountant; ambiguous
+Call center,tec:call-center-software,needs owner review: the workplace; closest tool category; judgement
+Call centre,tec:call-center-software,needs owner review: spelling variant; judgement
+Call monitoring,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; BPM call quality; judgement
+Call quality,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; BPM call quality; judgement
+Capacity planning,skl:4.A.2.b.5,needs owner review: closest activity: Scheduling Work and Activities; judgement
+Capital markets,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Cash management,tec:cash-flow-software,needs owner review: the practice; closest tool category; judgement
+chartered accountant,occ:13-2011.00,needs owner review: CA; the same as the career in the student game
+Chat support,tec:chat-software,needs owner review: the practice; closest tool category
+Chatbot,tec:chatbot-software,needs owner review: short form
+Chatbots,tec:chatbot-software,needs owner review: plural form
+ChatGPT,tec:openai-chatgpt,needs owner review: short form
+CI/CD,tec:continuous-integration-software,needs owner review: continuous integration only; judgement
+Claims adjudication,tec:insurance-claim-processing-software,needs owner review: the practice; closest tool category
+claims executive,occ:13-1031.00,needs owner review: insurance claims
+Claims management,tec:claims-processing-administration-and-management-software,needs owner review: the practice; closest tool category
+Claims processing,tec:insurance-claim-processing-software,needs owner review: the practice; closest tool category
+Client communication,skl:4.A.4.a.3,needs owner review: closest activity: Communicating with People Outside the Organization
+Client handling,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+client management,skl:2.C.1.e,needs owner review: closest knowledge: Customer and Personal Service; judgement
+Client relationship management,skl:2.C.1.e,needs owner review: the practice; judgement
+Client servicing,skl:2.C.1.e,needs owner review: closest knowledge: Customer and Personal Service
+Coaching,skl:4.A.4.b.5,needs owner review: closest activity: Coaching and Developing Others
+COBOL,tec:common-business-oriented-language-cobol,needs owner review: short form
+coding,skl:2.B.3.e,needs owner review: everyday word for Programming
+Cognos,tec:ibm-cognos,needs owner review: short form
+Cold calling,skl:4.A.4.a.6,needs owner review: closest activity: Selling or Influencing Others
+collections,occ:43-3011.00,needs owner review: bill and account collectors
+collections executive,occ:43-3011.00,needs owner review
+Collections management,tec:debt-account-management-and-collection-software,needs owner review: the practice; closest tool category; judgement
+Commercial banking,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+communication skills,skl:2.A.1.d,needs owner review: closest skill: Speaking; judgement
+Companies Act,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government
+Company law,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government
+Compensation and benefits,skl:2.C.1.f,needs owner review: closest knowledge: Personnel and Human Resources
+Complaint handling,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+Complaint resolution,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+Computer literacy,skl:2.C.3.a,needs owner review: closest knowledge: Computers and Electronics; judgement
+Computer skills,skl:2.C.3.a,needs owner review: closest knowledge: Computers and Electronics; judgement
+Concurrent audit,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards; bank audit
+Conflict resolution,skl:4.A.4.a.7,needs owner review: closest activity: Resolving Conflicts and Negotiating with Others
+Confluence,tec:atlassian-confluence,needs owner review: short form
+Contact center,tec:multi-channel-contact-center-software,needs owner review: the workplace; closest tool category; judgement
+Contact centre,tec:multi-channel-contact-center-software,needs owner review: spelling variant; judgement
+Content writing,skl:2.A.1.c,needs owner review: closest skill: Writing
+Continuous improvement,skl:2.B.4.h,needs owner review: closest skill: Systems Evaluation; judgement
+Continuous integration,tec:continuous-integration-software,needs owner review: same label
+Core Java,tec:oracle-java,needs owner review: the language
+Corporate banking,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Cost accounting,tec:cost-accounting-software,needs owner review: the practice; closest tool category
+Credit analysis,tec:credit-and-risk-analysis-software,needs owner review: the practice; closest tool category
+credit analyst,occ:13-2041.00,needs owner review
+Credit appraisal,tec:credit-and-risk-analysis-software,needs owner review: the practice; closest tool category
+Credit assessment,tec:credit-and-risk-analysis-software,needs owner review: the practice; closest tool category
+Credit risk,tec:credit-and-risk-analysis-software,needs owner review: the practice; closest tool category; judgement
+Credit scoring,tec:credit-and-risk-analysis-software,needs owner review: the practice; closest tool category; judgement
+credit underwriting,occ:13-2041.00,needs owner review: credit analysis; judgement
+credit underwriting,occ:13-2053.00,needs owner review: underwriting; judgement
+Credit underwriting,tec:credit-underwriting-software,needs owner review: the practice; closest tool category
+Cross functional collaboration,skl:2.B.1.b,needs owner review: closest skill: Coordination; judgement
+Cross selling,skl:4.A.4.a.6,needs owner review: closest activity: Selling or Influencing Others
+Crystal Reports,tec:sap-crystal-reports,needs owner review: short form
+CSR,occ:43-4051.00,needs owner review: customer service representative
+Customer care,skl:2.C.1.e,needs owner review: closest knowledge: Customer and Personal Service
+customer care executive,occ:43-4051.00,needs owner review: common BPM title
+Customer communication,skl:4.A.4.a.3,needs owner review: closest activity: Communicating with People Outside the Organization
+Customer due diligence,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+Customer experience,skl:2.C.1.e,needs owner review: closest knowledge: Customer and Personal Service; judgement
+Customer handling,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+Customer relationship management,skl:2.C.1.e,"needs owner review: the practice, not the software; judgement"
+Customer satisfaction,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+customer service,skl:2.C.1.e,needs owner review: closest knowledge
+Customer support,skl:2.C.1.e,needs owner review: closest knowledge: Customer and Personal Service
+customer support executive,occ:43-4051.00,needs owner review: common BPM title
+Cyber security,skl:2.C.8.a,needs owner review: closest knowledge: Public Safety and Security; judgement
+Cybersecurity,skl:2.C.8.a,needs owner review: closest knowledge: Public Safety and Security; judgement
+D365,tec:microsoft-dynamics,needs owner review: short form; judgement
+Data analysis,skl:4.A.2.a.4,needs owner review: closest activity: Analyzing Data or Information
+data analyst,occ:15-2051.00,needs owner review: closest by duties; judgement
+Data analytics,skl:4.A.2.a.4,needs owner review: closest activity: Analyzing Data or Information
+data engineer,occ:15-1243.00,"needs owner review: Database Architects is the closest O*NET fit for data pipeline and warehouse work (O*NET also lists the title under Database Administrators, Statisticians and Data Scientists); judgement"
+data engineer,occ:15-1252.00,needs owner review: software-heavy data engineering; judgement
+Data entry,tec:data-entry-software,needs owner review: the practice; closest tool category
+Data interpretation,skl:4.A.2.a.4,needs owner review: closest activity: Analyzing Data or Information
+Data mining,tec:data-mining-software,needs owner review: the practice; closest tool category
+Data modeling,tec:data-modeling-software,needs owner review: the practice; closest tool category
+Data modelling,tec:data-modeling-software,needs owner review: spelling variant
+Data visualisation,tec:data-visualization-software,needs owner review: spelling variant
+Data visualization,tec:data-visualization-software,needs owner review: the practice; closest tool category
+Data warehouse,tec:data-warehouse-software,needs owner review: the practice; closest tool category
+Data warehousing,tec:data-warehouse-software,needs owner review: the practice; closest tool category
+DB2,tec:ibm-db2,needs owner review: spelling variant
+DBA,occ:15-1242.00,needs owner review: database administrator
+Debt recovery,tec:debt-account-management-and-collection-software,needs owner review: the practice; closest tool category; judgement
+Debugging,skl:2.B.3.k,needs owner review: closest skill: Troubleshooting; judgement
+Decision making,skl:2.B.4.e,needs owner review: closest skill: Judgment and Decision Making
+Defect tracking,tec:defect-tracking-software,needs owner review: the practice; closest tool category
+delivery manager,occ:11-3021.00,needs owner review: IT delivery; judgement
+delivery manager,occ:13-1082.00,needs owner review: IT delivery; judgement
+DevOps,occ:15-1244.00,needs owner review: no DevOps occupation in O*NET; closest by duties; judgement
+DevOps,occ:15-1252.00,needs owner review: no DevOps occupation in O*NET; closest by duties; judgement
+Digital marketing,skl:2.C.1.d,needs owner review: closest knowledge: Sales and Marketing
+Direct tax,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Document verification,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+Due diligence,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement; ambiguous
+Dunning,tec:debt-account-management-and-collection-software,needs owner review: the practice; closest tool category; judgement
+DWH,tec:data-warehouse-software,needs owner review: short form
+Dynamics 365,tec:microsoft-dynamics,needs owner review: closest node: Microsoft Dynamics; judgement
+DynamoDB,tec:amazon-dynamodb,needs owner review: spelling variant
+E-way bill,skl:2.C.1.c,needs owner review: GST transport document; closest knowledge: Economics and Accounting; judgement
+EC2,tec:amazon-elastic-compute-cloud-ec2,needs owner review: short form
+Email etiquette,skl:2.A.1.c,needs owner review: closest skill: Writing; judgement
+Email handling,skl:2.A.1.c,needs owner review: closest skill: Writing; judgement
+email writing,skl:2.A.1.c,needs owner review: closest skill: Writing
+Employee engagement,skl:2.C.1.f,needs owner review: closest knowledge: Personnel and Human Resources; judgement
+Employee relations,skl:2.C.1.f,needs owner review: closest knowledge: Personnel and Human Resources
+Employee training,skl:4.A.4.b.3,needs owner review: closest activity: Training and Teaching Others
+English communication,skl:2.A.1.d,needs owner review: closest skill: Speaking; judgement
+Enhanced due diligence,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+Equity research,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+ERP,tec:enterprise-resource-planning-erp-system,needs owner review: short form; ambiguous
+ERP systems,tec:enterprise-resource-planning-erp-system,needs owner review: plural form
+Escalation management,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+Excel,tec:microsoft-excel,needs owner review: ambiguous without a spreadsheet context word
+Excel macros,tec:microsoft-visual-basic-for-applications-vba,needs owner review: macros in Excel are written in VBA; judgement
+Exchange Server,tec:microsoft-exchange,needs owner review: short form
+Expense management,tec:automated-expense-reporting-system-software,needs owner review: the practice; closest tool category; judgement
+F&A,occ:13-2011.00,needs owner review: finance and accounting process; judgement
+F&A,occ:43-3031.00,needs owner review: finance and accounting process; judgement
+FATCA,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+FI/CO,tec:sap-erp-financials,needs owner review: SAP finance and controlling
+FICO,tec:sap-erp-financials,needs owner review: SAP finance and controlling module; judgement
+finance,skl:2.C.1.c,needs owner review: knowledge area Economics and Accounting; ambiguous (very broad)
+Financial accounting,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Financial analysis,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Financial modeling,tec:financial-modeling-software,needs owner review: the practice; closest tool category
+Financial modelling,tec:financial-modeling-software,needs owner review: spelling variant
+Financial planning,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Financial reporting,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Financial statements,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Firewall,tec:firewall-software,needs owner review: the tool category; ambiguous
+Firewalls,tec:firewall-software,needs owner review: the tool category; ambiguous
+First call resolution,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+Fiserv,tec:fiserv-financial-services-software,needs owner review: short form
+Fixed asset accounting,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Fixed assets,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Floor support,skl:4.A.4.b.5,needs owner review: closest activity: Coaching and Developing Others; judgement
+Foreign exchange,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Forex,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+FP&A,skl:2.C.1.c,needs owner review: financial planning and analysis; closest knowledge: Economics and Accounting
+Fraud analytics,tec:credit-fraud-detection-software,needs owner review: the practice; closest tool category; judgement
+Fraud detection,tec:credit-fraud-detection-software,needs owner review: the practice; closest tool category; judgement
+Fraud investigation,tec:accounting-fraud-detection-software,needs owner review: the practice; closest tool category; judgement
+Fraud prevention,tec:credit-fraud-detection-software,needs owner review: the practice; closest tool category; judgement
+Freshdesk,tec:help-desk-software,needs owner review: a help desk product; the product has no node of its own (see abbrev_in_unmapped.csv)
+Freshservice,tec:help-desk-software,needs owner review: a help desk product; the product has no node of its own (see abbrev_in_unmapped.csv)
+GAAP,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Gap analysis,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+GCP,tec:google-cloud-software,needs owner review: short form
+General ledger,tec:general-ledger-software,needs owner review: the practice; closest tool category
+Generative AI,tec:artificial-intelligence-software,needs owner review: closest node; judgement
+Git Hub,tec:github,needs owner review: spelling variant
+GitHub Actions,tec:github,needs owner review: part of GitHub; judgement
+GL accounting,tec:general-ledger-software,needs owner review: the practice; closest tool category
+Google Cloud,tec:google-cloud-software,needs owner review: short form
+Google Cloud Platform,tec:google-cloud-software,needs owner review: spelling variant
+Grafana,tec:grafana-labs-grafana-cloud,needs owner review: closest node; judgement
+Gsheets,tec:google-sheets,needs owner review: short form
+GST,skl:2.C.1.c,needs owner review: Indian goods and services tax; closest knowledge: Economics and Accounting
+GST compliance,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+GST executive,occ:13-2082.00,needs owner review: GST returns; judgement
+GST filing,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+GST reconciliation,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+GST returns,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+GSTR,skl:2.C.1.c,needs owner review: GST return forms; closest knowledge: Economics and Accounting
+Hadoop,tec:apache-hadoop,needs owner review: short form
+Handling escalations,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+HDFS,tec:apache-hadoop,needs owner review: Hadoop file system
+Help desk,tec:help-desk-software,needs owner review: the practice; closest tool category
+Hibernate,tec:hibernate-orm,needs owner review: short form; ambiguous (also an everyday word)
+Hive,tec:apache-hive,needs owner review: short form; ambiguous (also an everyday word)
+HLOOKUP,tec:microsoft-excel,needs owner review: Excel feature; judgement
+HP ALM,tec:hewlett-packard-hp-testdirector-for-quality-center,needs owner review: ALM grew out of Quality Center; judgement
+HR operations,occ:13-1071.00,needs owner review: HR service delivery; judgement
+HRIS,tec:human-resource-information-system-hris,needs owner review: short form
+HRMS,tec:human-resources-management-system-hrms,needs owner review: short form
+HTML,tec:hypertext-markup-language-html,needs owner review: short form
+Human resources,skl:2.C.1.f,needs owner review: same knowledge area
+Hyper-V,tec:microsoft-hyper-v-server,needs owner review: short form
+IFRS,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Impact analysis,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+Incident management,skl:2.B.3.k,needs owner review: closest skill: Troubleshooting; ITSM use; judgement
+Income tax,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Income tax returns,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Ind AS,skl:2.C.1.c,needs owner review: Indian accounting standards; closest knowledge: Economics and Accounting
+Indirect tax,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Informatica,tec:informatica-powercenter,needs owner review: short form; PowerCenter is the usual product; judgement
+Information security,skl:2.C.8.a,needs owner review: closest knowledge: Public Safety and Security; judgement
+infosec,occ:15-1212.00,needs owner review: information security
+Insurance claims,tec:insurance-claim-processing-software,needs owner review: the practice; closest tool category
+Intercompany,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Internal audit,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+Internal audits,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+Internal controls,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+Internal financial controls,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+Interpersonal skills,skl:4.A.4.a.4,needs owner review: closest activity: Establishing and Maintaining Interpersonal Relationships; judgement
+Inventory management,tec:inventory-management-systems,needs owner review: the practice; closest tool category
+Investment banking,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Invoice processing,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+IRDAI regulations,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+Issue resolution,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+ITR,skl:2.C.1.c,needs owner review: income tax return; closest knowledge: Economics and Accounting; ambiguous
+ITR filing,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+ITSM tool,tec:servicenow,needs owner review: judgement; one of several tools
+J2EE,tec:oracle-java,needs owner review: Java enterprise edition; closest node is the language; judgement
+Java,tec:oracle-java,needs owner review: the language
+Java EE,tec:oracle-java,needs owner review: Java enterprise edition; closest node is the language; judgement
+JCL,tec:job-control-language-jcl,needs owner review: short form
+Jenkins,tec:jenkins-ci,needs owner review: short form
+JIRA,tec:atlassian-jira,needs owner review: spelling variant
+Jira Service Desk,tec:help-desk-software,needs owner review: a help desk product; closest node; judgement
+JMeter,tec:apache-jmeter,needs owner review: short form
+Journal entries,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+JS,tec:javascript,needs owner review: short form; ambiguous
+k8s,tec:kubernetes,needs owner review: short form
+Kafka,tec:apache-kafka,needs owner review: short form
+Kaizen,skl:2.B.4.h,needs owner review: closest skill: Systems Evaluation; judgement
+KYC,skl:2.C.8.b,needs owner review: know your customer checks; closest knowledge: Law and Government; judgement
+KYC checks,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+KYC verification,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+L1 support,occ:15-1232.00,needs owner review: first-line IT support
+L2 support,occ:15-1232.00,needs owner review: second-line IT support
+L3 support,occ:15-1231.00,needs owner review: third-line IT support; judgement
+L3 support,occ:15-1244.00,needs owner review: third-line IT support; judgement
+Lead generation,skl:2.C.1.d,needs owner review: closest knowledge: Sales and Marketing; judgement
+Leadership,skl:4.A.4.b.4,"needs owner review: closest activity: Guiding, Directing, and Motivating Subordinates; judgement"
+Lean,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; judgement; ambiguous (also an everyday word)
+Lean Six Sigma,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; judgement
+Letter of credit,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Live chat,tec:chat-software,needs owner review: the practice; closest tool category
+LoadRunner,tec:hewlett-packard-loadrunner,needs owner review: short form
+Loan disbursement,tec:loan-tracking-software,needs owner review: the practice; closest tool category; judgement
+loan officer,occ:13-2072.00,needs owner review
+Loan origination,tec:loan-origination-software,needs owner review: the practice; closest tool category
+Loan processing,tec:loan-application-processing-software,needs owner review: the practice; closest tool category
+Loan servicing,tec:loan-tracking-software,needs owner review: the practice; closest tool category; judgement
+Looker,tec:google-looker-analytics,needs owner review: short form
+M365,tec:microsoft-office-software,needs owner review: short form; judgement
+Macros,tec:microsoft-visual-basic-for-applications-vba,needs owner review: usually Excel macros; judgement; ambiguous
+Management accounting,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Market research,skl:2.C.1.d,needs owner review: closest knowledge: Sales and Marketing; judgement
+Market risk,tec:risk-management-software,needs owner review: the practice; closest tool category; judgement
+Mentoring,skl:4.A.4.b.5,needs owner review: closest activity: Coaching and Developing Others
+Micro services,tec:microservices-architecture,needs owner review: spelling variant
+Microservices,tec:microservices-architecture,needs owner review: plural form
+Microsoft 365,tec:microsoft-office-software,needs owner review: closest node: Microsoft Office software; judgement
+Microsoft Azure,tec:microsoft-azure-software,needs owner review: spelling variant
+Microsoft Office Suite,tec:microsoft-office-software,needs owner review: spelling variant
+MIS,tec:microsoft-excel,"needs owner review: In BPM and BFSI, MIS reporting usually means Excel reports; ambiguous"
+MIS executive,occ:43-9021.00,needs owner review: data entry and reports; very rough; judgement
+MIS reporting,skl:2.C.1.b,needs owner review: closest knowledge: Administrative; judgement
+ML engineer,occ:15-2051.00,needs owner review: closest by duties; judgement
+MM,tec:sap-erp-operations,needs owner review: SAP materials management module; ambiguous without the word SAP nearby
+Mongo,tec:mongodb,needs owner review: short form
+Month end close,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Month end closing,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Mortgage processing,tec:loan-application-processing-software,needs owner review: the practice; closest tool category; judgement
+MS Access,tec:microsoft-access,needs owner review: spelling variant
+MS Dynamics,tec:microsoft-dynamics,needs owner review: spelling variant
+MS Dynamics CRM,tec:microsoft-dynamics-crm,needs owner review: spelling variant
+MS Excel,tec:microsoft-excel,needs owner review: spelling variant
+MS Office,tec:microsoft-office-software,needs owner review: spelling variant
+MS Office Suite,tec:microsoft-office-software,needs owner review: spelling variant
+MS Outlook,tec:microsoft-outlook,needs owner review: spelling variant
+MS PowerPoint,tec:microsoft-powerpoint,needs owner review: spelling variant
+MS Project,tec:microsoft-project,needs owner review: spelling variant
+MS SharePoint,tec:microsoft-sharepoint,needs owner review: spelling variant
+MS SQL,tec:microsoft-sql-server,needs owner review: spelling variant
+MS Teams,tec:microsoft-teams,needs owner review: spelling variant
+MS Visio,tec:microsoft-visio,needs owner review: spelling variant
+MS Word,tec:microsoft-word,needs owner review: spelling variant
+MSSQL,tec:microsoft-sql-server,needs owner review: short form
+Multitasking,skl:4.A.2.b.6,"needs owner review: closest activity: Organizing, Planning, and Prioritizing Work; judgement"
+Mutual funds,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Name screening,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+Negotiation skills,skl:2.B.1.d,needs owner review: same skill
+network engineer,occ:15-1244.00,needs owner review: closest; judgement
+Neutral accent,skl:2.A.1.d,needs owner review: closest skill: Speaking; judgement
+New hire training,skl:4.A.4.b.3,needs owner review: closest activity: Training and Teaching Others
+NodeJS,tec:node-js,needs owner review: spelling variant
+non voice process,occ:43-4051.00,"needs owner review: chat, email and back-office service; judgement"
+non-voice process,occ:43-4051.00,"needs owner review: chat, email and back-office service; judgement"
+O2C,occ:43-3011.00,needs owner review: order to cash: collections; judgement
+O2C,occ:43-3021.00,needs owner review: order to cash: billing and posting; judgement
+O365,tec:microsoft-office-software,needs owner review: short form; judgement
+Office 365,tec:microsoft-office-software,needs owner review: closest node: Microsoft Office software; judgement
+Office administration,skl:2.C.1.b,needs owner review: closest knowledge: Administrative
+Onboarding,skl:4.A.4.b.3,needs owner review: closest activity: Training and Teaching Others; judgement
+OpenShift,tec:red-hat-openshift,needs owner review: short form
+Operational risk,tec:risk-management-software,needs owner review: the practice; closest tool category; judgement
+Oracle Applications,tec:oracle-e-business-suite,needs owner review: judgement
+Oracle Apps,tec:oracle-e-business-suite,needs owner review: short form; judgement
+Oracle DB,tec:oracle-database,needs owner review: short form
+Oracle EBS,tec:oracle-e-business-suite,needs owner review: short form
+Oracle Financials,tec:oracle-e-business-suite-financials,needs owner review: short form
+Oracle SQL,tec:oracle-database,needs owner review: judgement
+Outlook,tec:microsoft-outlook,needs owner review: short form; ambiguous (also an everyday word)
+P2P,occ:43-3031.00,needs owner review: procure to pay: accounts payable; judgement
+payroll executive,occ:43-3051.00,needs owner review: payroll
+Payroll processing,tec:payroll-software,needs owner review: the practice; closest tool category; judgement
+Penetration testing,tec:penetration-testing-software,needs owner review: the practice; closest tool category
+people management,skl:2.B.5.d,needs owner review: closest skill: Management of Personnel Resources
+Performance management,skl:2.C.1.f,needs owner review: closest knowledge: Personnel and Human Resources; judgement
+Persuasion skills,skl:2.B.1.c,needs owner review: closest skill: Persuasion
+Pivot table,tec:microsoft-excel,needs owner review: Excel feature; judgement
+Pivot tables,tec:microsoft-excel,needs owner review: Excel feature; judgement
+PL/SQL,tec:oracle-pl-sql,needs owner review: spelling variant
+Planning and organizing,skl:4.A.2.b.6,"needs owner review: same label, shortened"
+PMO,occ:13-1082.00,needs owner review: project office; judgement
+Policy administration,tec:insurance-claim-processing-software,needs owner review: insurance back office; closest tool category; judgement
+Policy servicing,skl:2.C.1.e,needs owner review: closest knowledge: Customer and Personal Service; judgement
+Portfolio management,tec:portfolio-management-software,needs owner review: the practice; closest tool category; judgement
+Postgres,tec:postgresql,needs owner review: short form
+Power Apps,tec:microsoft-power-platform-software,needs owner review: part of the Power Platform
+Power Automate,tec:microsoft-power-automate,needs owner review: same label
+Power BI,tec:microsoft-power-bi,needs owner review: spelling variant
+Power Pivot,tec:microsoft-excel,needs owner review: Excel feature; judgement
+Power Query,tec:microsoft-power-bi,needs owner review: used in Power BI and Excel; judgement
+PowerBI,tec:microsoft-power-bi,needs owner review: spelling variant
+PPT,tec:microsoft-powerpoint,needs owner review: spelling variant
+Presentation skills,skl:2.A.1.d,needs owner review: closest skill: Speaking; judgement
+Prioritisation,skl:4.A.2.b.6,"needs owner review: closest activity: Organizing, Planning, and Prioritizing Work"
+Prioritization,skl:4.A.2.b.6,"needs owner review: closest activity: Organizing, Planning, and Prioritizing Work"
+Private banking,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Problem solving,skl:2.B.2.i,needs owner review: closest skill: Complex Problem Solving; judgement
+process associate,occ:43-4051.00,needs owner review: BPM entry title; judgement
+Process documentation,skl:4.A.3.b.6,needs owner review: closest activity: Documenting/Recording Information
+Process improvement,skl:2.B.4.h,needs owner review: closest skill: Systems Evaluation; judgement
+Process mapping,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+Process optimisation,skl:2.B.3.a,needs owner review: closest skill: Operations Analysis; judgement
+Process optimization,skl:2.B.3.a,needs owner review: closest skill: Operations Analysis; judgement
+Process training,skl:4.A.4.b.3,needs owner review: closest activity: Training and Teaching Others
+Procurement,tec:purchasing-software,needs owner review: the practice; closest tool category; judgement
+Production support,skl:2.B.3.k,needs owner review: closest skill: Troubleshooting; judgement
+Program management,skl:4.A.2.b.6,"needs owner review: closest activity: Organizing, Planning, and Prioritizing Work; judgement"
+programmer analyst,occ:15-1211.00,needs owner review: common in IT services
+programmer analyst,occ:15-1252.00,needs owner review: common in IT services; also fits systems analyst
+programming,skl:2.B.3.e,needs owner review: same label
+Project coordination,skl:2.B.1.b,needs owner review: closest skill: Coordination
+Project management,skl:4.A.2.b.6,"needs owner review: closest activity: Organizing, Planning, and Prioritizing Work; judgement"
+project manager,occ:13-1082.00,needs owner review: IT and non-IT project work
+Project planning,skl:4.A.2.b.6,"needs owner review: closest activity: Organizing, Planning, and Prioritizing Work"
+Proofreading,skl:2.A.1.c,needs owner review: closest skill: Writing; judgement
+Public speaking,skl:2.A.1.d,needs owner review: closest skill: Speaking
+Purchase orders,tec:automated-purchase-order-software,needs owner review: the practice; closest tool category; judgement
+Pyspark,tec:pyspark,needs owner review: short form
+Python3,tec:python,needs owner review: spelling variant
+QA engineer,occ:15-1253.00,needs owner review: quality assurance in software
+QBO,tec:intuit-quickbooks,needs owner review: short form; QuickBooks Online; ambiguous
+QC,skl:2.B.3.m,needs owner review: quality control; ambiguous
+Qlik,tec:qlik-software,needs owner review: short form
+Qlik Sense,tec:qlik-software,needs owner review: closest node: Qlik software; judgement
+QlikView,tec:qlik-tech-qlikview,needs owner review: spelling variant
+quality analyst,occ:43-1011.00,needs owner review: BPM quality analyst; very rough; judgement
+Quality assurance,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; ambiguous (also software QA)
+Quality audit,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+Quality Center,tec:hewlett-packard-hp-testdirector-for-quality-center,needs owner review: short form
+Quality checks,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; judgement
+Quality monitoring,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; judgement
+Quantitative aptitude,skl:2.A.1.e,needs owner review: closest skill: Mathematics; judgement
+Query resolution,skl:2.B.1.f,needs owner review: closest skill: Service Orientation; judgement
+QuickBooks,tec:intuit-quickbooks,needs owner review: short form
+R2R,occ:13-2011.00,needs owner review: record to report; judgement
+R2R,occ:43-3031.00,needs owner review: record to report; judgement
+RBI guidelines,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+RCA,skl:2.B.3.k,needs owner review: root cause analysis; ambiguous (also a company name)
+React.js,tec:react,needs owner review: spelling variant
+ReactJS,tec:react,needs owner review: spelling variant
+Reconciliation,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; ambiguous
+Reconciliations,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; ambiguous
+Record keeping,skl:4.A.3.b.6,needs owner review: closest activity: Documenting/Recording Information
+Record maintenance,skl:4.A.3.b.6,needs owner review: closest activity: Documenting/Recording Information
+Recruitment,skl:2.C.1.f,needs owner review: closest knowledge: Personnel and Human Resources; judgement
+Redshift,tec:amazon-redshift,needs owner review: short form
+Regulatory compliance,tec:regulatory-compliance-management-software,needs owner review: the practice; closest tool category
+Regulatory reporting,tec:financial-reporting-software,needs owner review: the practice; closest tool category; judgement
+Relationship building,skl:4.A.4.a.4,needs owner review: closest activity: Establishing and Maintaining Interpersonal Relationships
+relationship manager,occ:13-2052.00,needs owner review: bank or wealth relationship manager; judgement
+relationship manager,occ:41-3031.00,needs owner review: bank or broking relationship manager; judgement
+Remedy,tec:bmc-software-remedy-it-service-management-suite,needs owner review: short form
+Report preparation,skl:4.A.3.b.6,needs owner review: closest activity: Documenting/Recording Information; judgement
+Report writing,skl:2.A.1.c,needs owner review: closest skill: Writing
+Requirement analysis,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+Requirement gathering,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+Requirements analysis,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+Requirements gathering,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+Resource planning,skl:4.A.2.b.5,needs owner review: closest activity: Scheduling Work and Activities; judgement
+Retail banking,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+ROC filing,skl:2.C.8.b,needs owner review: company law filings; closest knowledge: Law and Government; judgement
+root cause analysis,skl:2.B.3.k,needs owner review: closest skill; judgement
+Rostering,skl:4.A.2.b.5,needs owner review: closest activity: Scheduling Work and Activities; judgement
+S/4HANA,tec:sap-erp,needs owner review: SAP's current ERP; judgement
+S3,tec:amazon-simple-storage-service-s3,needs owner review: short form; ambiguous
+Sage,tec:sage-accounting-software,needs owner review: short form; ambiguous (also a plant and a name)
+Salesforce,tec:salesforce-software,needs owner review: short form
+Salesforce CRM,tec:salesforce-software,needs owner review: spelling variant
+Salesforce.com,tec:salesforce-software,needs owner review: spelling variant
+Sanctions screening,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+SAP,tec:sap-software,needs owner review: SAP in general
+SAP ABAP,tec:advanced-business-application-programming-abap,needs owner review: SAP programming language
+SAP B1,tec:sap-business-one,needs owner review: short form
+SAP BASIS,tec:sap-netweaver,needs owner review: SAP Basis administration runs on NetWeaver
+SAP BO,tec:sap-business-objects,needs owner review: short form; ambiguous without the word SAP nearby
+SAP BW,tec:sap-netweaver-bw,needs owner review: SAP business warehouse
+SAP CO,tec:sap-erp-financials,needs owner review: SAP controlling module
+SAP CRM,tec:sap-business-and-customer-relations-management-software,needs owner review: SAP customer relationship module
+SAP ECC,tec:sap-erp,needs owner review: SAP's earlier ERP; judgement
+SAP FI,tec:sap-erp-financials,needs owner review: SAP finance module
+SAP FICO,tec:sap-erp-financials,needs owner review: SAP finance and controlling module; judgement
+SAP HCM,tec:sap-erp-human-capital-management,needs owner review: SAP HR module
+SAP HR,tec:sap-erp-human-capital-management,needs owner review: SAP HR / HCM module
+SAP MM,tec:sap-erp-operations,needs owner review: SAP materials management module
+SAP PP,tec:sap-erp-operations,needs owner review: SAP production planning module
+SAP S/4HANA,tec:sap-erp,needs owner review: SAP's current ERP; judgement
+SAP SD,tec:sap-erp-operations,needs owner review: SAP sales and distribution module
+SAP WM,tec:sap-erp-operations,needs owner review: SAP warehouse management module
+Scripting,skl:2.B.3.e,needs owner review: closest skill: Programming; judgement
+scrum master,occ:13-1082.00,needs owner review: closest by duties; judgement
+SD,tec:sap-erp-operations,needs owner review: SAP sales and distribution module; ambiguous without the word SAP nearby
+SDE,occ:15-1252.00,needs owner review: software development engineer
+SDE I,occ:15-1252.00,needs owner review
+SDE II,occ:15-1252.00,needs owner review
+SDE III,occ:15-1252.00,needs owner review
+SDE-1,occ:15-1252.00,needs owner review: level 1
+SDE-2,occ:15-1252.00,needs owner review: level 2
+SDE-3,occ:15-1252.00,needs owner review: level 3
+SDET,occ:15-1253.00,needs owner review: software development engineer in test
+SEBI regulations,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+Selenium WebDriver,tec:selenium,needs owner review: part of Selenium
+senior process associate,occ:43-4051.00,needs owner review: BPM entry title; judgement
+service desk,occ:15-1232.00,needs owner review: IT help desk
+ServiceNow,tec:servicenow,needs owner review: spelling variant
+SFDC,tec:salesforce-software,needs owner review: short form
+SFDC CRM,tec:salesforce-software,needs owner review: spelling variant
+Shell scripting,tec:bash,needs owner review: closest node: Bash; judgement
+Six Sigma,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; judgement
+Six Sigma Black Belt,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; judgement
+Six Sigma Green Belt,skl:2.B.3.m,needs owner review: closest skill: Quality Control Analysis; judgement
+SNOW,tec:servicenow,needs owner review: short form used in IT support; ambiguous
+SOC analyst,occ:15-1212.00,needs owner review: security operations centre analyst; ambiguous (SOC also means the occupation code)
+Software development,skl:2.B.3.e,needs owner review: closest skill: Programming; judgement
+software engineer,occ:15-1252.00,needs owner review: the usual Indian title for O*NET software developers
+Solution design,skl:2.B.3.b,needs owner review: closest skill: Technology Design; judgement
+SOP,skl:4.A.3.b.6,needs owner review: standard operating procedure documents; judgement; ambiguous
+SOPs,skl:4.A.3.b.6,needs owner review: standard operating procedure documents; judgement
+SOX,skl:2.C.8.b,needs owner review: Sarbanes-Oxley compliance; closest knowledge: Law and Government; judgement; ambiguous
+SOX compliance,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+Spark,tec:apache-spark,needs owner review: short form; ambiguous (also an everyday word)
+Splunk,tec:splunk-enterprise,needs owner review: short form
+Spoken English,skl:2.A.1.d,needs owner review: closest skill: Speaking; judgement
+Spreadsheets,tec:spreadsheet-applications,needs owner review: plural form; ambiguous
+Spring MVC,tec:spring-framework,needs owner review: part of the Spring framework
+Springboot,tec:spring-boot,needs owner review: spelling variant
+SQL,tec:structured-query-language-sql,needs owner review: the query language
+SQL Server,tec:microsoft-sql-server,needs owner review: spelling variant
+SRE,occ:15-1244.00,needs owner review: site reliability engineer; judgement
+SRE,occ:15-1252.00,needs owner review: site reliability engineer; judgement
+SSIS,tec:microsoft-sql-server-integration-services-ssis,needs owner review: short form
+SSRS,tec:microsoft-sql-server-reporting-services-ssrs,needs owner review: short form
+Stakeholder communication,skl:4.A.4.a.2,"needs owner review: closest activity: Communicating with Supervisors, Peers, or Subordinates; judgement"
+stakeholder management,skl:2.B.1.b,needs owner review: closest skill: Coordination; judgement
+Statistical analysis,skl:4.A.2.a.4,needs owner review: closest activity: Analyzing Data or Information
+Statistics,skl:2.C.4.a,needs owner review: closest knowledge: Mathematics; judgement
+Statutory audit,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+Statutory compliance,skl:2.C.8.b,needs owner review: closest knowledge: Law and Government; judgement
+Stock audit,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+Subversion,tec:apache-subversion-svn,needs owner review: short form
+SVN,tec:apache-subversion-svn,needs owner review: short form
+SWE,occ:15-1252.00,needs owner review: short form
+sysadmin,occ:15-1244.00,needs owner review: system administrator
+system design,skl:2.B.4.g,needs owner review: closest skill: Systems Analysis; judgement
+T-SQL,tec:microsoft-sql-server,needs owner review: the SQL Server dialect; judgement
+Talend,tec:talend-open-studio,needs owner review: short form; judgement
+Talent acquisition,skl:2.C.1.f,needs owner review: closest knowledge: Personnel and Human Resources
+Tally,tec:financial-accounting-software,needs owner review: Indian accounting package; closest tool category; the product has no node of its own; ambiguous
+Tally ERP,tec:financial-accounting-software,needs owner review: Indian accounting package; closest tool category; the product has no node of its own (see abbrev_in_unmapped.csv)
+Tally ERP 9,tec:financial-accounting-software,needs owner review: Indian accounting package; closest tool category; the product has no node of its own
+Tally Prime,tec:financial-accounting-software,needs owner review: Indian accounting package; closest tool category; the product has no node of its own
+Tax audit,skl:4.A.2.a.3,needs owner review: closest activity: Evaluating Information to Determine Compliance with Standards
+Tax compliance,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Tax computation,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+tax executive,occ:13-2082.00,needs owner review: GST and TDS return work; judgement
+Tax planning,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Taxation,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+TCS,skl:2.C.1.c,needs owner review: tax collected at source; closest knowledge: Economics and Accounting; ambiguous (also a company name)
+TDS,skl:2.C.1.c,needs owner review: tax deducted at source; closest knowledge: Economics and Accounting; ambiguous
+TDS returns,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Team building,skl:4.A.4.b.2,needs owner review: closest activity: Developing and Building Teams
+Team handling,skl:2.B.5.d,needs owner review: closest skill: Management of Personnel Resources
+team management,skl:2.B.5.d,needs owner review: closest skill: Management of Personnel Resources
+Technical design,skl:2.B.3.b,needs owner review: closest skill: Technology Design; judgement
+technical support,occ:15-1232.00,needs owner review: IT help desk
+Technical troubleshooting,skl:2.B.3.k,needs owner review: closest skill: Troubleshooting
+Telesales,skl:4.A.4.a.6,needs owner review: closest activity: Selling or Influencing Others
+Teradata,tec:teradata-database,needs owner review: short form
+test engineer,occ:15-1253.00,needs owner review: software testing; ambiguous (also hardware)
+Three-way matching,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Ticketing system,tec:help-desk-software,needs owner review: closest tool category
+Ticketing tool,tec:help-desk-software,needs owner review: closest tool category
+Trade finance,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Transaction monitoring,skl:2.C.8.b,needs owner review: AML transaction monitoring; closest knowledge: Law and Government; judgement
+Treasury,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement; ambiguous
+treasury operations,occ:11-3031.00,needs owner review: closest by duties; judgement
+treasury ops,occ:11-3031.00,needs owner review: closest by duties; judgement
+Trend analysis,skl:4.A.2.a.4,needs owner review: closest activity: Analyzing Data or Information
+Trial balance,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+troubleshooting,skl:2.B.3.k,needs owner review: same label
+underwriter,occ:13-2053.00,needs owner review: insurance or loan underwriting
+Underwriting,tec:underwriting-software,needs owner review: the practice; closest tool category
+Upselling,skl:4.A.4.a.6,needs owner review: closest activity: Selling or Influencing Others
+US GAAP,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Variance analysis,skl:4.A.2.a.4,needs owner review: closest activity: Analyzing Data or Information; finance use
+VBA,tec:microsoft-visual-basic-for-applications-vba,needs owner review: short form
+VBA macros,tec:microsoft-visual-basic-for-applications-vba,needs owner review: spelling variant
+Vendor management,skl:2.B.1.b,needs owner review: closest skill: Coordination; judgement
+Vendor reconciliation,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Verbal communication,skl:2.A.1.d,needs owner review: closest skill: Speaking
+Version control,tec:version-control-software,needs owner review: the practice; closest tool category
+VLOOKUP,tec:microsoft-excel,needs owner review: Excel feature; judgement
+Voice and accent,skl:2.A.1.d,needs owner review: closest skill: Speaking; judgement
+voice process,occ:43-4051.00,needs owner review: customer service by phone
+VSTS,tec:microsoft-azure-devops-services,needs owner review: old name of Azure DevOps
+VueJS,tec:vue-js,needs owner review: spelling variant
+Vulnerability assessment,tec:network-and-system-vulnerability-assessment-software,needs owner review: the practice; closest tool category
+Wealth management,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting; judgement
+Web development,skl:2.B.3.e,needs owner review: closest skill: Programming; judgement
+Windows Server,tec:microsoft-windows-server,needs owner review: spelling variant
+Workday,tec:workday-software,needs owner review: short form; ambiguous (also an everyday word)
+Workforce management,skl:4.A.2.b.5,needs owner review: closest activity: Scheduling Work and Activities; call-centre rostering; judgement
+Working capital,skl:2.C.1.c,needs owner review: closest knowledge: Economics and Accounting
+Written communication,skl:2.A.1.c,needs owner review: closest skill: Writing
+Xero,tec:financial-accounting-software,needs owner review: accounting package; closest tool category; the product has no node of its own
+XLOOKUP,tec:microsoft-excel,needs owner review: Excel feature; judgement
+Zendesk,tec:help-desk-software,needs owner review: a help desk product; the product has no node of its own (see abbrev_in_unmapped.csv)
+Zoho Books,tec:financial-accounting-software,needs owner review: accounting package; closest tool category; the product has no node of its own
+ग्राहक सेवा,skl:2.C.1.e,needs owner review: Hindi for customer service; closest knowledge: Customer and Personal Service
+टीम प्रबंधन,skl:2.B.5.d,needs owner review: Hindi for team management; closest skill: Management of Personnel Resources
+डेटा एंट्री,tec:data-entry-software,needs owner review: Hindi (Latin loan words) for data entry; the practice; closest tool category
+डेटा विश्लेषण,skl:4.A.2.a.4,needs owner review: Hindi for data analysis; closest activity: Analyzing Data or Information
+नेतृत्व,skl:4.A.4.b.4,"needs owner review: Hindi for leadership; closest activity: Guiding, Directing, and Motivating Subordinates; judgement"
+परियोजना प्रबंधन,skl:4.A.2.b.6,"needs owner review: Hindi for project management; closest activity: Organizing, Planning, and Prioritizing Work; judgement"
+लेखांकन,skl:2.C.1.c,needs owner review: Hindi for accounting; closest knowledge: Economics and Accounting
+संचार कौशल,skl:2.A.1.d,needs owner review: Hindi for communication skills; closest skill: Speaking; judgement
+संवाद कौशल,skl:2.A.1.d,needs owner review: Hindi for communication skills; closest skill: Speaking; judgement
+समय प्रबंधन,skl:2.B.5.a,needs owner review: Hindi for time management; same skill
+समस्या समाधान,skl:2.B.2.i,needs owner review: Hindi for problem solving; closest skill: Complex Problem Solving; judgement

@@ -1,0 +1,26 @@
+{
+ "edges": {
+  "close_to": 19452,
+  "has_task": 18613,
+  "in_cluster": 83,
+  "is_title_of": 46839,
+  "needs": 90088,
+  "skill_near": 982
+ },
+ "nodes": {
+  "fld": 16,
+  "occ": 911,
+  "skl:activity": 41,
+  "skl:knowledge": 33,
+  "skl:skill": 35,
+  "tec": 8733,
+  "tsk": 18613,
+  "ttl": 40077
+ },
+ "onet_version": "31.0",
+ "signals": {
+  "ai_obs": 725,
+  "ai_task_mode": 18456,
+  "ai_tier": 738
+ }
+}

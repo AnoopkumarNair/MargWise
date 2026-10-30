@@ -1,0 +1,1425 @@
+{
+ "slice_v": 1,
+ "release": "fixture",
+ "occ": {
+  "id": "occ:13-2011.00",
+  "label": "Accountants and Auditors",
+  "job_zone": 4,
+  "as_of": "2025-08",
+  "src": "fixture",
+  "alt": [
+   "Chartered Accountant",
+   "CA",
+   "Tax Accountant",
+   "Staff Accountant",
+   "Auditor"
+  ],
+  "soc": "13-2011"
+ },
+ "needs": [
+  {
+   "id": "tec:excel",
+   "label": "Microsoft Excel",
+   "kind": "technology",
+   "w": 0.9,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.1.a",
+   "label": "Economics and Accounting",
+   "kind": "knowledge",
+   "w": 0.88,
+   "ai": "ai_does_much",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.2.a",
+   "label": "Critical Thinking",
+   "kind": "skill",
+   "w": 0.86,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.1.e",
+   "label": "Mathematics",
+   "kind": "skill",
+   "w": 0.84,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.4.a",
+   "label": "Mathematics knowledge",
+   "kind": "knowledge",
+   "w": 0.82,
+   "ai": "ai_does_much",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:tally",
+   "label": "Tally accounting software",
+   "kind": "technology",
+   "w": 0.8,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:4.A.2.a.4",
+   "label": "Analyzing Data or Information",
+   "kind": "activity",
+   "w": 0.77,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:4.A.3.b.6",
+   "label": "Documenting/Recording Information",
+   "kind": "activity",
+   "w": 0.75,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.1.a",
+   "label": "Reading Comprehension",
+   "kind": "skill",
+   "w": 0.73,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.4.e",
+   "label": "Judgment and Decision Making",
+   "kind": "skill",
+   "w": 0.71,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.1.c",
+   "label": "Writing",
+   "kind": "skill",
+   "w": 0.69,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.7.a",
+   "label": "English Language",
+   "kind": "knowledge",
+   "w": 0.67,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.1.b",
+   "label": "Active Listening",
+   "kind": "skill",
+   "w": 0.65,
+   "ai": "people_do",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.2.d",
+   "label": "Monitoring",
+   "kind": "skill",
+   "w": 0.63,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:sap",
+   "label": "SAP enterprise software",
+   "kind": "technology",
+   "w": 0.61,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.1.b",
+   "label": "Administration and Management",
+   "kind": "knowledge",
+   "w": 0.58,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.1.d",
+   "label": "Speaking",
+   "kind": "skill",
+   "w": 0.56,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.3.a",
+   "label": "Computers and Electronics",
+   "kind": "knowledge",
+   "w": 0.54,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.5.a",
+   "label": "Systems Analysis",
+   "kind": "skill",
+   "w": 0.52,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.1.e",
+   "label": "Law and Government",
+   "kind": "knowledge",
+   "w": 0.5,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.2.b",
+   "label": "Active Learning",
+   "kind": "skill",
+   "w": 0.48,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.1.b",
+   "label": "Coordination",
+   "kind": "skill",
+   "w": 0.46,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.1.d",
+   "label": "Negotiation",
+   "kind": "skill",
+   "w": 0.44,
+   "ai": "people_do",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.1.c",
+   "label": "Customer and Personal Service",
+   "kind": "knowledge",
+   "w": 0.42,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.5.b",
+   "label": "Systems Evaluation",
+   "kind": "skill",
+   "w": 0.4,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.1.a",
+   "label": "Social Perceptiveness",
+   "kind": "skill",
+   "w": 0.38,
+   "ai": "people_do",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.1.c",
+   "label": "Persuasion",
+   "kind": "skill",
+   "w": 0.35,
+   "ai": "people_do",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:sql",
+   "label": "SQL database queries",
+   "kind": "technology",
+   "w": 0.33,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:powerbi",
+   "label": "Microsoft Power BI",
+   "kind": "technology",
+   "w": 0.31,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:jira",
+   "label": "Jira issue tracking",
+   "kind": "technology",
+   "w": 0.29,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:4.A.4.a.3",
+   "label": "Communicating with People Outside the Organization",
+   "kind": "activity",
+   "w": 0.27,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:4.A.2.b.6",
+   "label": "Organizing, Planning, and Prioritizing Work",
+   "kind": "activity",
+   "w": 0.25,
+   "ai": "mixed",
+   "as_of": "2023-06",
+   "src": "fixture"
+  }
+ ],
+ "tasks": [
+  {
+   "id": "tsk:f1",
+   "label": "Prepare financial statements and reports.",
+   "ai_mode": "augmentation",
+   "as_of": "2026-03",
+   "src": "fixture_ai"
+  },
+  {
+   "id": "tsk:f2",
+   "label": "Talk with clients about their accounts.",
+   "ai_mode": "none",
+   "as_of": "2026-03",
+   "src": "fixture_ai"
+  },
+  {
+   "id": "tsk:f4",
+   "label": "Check that accounts follow the rules.",
+   "ai_mode": "used",
+   "as_of": "2026-03",
+   "src": "fixture_ai"
+  },
+  {
+   "id": "tsk:f5",
+   "label": "Advise managers on the costs of a plan.",
+   "ai_mode": "unknown",
+   "as_of": "2025-08",
+   "src": "fixture"
+  }
+ ],
+ "signals": [
+  {
+   "kind": "ai_obs",
+   "period": "2026Q1",
+   "value": 0.42,
+   "as_of": "2026-03",
+   "src": "fixture_ai"
+  },
+  {
+   "kind": "pay_band_in",
+   "period": "2026Q1",
+   "value": "PLFS broad group: professional, mid band",
+   "as_of": "2026-03",
+   "src": "fixture"
+  },
+  {
+   "kind": "pay_band_in",
+   "period": "2025",
+   "value": 100000,
+   "as_of": "2026-03",
+   "src": "fixture"
+  }
+ ],
+ "targets": [
+  {
+   "occ": {
+    "id": "occ:13-2051.00",
+    "label": "Financial and Investment Analysts",
+    "job_zone": 4,
+    "as_of": "2025-08",
+    "src": "fixture",
+    "alt": [
+     "Financial Analyst",
+     "Equity Research Analyst"
+    ],
+    "soc": "13-2051"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.a",
+     "label": "Economics and Accounting",
+     "kind": "knowledge",
+     "w": 0.9,
+     "ai": "ai_does_much",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.88,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.86,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.e",
+     "label": "Mathematics",
+     "kind": "skill",
+     "w": 0.84,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.4.a",
+     "label": "Mathematics knowledge",
+     "kind": "knowledge",
+     "w": 0.82,
+     "ai": "ai_does_much",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.a",
+     "label": "Systems Analysis",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.77,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:sql",
+     "label": "SQL database queries",
+     "kind": "technology",
+     "w": 0.75,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:powerbi",
+     "label": "Microsoft Power BI",
+     "kind": "technology",
+     "w": 0.73,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.a",
+     "label": "Reading Comprehension",
+     "kind": "skill",
+     "w": 0.71,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.c",
+     "label": "Writing",
+     "kind": "skill",
+     "w": 0.69,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.b",
+     "label": "Systems Evaluation",
+     "kind": "skill",
+     "w": 0.67,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:python",
+     "label": "Python",
+     "kind": "technology",
+     "w": 0.65,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.63,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.d",
+     "label": "Monitoring",
+     "kind": "skill",
+     "w": 0.61,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.d",
+     "label": "Speaking",
+     "kind": "skill",
+     "w": 0.58,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.7.a",
+     "label": "English Language",
+     "kind": "knowledge",
+     "w": 0.56,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.c",
+     "label": "Persuasion",
+     "kind": "skill",
+     "w": 0.54,
+     "ai": "people_do",
+     "as_of": "2023-06",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.38,
+     "as_of": "2026-03",
+     "src": "fixture_ai"
+    },
+    {
+     "kind": "pay_band_in",
+     "period": "2026Q1",
+     "value": "PLFS broad group: professional, mid band",
+     "as_of": "2026-03",
+     "src": "fixture"
+    },
+    {
+     "kind": "pay_band_in",
+     "period": "2025",
+     "value": 105000,
+     "as_of": "2026-03",
+     "src": "fixture"
+    },
+    {
+     "kind": "city_share",
+     "period": "2025",
+     "value": "city:blr=0.9,city:hyd=0.1",
+     "as_of": "2026-03",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:15-2051.01",
+    "label": "Business Intelligence Analysts",
+    "job_zone": 4,
+    "as_of": "2025-08",
+    "src": "fixture",
+    "alt": [
+     "BI Analyst",
+     "MIS Executive"
+    ],
+    "soc": "15-2051"
+   },
+   "via": [
+    "two_step"
+   ],
+   "needs": [
+    {
+     "id": "tec:sql",
+     "label": "SQL database queries",
+     "kind": "technology",
+     "w": 0.9,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:python",
+     "label": "Python",
+     "kind": "technology",
+     "w": 0.88,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.86,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.e",
+     "label": "Mathematics",
+     "kind": "skill",
+     "w": 0.84,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.4.a",
+     "label": "Mathematics knowledge",
+     "kind": "knowledge",
+     "w": 0.82,
+     "ai": "ai_does_much",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:powerbi",
+     "label": "Microsoft Power BI",
+     "kind": "technology",
+     "w": 0.77,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:tableau",
+     "label": "Tableau",
+     "kind": "technology",
+     "w": 0.75,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.a",
+     "label": "Systems Analysis",
+     "kind": "skill",
+     "w": 0.73,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.c",
+     "label": "Writing",
+     "kind": "skill",
+     "w": 0.71,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.69,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.a",
+     "label": "Reading Comprehension",
+     "kind": "skill",
+     "w": 0.67,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.65,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.b",
+     "label": "Systems Evaluation",
+     "kind": "skill",
+     "w": 0.63,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.b",
+     "label": "Active Learning",
+     "kind": "skill",
+     "w": 0.61,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.51,
+     "as_of": "2026-03",
+     "src": "fixture_ai"
+    },
+    {
+     "kind": "pay_band_in",
+     "period": "2025",
+     "value": 80000,
+     "as_of": "2026-03",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:11-3031.00",
+    "label": "Financial Managers",
+    "job_zone": 5,
+    "as_of": "2025-08",
+    "src": "fixture",
+    "alt": [
+     "Finance Manager",
+     "Controller"
+    ],
+    "soc": "11-3031"
+   },
+   "via": [
+    "same_cluster"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.a",
+     "label": "Economics and Accounting",
+     "kind": "knowledge",
+     "w": 0.9,
+     "ai": "ai_does_much",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.88,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.86,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.e",
+     "label": "Mathematics",
+     "kind": "skill",
+     "w": 0.84,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.4.a",
+     "label": "Mathematics knowledge",
+     "kind": "knowledge",
+     "w": 0.82,
+     "ai": "ai_does_much",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.a",
+     "label": "Systems Analysis",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.77,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:sql",
+     "label": "SQL database queries",
+     "kind": "technology",
+     "w": 0.75,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:powerbi",
+     "label": "Microsoft Power BI",
+     "kind": "technology",
+     "w": 0.73,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.a",
+     "label": "Reading Comprehension",
+     "kind": "skill",
+     "w": 0.71,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.c",
+     "label": "Writing",
+     "kind": "skill",
+     "w": 0.69,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.b",
+     "label": "Systems Evaluation",
+     "kind": "skill",
+     "w": 0.67,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:python",
+     "label": "Python",
+     "kind": "technology",
+     "w": 0.65,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.63,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.d",
+     "label": "Monitoring",
+     "kind": "skill",
+     "w": 0.61,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.d",
+     "label": "Speaking",
+     "kind": "skill",
+     "w": 0.58,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.7.a",
+     "label": "English Language",
+     "kind": "knowledge",
+     "w": 0.56,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.c",
+     "label": "Persuasion",
+     "kind": "skill",
+     "w": 0.54,
+     "ai": "people_do",
+     "as_of": "2023-06",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.22,
+     "as_of": "2026-03",
+     "src": "fixture_ai"
+    },
+    {
+     "kind": "pay_band_in",
+     "period": "2025",
+     "value": 140000,
+     "as_of": "2026-03",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:15-2051.00",
+    "label": "Data Scientists",
+    "job_zone": 5,
+    "as_of": "2025-08",
+    "src": "fixture",
+    "alt": [
+     "Data Analyst",
+     "Analytics Associate"
+    ],
+    "soc": "15-2051"
+   },
+   "via": [
+    "two_step"
+   ],
+   "needs": [
+    {
+     "id": "tec:sql",
+     "label": "SQL database queries",
+     "kind": "technology",
+     "w": 0.9,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:python",
+     "label": "Python",
+     "kind": "technology",
+     "w": 0.88,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.86,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.e",
+     "label": "Mathematics",
+     "kind": "skill",
+     "w": 0.84,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.4.a",
+     "label": "Mathematics knowledge",
+     "kind": "knowledge",
+     "w": 0.82,
+     "ai": "ai_does_much",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:powerbi",
+     "label": "Microsoft Power BI",
+     "kind": "technology",
+     "w": 0.77,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:tableau",
+     "label": "Tableau",
+     "kind": "technology",
+     "w": 0.75,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.a",
+     "label": "Systems Analysis",
+     "kind": "skill",
+     "w": 0.73,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.c",
+     "label": "Writing",
+     "kind": "skill",
+     "w": 0.71,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.69,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.a",
+     "label": "Reading Comprehension",
+     "kind": "skill",
+     "w": 0.67,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.65,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.b",
+     "label": "Systems Evaluation",
+     "kind": "skill",
+     "w": 0.63,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.b",
+     "label": "Active Learning",
+     "kind": "skill",
+     "w": 0.61,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.61,
+     "as_of": "2026-03",
+     "src": "fixture_ai"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:11-3021.00",
+    "label": "Computer and Information Systems Managers",
+    "job_zone": 5,
+    "as_of": "2025-08",
+    "src": "fixture",
+    "alt": [
+     "IT Project Manager",
+     "Delivery Manager"
+    ],
+    "soc": "11-3021"
+   },
+   "via": [
+    "two_step"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.b",
+     "label": "Administration and Management",
+     "kind": "knowledge",
+     "w": 0.9,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.b",
+     "label": "Coordination",
+     "kind": "skill",
+     "w": 0.88,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:jira",
+     "label": "Jira issue tracking",
+     "kind": "technology",
+     "w": 0.86,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.d",
+     "label": "Speaking",
+     "kind": "skill",
+     "w": 0.84,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.c",
+     "label": "Writing",
+     "kind": "skill",
+     "w": 0.82,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.77,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.d",
+     "label": "Negotiation",
+     "kind": "skill",
+     "w": 0.75,
+     "ai": "people_do",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.a",
+     "label": "Systems Analysis",
+     "kind": "skill",
+     "w": 0.73,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.b",
+     "label": "Active Listening",
+     "kind": "skill",
+     "w": 0.71,
+     "ai": "people_do",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.c",
+     "label": "Customer and Personal Service",
+     "kind": "knowledge",
+     "w": 0.69,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.d",
+     "label": "Monitoring",
+     "kind": "skill",
+     "w": 0.67,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.65,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.c",
+     "label": "Persuasion",
+     "kind": "skill",
+     "w": 0.63,
+     "ai": "people_do",
+     "as_of": "2023-06",
+     "src": "fixture"
+    }
+   ],
+   "signals": []
+  },
+  {
+   "occ": {
+    "id": "occ:ai-llm-evaluator",
+    "label": "LLM Evaluation Specialist",
+    "job_zone": 4,
+    "as_of": "2025-08",
+    "src": "fixture",
+    "alt": [
+     "AI Quality Reviewer"
+    ],
+    "new_role": true,
+    "maturity": "settling"
+   },
+   "via": [
+    "two_step"
+   ],
+   "needs": [
+    {
+     "id": "tec:python",
+     "label": "Python",
+     "kind": "technology",
+     "w": 0.9,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:js",
+     "label": "JavaScript",
+     "kind": "technology",
+     "w": 0.88,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:git",
+     "label": "Git version control",
+     "kind": "technology",
+     "w": 0.86,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:tableau",
+     "label": "Tableau",
+     "kind": "technology",
+     "w": 0.84,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:sql",
+     "label": "SQL database queries",
+     "kind": "technology",
+     "w": 0.82,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:powerbi",
+     "label": "Microsoft Power BI",
+     "kind": "technology",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:jira",
+     "label": "Jira issue tracking",
+     "kind": "technology",
+     "w": 0.77,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.c",
+     "label": "Writing",
+     "kind": "skill",
+     "w": 0.75,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.73,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.a",
+     "label": "Systems Analysis",
+     "kind": "skill",
+     "w": 0.71,
+     "ai": "mixed",
+     "as_of": "2023-06",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.9,
+     "as_of": "2026-03",
+     "src": "fixture_ai"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "fixture",
+   "name": "FIXTURE DATA (hand-written for tests, not real O*NET values)",
+   "trust": "estimate",
+   "as_of": "2025-08"
+  },
+  {
+   "id": "fixture_ai",
+   "name": "FIXTURE AI use (hand-written for tests)",
+   "trust": "estimate",
+   "as_of": "2026-03"
+  }
+ ],
+ "near": {
+  "pairs": [
+   [
+    "skl:2.A.1.c",
+    "skl:2.A.1.d",
+    0.62
+   ],
+   [
+    "skl:2.A.1.e",
+    "skl:2.C.4.a",
+    0.82
+   ],
+   [
+    "skl:2.A.2.a",
+    "skl:2.B.4.e",
+    0.71
+   ],
+   [
+    "skl:2.B.1.c",
+    "skl:2.B.1.d",
+    0.76
+   ],
+   [
+    "skl:2.B.5.a",
+    "skl:2.B.5.b",
+    0.86
+   ],
+   [
+    "skl:2.B.5.a",
+    "skl:2.C.3.a",
+    0.55
+   ],
+   [
+    "skl:2.C.1.a",
+    "skl:4.A.2.a.4",
+    0.58
+   ]
+  ],
+  "as_of": "2025-08",
+  "src": "fixture",
+  "trust": "estimate"
+ }
+}

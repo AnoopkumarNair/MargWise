@@ -13,6 +13,8 @@ The old 2023 theoretical estimate (Eloundou et al.) is no longer shown on its ow
 Usage: python3 ai_exposure.py [--content content.json] [--cache ai] [--refresh]
 BLS blocks scripted downloads (HTTP 403). With --refresh we try, and otherwise fall back to the committed copy. To update by hand, download
 https://www.bls.gov/emp/ind-occ-matrix/ai-exposure-categories.xlsx into <cache>/bls_ai_exposure.xlsx and re-run; it is parsed into the CSV.
+aiMeta.retrieved is the date the sources were last read. It is kept in <cache>/retrieved.json and only moves with --refresh, so an offline
+rebuild gives the same bytes every day (CI fails if a rebuild changes committed data).
 """
 import argparse, csv, json, os, re, time, urllib.request, datetime
 ap = argparse.ArgumentParser(); ap.add_argument('--content', default='content.json'); ap.add_argument('--cache', default='ai'); ap.add_argument('--refresh', action='store_true')
@@ -80,7 +82,12 @@ for x in c['careers']:
         except Exception: pass
     if old.get(x['id']) != tier: changes.append({'id': x['id'], 'title': x['title'], 'was': old.get(x['id']), 'now': tier})
 c.pop('aiMeta', None)
-c['aiMeta'] = {'retrieved': datetime.date.today().isoformat(),
+# The retrieval date only moves when the sources are re-read (--refresh). An offline rebuild keeps the committed date, so it is byte-stable.
+rp = os.path.join(a.cache, 'retrieved.json')
+if a.refresh: retrieved = datetime.date.today().isoformat(); json.dump({'retrieved': retrieved}, open(rp, 'w'), indent=1); open(rp, 'a').write('\n')
+elif os.path.exists(rp): retrieved = json.load(open(rp))['retrieved']
+else: raise SystemExit('%s is missing: run with --refresh (network) to record when the AI sources were read' % rp)
+c['aiMeta'] = {'retrieved': retrieved,
  'tiers': {'veryhigh': 'BLS: very high relative exposure (top quarter of occupations)', 'high': 'BLS: high', 'moderate': 'BLS: moderate', 'low': 'BLS: low', 'nodata': 'not covered'},
  'watch': 'BLS very high AND Anthropic observed exposure of 0.10 or more',
  'sources': [

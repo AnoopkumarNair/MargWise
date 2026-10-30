@@ -1,0 +1,360 @@
+{
+  "note": "Fake values for the privacy tests. Nothing here belongs to a real person.",
+  "base": {
+    "email": "canary.mail.7731@example.com",
+    "phone": "+91 98765 43210",
+    "pan": "ABCDE1234F",
+    "aadhaar": "2345 6789 0123",
+    "name": "Ravindran Canarypally",
+    "employer": "Canaryworks Pvt Ltd",
+    "college": "Canary Institute of Technology"
+  },
+  "patterns": {
+    "email": "canary\\.mail\\.7731@example\\.com",
+    "phone": "(?:\\+?91[\\s-]?)?98765[\\s-]?43210",
+    "pan": "ABCDE1234F",
+    "aadhaar": "2345[\\s-]?6789[\\s-]?0123",
+    "name": "ravindran canarypally|रविन्द्रन कैनरीपल्ली",
+    "employer": "canaryworks pvt ltd",
+    "college": "canary institute of technology"
+  },
+  "fixtures": {
+    "ambiguous_terms": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "Ravindran Canarypally"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "dates_five": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "RAVINDRAN CANARYPALLY"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "devanagari_mixed": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "Ravindran Canarypally",
+        "रविन्द्रन कैनरीपल्ली"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "docx_basic": {
+      "in": "text",
+      "email": [
+        "Canary.Mail.7731@Example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "RAVINDRAN CANARYPALLY"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "hidden_text": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "RAVINDRAN CANARYPALLY"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "indian_format": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91-98765-43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "RAVINDRAN CANARYPALLY"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "linkedin_export": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "Ravindran Canarypally"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "non_resume": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "Ravindran Canarypally"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "pasted_text": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "Ravindran Canarypally"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "scanned": {
+      "in": "image",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "RAVINDRAN CANARYPALLY"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "single_col": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "RAVINDRAN CANARYPALLY"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "table_layout": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345-6789-0123"
+      ],
+      "name": [
+        "RAVINDRAN CANARYPALLY"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "ten_page": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "+91 98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "RAVINDRAN CANARYPALLY"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    },
+    "two_col": {
+      "in": "text",
+      "email": [
+        "canary.mail.7731@example.com"
+      ],
+      "phone": [
+        "98765 43210"
+      ],
+      "pan": [
+        "ABCDE1234F"
+      ],
+      "aadhaar": [
+        "2345 6789 0123"
+      ],
+      "name": [
+        "Ravindran Canarypally"
+      ],
+      "employer": [
+        "Canaryworks Pvt Ltd"
+      ],
+      "college": [
+        "Canary Institute of Technology"
+      ]
+    }
+  }
+}

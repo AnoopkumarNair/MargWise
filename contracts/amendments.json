@@ -1,0 +1,15 @@
+{
+  "_doc": "Owner-approved amendments to frozen contracts that keep their version (contracts/FROZEN.md, 'Amendments'). Only for an additive change made before anything with that version was released. Apply one with: node contracts/freeze.mjs --write --amend <id>. The lock records each applied amendment, and contracts/tests/freeze.test.mjs checks that this list and the lock agree. Never edit or remove an applied entry; a new change needs a new id.",
+  "amendments": [
+    {
+      "id": "A1",
+      "date": "2026-10-29",
+      "slice": "S1",
+      "decision": "Owner decision 2026-10-29, item (2): amend the frozen slice contract additively; SLICE_V stays 1 because no slice has been released.",
+      "deviation": "docs/adult/deviations.md D14",
+      "summary": "slice.schema.json gains an optional top-level near object ({pairs: [[skill id, skill id, similarity]], as_of, src, trust}: the skill_near pairs between the skills in the slice's needs). Task ai_mode gains the value used (AI use seen, no automation/augmentation split), distinct from none (no use seen) and unknown (no data); bands.json ai_task_mode gains the same value. Every slice valid before is still valid.",
+      "files": ["slice.schema.json", "bands.json"],
+      "versions": { "SLICE_V": 1, "PROFILE_V": 1, "API_V": 1 }
+    }
+  ]
+}

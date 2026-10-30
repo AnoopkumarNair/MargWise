@@ -21,6 +21,7 @@ if a.fetch:
     run('1a fetch O*NET interests', ['scrape.py'], cwd=os.path.join(DATA, 'onet'))
     run('1a2 add later careers (addc.py)', ['addc.py'], cwd=os.path.join(DATA, 'onet'))   # careers added after the first scrape; without this a refresh silently drops them
     run('1b fetch O*NET wages', ['wages.py'], cwd=os.path.join(DATA, 'onet'))
+    run('1c fetch O*NET database (graph)', [os.path.join(DATA, 'graph', 'fetch_onet.py')], cwd=ROOT)
 run('2  build fields and careers', ['content.py'])
 run('3  attach India pay (PLFS)', ['plfs.py'])
 run('4  plan B, colleges, field refs', ['extras.py'])
@@ -31,6 +32,12 @@ if os.path.exists(prev):
     out = subprocess.run([sys.executable, os.path.join(ROOT, 'pipeline', 'diff.py'), prev, os.path.join(DATA, 'content.json')], capture_output=True, text=True).stdout
     open(os.path.join(DATA, 'releases', 'CHANGES.md'), 'w', encoding='utf8').write(out); print('8  change report                    ok    ', out.count('\n- '), 'changes -> data/releases/CHANGES.md')
 else: print('8  change report                    skipped (no previous release)')
+# Career graph for the adult app (SPEC 5, BUILD_PLAN M1). Reads data/content.json and data/ai/ but never changes them.
+G = os.path.join(DATA, 'graph')
+run('9  build graph', [os.path.join(G, 'build_graph.py')], cwd=ROOT)
+run('10 graph checks', [os.path.join(ROOT, 'pipeline', 'validate_graph.py')], cwd=ROOT)
+run('11 export graph', [os.path.join(G, 'export.py')], cwd=ROOT)
+run('11b check exports', [os.path.join(ROOT, 'pipeline', 'validate_graph.py'), '--exports', '--no-raw'], cwd=ROOT)
 if a.accept:
     rel = os.path.join(DATA, 'releases'); os.makedirs(rel, exist_ok=True)
     files = {'content.json': 'latest.json', 'abroad.json': 'abroad.json', 'story2.json': 'story2.json'}
@@ -40,5 +47,7 @@ if a.accept:
     raw = [os.path.join('ai', f) for f in sorted(os.listdir(os.path.join(DATA, 'ai'))) if f.endswith(('.csv', '.json')) and f != 'ai_changes.json'] + ['onet/careers.json', 'onet/wages.json', 'plfs_2025.json', 'refcal.json']
     man['raw'] = {r: hashlib.sha256(open(os.path.join(DATA, r), 'rb').read()).hexdigest() for r in raw}
     man['release_id'] = hashlib.sha256(json.dumps(man['files'], sort_keys=True).encode()).hexdigest()[:12]
-    json.dump(man, open(os.path.join(rel, 'manifest.json'), 'w'), indent=1); print('accepted: release', man['release_id'], 'written to data/releases/')
+    sys.path.insert(0, G); import graph_release
+    gid = graph_release.accept_graph(ROOT, man)       # slices, skills_index.json, titles.json -> data/releases/graph/<release>/ (needs the id registry filled first)
+    json.dump(man, open(os.path.join(rel, 'manifest.json'), 'w'), indent=1); print('accepted: release', man['release_id'], 'and graph release', gid, 'written to data/releases/')
 print('done. Next: review data/releases/CHANGES.md and the fact-check batches, then run with --accept and rebuild the game (see docs/ARCHITECTURE.md).')

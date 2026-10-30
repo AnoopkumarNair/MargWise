@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "roles": [
+    {
+      "occ": "occ:15-1252.00",
+      "level": 2,
+      "industry": "it",
+      "years": "2-5",
+      "current": true
+    }
+  ],
+  "skills": []
+}

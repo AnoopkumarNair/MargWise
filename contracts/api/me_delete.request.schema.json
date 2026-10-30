@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/me_delete.request.schema.json",
+  "title": "me_delete request",
+  "description": "POST /api/v1/me/delete (SPEC 9). Deletes across every table in the inventory and revokes sessions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["confirm"],
+  "properties": {
+    "confirm": {
+      "enum": ["DELETE"]
+    }
+  }
+}

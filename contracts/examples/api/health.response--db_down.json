@@ -1,0 +1,18 @@
+{
+  "ok": false,
+  "error": {
+    "code": "unavailable",
+    "message": "This is not available right now. Please try again later."
+  },
+  "db": false,
+  "release": "abc123",
+  "api_v": 1,
+  "ai_enabled": false,
+  "email_configured": true,
+  "flags": {
+    "adult_signup": false,
+    "ai_enabled": false,
+    "email_dry_run": true,
+    "show_demand": false
+  }
+}

@@ -1,0 +1,220 @@
+title,maps_to,levels,note
+software engineer,occ:15-1252.00,Y,needs owner review: IT
+software developer,occ:15-1252.00,Y,needs owner review: IT
+developer,occ:15-1252.00,Y,needs owner review: IT
+full stack developer,occ:15-1252.00|occ:15-1254.00,Y,needs owner review: IT
+backend developer,occ:15-1252.00,Y,needs owner review: IT
+frontend developer,occ:15-1254.00|occ:15-1255.00,Y,needs owner review: IT
+application developer,occ:15-1252.00,Y,needs owner review: IT
+tester,occ:15-1253.00,Y,needs owner review: IT
+support engineer,occ:15-1232.00,Y,needs owner review: IT
+systems engineer,occ:15-1244.00|occ:15-1211.00,Y,needs owner review: IT; the TCS/Infosys style title; judgement
+technology consultant,occ:15-1211.00|occ:13-1111.00,Y,needs owner review: IT services
+business analyst,occ:15-1211.00|occ:13-1111.00,Y,needs owner review: IT or business; judgement
+data analyst,occ:15-2051.00|occ:13-1111.00,Y,needs owner review: judgement
+project manager,occ:13-1082.00|occ:11-3021.00,Y,needs owner review: IT or other
+customer support executive,occ:43-4051.00,Y,needs owner review: BPM
+customer service executive,occ:43-4051.00,Y,needs owner review: BPM
+accountant,occ:13-2011.00,Y,needs owner review: BFSI and BPM
+accounts executive,occ:43-3031.00|occ:13-2011.00,Y,needs owner review: BPM
+credit analyst,occ:13-2041.00,Y,needs owner review: BFSI
+compliance analyst,occ:13-1041.00,Y,needs owner review: BFSI
+risk analyst,occ:13-2061.00|occ:13-1041.00,Y,needs owner review: BFSI; judgement
+operations executive,occ:43-4051.00|occ:43-9021.00,Y,needs owner review: BPM; very rough; judgement
+HR executive,occ:13-1071.00,Y,needs owner review: HR
+recruiter,occ:13-1071.00,Y,needs owner review: HR; judgement
+analyst,occ:15-1211.00|occ:13-1111.00|occ:15-2051.00|occ:13-2041.00|occ:13-1041.00,N,needs owner review: Too general: a pick list. Judgement
+senior analyst,occ:15-1211.00|occ:13-1111.00|occ:15-2051.00|occ:13-2041.00|occ:13-1041.00,N,needs owner review: Too general: a pick list. Judgement
+associate,occ:43-4051.00|occ:13-1111.00|occ:43-3031.00,N,needs owner review: Too general: a pick list. Judgement
+senior associate,occ:43-4051.00|occ:13-1111.00|occ:43-3031.00,N,needs owner review: Too general: a pick list. Judgement
+consultant,occ:13-1111.00|occ:15-1211.00,N,needs owner review: Too general: a pick list. Judgement
+senior consultant,occ:13-1111.00|occ:15-1211.00,N,needs owner review: Too general: a pick list. Judgement
+lead,occ:43-1011.00|occ:11-3021.00|occ:13-1082.00,N,needs owner review: Too general: a pick list. Judgement
+manager,occ:11-1021.00|occ:11-3021.00|occ:13-1082.00,N,needs owner review: Too general: a pick list. Judgement
+AVP,occ:11-1021.00|occ:11-3031.00|occ:11-3021.00,N,needs owner review: Too general: a pick list. Judgement
+VP,occ:11-1021.00|occ:11-3031.00|occ:11-3021.00,N,needs owner review: Too general: a pick list. Judgement
+process executive,occ:43-4051.00,Y,needs owner review: BPM entry title
+process associate,occ:43-4051.00,Y,needs owner review: BPM entry title
+process analyst,occ:13-1111.00|occ:43-4051.00,Y,needs owner review: BPM; judgement
+voice process executive,occ:43-4051.00,Y,needs owner review: BPM
+voice process associate,occ:43-4051.00,Y,needs owner review: BPM
+non voice process executive,occ:43-4051.00,Y,needs owner review: BPM
+non voice process associate,occ:43-4051.00,Y,needs owner review: BPM
+customer care associate,occ:43-4051.00,Y,needs owner review: BPM
+customer service associate,occ:43-4051.00,Y,needs owner review: BPM
+customer service officer,occ:43-4051.00,Y,needs owner review: BPM and bank
+chat support executive,occ:43-4051.00,Y,needs owner review: BPM
+email support executive,occ:43-4051.00,Y,needs owner review: BPM
+technical support executive,occ:15-1232.00|occ:43-4051.00,Y,needs owner review: BPM and IT support; judgement
+technical support associate,occ:15-1232.00|occ:43-4051.00,Y,needs owner review: BPM and IT support; judgement
+back office executive,occ:43-9061.00|occ:43-4051.00|occ:43-9021.00,Y,needs owner review: BPM; judgement
+data entry operator,occ:43-9021.00,N,needs owner review: BPM
+transaction processing executive,occ:43-3021.00|occ:43-3031.00|occ:43-9021.00,Y,needs owner review: BPM; judgement
+quality analyst,occ:43-1011.00|occ:15-1253.00,Y,needs owner review: BPM call quality or software QA; judgement
+quality auditor,occ:43-1011.00|occ:13-2011.00,Y,needs owner review: BPM; very rough; judgement
+subject matter expert,occ:43-4051.00|occ:13-1111.00,N,needs owner review: BPM SME; very rough; judgement
+trainer,occ:13-1151.00,Y,needs owner review: training and development; judgement
+process trainer,occ:13-1151.00,Y,needs owner review: BPM trainer
+workforce management analyst,occ:13-1111.00|occ:43-1011.00,Y,needs owner review: BPM WFM; very rough; judgement
+operations manager,occ:11-1021.00|occ:11-3012.00,N,needs owner review: general
+service delivery manager,occ:11-3021.00|occ:13-1082.00|occ:11-1021.00,Y,needs owner review: BPM and IT; judgement
+customer support team lead,occ:43-1011.00,N,needs owner review: BPM; domain word given
+customer service team lead,occ:43-1011.00,N,needs owner review: BPM; domain word given
+customer care team lead,occ:43-1011.00,N,needs owner review: BPM; domain word given
+voice process team lead,occ:43-1011.00,N,needs owner review: BPM; domain word given
+process team lead,occ:43-1011.00,N,needs owner review: BPM; domain word given
+operations team lead,occ:43-1011.00|occ:11-3012.00,N,needs owner review: BPM; domain word given
+collections team lead,occ:43-1011.00|occ:43-3011.00,N,needs owner review: BFSI; domain word given
+accounts team lead,occ:43-1011.00|occ:13-2011.00,N,needs owner review: finance and accounts; domain word given
+technical support team lead,occ:43-1011.00|occ:15-1232.00,N,needs owner review: IT support; domain word given
+qa team lead,occ:15-1253.00|occ:11-3021.00,N,needs owner review: software QA; domain word given
+testing team lead,occ:15-1253.00|occ:11-3021.00,N,needs owner review: software QA; domain word given
+development team lead,occ:15-1252.00|occ:11-3021.00,N,needs owner review: IT; domain word given
+software team lead,occ:15-1252.00|occ:11-3021.00,N,needs owner review: IT; domain word given
+technical lead,occ:15-1252.00|occ:11-3021.00,N,needs owner review: IT
+tech lead,occ:15-1252.00|occ:11-3021.00,N,needs owner review: IT
+module lead,occ:15-1252.00|occ:13-1082.00,N,needs owner review: IT services
+project lead,occ:13-1082.00|occ:15-1299.09,N,needs owner review: project work
+associate software engineer,occ:15-1252.00,N,needs owner review: IT entry title
+software engineer trainee,occ:15-1252.00,N,needs owner review: IT entry title
+graduate engineer trainee,occ:15-1252.00|occ:15-1244.00,N,needs owner review: IT services intake title; judgement
+software development engineer,occ:15-1252.00,Y,needs owner review: IT
+sde 1,occ:15-1252.00,N,needs owner review: IT level 1
+sde 2,occ:15-1252.00,N,needs owner review: IT level 2
+sde 3,occ:15-1252.00,N,needs owner review: IT level 3
+java developer,occ:15-1252.00,Y,needs owner review: IT
+python developer,occ:15-1252.00,Y,needs owner review: IT
+net developer,occ:15-1252.00,Y,"needs owner review: IT ("".NET developer"")"
+php developer,occ:15-1252.00|occ:15-1254.00,Y,needs owner review: IT
+react developer,occ:15-1254.00|occ:15-1252.00,Y,needs owner review: IT
+angular developer,occ:15-1254.00|occ:15-1252.00,Y,needs owner review: IT
+node js developer,occ:15-1252.00|occ:15-1254.00,Y,needs owner review: IT
+full stack engineer,occ:15-1252.00|occ:15-1254.00,Y,needs owner review: IT
+mobile app developer,occ:15-1252.00,Y,needs owner review: IT
+android developer,occ:15-1252.00,Y,needs owner review: IT
+ios developer,occ:15-1252.00,Y,needs owner review: IT
+ui developer,occ:15-1254.00|occ:15-1255.00,Y,needs owner review: IT
+ui ux designer,occ:15-1255.00,Y,needs owner review: IT
+etl developer,occ:15-1243.01|occ:15-1252.00|occ:15-1243.00,Y,needs owner review: IT data; judgement
+bi developer,occ:15-2051.01|occ:15-1252.00,Y,needs owner review: IT data; judgement
+power bi developer,occ:15-2051.01|occ:15-1252.00,Y,needs owner review: IT data; judgement
+database developer,occ:15-1252.00|occ:15-1242.00|occ:15-1243.00,Y,needs owner review: IT data
+data engineer,occ:15-1243.00|occ:15-1252.00,Y,needs owner review: IT data; see abbrev_in.csv
+big data engineer,occ:15-1243.00|occ:15-1252.00,Y,needs owner review: IT data; judgement
+data scientist,occ:15-2051.00,Y,needs owner review: IT data
+machine learning engineer,occ:15-2051.00|occ:15-1252.00,Y,needs owner review: IT data; judgement; AI-era roles come with S2 T1.7
+mis analyst,occ:15-2051.01|occ:43-9021.00|occ:13-1111.00,Y,needs owner review: BPM and BFSI reporting; judgement
+reporting analyst,occ:15-2051.01|occ:13-1111.00,Y,needs owner review: reporting; judgement
+business intelligence analyst,occ:15-2051.01,Y,needs owner review: IT data
+devops engineer,occ:15-1244.00|occ:15-1252.00,Y,needs owner review: IT; no DevOps occupation in O*NET; judgement
+cloud engineer,occ:15-1244.00|occ:15-1299.08,Y,needs owner review: IT; judgement
+cloud architect,occ:15-1299.08|occ:15-1241.00,Y,needs owner review: IT; judgement
+solutions architect,occ:15-1299.08|occ:15-1252.00,Y,needs owner review: IT; judgement
+technical architect,occ:15-1299.08|occ:15-1252.00,Y,needs owner review: IT; judgement
+infrastructure engineer,occ:15-1244.00|occ:15-1241.00,Y,needs owner review: IT
+platform engineer,occ:15-1244.00|occ:15-1252.00,Y,needs owner review: IT; judgement
+site reliability engineer,occ:15-1244.00|occ:15-1252.00,Y,needs owner review: IT
+system administrator,occ:15-1244.00,Y,needs owner review: IT
+network administrator,occ:15-1244.00,Y,needs owner review: IT
+security analyst,occ:15-1212.00,Y,needs owner review: IT security
+cyber security analyst,occ:15-1212.00,Y,needs owner review: IT security
+information security analyst,occ:15-1212.00,Y,needs owner review: IT security
+qa engineer,occ:15-1253.00,Y,needs owner review: software QA
+qa analyst,occ:15-1253.00,Y,needs owner review: software QA
+qa tester,occ:15-1253.00,Y,needs owner review: software QA
+software tester,occ:15-1253.00,Y,needs owner review: software QA
+manual tester,occ:15-1253.00,Y,needs owner review: software QA
+automation tester,occ:15-1253.00,Y,needs owner review: software QA
+automation test engineer,occ:15-1253.00,Y,needs owner review: software QA
+performance test engineer,occ:15-1253.00,Y,needs owner review: software QA
+sdet,occ:15-1253.00,Y,needs owner review: software QA
+l1 support engineer,occ:15-1232.00,N,needs owner review: IT support
+l2 support engineer,occ:15-1232.00|occ:15-1231.00,N,needs owner review: IT support
+l3 support engineer,occ:15-1231.00|occ:15-1244.00|occ:15-1252.00,N,needs owner review: IT support; judgement
+support engineer l1,occ:15-1232.00,N,needs owner review: IT support
+support engineer l2,occ:15-1232.00|occ:15-1231.00,N,needs owner review: IT support
+support engineer l3,occ:15-1231.00|occ:15-1244.00|occ:15-1252.00,N,needs owner review: IT support; judgement
+technical support engineer,occ:15-1232.00|occ:15-1231.00,Y,needs owner review: IT support
+application support engineer,occ:15-1232.00|occ:15-1211.00|occ:15-1252.00,Y,needs owner review: IT support; judgement
+application support analyst,occ:15-1232.00|occ:15-1211.00,Y,needs owner review: IT support; judgement
+production support engineer,occ:15-1232.00|occ:15-1244.00|occ:15-1252.00,Y,needs owner review: IT support; judgement
+desktop support engineer,occ:15-1232.00,Y,needs owner review: IT support
+service desk analyst,occ:15-1232.00,Y,needs owner review: IT support
+helpdesk executive,occ:15-1232.00,Y,needs owner review: IT support
+it support executive,occ:15-1232.00,Y,needs owner review: IT support
+sap consultant,occ:15-1211.00|occ:13-1111.00,Y,needs owner review: IT services; judgement
+sap fico consultant,occ:15-1211.00|occ:13-1111.00|occ:13-2011.00,Y,needs owner review: IT services; judgement
+sap abap developer,occ:15-1252.00|occ:15-1251.00,Y,needs owner review: IT services
+erp consultant,occ:15-1211.00|occ:13-1111.00,Y,needs owner review: IT services; judgement
+functional consultant,occ:15-1211.00|occ:13-1111.00,Y,needs owner review: IT services; judgement
+technical consultant,occ:15-1211.00|occ:15-1252.00,Y,needs owner review: IT services; judgement
+associate consultant,occ:13-1111.00|occ:15-1211.00,N,needs owner review: consulting entry title; judgement
+scrum master,occ:13-1082.00|occ:15-1299.09,Y,needs owner review: IT; closest by duties; judgement
+product owner,occ:13-1082.00|occ:15-1211.00,Y,needs owner review: IT; closest by duties; judgement
+delivery manager,occ:11-3021.00|occ:13-1082.00,Y,needs owner review: IT delivery; judgement
+engineering manager,occ:11-3021.00,N,needs owner review: IT
+program manager,occ:13-1082.00|occ:11-3021.00,Y,needs owner review: project work; judgement
+technical program manager,occ:13-1082.00|occ:15-1299.09|occ:11-3021.00,N,needs owner review: IT
+it project manager,occ:15-1299.09|occ:11-3021.00,N,needs owner review: IT
+relationship manager,occ:13-2052.00|occ:41-3031.00|occ:11-2022.00,Y,"needs owner review: bank, wealth or broking; judgement"
+senior relationship manager,occ:13-2052.00|occ:41-3031.00|occ:11-2022.00,N,"needs owner review: bank, wealth or broking; judgement"
+wealth manager,occ:13-2052.00|occ:41-3031.00,Y,needs owner review: bank or wealth firm
+financial advisor,occ:13-2052.00,Y,needs owner review: personal financial advisors
+investment advisor,occ:13-2052.00,Y,needs owner review: personal financial advisors
+credit officer,occ:13-2041.00|occ:13-2072.00,Y,needs owner review: BFSI
+credit manager,occ:11-3031.00|occ:13-2041.00,N,needs owner review: BFSI
+credit risk analyst,occ:13-2041.00|occ:13-2099.01,Y,needs owner review: BFSI
+risk manager,occ:11-3031.00|occ:13-2099.01,N,needs owner review: BFSI; judgement
+operational risk analyst,occ:13-2099.01|occ:13-1041.00,Y,needs owner review: BFSI; judgement
+equity research analyst,occ:13-2099.01,Y,needs owner review: BFSI; the O*NET analyst occupation has no slice
+research analyst,occ:13-2099.01|occ:13-1161.00,Y,needs owner review: BFSI or market research; judgement
+investment banking analyst,occ:13-2099.01|occ:13-1111.00,N,needs owner review: BFSI; judgement
+financial analyst,occ:13-2099.01|occ:13-2031.00|occ:13-2041.00,Y,needs owner review: BFSI and corporate finance; O*NET Financial and Investment Analysts has no slice (D18 item 3); judgement
+fp&a analyst,occ:13-2031.00|occ:13-2099.01,Y,needs owner review: corporate finance; judgement
+treasury analyst,occ:13-2099.01|occ:11-3031.01,Y,needs owner review: BFSI; judgement
+kyc analyst,occ:13-1041.00|occ:13-2061.00|occ:43-4141.00,Y,needs owner review: BFSI; judgement
+kyc executive,occ:13-1041.00|occ:43-4141.00,Y,needs owner review: BFSI; judgement
+kyc associate,occ:13-1041.00|occ:43-4141.00,Y,needs owner review: BFSI; judgement
+aml analyst,occ:13-1041.00|occ:13-2061.00,Y,needs owner review: BFSI; judgement
+fraud analyst,occ:13-2099.04|occ:13-1041.00,Y,needs owner review: BFSI
+fraud investigator,occ:13-2099.04,Y,needs owner review: BFSI
+compliance officer,occ:13-1041.00,Y,needs owner review: BFSI
+underwriting analyst,occ:13-2053.00|occ:13-2072.00,Y,needs owner review: BFSI
+insurance underwriter,occ:13-2053.00,Y,needs owner review: BFSI
+mortgage underwriter,occ:13-2072.00|occ:13-2053.00,Y,needs owner review: BFSI
+loan processor,occ:43-4131.00|occ:13-2072.00,Y,needs owner review: BFSI
+loan executive,occ:13-2072.00|occ:43-4131.00,Y,needs owner review: BFSI
+home loan executive,occ:13-2072.00|occ:43-4131.00,Y,needs owner review: BFSI
+collections officer,occ:43-3011.00,Y,needs owner review: BFSI
+collections manager,occ:43-3011.00|occ:11-3031.00,N,needs owner review: BFSI; judgement
+recovery executive,occ:43-3011.00,Y,needs owner review: BFSI
+recovery agent,occ:43-3011.00,Y,needs owner review: BFSI
+bank manager,occ:11-3031.00|occ:41-3031.00,N,needs owner review: BFSI; judgement
+bank clerk,occ:43-3071.00|occ:43-4141.00|occ:43-3031.00,N,needs owner review: BFSI
+bank probationary officer,occ:13-2072.00|occ:43-3071.00|occ:11-3031.00,N,needs owner review: BFSI; Bank PO; judgement
+bank po,occ:13-2072.00|occ:43-3071.00|occ:11-3031.00,N,needs owner review: BFSI; Bank PO; judgement
+insurance advisor,occ:41-3021.00,Y,needs owner review: BFSI
+insurance agent,occ:41-3021.00,Y,needs owner review: BFSI
+claims processor,occ:43-9041.00|occ:13-1031.00,Y,needs owner review: BFSI
+claims analyst,occ:13-1031.00|occ:43-9041.00,Y,needs owner review: BFSI
+claims adjuster,occ:13-1031.00,Y,needs owner review: BFSI
+policy servicing executive,occ:43-9041.00|occ:43-4051.00,Y,needs owner review: BFSI
+actuarial analyst,occ:15-2011.00,Y,needs owner review: BFSI
+accounts payable executive,occ:43-3031.00,Y,needs owner review: finance and accounts
+accounts payable associate,occ:43-3031.00,Y,needs owner review: finance and accounts
+accounts receivable executive,occ:43-3011.00|occ:43-3031.00,Y,needs owner review: finance and accounts
+accounts receivable associate,occ:43-3011.00|occ:43-3031.00,Y,needs owner review: finance and accounts
+reconciliation analyst,occ:43-3031.00|occ:13-2011.00,Y,needs owner review: finance and accounts
+general ledger accountant,occ:13-2011.00|occ:43-3031.00,Y,needs owner review: finance and accounts
+finance executive,occ:13-2011.00|occ:43-3031.00,Y,needs owner review: finance and accounts
+finance manager,occ:11-3031.00|occ:11-3031.01,N,needs owner review: finance
+tax consultant,occ:13-2082.00|occ:13-2011.00,Y,needs owner review: tax
+gst consultant,occ:13-2082.00|occ:13-2011.00,Y,needs owner review: tax
+internal auditor,occ:13-2011.00|occ:13-2061.00,Y,needs owner review: audit
+payroll analyst,occ:43-3051.00,Y,needs owner review: payroll
+billing executive,occ:43-3021.00,Y,needs owner review: billing
+invoice processing executive,occ:43-3021.00|occ:43-3031.00,Y,needs owner review: billing and payables
+order management executive,occ:43-4151.00,Y,needs owner review: order desk
+hr business partner,occ:11-3121.00|occ:13-1071.00,N,needs owner review: HR
+talent acquisition specialist,occ:13-1071.00,Y,needs owner review: HR
+talent acquisition executive,occ:13-1071.00,Y,needs owner review: HR

@@ -1,0 +1,418 @@
+{
+ "slice_v": 1,
+ "release": "fixture-s1",
+ "occ": {
+  "id": "occ:43-4051.00",
+  "label": "Customer Service Representatives",
+  "job_zone": 2,
+  "as_of": "2026-10",
+  "src": "fixture"
+ },
+ "needs": [
+  {
+   "id": "skl:2.C.1.e",
+   "label": "Customer and Personal Service",
+   "kind": "knowledge",
+   "w": 0.9,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.1.f",
+   "label": "Service Orientation",
+   "kind": "skill",
+   "w": 0.8,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.1.b",
+   "label": "Active Listening",
+   "kind": "skill",
+   "w": 0.8,
+   "ai": "people_do",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.1.d",
+   "label": "Speaking",
+   "kind": "skill",
+   "w": 0.7,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:zendesk",
+   "label": "Zendesk",
+   "kind": "technology",
+   "w": 0.6,
+   "ai": "ai_does_much",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:salesforce",
+   "label": "Salesforce CRM",
+   "kind": "technology",
+   "w": 0.5,
+   "ai": "ai_does_much",
+   "as_of": "2026-10",
+   "src": "fixture"
+  }
+ ],
+ "tasks": [],
+ "signals": [
+  {
+   "kind": "ai_obs",
+   "period": "2026Q1",
+   "value": 0.6,
+   "as_of": "2026-10",
+   "src": "fixture"
+  }
+ ],
+ "targets": [
+  {
+   "occ": {
+    "id": "occ:43-1011.00",
+    "label": "First-Line Supervisors of Office and Administrative Support Workers",
+    "job_zone": 3,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.B.5.d",
+     "label": "Management of Personnel Resources",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.b",
+     "label": "Coordination",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.e",
+     "label": "Customer and Personal Service",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.d",
+     "label": "Monitoring",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.b",
+     "label": "Administrative",
+     "kind": "knowledge",
+     "w": 0.5,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.3,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:13-1151.00",
+    "label": "Training and Development Specialists",
+    "job_zone": 4,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "two_step"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.6",
+     "label": "Education and Training",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.e",
+     "label": "Instructing",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.d",
+     "label": "Speaking",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.c",
+     "label": "Writing",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.4.e",
+     "label": "Psychology",
+     "kind": "knowledge",
+     "w": 0.4,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.33,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:41-3091.00",
+    "label": "Sales Representatives of Services",
+    "job_zone": 3,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.B.1.c",
+     "label": "Persuasion",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.e",
+     "label": "Customer and Personal Service",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.d",
+     "label": "Speaking",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:salesforce",
+     "label": "Salesforce CRM",
+     "kind": "technology",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.a",
+     "label": "Social Perceptiveness",
+     "kind": "skill",
+     "w": 0.5,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.36,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:43-9061.00",
+    "label": "Office Clerks, General",
+    "job_zone": 2,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "same_cluster"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.b",
+     "label": "Administrative",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.6,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.e",
+     "label": "Customer and Personal Service",
+     "kind": "knowledge",
+     "w": 0.5,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.a",
+     "label": "Reading Comprehension",
+     "kind": "skill",
+     "w": 0.5,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.7,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:15-1232.00",
+    "label": "Computer User Support Specialists",
+    "job_zone": 3,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "two_step"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:servicenow",
+     "label": "ServiceNow",
+     "kind": "technology",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.e",
+     "label": "Customer and Personal Service",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.f",
+     "label": "Service Orientation",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.2.i",
+     "label": "Complex Problem Solving",
+     "kind": "skill",
+     "w": 0.5,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.5,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "fixture",
+   "name": "Hand-built matcher test fixture. Not real data: weights, labels and AI shares are made up for tests.",
+   "trust": "estimate",
+   "as_of": "2026-10"
+  }
+ ]
+}

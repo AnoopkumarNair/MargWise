@@ -1,0 +1,427 @@
+{
+ "slice_v": 1,
+ "release": "fixture-s1",
+ "occ": {
+  "id": "occ:29-1141.00",
+  "label": "Registered Nurses",
+  "job_zone": 3,
+  "as_of": "2026-10",
+  "src": "fixture"
+ },
+ "needs": [
+  {
+   "id": "skl:2.C.5.a",
+   "label": "Medicine and Dentistry",
+   "kind": "knowledge",
+   "w": 0.9,
+   "ai": "people_do",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.1.a",
+   "label": "Social Perceptiveness",
+   "kind": "skill",
+   "w": 0.8,
+   "ai": "people_do",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.2.d",
+   "label": "Monitoring",
+   "kind": "skill",
+   "w": 0.7,
+   "ai": "people_do",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.1.b",
+   "label": "Coordination",
+   "kind": "skill",
+   "w": 0.6,
+   "ai": "people_do",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.4.e",
+   "label": "Psychology",
+   "kind": "knowledge",
+   "w": 0.5,
+   "ai": "people_do",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:epic-ehr",
+   "label": "Epic electronic health records",
+   "kind": "technology",
+   "w": 0.5,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  }
+ ],
+ "tasks": [],
+ "signals": [
+  {
+   "kind": "ai_obs",
+   "period": "2026Q1",
+   "value": 0.12,
+   "as_of": "2026-10",
+   "src": "fixture"
+  }
+ ],
+ "targets": [
+  {
+   "occ": {
+    "id": "occ:11-9111.00",
+    "label": "Medical and Health Services Managers",
+    "job_zone": 4,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "two_step"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.a",
+     "label": "Administration and Management",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.d",
+     "label": "Management of Personnel Resources",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.5.a",
+     "label": "Medicine and Dentistry",
+     "kind": "knowledge",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.b",
+     "label": "Management of Financial Resources",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.8.b",
+     "label": "Law and Government",
+     "kind": "knowledge",
+     "w": 0.5,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.2,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:21-1091.00",
+    "label": "Health Education Specialists",
+    "job_zone": 4,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "same_cluster"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.6",
+     "label": "Education and Training",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.e",
+     "label": "Instructing",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.5.a",
+     "label": "Medicine and Dentistry",
+     "kind": "knowledge",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.d",
+     "label": "Speaking",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.a",
+     "label": "Social Perceptiveness",
+     "kind": "skill",
+     "w": 0.5,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.18,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:29-9021.00",
+    "label": "Health Information Technologists and Medical Registrars",
+    "job_zone": 3,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "same_cluster"
+   ],
+   "needs": [
+    {
+     "id": "tec:epic-ehr",
+     "label": "Epic electronic health records",
+     "kind": "technology",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.5.a",
+     "label": "Medicine and Dentistry",
+     "kind": "knowledge",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.b",
+     "label": "Administrative",
+     "kind": "knowledge",
+     "w": 0.6,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:sql",
+     "label": "SQL",
+     "kind": "technology",
+     "w": 0.5,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.5,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.38,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:25-1072.00",
+    "label": "Nursing Instructors and Teachers, Postsecondary",
+    "job_zone": 5,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.5.a",
+     "label": "Medicine and Dentistry",
+     "kind": "knowledge",
+     "w": 0.9,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.e",
+     "label": "Instructing",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.6",
+     "label": "Education and Training",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.d",
+     "label": "Speaking",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.a",
+     "label": "Social Perceptiveness",
+     "kind": "skill",
+     "w": 0.5,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.15,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:29-1171.00",
+    "label": "Nurse Practitioners",
+    "job_zone": 5,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.5.a",
+     "label": "Medicine and Dentistry",
+     "kind": "knowledge",
+     "w": 0.9,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.d",
+     "label": "Monitoring",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.a",
+     "label": "Social Perceptiveness",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.4.e",
+     "label": "Psychology",
+     "kind": "knowledge",
+     "w": 0.5,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.1,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "fixture",
+   "name": "Hand-built matcher test fixture. Not real data: weights, labels and AI shares are made up for tests.",
+   "trust": "estimate",
+   "as_of": "2026-10"
+  }
+ ]
+}

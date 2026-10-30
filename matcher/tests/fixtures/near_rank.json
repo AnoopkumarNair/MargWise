@@ -1,0 +1,16 @@
+{
+ "_doc": "Hand-built skill_near data for the golden case near-rank (matcher 1.1.0, owner decision O2). Not real data. Systems analysis (skl:2.B.4.g) has five neighbours. Its 3 closest are skl:2.A.2.a (0.97), skl:2.C.4.a (0.95) and Java (0.95; third, because skl:2.C.4.a sorts before tec:java on the tie). SQL (0.94) is fourth, so it never credits systems analysis. Computers and electronics (skl:2.C.3.a) has one neighbour at 0.89, under the 0.90 floor. Quality control (skl:2.B.3.m) has one at exactly 0.90, which counts.",
+ "skl:2.B.4.g": {
+  "skl:2.A.2.a": 0.97,
+  "skl:2.C.4.a": 0.95,
+  "tec:java": 0.95,
+  "tec:sql": 0.94,
+  "skl:2.B.5.d": 0.91
+ },
+ "skl:2.B.2.i": {
+  "skl:2.C.3.a": 0.89
+ },
+ "skl:2.B.3.e": {
+  "skl:2.B.3.m": 0.9
+ }
+}

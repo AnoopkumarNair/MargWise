@@ -1,0 +1,20 @@
+{
+  "id": "dates_five",
+  "shape": "Five date formats on one resume: 06/2023 - present, Jan 2019 - Mar 2023, 2019 – Till date, Since 2021, 2016-2018 (and 2012-15)",
+  "binary": "resume.pdf",
+  "looksLikeResume": true,
+  "roles": [
+    { "titleContains": "Senior Operations Analyst", "startYear": 2023, "endYear": 2026, "current": true },
+    { "titleContains": "Operations Analyst", "startYear": 2019, "endYear": 2023, "current": false },
+    { "titleContains": "Visiting Lecturer", "startYear": 2019, "endYear": 2026, "current": true },
+    { "titleContains": "Freelance Data Consultant", "startYear": 2021, "endYear": 2026, "current": true },
+    { "titleContains": "Supply Chain Trainee", "startYear": 2016, "endYear": 2018, "current": false },
+    { "titleContains": "Apprentice", "startYear": 2012, "endYear": 2015, "current": false }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": ["tec:sap-software", "tec:microsoft-excel", "tec:microsoft-power-bi", "tec:structured-query-language-sql", "tec:python", "tec:google-sheets"],
+  "mustNotFind": ["tec:r", "tec:go"],
+  "mustFindYears": { "tec:microsoft-power-bi": 2026, "tec:google-sheets": 2026 },
+  "outOfDictionary": [],
+  "notes": "Three roles are current at once. The current role for the profile is the one that started last (06/2023)."
+}

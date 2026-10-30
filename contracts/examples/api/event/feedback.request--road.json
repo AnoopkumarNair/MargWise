@@ -1,0 +1,15 @@
+{
+  "type": "feedback",
+  "eid": "e-feedback-0001",
+  "data": {
+    "about": "road",
+    "from": "occ:13-2011.00",
+    "to": "occ:13-2051.00",
+    "worth_exploring": true,
+    "kind_agree": true,
+    "rating": 4,
+    "text": "The gap list made sense.",
+    "job_release": "abc123",
+    "matcher_version": "1.0.0"
+  }
+}

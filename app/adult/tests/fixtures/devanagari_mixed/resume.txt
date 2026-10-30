@@ -1,0 +1,31 @@
+रविन्द्रन कैनरीपल्ली (Ravindran Canarypally)
+Data Analyst | डेटा विश्लेषक
+ईमेल: canary.mail.7731@example.com | मोबाइल: +91 98765 43210
+PAN: ABCDE1234F | आधार: 2345 6789 0123
+
+सारांश (Summary)
+मैं पिछले आठ साल से डेटा विश्लेषण का काम कर रहा हूँ। SQL और Python से रिपोर्ट बनाता हूँ और Tableau में डैशबोर्ड। I explain numbers in Hindi and English.
+
+अनुभव (Experience)
+
+Data Analyst (डेटा विश्लेषक)
+Canaryworks Pvt Ltd, दिल्ली
+2020 - वर्तमान
+- बिक्री के डैशबोर्ड Tableau और Power BI में बनाए।
+- हर हफ्ते की रिपोर्ट Microsoft Excel और SQL से तैयार की।
+- Python से डेटा की सफाई की स्क्रिप्ट लिखी।
+
+Junior Analyst (जूनियर विश्लेषक)
+Brightloom Analytics, नोएडा
+Jul 2016 - Dec 2019
+- ग्राहकों की सूची MySQL में रखी और Excel में रिपोर्ट बनाई।
+- टीम को Google Sheets की ट्रेनिंग दी।
+
+शिक्षा (Education)
+बी.टेक (कंप्यूटर विज्ञान), Canary Institute of Technology, 2012 - 2016
+
+कौशल (Skills)
+Python, SQL, Tableau, Power BI, Excel, MySQL, Google Sheets, संवाद कौशल
+
+भाषाएँ
+हिन्दी, English

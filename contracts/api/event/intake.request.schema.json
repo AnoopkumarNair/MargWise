@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/event/intake.request.schema.json",
+  "title": "event intake request",
+  "description": "POST /api/v1/event with type \"intake\" (SPEC 9, ADR-08, deviations D6). Strict: type must be \"intake\" and data allows only the intake fields, so a body that mixes fields of two types fails. The handler picks this schema by the body's type with schemaForType(type) from contracts/event_schemas.js; an unknown type is bad_request. Generated from events.schema.json by contracts/sync.mjs: do not edit by hand.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "eid", "data"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["intake"]
+    },
+    "eid": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{8,40}$"
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "mode"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["upload", "paste", "title"]
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["most_accurate", "on_device", "none"]
+        },
+        "n_roles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 50
+        },
+        "n_found": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "n_confirmed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 86400000
+        },
+        "fallback": {
+          "type": "boolean"
+        },
+        "prompt_v": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        }
+      }
+    }
+  }
+}

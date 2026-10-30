@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/me_profile_put.response.schema.json",
+  "title": "me_profile_put response",
+  "description": "The new revision after a successful write.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok", "rev"],
+  "properties": {
+    "ok": {
+      "enum": [true]
+    },
+    "rev": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000000
+    }
+  }
+}

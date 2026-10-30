@@ -1,0 +1,52 @@
+{
+  "id": "linkedin_export",
+  "shape": "LinkedIn-export style PDF (sidebar first, company line then title line then date line with a duration in brackets)",
+  "binary": "resume.pdf",
+  "looksLikeResume": true,
+  "roles": [
+    {
+      "titleContains": "Senior Data Analyst",
+      "startYear": 2021,
+      "endYear": 2026,
+      "current": true
+    },
+    {
+      "titleContains": "Data Analyst",
+      "startYear": 2017,
+      "endYear": 2020,
+      "current": false
+    },
+    {
+      "titleContains": "Junior Analyst",
+      "startYear": 2015,
+      "endYear": 2017,
+      "current": false
+    }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": [
+    "tec:python",
+    "tec:tableau",
+    "tec:structured-query-language-sql",
+    "tec:postgresql",
+    "tec:pandas",
+    "tec:scikit-learn",
+    "tec:microsoft-excel",
+    "tec:microsoft-sql-server"
+  ],
+  "mustNotFind": [
+    "tec:linkedin",
+    "tec:r",
+    "tec:go"
+  ],
+  "mustFindYears": {
+    "tec:postgresql": 2026,
+    "tec:scikit-learn": 2020,
+    "tec:tableau": 2026
+  },
+  "outOfDictionary": [
+    "Data Analysis",
+    "Looker"
+  ],
+  "notes": "'(LinkedIn)' and the profile URL in the Contact block must not count as a LinkedIn skill. The sidebar skills have no role."
+}

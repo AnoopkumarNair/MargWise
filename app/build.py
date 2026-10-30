@@ -68,12 +68,19 @@ if os.path.exists(share):
     og = '<meta property="og:title" content="Margwise: The Night of Lamps"><meta property="og:description" content="A story game that helps you find the work that fits you."><meta property="og:image" content="https://margwise.byteheaven.in/art/share.jpg"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image">'
     doc = doc.replace('<meta name="robots" content="noindex">', '<meta name="robots" content="noindex">' + og, 1)
 os.makedirs(H, exist_ok=True); open(os.path.join(H, 'index.html'), 'w', encoding='utf8').write(doc)
-for tgt in (dist, H):
-    shutil.rmtree(os.path.join(tgt, 'vendor'), ignore_errors=True); shutil.copytree(os.path.join(A, 'vendor'), os.path.join(tgt, 'vendor'))
+# vendored libraries: app/dist gets a fresh copy; hosting/public/vendor/ is only added to, never wiped, because it also holds
+# VERSIONS.md (the hash table CI checks) and files other pages vendor there
+shutil.rmtree(os.path.join(dist, 'vendor'), ignore_errors=True); shutil.copytree(os.path.join(A, 'vendor'), os.path.join(dist, 'vendor'))
+shutil.copytree(os.path.join(A, 'vendor'), os.path.join(H, 'vendor'), dirs_exist_ok=True)
 shutil.rmtree(os.path.join(H, 'art'), ignore_errors=True); shutil.copytree(os.path.join(dist, 'art'), os.path.join(H, 'art'))
 os.makedirs(os.path.join(H, 'counsellor'), exist_ok=True)
 _c = json.load(open(os.path.join(D, 'content.json') if args.dev else os.path.join(REL, 'latest.json'), encoding='utf8'))
 json.dump([{'id': f['id'], 'name': f['name']} for f in _c['fields']], open(os.path.join(H, 'counsellor', 'fields.json'), 'w'), ensure_ascii=False)
-json.dump({'release_id': release_id, 'built_at': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'page_sha256': hashlib.sha256(doc.encode()).hexdigest(), 'engine_sha256': engine_sha, 'dev_build': args.dev}, open(os.path.join(H, 'manifest.json'), 'w'), indent=1)
+man_out = {'release_id': release_id, 'built_at': None, 'page_sha256': hashlib.sha256(doc.encode()).hexdigest(), 'engine_sha256': engine_sha, 'dev_build': args.dev}
+try: man_old = json.load(open(os.path.join(H, 'manifest.json')))
+except Exception: man_old = {}
+same = all(man_old.get(k) == man_out[k] for k in ('release_id', 'page_sha256', 'engine_sha256', 'dev_build'))
+man_out['built_at'] = man_old['built_at'] if same and man_old.get('built_at') else datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')   # an identical rebuild keeps its date, so it leaves no diff
+json.dump(man_out, open(os.path.join(H, 'manifest.json'), 'w'), indent=1)
 print('release', release_id)
 print('built: %d background images (%.2f MB), standalone %d KB, hosted %d KB' % (len(art['bg']), total / 1e6, len(s) // 1000, len(doc) // 1000))
