@@ -3,6 +3,7 @@
 // for same-origin static files; and afterwards localStorage, sessionStorage, IndexedDB, the cache and cookies hold nothing.
 //   node --test app/adult/tests/privacy/journey.e2e.mjs        (needs Playwright; the CI e2e job runs it)
 // Named .e2e.mjs, not .test.mjs, so the browser-free CI job (intake-unit) does not pick it up. Data: fixtures by default, MW_E2E_DATA=real.
+import { seeRoads } from '../e2e/flow.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
@@ -73,7 +74,7 @@ for (const v of VIEWS.slice(0, 1)) for (const [name, start] of journeys) {
     await start(page);
     await page.locator('.chip').first().waitFor();
     await page.locator('.chip').first().click();
-    await page.locator('#see-roads').click();
+    await seeRoads(page);
     await page.locator('#road-count:has-text("shown")').waitFor();
     if (await page.locator('ol.cards > li').count()) {
       await page.locator('ol.cards > li').first().getByRole('link', { name: 'See details' }).click();
@@ -95,7 +96,7 @@ test('privacy: the title-only path sends only GETs for static files and stores n
   const ctx = await browser.newContext(); const page = await ctx.newPage(); const w = watchContext(ctx);
   await page.goto(base + '/work/#/intake'); await page.locator('#choose-title').click();
   await page.locator('#job-title').fill('accountant'); await page.locator('#job-picks button:not([disabled])').first().click();
-  await page.locator('#see-roads').click(); await page.locator('#road-count:has-text("shown")').waitFor();
+  await seeRoads(page);
   assertClean(w, 'title path'); await assertNoStorage(ctx, page, 'title path');
   await ctx.close();
 });
@@ -129,7 +130,7 @@ test(`privacy over the fixture corpus (${F.items.length} fixtures, ${canaries.le
   const ctx = await browser.newContext(); const page = await ctx.newPage(); const w = watchContext(ctx);
   for (const item of F.items) {
     if ((await giveFixture(page, base, item)) === 'confirm') {
-      await page.locator('#see-roads').click(); await page.waitForTimeout(100);
+      await seeRoads(page, { tolerant: true }); await page.waitForTimeout(100);
       if (await page.locator('ol.cards > li').count()) await page.locator('ol.cards > li').first().getByRole('link', { name: 'See details' }).click();
     }
   }

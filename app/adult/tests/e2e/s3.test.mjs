@@ -10,6 +10,7 @@ import { join } from 'node:path';
 import { startServer } from './server.mjs';
 import { makeSamples, fixtures, giveFixture, RESUME_TEXT, CANARIES } from './samples.mjs';
 import { chromium, buildApp, PUBLIC, OUT, REAL, VIEWS, axeCheck, shot, watchContext, pageProfile, uploadToConfirm, roadsReady } from './harness.mjs';
+import { seeRoads } from './flow.mjs';
 
 buildApp();
 let srv, browser, S, base;
@@ -63,8 +64,12 @@ for (const v of VIEWS) {
     assert.match(await first.locator('select[id^="ind-"]').inputValue(), /^(it|bpm|bfsi|other)$/);
     const nSk = await page.locator('li.skill').count();
     assert.ok(nSk >= 5, 'skills found: ' + nSk);
-    assert.ok(await page.locator('li.skill .src').count() >= 5, 'each skill shows the line it came from');
-    assert.match(await page.locator('li.skill .src').first().innerText(), /^From your resume: “.+”$/);
+    // Owner decision 2026-10-30: the resume line behind each skill is hidden at first and shown on tap
+    assert.equal(await page.locator('li.skill .src:visible').count(), 0, 'source lines are hidden by default');
+    await page.locator('#show-sources').click();
+    assert.equal(await page.locator('#show-sources').getAttribute('aria-pressed'), 'true');
+    assert.ok(await page.locator('li.skill .src:visible').count() >= 5, 'each skill can show the line it came from');
+    assert.match(await page.locator('li.skill .src:visible').first().innerText(), /^From your resume: “.+”$/);
     // the recency rule: used within 3 years, rusty when older
     const old = page.locator('li.skill:has(.tag:text-matches("last used 20(0|1[0-9])"))');
     if (await old.count()) assert.equal(await old.first().locator('input[type=radio]:checked').getAttribute('value'), 'rusty');
@@ -98,7 +103,7 @@ for (const v of VIEWS) {
     await page.screenshot({ path: join(OUT, `s3-02b-confirm-edited-${v.name}.png`), fullPage: true });
 
     // 5. Go on: the profile holds ids and bands only and passes the contract
-    await page.locator('#see-roads').click();
+    await seeRoads(page);
     await roadsReady(page);
     const { profile, check } = await pageProfile(page);
     assert.equal(check.ok, true, JSON.stringify(check.errors));
@@ -139,7 +144,7 @@ for (const v of VIEWS) {
     assert.ok(w.requests.some(r => /\/vendor\/mammoth\/mammoth\.browser\.min\.js$/.test(r.url)), 'mammoth loaded for the DOCX');
     assert.ok(!w.requests.some(r => /pdfjs/.test(r.url)), 'pdf.js is not needed for a DOCX');
     assert.ok(await page.locator('.role-card').count() >= 1 && await page.locator('li.skill').count() >= 5);
-    await page.locator('#see-roads').click(); await page.locator('#road-count:has-text("shown")').waitFor();
+    await seeRoads(page);
     // pasted text
     await page.goto(base + '/work/#/'); await page.locator('#start').click();
     await page.locator('#show-paste').click();
@@ -203,7 +208,7 @@ test('the title path (no resume) starts with the top 12 ticked, shows 18, and Sh
   await axeCheck(page, 'title path skills');
   await page.locator('#show-all').click();
   assert.ok(await page.locator('ul.skills > li:not([hidden])').count() > 18);
-  await page.locator('#see-roads').click(); await roadsReady(page);
+  await seeRoads(page); await roadsReady(page);
   assert.deepEqual(w.errors, []);
   await ctx.close();
 });
@@ -260,7 +265,7 @@ test('budgets (TEST_PLAN layer 8): first load <= 300 KB, libraries only after a 
       if (MESSAGE_ONLY[item.name]) assert.match(r, MESSAGE_ONLY[item.name], item.name);
       else if (!REAL) assert.ok(r === 'confirm' || /resume|skills/.test(r), item.name + ': ' + r);
       else assert.equal(r, 'confirm', item.name + ' should reach the confirm screen with the real data: ' + r);
-      if (r === 'confirm') { await page.locator('#see-roads').click(); await page.waitForTimeout(100); }
+      if (r === 'confirm') { await seeRoads(page, { tolerant: true }); await page.waitForTimeout(100); }
     }
     assert.deepEqual(w.errors, [], 'console errors');
     assert.ok(w.requests.every(r => r.method === 'GET' && r.url.startsWith(base) && !r.body));

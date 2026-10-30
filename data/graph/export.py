@@ -18,11 +18,12 @@ fits, and every such trim is counted in export_report.json. With O*NET 31.0 no s
 slices/ is a build output and is not committed (deviations D15): the pipeline rebuilds it, and export_report.json (committed) holds
 its hashes and sizes, so CI sees any change. --accept stores the accepted slices as one compressed pack in data/releases/graph/.
 """
-import argparse, collections, csv, gzip, hashlib, json, math, os, shutil, sqlite3, sys
+import argparse, collections, csv, datetime, gzip, hashlib, json, math, os, shutil, sqlite3, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from build_graph import norm_title  # noqa: E402
+from freshness import age_years, rating_weight  # noqa: E402
 
 SLICE_V = 1
 SLICE_MAX_GZ = 60000        # bytes, gzipped (SPEC 5.3)
@@ -40,6 +41,13 @@ TEC_SHARE = 4               # at most n // 4 of a needs list are technologies, s
 # The graph keeps the tool weights of BUILD_PLAN T1.3 (0.8 Hot Technology, 0.6 other). The export caps them (owner decision O3,
 # 2026-10-29, deviations): in each needs list it writes (the occupation's own list, and each target's list, separately), a tool's weight
 # is at most the median weight of the non-tool needs in that same list. See cap_tool_weights. Candidate ranking uses the graph weights.
+# Rating age (SPEC 5.6 rule 3, slice S2): a skill, knowledge or activity need's weight is multiplied by max(0.6, 1 - 0.05 * max(0, age_years - 3)),
+# where the age is counted from the rating's own O*NET collection date (the edge as_of) to RATING_REF, the release date of the pinned O*NET version
+# (build_report.json 'onet_release', which comes from ONET_RELEASE in fetch_onet.py), never today's date, so a build is the same on any day.
+# The discount is applied to the graph weight before anything else: before the top-N choice (an old rating ranks lower) and before the tool cap below
+# (the cap is the median of the discounted non-tool weights). Tool needs carry the release month as their date (O*NET gives tools no rating date),
+# so they are not discounted. The graph keeps the undiscounted weights.
+RATING_REF = None           # datetime.date, set in main() from the build report
 # skill_near pairs (owner decision O2): the matcher counts a near skill only when the pair is among the 3 closest neighbours of the skill
 # being credited and its similarity is 0.90 or more. A pair that can never count is left out of the slice (near_block).
 NEAR_RANK, NEAR_FLOOR = 3, 0.9
@@ -144,10 +152,22 @@ def tec_key(r, scores):
     return (not at.get('in_demand'), -scores.get(d, 0.0), nd['label'], d)
 
 
+def rating_ref(onet_release):
+    """The fixed reference date for rating ages: the middle of the O*NET release month (the same convention freshness.age_years uses for YYYY-MM)."""
+    y, m = (int(x) for x in onet_release.split('-')[:2])
+    return datetime.date(y, m, 15)
+
+
+def age_factor(as_of, d):
+    """1.0 for a tool (tec:) and for a graph built without a reference date; otherwise the SPEC 5.6 rule 3 factor for this rating date."""
+    if d.startswith('tec:') or RATING_REF is None: return 1.0
+    return rating_weight(age_years(as_of, RATING_REF))
+
+
 def need_rows(g, occ, n, label_fn, scores=None):
     rows = []
     for d, w, at, ao in g.out[occ]['needs']:
-        nd = g.node[d]; rows.append((d, w, at, ao, nd))
+        nd = g.node[d]; rows.append((d, w * age_factor(ao, d), at, ao, nd))
     sc = (scores or {}).get(occ, {})
     tec = sorted((r for r in rows if r[0].startswith('tec:')), key=lambda r: tec_key(r, sc))
     oth = sorted((r for r in rows if not r[0].startswith('tec:')), key=lambda r: (-r[1], r[0]))
@@ -245,11 +265,13 @@ def countable_pairs(pairs):
 
 
 def tool_counts(g, o, targets, sl):
-    """(tool needs written, tool needs whose weight the O3 cap lowered) in one slice, for export_report.json."""
+    """(tool needs written, tool needs whose weight the O3 cap lowered, other needs written, other needs whose weight the rating-age discount lowered)
+    in one slice, for export_report.json."""
     graph_w = lambda occ: {d: w for d, w, at, ao in g.out[occ]['needs']}
     lists = [(o, sl['needs'])] + [(tg['occ']['id'], tg['needs']) for tg in sl['targets']]
     tools = [(graph_w(occ)[n['id']], n['w']) for occ, lst in lists for n in lst if n['id'].startswith('tec:')]
-    return len(tools), sum(1 for gw, w in tools if w < round(gw, 4))
+    other = [(graph_w(occ)[n['id']], n['w']) for occ, lst in lists for n in lst if not n['id'].startswith('tec:')]
+    return len(tools), sum(1 for gw, w in tools if w < round(gw, 4)), len(other), sum(1 for gw, w in other if w < round(gw, 4))
 
 
 def gz_size(body):
@@ -275,7 +297,7 @@ def build_slices(g, release):
     def top(o, n):
         if (o, n) not in top_cache: top_cache[(o, n)] = need_rows(g, o, n, labels[o], scores)
         return top_cache[(o, n)]
-    own_w = {o: {d: w for d, w, at, ao in g.out[o]['needs']} for o in rated}
+    own_w = {o: {d: w * age_factor(ao, d) for d, w, at, ao in g.out[o]['needs']} for o in rated}   # discounted like the slice needs, so candidate coverage compares like with like
     close = {o: sorted([(d, w, at) for d, w, at, ao in g.out[o]['close_to'] if d in rated_set and d != o], key=lambda r: (-r[1], -(r[2].get('cos') or 0), r[0])) for o in rated}
     cos = {o: {d: at.get('cos') or 0.0 for d, w, at in close[o]} for o in rated}
 
@@ -360,6 +382,8 @@ def main():
     rep = json.load(open(a.report))
     release = 'onet-%s-%s' % (rep['onet_version'].replace('.', '-'), rep['graph_hash'][:8])
     SRC_ASOF.update({'onet_database': rep['onet_release']})
+    global RATING_REF
+    RATING_REF = rating_ref(rep['onet_release'])
     # the AI sources' dates come from the signals themselves
     for n, rows in g.sig.items():
         for k, p, v, src, ao in rows: SRC_ASOF.setdefault(src, ao)
@@ -402,7 +426,7 @@ def main():
     seen = {}
     for e in idx:
         for t in e['alt']:
-            k = norm_title(t)
+            k = norm_title(t) or t.casefold()   # norm_title is Latin-only: a Hindi term would normalise to '' and clash with every other one
             if k in seen and seen[k] != e['id'] and t not in e.get('ambiguous', []):
                 raise SystemExit('term %r points at %s and %s without being marked ambiguous' % (t, seen[k], e['id']))
             seen.setdefault(k, e['id'])
@@ -434,6 +458,8 @@ def main():
         'tasks_per_slice_max': max(v[5] for v in sizes.values()),
         'near_pairs_per_slice': {'max': npairs[-1], 'median': med(npairs), 'min': npairs[0]},
         'near_rule': {'rank': NEAR_RANK, 'floor': NEAR_FLOOR},
+        'rating_age_discount': {'rule': 'weight x max(0.6, 1 - 0.05 * max(0, age_years - 3)); age = O*NET rating date to the pinned release; applied before the top-N choice and before the tool cap; tools are not discounted',
+                                'reference_date': RATING_REF.isoformat(), 'other_needs': sum(v[8] for v in sizes.values()), 'other_needs_discounted': sum(v[9] for v in sizes.values())},
         'tool_weight_cap': {'rule': 'median of the non-tool needs in the same list', 'tool_needs': sum(v[6] for v in sizes.values()), 'tool_needs_capped': sum(v[7] for v in sizes.values())},
         'occupations_without_slice': no_slice,
         'skills_index': {'entries': len(idx), 'bytes': len(idx_body), 'bytes_gz': idx_gz, 'alt_terms': sum(len(e['alt']) for e in idx)},

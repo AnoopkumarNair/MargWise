@@ -15,6 +15,7 @@ import { gzipSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { startServer } from './server.mjs';
+import { seeRoads } from './flow.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
@@ -67,13 +68,12 @@ async function shot(page, v, name) {
 
 async function footerOk(page) {
   const t = await page.locator('#footer').innerText();
-  assert.match(t, /Job data release:\s*dev-unaccepted/);
+  assert.match(t, /Release dev-unaccepted/);
   assert.match(t, /O\*NET OnLine, U\.S\. Department of Labor/);
   assert.match(t, /Margwise has modified this information\. USDOL\/ETA has not approved, endorsed or tested these modifications\. O\*NET® is a trademark of USDOL\/ETA\./);
-  assert.match(t, /as of 20\d\d/);
-  // the O*NET version shows in a dev build too (from the slices' release id); the hand-written fixtures have none
-  if (REAL) assert.match(t, new RegExp('O\\*NET version:\\s*' + ONET_V.replace('.', '\\.'))); else assert.doesNotMatch(t, /O\*NET version:/);
-  assert.doesNotMatch(t, /broad averages/);   // S1 has no India data (review finding S2)
+  // Owner decision 2026-10-30: the footer holds one link; versions, dates and sources are on the About page.
+  assert.match(t, /About this data/);
+  assert.doesNotMatch(t, /as of 20\d\d|O\*NET version:|broad averages/);
 }
 
 for (const v of VIEWS) {
@@ -174,7 +174,7 @@ for (const v of VIEWS) {
     await footerOk(page);
     await shot(page, v, '03-skills');
     ax.skills = await axeCheck(page, 'skills');
-    await page.locator('#see-roads').click();
+    await seeRoads(page);
 
     // 4. Roads
     await page.locator('ol.cards > li').first().waitFor();
@@ -183,7 +183,7 @@ for (const v of VIEWS) {
     assert.equal(await page.locator('ol.cards > li.tier-leap').count(), 0, 'leaps are hidden at first');
     const card = page.locator('ol.cards > li').first();
     const cardText = await card.innerText();
-    assert.match(cardText, /% covered/); assert.match(cardText, /Top skills still missing/); assert.match(cardText, /Demand\s*not yet measured/);
+    assert.match(cardText, /% covered/); assert.match(cardText, /Top skills still missing/); assert.doesNotMatch(cardText, /not yet measured/);
     assert.ok((await card.locator('ul.gaps > li').count()) <= 3);
     await footerOk(page);
     const ms = Number(await page.locator('#road-list').getAttribute('data-compute-ms'));
@@ -196,7 +196,7 @@ for (const v of VIEWS) {
     await setSlider('ai_safe', 0); await setSlider('short_move', 5);
     const byShort = await order();
     assert.notDeepEqual(byAi, byShort, 'moving the sliders changes the order');
-    assert.match(await page.locator('#prio-note').innerText(), /not yet measured/);
+    assert.match(await page.locator('#prio-note').innerText(), /figures are coming/);
     // leaps (the fixture has one; real data may have none for a person who covers everything)
     if (REAL && (await page.locator('#show-leaps').isHidden())) console.log('  (no leaps for this person in real data: skipped)');
     else {
@@ -213,8 +213,8 @@ for (const v of VIEWS) {
     await page.locator('ol.gap-list, h2:has-text("Skills you would still need")').first().waitFor();
     const main = await page.locator('main').innerText();
     assert.match(main, /No reviewed course yet for these skills\./);
-    assert.match(main, /How this road was scored/);
-    assert.match(main, /Pay change/); assert.match(main, /not yet measured/);
+    assert.match(main, /Why this order\?/); assert.equal(await page.locator("details.why[open]").count(), 0, "collapsed at first");
+    assert.match(main, /Pay and demand figures are coming/); assert.doesNotMatch(main, /not yet measured/);
     assert.match(main, /Importance in this job/);
     assert.equal(await page.locator('table.comps tbody tr').count(), 4);
     await footerOk(page);
@@ -308,7 +308,7 @@ test('budgets (TEST_PLAN layer 8): first load <= 300 KB, slice <= 60 KB gzipped,
   console.log(`  slice fetch: ${(gz / 1024).toFixed(1)} KB gzipped, ${(sl.bytes / 1024).toFixed(1)} KB raw (${sl.url.split('/').pop()})`);
   assert.ok(gz <= 60000, `slice ${gz} bytes gzipped`);
   for (let i = 0; i < TICKS; i++) { await page.locator('ul.skills input[type=checkbox]').nth(i).check(); await page.locator('ul.skills > li').nth(i).getByLabel('Strong').check(); }
-  await page.locator('#see-roads').click();
+  await seeRoads(page);
   await page.locator('ol.cards > li').first().waitFor();
   const ms = Number(await page.locator('#road-list').getAttribute('data-compute-ms'));
   console.log(`  roads computed in ${ms} ms at 4x CPU slowdown`);

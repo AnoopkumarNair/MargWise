@@ -1,20 +1,86 @@
-term,note
-AHT,average handling time. A BPM measure, not a skill or an occupation in O*NET
-CSAT,customer satisfaction score. A BPM measure
-NPS,net promoter score. A BPM measure
-SLA,service level agreement. A BPM measure
-TAT,turnaround time. A BPM measure
-GST,India goods and services tax. No O*NET knowledge area; needs a skill node from postings
-TDS,India tax deducted at source (also mapped to a tax occupation in abbrev_in.csv). No skill node
-ITR,income tax return. No skill node
-Tally,Indian accounting package. Not in O*NET technology lists (only unrelated TallyWorks products)
-ITIL,IT service management framework. Not in the O*NET 31.0 technology list
-Scrum,agile method. Not in the O*NET 31.0 technology list
-UiPath,robotic process automation tool. Not in the O*NET 31.0 technology list
-Genesys,contact-centre platform. Only unrelated Genesys products are in O*NET
-Five9,contact-centre platform. Not in O*NET
-Zendesk,help desk tool. Not in O*NET
-Terraform,infrastructure tool. O*NET lists only IBM Terraform; not mapped to avoid a wrong match
-Treasury,no knowledge area; see occupation mappings in abbrev_in.csv
-NISM,securities exams (S2 credentials catalogue)
-IIBF,banking exams (S2 credentials catalogue)
+term,status,reason,suggested_node
+AHT,no_node,"average handling time. A BPM measure, not a skill or an occupation in O*NET",skl:in-contact-centre-metrics
+CSAT,no_node,customer satisfaction score. A BPM measure,skl:in-contact-centre-metrics
+NPS,no_node,net promoter score. A BPM measure,skl:in-contact-centre-metrics
+SLA,no_node,service level agreement. A BPM measure,skl:in-contact-centre-metrics
+TAT,no_node,turnaround time. A BPM measure,skl:in-contact-centre-metrics
+FCR,no_node,"first contact resolution, a BPM measure. ""First call resolution"" is mapped to Service Orientation, which is broader",skl:in-contact-centre-metrics
+GST,broad_node_only,"India goods and services tax. Mapped to Economics and Accounting (skl:2.C.1.c), which is the whole accounting field. A finer node would tell GST work from other accounting",skl:in-india-gst
+TDS,broad_node_only,"India tax deducted at source. Mapped to Economics and Accounting; the old mapping to a tax occupation was removed because TDS is a task, not a job title",skl:in-india-tds
+ITR,broad_node_only,income tax return. Mapped to Economics and Accounting,skl:in-india-income-tax
+Tally,broad_node_only,"Indian accounting package. O*NET lists only unrelated TallyWorks products. Mapped to the category ""Financial accounting software"" (tec:financial-accounting-software)",tec:in-tally
+Tally ERP,broad_node_only,as Tally; Tally ERP 9 and Tally Prime are the same product family. Mapped to the category node,tec:in-tally
+Busy accounting,broad_node_only,Indian accounting package (Busy). Mapped to the category node,tec:in-busy-accounting
+Zoho Books,broad_node_only,accounting package. Mapped to the category node,tec:in-zoho-books
+Xero,broad_node_only,accounting package. Mapped to the category node,tec:in-xero
+Zendesk,broad_node_only,"help desk product, not in O*NET. Mapped to the category ""Help desk software"" (tec:help-desk-software)",tec:in-zendesk
+Freshdesk,broad_node_only,"help desk product, not in O*NET. Mapped to the category node",tec:in-freshdesk
+Freshservice,broad_node_only,"IT service desk product, not in O*NET. Mapped to the category node",tec:in-freshservice
+CRM,no_node,"customer relationship management software as a class. O*NET lists CRM products one by one (Salesforce, Microsoft Dynamics CRM, SugarCRM) and no generic CRM node",tec:in-crm-software
+ITIL,no_node,IT service management framework. Not in the O*NET 31.0 technology list,skl:in-itil
+ITSM,no_node,IT service management. Not in O*NET; ServiceNow and Remedy are mapped as tools,skl:in-itil
+Scrum,no_node,agile method. Not in the O*NET 31.0 technology list,skl:in-agile-delivery
+Agile,no_node,agile method. Not in the O*NET 31.0 technology list (only product names such as Agile PLM),skl:in-agile-delivery
+Kanban,no_node,agile method. Not in O*NET,skl:in-agile-delivery
+SDLC,no_node,software development life cycle. Not in O*NET,skl:in-agile-delivery
+Waterfall,no_node,project method. Not in O*NET,skl:in-agile-delivery
+Manual testing,no_node,software testing by hand. O*NET has the occupation Software Quality Assurance Analysts and Testers but no skill node,skl:in-software-testing
+Test automation,no_node,software testing with scripts. Selenium and other tools are mapped; the practice has no node,skl:in-software-testing
+Test cases,no_node,software testing. No node,skl:in-software-testing
+UAT,no_node,user acceptance testing. No node,skl:in-software-testing
+Regression testing,no_node,software testing. No node,skl:in-software-testing
+API testing,no_node,software testing of web services. Postman is mapped as a tool,skl:in-software-testing
+REST API,no_node,web service style. O*NET has no node for it,tec:in-rest-api
+REST APIs,no_node,web service style. O*NET has no node for it,tec:in-rest-api
+API development,no_node,web service work. No node,tec:in-rest-api
+gRPC,no_node,remote call framework. Not in O*NET,tec:in-grpc
+Terraform,no_node,infrastructure tool. O*NET lists only IBM Terraform; not mapped to avoid a wrong match,tec:in-terraform
+Helm,no_node,Kubernetes package tool. Not in O*NET,tec:in-helm
+AWS Lambda,no_node,serverless compute. Not in O*NET,tec:in-aws-lambda
+Lambda,no_node,serverless compute (ambiguous word). Not in O*NET,tec:in-aws-lambda
+Datadog,no_node,monitoring tool. Not in O*NET,tec:in-datadog
+dbt,no_node,data transformation tool. Not in O*NET,tec:in-dbt
+Machine learning,no_node,"O*NET lists libraries (TensorFlow, scikit-learn, PyTorch) and ""Artificial intelligence software"" but no node for the practice",skl:in-machine-learning
+Deep learning,no_node,as machine learning,skl:in-machine-learning
+NLP,no_node,natural language processing. No node,skl:in-machine-learning
+LLM,no_node,large language models. New since the O*NET lists; SPEC 5.7 AI-era roles,skl:in-llm-applications
+Prompt engineering,no_node,writing instructions for AI models. New since the O*NET lists,skl:in-llm-applications
+GitHub Copilot,no_node,AI coding assistant. New since the O*NET lists,tec:in-github-copilot
+Copilot,no_node,"AI assistant (Microsoft, GitHub). New since the O*NET lists",tec:in-github-copilot
+LangChain,no_node,LLM application library. New since the O*NET lists,tec:in-langchain
+Big data,no_node,a class of tools. Hadoop and Spark are mapped as tools; the term has no node,skl:in-big-data
+Data engineering,no_node,"practice. No node; the title ""data engineer"" maps to occupations",skl:in-data-engineering
+Data governance,no_node,practice. No node,skl:in-data-governance
+ETL,no_node,"extract, transform, load. O*NET lists individual ETL products (Informatica, Talend, SSIS) and no node for the practice",skl:in-etl
+UiPath,no_node,robotic process automation tool. Not in the O*NET 31.0 technology list,tec:in-uipath
+Automation Anywhere,no_node,robotic process automation tool. Not in O*NET,tec:in-automation-anywhere
+Blue Prism,no_node,robotic process automation tool. Not in O*NET,tec:in-blue-prism
+RPA,no_node,robotic process automation. Not in O*NET,skl:in-rpa
+Genesys,no_node,contact-centre platform. Only unrelated Genesys products are in O*NET,tec:in-genesys-cloud
+Five9,no_node,contact-centre platform. Not in O*NET,tec:in-five9
+Avaya,no_node,contact-centre platform. Only Avaya Identity Engines is in O*NET,tec:in-avaya
+Ameyo,no_node,Indian contact-centre platform. Not in O*NET,tec:in-ameyo
+Knowlarity,no_node,Indian cloud telephony. Not in O*NET,tec:in-knowlarity
+Dialer,no_node,"predictive or auto dialer, used in voice processes. Not in O*NET",tec:in-dialer
+Finacle,no_node,core banking product (Infosys). Not in O*NET,tec:in-finacle
+Flexcube,no_node,core banking product (Oracle). Not in O*NET,tec:in-flexcube
+Temenos,no_node,core banking product. Not in O*NET,tec:in-temenos
+BaNCS,no_node,core banking and insurance product (TCS). Not in O*NET,tec:in-bancs
+Murex,no_node,treasury and capital markets product. Not in O*NET,tec:in-murex
+Guidewire,no_node,insurance core systems product. Not in O*NET,tec:in-guidewire
+Duck Creek,no_node,insurance core systems product. Not in O*NET,tec:in-duck-creek
+Core banking,no_node,a class of bank systems. No generic node,tec:in-core-banking
+CBS,no_node,core banking system. No generic node; ambiguous,tec:in-core-banking
+Net banking,no_node,internet banking. No node,tec:in-core-banking
+Typing speed,no_node,a skill listed in many BPM and back-office resumes. O*NET has no node for it,skl:in-typing
+Typing,no_node,as typing speed,skl:in-typing
+Attention to detail,no_node,a trait listed in many resumes. O*NET has no skill node for it,skl:in-attention-to-detail
+Treasury,broad_node_only,"""Treasury"" alone is mapped (ambiguous) to Economics and Accounting; occupation mappings are in abbrev_in.csv. A finer node would tell treasury work from other accounting",skl:in-treasury-operations
+NISM,no_node,securities exams (S2 credentials catalogue),cred:nism
+IIBF,no_node,banking exams (S2 credentials catalogue),cred:iibf
+CAIIB,no_node,banking exam (S2 credentials catalogue),cred:caiib
+CFA,no_node,finance credential (S2 credentials catalogue),cred:cfa
+CA Inter,no_node,accounting exam level (S2 credentials catalogue),cred:ca-inter
+Hindi,no_node,"language skill. O*NET knowledge area ""Foreign Language"" is not specific; language lists are a future node set",skl:in-language-hindi
+Content planning,no_node,"marketing practice seen in a test resume; outside the three industries. Digital marketing is mapped to Sales and Marketing, which is broader",skl:in-content-marketing
+Email campaigns,no_node,marketing practice seen in a test resume; no node,skl:in-content-marketing

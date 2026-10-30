@@ -1,0 +1,36 @@
+{
+ "_doc": "Known specialist steps for the road kind 'fork' (SPEC 7.2): a move inside the same O*NET minor group (first 4 digits of the SOC code) to a specialist role one step further on, as opposed to the management fork (any SOC 11- target, which needs no table). DRAFT, hand-curated by the matcher lane on 2026-10-30, for the owner to review (BUILD_PLAN T2.4 ASK). Each step keeps only what O*NET itself says: the target is listed in O*NET 31.0 'related occupations' of the source (graph edge close_to with tier Primary-Short or Primary-Long, source onet_database in data/graph/graph.sqlite), is in the same minor group, and has a higher job zone. match.js holds a copy of the from/to pairs (a test keeps the two equal); reference.py reads this file. Leave a step out rather than guess. Not used by any score: it only names the kind.",
+ "status": "draft, needs owner review",
+ "source": {
+  "name": "O*NET 31.0 Database: Related Occupations and Job Zones",
+  "url": "https://www.onetcenter.org/database.html",
+  "trust": "official",
+  "as_of": "2026-08"
+ },
+ "steps": [
+  {
+   "from": "occ:13-2051.00",
+   "to": "occ:13-2099.01",
+   "labels": "Financial and Investment Analysts -> Financial Quantitative Analysts",
+   "why": "O*NET related occupation, Primary-Short (index 5); same minor group 13-20; job zone 4 -> 5"
+  },
+  {
+   "from": "occ:29-1141.00",
+   "to": "occ:29-1151.00",
+   "labels": "Registered Nurses -> Nurse Anesthetists",
+   "why": "O*NET related occupation, Primary-Long (index 8); same minor group 29-11; job zone 4 -> 5"
+  },
+  {
+   "from": "occ:29-1141.00",
+   "to": "occ:29-1161.00",
+   "labels": "Registered Nurses -> Nurse Midwives",
+   "why": "O*NET related occupation, Primary-Long (index 6); same minor group 29-11; job zone 4 -> 5"
+  },
+  {
+   "from": "occ:29-1141.00",
+   "to": "occ:29-1171.00",
+   "labels": "Registered Nurses -> Nurse Practitioners",
+   "why": "O*NET related occupation, Primary-Short (index 2); same minor group 29-11; job zone 4 -> 5"
+  }
+ ]
+}

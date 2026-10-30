@@ -139,10 +139,35 @@ textarea { width: 100%; min-height: 12rem; padding: 10px 12px; font: 600 1rem/1.
 .lead-q { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .lead-q legend { font-weight: 800; padding: 0; margin-bottom: 4px; width: 100%; }
 
+/* S2: constraints, job today, drill */
+.q { border: 0; padding: 0; margin: 0 0 1.2em; }
+.q legend { font: 800 1.1rem var(--display); color: var(--sky-top); padding: 0; margin-bottom: 6px; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; margin: .4em 0; }
+.seg.opt { min-height: 48px; padding: 6px 14px 6px 10px; }
+.q select { max-width: 24rem; }
+.more-cities summary { cursor: pointer; min-height: 44px; padding: 10px 0; font-weight: 700; }
+.actions .btn { margin: 0 8px 8px 0; }
+.tskills, .drill-list { list-style: none; padding: 0; margin: 0 0 1em; border-top: 1px solid var(--line); }
+.tskill { padding: 10px 0; border-bottom: 1px solid var(--line); display: grid; gap: 2px; }
+.tskill.grey { opacity: .6; }
+.meta { color: var(--ink-soft); font-size: 1rem; }
+.drill-link { font-size: 1rem; min-height: 32px; display: inline-block; padding: 4px 0; }
+.drill-list .card { margin-bottom: 12px; }
+.signals.wide div { grid-template-columns: 8rem 1fr; }
+.block { display: block; }
+.move-note { margin: .2em 0 .6em; }
+.badge.move { border-color: var(--sky-mid); color: var(--sky-mid); }
+.why summary, .tasks summary { cursor: pointer; min-height: 44px; padding: 10px 0; font-weight: 700; }
+.focus-note { margin: 0 0 1em; }
+/* confirm: the resume line behind each skill is shown only on tap */
+.screen:not(.show-src) .skill .src, .screen:not(.show-src) #creds .src { display: none; }
+
 /* footer */
 .foot { margin-top: 2.5rem; padding-top: 1rem; padding-bottom: 2rem; border-top: 2px solid var(--line); font-size: .95rem; color: var(--ink-soft); }
 .foot ul { padding-left: 1.2em; }
 .rel strong { color: var(--ink); }
+.foot .rel.small, .foot .credit { font-size: .85rem; margin: .4em 0; }
+.foot #about-link { display: inline-block; min-height: 32px; padding: 6px 0; font-weight: 700; }
 
 @media (min-width: 720px) {
   body { font-size: 18px; }

@@ -206,7 +206,7 @@ export async function render() {
     h('p', { class: 'hint' }, 'Your roads do not use certificates yet, because we do not have a checked list of them. So these are not saved. They will count once we do.')) : null;
 
   // ---- go on --------------------------------------------------------------------------------------------------------------
-  const go = h('button', { type: 'button', class: 'btn primary', id: 'see-roads' }, 'See my roads');
+  const go = h('button', { type: 'button', class: 'btn primary', id: 'see-roads' }, 'Continue');
   go.addEventListener('click', async () => {
     err.textContent = '';
     const r = confirmedProfile(m);
@@ -224,14 +224,18 @@ export async function render() {
       state.occ = { id: r.startRole.occ, label: r.startRole.label || o.label }; state.slice = slice;
       state.skills = r.skills; state.skillLast = r.last; state.roles = r.roles; state.years = r.startRole.years;
       state.lead = m.lead ? { people: m.lead.people, budget: !!m.lead.budget, expert: !!m.lead.expert } : null;
-      location.hash = '#/roads';
+      location.hash = '#/constraints';
     } catch (e) { err.textContent = 'We could not load that job. Check your connection and try again.'; go.disabled = false; }
   });
 
   const t = m.timing || {};
+  // Source lines (the resume line each skill came from) are hidden at first and shown on tap (owner decision 2026-10-30).
+  const srcBtn = h('button', { type: 'button', class: 'btn small', id: 'show-sources', 'aria-pressed': 'false' }, 'Where did this come from?');
+  srcBtn.addEventListener('click', () => { const on = root.classList.toggle('show-src'); srcBtn.setAttribute('aria-pressed', String(on)); srcBtn.textContent = on ? 'Hide where this came from' : 'Where did this come from?'; });
   const root = h('section', { class: 'screen', 'data-extract-ms': String(t.extractMs == null ? '' : t.extractMs), 'data-total-ms': String(t.totalMs == null ? '' : t.totalMs) },
     h('h1', { tabindex: '-1' }, 'Check what we found'),
     h('p', { class: 'lead' }, 'We read your resume on this device. Check each job and skill, fix what is wrong, and add what we missed. Nothing here is saved or sent anywhere.'),
+    h('p', null, srcBtn),
     h('p', { class: 'hint' }, 'A skill starts as Used if your resume shows you used it in the last 3 years, and as Rusty if it was longer ago. Tap Strong for what you could teach. Your roads are worked out only from the skills you keep.'),
     m.warnings.length ? h('ul', { class: 'plain hint' }, m.warnings.slice(0, 5).map(w => h('li', null, w))) : null,
     h('h2', null, m.roles.length === 1 ? 'Your job' : 'Your jobs (' + m.roles.length + ')'),

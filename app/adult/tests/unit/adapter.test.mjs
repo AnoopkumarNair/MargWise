@@ -44,8 +44,9 @@ test('normaliseRoad reads the matcher 1.0.x shape (reach, gap, status)', () => {
 });
 
 test('normaliseRoad reads flags, kind, bridges and fit in the result.schema.json shape', () => {
-  const r = normaliseRoad({ id: 'occ:13-2051.00', reach: 'adjacent', coverage: 0.8, gap: [], kind: 'up', level: { target: 3, fit: 'in' }, flags: ['needs_relocation'], bridges: ['cred:x'], components: {}, score: 0.7 }, slice, profile(3));
-  assert.equal(r.tier, 'adjacent'); assert.equal(r.move, 'up'); assert.equal(r.fit, 'in'); assert.deepEqual(r.bridges, [{ label: 'cred:x' }]);
+  const r = normaliseRoad({ id: 'occ:13-2051.00', reach: 'adjacent', coverage: 0.8, gap: [], kind: 'up', level: { target: 3, fit: 'in' }, flags: ['needs_relocation'], bridges: ['cred:x'], bridge_detail: { status: 'reviewed', skills: [], items: [{ id: 'cred:x', label: 'Course X', issuer: 'Body', covers: [], gain: null, cost_inr: 12000, hours: null, validity_years: 3, url: 'https://example.org/x', renew: false }] }, pay_change_pct: 12.5, components: {}, score: 0.7 }, slice, profile(3));
+  assert.equal(r.tier, 'adjacent'); assert.equal(r.move, 'up'); assert.equal(r.fit, 'in'); assert.deepEqual(r.bridges, [{ label: 'Course X', issuer: 'Body', url: 'https://example.org/x', facts: ['Costs about ₹12,000', 'Valid for 3 years'] }]);
+  assert.equal(r.payChange, 12.5); assert.equal(r.fitText.startsWith('Your years of experience fit'), true); assert.equal(r.targetLevel, 3);
   assert.match(r.flags[0].text, /move to another city/);
   assert.ok(r.components.every(c => c.measured === false && c.value === null));   // no component given: nothing is measured
 });
@@ -83,4 +84,14 @@ test('real matcher: priorities move the order but not the coverage', { skip: !re
   const a = runMatch(real, p1, slice), b = runMatch(real, p2, slice);
   assert.notDeepEqual(a.roads.map(r => r.id), b.roads.map(r => r.id));
   for (const r of a.roads) assert.equal(b.roads.find(x => x.id === r.id).coverage, r.coverage);
+});
+
+test('every kind of move and every flag has a plain-word text, and a no-course road has no bridge', async () => {
+  const A = await import('../../matcher_adapter.js');
+  for (const m of A.MOVES) { assert.ok(A.MOVE_LABEL[m]); assert.ok(A.MOVE_EXPLAIN[m].endsWith('.')); }
+  for (const f of ['outside_time', 'below_pay_floor', 'needs_relocation']) assert.ok(A.FLAG_TEXT[f]);
+  const r = normaliseRoad({ id: 'occ:13-2051.00', reach: 'stretch', coverage: 0.5, gap: [], kind: 'fork', level: { target: 2, fit: 'below', range: [2, 3] }, flags: [{ id: 'outside_time' }, 'below_pay_floor'],
+    bridges: [], bridge_detail: { status: 'no_reviewed_course', items: [], skills: [] }, pay_change_pct: null, components: {}, score: 0.5 }, slice, profile(3));
+  assert.deepEqual(r.bridges, []); assert.deepEqual(r.flags.map(f => f.id), ['outside_time', 'below_pay_floor']); assert.deepEqual(r.targetLevel, [2, 3]); assert.equal(r.payChange, null);
+  assert.equal(r.fit, 'below'); assert.equal(r.move, 'fork');
 });

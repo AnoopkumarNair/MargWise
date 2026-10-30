@@ -160,7 +160,7 @@ def check_exports(db_nodes, exp_dir, rep):
         seen_id.add(e['id'])
         if e['id'] not in ids: rep.fail('skills_index ids exist in the graph', e['id'])
         for t in e['alt']:
-            k = norm_title(t)
+            k = norm_title(t) or t.casefold()   # norm_title is Latin-only: a Hindi term would normalise to '' and clash with every other one
             if k in term and term[k] != e['id'] and t not in e.get('ambiguous', []): rep.fail('no term points at two ids unless it is marked ambiguous', '%r: %s and %s' % (t, term[k], e['id']))
             term.setdefault(k, e['id'])
     # titles

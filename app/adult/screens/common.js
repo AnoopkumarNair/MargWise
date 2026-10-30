@@ -13,7 +13,7 @@ export async function computeRoads() {
   const v = checkProfile(profile);
   if (!v.ok) throw new Error('Profile does not match the contract: ' + v.errors.map(e => e.path + ' ' + e.message).join('; '));
   const t0 = performance.now();
-  const res = runMatch(matchFn, profile, active().slice, {});
+  const res = runMatch(matchFn, profile, active().slice, { now: new Date().getFullYear() });
   timing.ms = Math.round((performance.now() - t0) * 10) / 10;
   state.matcherVersion = res.version;
   return res;
@@ -25,6 +25,8 @@ export const coverPct = x => coveragePercent(x) + '%';
 export function importance(w) { return w >= 0.66 ? 'High' : w >= 0.33 ? 'Medium' : 'Low'; }
 // Skill AI labels (SPEC 5.5). 'unknown' has no label: the skill simply shows no AI line (not yet measured).
 export const AI_TEXT = { ai_does_much: 'AI already does much of this', mixed: 'AI helps with some of this', people_do: 'People still do this', unknown: '' };
+// What AI does of a skill, on "Your job today". A skill with no AI label shows nothing.
+export const AI_TEXT_TODAY = { ai_does_much: 'AI already does much of this', mixed: 'Mixed: people and AI both do this', people_do: 'People still do this', unknown: '' };
 // Task AI use (slice amendment A1). 'used' is use seen without an automation/augmentation split; 'none' is no use seen; 'unknown' has no label.
 export const TASK_AI_TEXT = { automation: 'AI does this', augmentation: 'AI helps with this', used: 'AI use seen', none: 'No AI use seen', unknown: '' };
 
@@ -52,12 +54,14 @@ export function coverageBar(r) {
 
 // Figures we do not have are left out, not listed as "not yet measured" (owner decision 2026-10-30). Dates and sources live on the "About this data" page.
 export function signalText(kind, s) {
+  if (kind === 'paychange') return (s.value > 0 ? '+' : '') + s.value + '% compared with your job today';
   if (kind === 'ai') return typeof s.value === 'number' ? 'AI use seen in ' + pct(s.value) + ' of the work' : String(s.value);
   return String(s.value);
 }
 export const NO_FIGURES = 'Pay and demand figures are coming.';
 export function signalList(r) {
   const rows = [['pay', 'Pay', r.signals.pay], ['demand', 'Demand', r.signals.demand], ['ai', 'AI', r.signals.ai]].filter(x => x[2]);
+  if (r.payChange !== null) rows.unshift(['paychange', 'Pay change', { value: r.payChange }]);
   return rows.length ? h('dl', { class: 'signals' }, rows.map(([k, label, s]) => h('div', null, h('dt', null, label), h('dd', null, signalText(k, s))))) : null;
 }
 export function flagList(r) {

@@ -1,5 +1,6 @@
 // Margwise for working adults: a small hash router. One ES module per screen (./screens/). No framework, no inline scripts.
-// Routes: #/ welcome, #/intake (resume or title), #/confirm (what we read), #/title, #/skills, #/roads, #/road/<occ id>
+// Routes: #/ welcome, #/intake (resume or title), #/confirm (what we read), #/title, #/skills, #/constraints, #/today, #/roads[/<occ id>],
+// #/road/<occ id>, #/drill/<skill id>, #/about
 import { h, mount } from './dom.js';
 import { state, resetAll } from './state.js';
 import { loadManifest } from './data.js';
@@ -13,6 +14,10 @@ const ROUTES = {
   skills: () => import('./screens/skills.js'),
   roads: () => import('./screens/roads.js'),
   road: () => import('./screens/road.js'),
+  constraints: () => import('./screens/constraints.js'),
+  today: () => import('./screens/today.js'),
+  drill: () => import('./screens/drill.js'),
+  about: () => import('./screens/about.js'),
 };
 const main = document.getElementById('main');
 const foot = document.getElementById('footer');
@@ -33,7 +38,7 @@ async function go() {
   if (name === 'confirm' && !state.reading) { location.replace('#/intake'); return; }
   // Nothing is stored, so a reload loses the profile. Send the person back to where it can be rebuilt.
   if ((name === 'skills') && !state.slice) { location.replace('#/intake'); return; }
-  if ((name === 'roads' || name === 'road') && (!state.slice || !state.skills.size)) { location.replace(state.slice ? (state.path === 'resume' ? '#/confirm' : '#/skills') : '#/intake'); return; }
+  if ((['roads', 'road', 'constraints', 'today', 'drill'].includes(name)) && (!state.slice || !state.skills.size)) { location.replace(state.slice ? (state.path === 'resume' ? '#/confirm' : '#/skills') : '#/intake'); return; }
   try {
     await loadManifest();
     const mod = await ROUTES[name]();

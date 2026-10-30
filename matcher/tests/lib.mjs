@@ -14,10 +14,11 @@ export function fixture(rel) {
 }
 export const golden = () => readJson(path.join(TESTS, 'golden.json'));
 
-// The (profile, slice, opts) a golden case names. String values for slice, opts.near and opts.teaches are fixture paths.
+// The (profile, slice, opts) a golden case names. String values for slice, opts.near, opts.teaches and opts.credentials are fixture paths.
 export function caseInputs(c) {
   const opts = { ...(c.opts || {}) };
-  for (const k of ['near', 'teaches']) if (typeof opts[k] === 'string') opts[k] = fixture(opts[k]);
+  for (const k of ['near', 'teaches', 'credentials']) if (typeof opts[k] === 'string') opts[k] = fixture(opts[k]);
+  if (opts.credentials && !Array.isArray(opts.credentials)) opts.credentials = opts.credentials.credentials;   // {_doc, credentials: [...]}
   return [structuredClone(c.profile), typeof c.slice === 'string' ? fixture(c.slice) : structuredClone(c.slice), opts];
 }
 
@@ -43,11 +44,12 @@ export function rng(seed) {
 }
 
 export const SLICES = ['fixtures/slice_accountant.json', 'fixtures/slice_software_developer.json',
-  'fixtures/slice_customer_service.json', 'fixtures/slice_registered_nurse.json'];
+  'fixtures/slice_customer_service.json', 'fixtures/slice_registered_nurse.json',
+  'fixtures/slice_qa_analyst.json', 'fixtures/slice_bpm_lead.json', 'fixtures/slice_bfsi_sales.json'];   // the last three: S2 (1.2.0)
 const YEARS = ['0-2', '2-5', '5-8', '8-12', '12-18', '18+'];
 const STRENGTHS = ['strong', 'used', 'rusty'];
 const PEOPLE = ['0', '1-5', '6-20', '21+'];
-const CREDS = ['cred:itil4', 'cred:copc', 'cred:aws-saa'];
+const CREDS = ['cred:itil4', 'cred:copc', 'cred:aws-saa', 'cred:demo-servicenow', 'cred:demo-python'];
 const CITIES = ['city:blr', 'city:hyd', 'city:pnq', 'city:other', 'open:india', 'open:remote', 'open:abroad'];
 
 // Every skill id in the fixtures, plus two that no slice needs.
@@ -61,8 +63,9 @@ export function skillUniverse() {
   return [...ids].sort();
 }
 
-// One random input: a profile that matches contracts/profile.schema.json, a fixture slice, and opts.
-export function randomInput(r, universe, near, teaches) {
+// One random input: a profile that matches contracts/profile.schema.json, a fixture slice, and opts. `credentials` (optional) is a
+// credential catalogue for bridges; about half the inputs get it.
+export function randomInput(r, universe, near, teaches, credentials) {
   const pick = a => a[Math.floor(r() * a.length)];
   const slicePath = pick(SLICES), sl = fixture(slicePath);
   const roles = Array.from({ length: 1 + Math.floor(r() * 3) }, (_, i) => ({
@@ -85,6 +88,7 @@ export function randomInput(r, universe, near, teaches) {
   if (r() < 0.8) opts.near = Array.isArray(near) ? pick(near) : near;
   if (r() < 0.6) opts.teaches = teaches;
   if (r() < 0.2) opts.walk = true;
+  if (credentials && r() < 0.5) opts.credentials = credentials;
   return [p, sl, opts];
 }
 

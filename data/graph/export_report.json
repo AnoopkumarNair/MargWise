@@ -1,9 +1,9 @@
 {
  "graph_hash": "6148d5ec0287089b166af100f7ba232b039490a3f3a0e1d4f8f814e6c816467d",
  "hashes": {
-  "skills_index.json": "a1eb6b0f7e92044b02f42c66b781ad0a82dcc2a3ea5798d66d300b54609dc5e4",
-  "slices (sha256 of the sorted name:sha lines)": "668e0b3ece55a751f176d64ab079dde095aea63ccdddb6cf16d551311596e014",
-  "titles.json": "5d3123812a80ace3649e0ea561b44918ca79bbc9c5f0ebafe0d74496a97e4674"
+  "skills_index.json": "3ad91461ea1ca3553a0bf8a3565ce390a18c19842a3c777ab4050410107b3bd6",
+  "slices (sha256 of the sorted name:sha lines)": "10ed4e31914b6f770b88f07122d4685683d30f57c315c21b8d92956790b0cce8",
+  "titles.json": "497eb6920c47902d95c1304d65088971170000199d837499090243f4393539cc"
  },
  "limits": {
   "skills_index_max_gz": 1500000,
@@ -11,8 +11,8 @@
  },
  "near_pairs_per_slice": {
   "max": 115,
-  "median": 102,
-  "min": 83
+  "median": 103,
+  "min": 85
  },
  "near_rule": {
   "floor": 0.9,
@@ -22,45 +22,52 @@
   "occ:13-2051.00"
  ],
  "onet_version": "31.0",
+ "rating_age_discount": {
+  "other_needs": 874152,
+  "other_needs_discounted": 534128,
+  "reference_date": "2026-08-15",
+  "rule": "weight x max(0.6, 1 - 0.05 * max(0, age_years - 3)); age = O*NET rating date to the pinned release; applied before the top-N choice and before the tool cap; tools are not discounted"
+ },
  "release": "onet-31-0-6148d5ec",
  "skills_index": {
-  "alt_terms": 58,
-  "bytes": 926444,
-  "bytes_gz": 173233,
+  "alt_terms": 525,
+  "bytes": 934532,
+  "bytes_gz": 176394,
   "entries": 8842
  },
- "slice_bytes_gz_max": 19798,
- "slice_bytes_gz_median": 17757,
- "slice_bytes_gz_total": 16056459,
- "slice_bytes_max": 202281,
- "slice_bytes_median": 195038,
- "slice_bytes_total": 176830797,
+ "slice_bytes_gz_max": 19774,
+ "slice_bytes_gz_median": 17819,
+ "slice_bytes_gz_total": 16096158,
+ "slice_bytes_max": 202349,
+ "slice_bytes_median": 195013,
+ "slice_bytes_total": 176640461,
  "slice_gz_level": 6,
  "slices": 910,
  "slices_at_full_spec_shape": 910,
  "slices_trimmed (targets_needs_tasks)": {},
  "targets_per_slice_histogram": {
+  "19": 1,
   "20": 3,
-  "21": 1,
-  "22": 2,
-  "23": 3,
-  "25": 1,
+  "21": 3,
+  "22": 3,
+  "24": 3,
+  "25": 2,
   "26": 1,
-  "27": 2,
-  "28": 3,
+  "27": 1,
+  "28": 6,
   "29": 2,
-  "30": 892
+  "30": 885
  },
  "tasks_per_slice_max": 40,
  "titles": {
-  "bytes": 1927728,
-  "bytes_gz": 322558,
-  "from_owner_review_lists": 410,
-  "keys": 40419
+  "bytes": 2044920,
+  "bytes_gz": 337019,
+  "from_owner_review_lists": 2370,
+  "keys": 42310
  },
  "tool_weight_cap": {
   "rule": "median of the non-tool needs in the same list",
-  "tool_needs": 248309,
-  "tool_needs_capped": 242866
+  "tool_needs": 247544,
+  "tool_needs_capped": 243937
  }
 }

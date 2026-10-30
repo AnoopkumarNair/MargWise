@@ -74,10 +74,10 @@ export async function render() {
 
   const years = h('select', { id: 'years' }, YEARS.map(y => h('option', { value: y, selected: y === state.years }, YEARS_LABEL[y])));
   years.addEventListener('change', () => { state.years = years.value; });
-  const go = h('button', { type: 'button', class: 'btn primary', id: 'see-roads' }, 'See my roads');
+  const go = h('button', { type: 'button', class: 'btn primary', id: 'see-roads' }, 'Continue');
   go.addEventListener('click', () => {
     if (!state.skills.size) { err.textContent = 'Tick at least one skill to see your roads.'; return; }
-    location.hash = '#/roads';
+    location.hash = '#/constraints';
   });
   more.addEventListener('click', () => {
     showAll = true; more.hidden = true; more.setAttribute('aria-expanded', 'true');

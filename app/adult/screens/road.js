@@ -23,7 +23,7 @@ export async function render(args) {
       h('span', { class: 'meta' }, (g.w == null ? '' : 'Importance in this job: ' + importance(g.w) + '. ') + (AI_TEXT[g.ai] ? AI_TEXT[g.ai] + '.' : '')),
       h('span', { class: 'reason' }, g.reason)))) : h('p', null, 'None. You cover the main skills of this job.'),
     h('h2', null, 'Courses and credentials'),
-    r.bridges.length ? h('ul', null, r.bridges.map(b => h('li', null, b.label))) : h('p', null, 'No reviewed course yet for these skills.'),
+    r.bridges.length ? h('ul', null, r.bridges.map(b => h('li', null, h('strong', null, b.label), b.issuer ? ' (' + b.issuer + ')' : '', b.facts.length ? '. ' + b.facts.join('. ') + '.' : '', b.url ? h('a', { class: 'ext', href: b.url, rel: 'noopener noreferrer' }, ' Official page') : null))) : h('p', null, 'No reviewed course yet for these skills.'),
     res.personLevel || r.fitText || r.targetLevel ? h('h2', null, 'Your level and experience') : null,
     res.personLevel ? h('p', null, 'Your level: ', h('strong', null, res.personLevel + ' of 6'), '. It comes from your years of experience, and one more level if you lead 6 or more people or own a budget.') : null,
     r.targetLevel ? h('p', { id: 'target-level' }, 'This job’s usual level: ' + (Array.isArray(r.targetLevel) ? r.targetLevel[0] + (r.targetLevel[1] !== r.targetLevel[0] ? ' to ' + r.targetLevel[1] : '') : r.targetLevel) + ' of 6.') : null,

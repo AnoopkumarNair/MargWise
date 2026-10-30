@@ -3,7 +3,10 @@ import datetime, json, os, shutil, subprocess, unittest
 from common import ROOT
 from build_graph import norm_title, slug, mmyyyy, need_weight, cosine
 import collections
+import export
 from export import ai_share_label, ai_labels, coverage, need_rows, tec_scores, cap_tool_weights, countable_pairs
+from common import graph_paths
+import sqlite3
 import random
 import freshness
 
@@ -199,6 +202,89 @@ class Coverage(unittest.TestCase):
         self.assertAlmostEqual(coverage({'a': 0.4}, t), 0.4)
         self.assertAlmostEqual(coverage({}, t), 0.0)
         self.assertEqual(coverage({'a': 1}, []), 0.0)
+
+
+class RatingAgeDiscount(unittest.TestCase):
+    """SPEC 5.6 rule 3, applied at export (slice S2): skill, knowledge and activity weights x max(0.6, 1 - 0.05 * max(0, age - 3)), age counted from the
+    rating's O*NET date to the pinned release (never today). Tools are not discounted. The discount comes before the top-N choice and the tool cap."""
+    REF = datetime.date(2026, 8, 15)
+
+    def setUp(self):
+        self._ref = export.RATING_REF; export.RATING_REF = self.REF
+
+    def tearDown(self):
+        export.RATING_REF = self._ref
+
+    def graph(self, rows):
+        """rows: [(id, weight, as_of)] of skills, plus tools as ('tec:x', w, as_of)."""
+        g = FakeGraph(); o = g.occ('15-1252.00')
+        for i, w, ao in rows:
+            tec = i.startswith('tec:')
+            g.node.setdefault(i, {'kind': 'skill', 'label': i, 'attrs': {'skill_kind': 'technology' if tec else 'skill'}})
+            g.out[o]['needs'].append((i, w, {}, ao))
+        return g, o
+
+    def w(self, out): return {n['id']: n['w'] for n in out}
+
+    def test_reference_date_is_the_release_month_and_fixed(self):
+        self.assertEqual(export.rating_ref('2026-08'), datetime.date(2026, 8, 15))
+        self.assertEqual(export.rating_ref('2026-08'), export.rating_ref('2026-08'))   # no clock: same answer on any day
+
+    def test_factor_follows_the_rule(self):
+        g, o = self.graph([('skl:fresh', 0.8, '2026-08'), ('skl:three', 0.8, '2023-08'), ('skl:seven', 0.8, '2019-08'), ('skl:old', 0.8, '2004-12')])
+        w = self.w(need_rows(g, o, 40, lambda e: 'unknown'))
+        self.assertEqual(w['skl:fresh'], 0.8)                 # age 0
+        self.assertEqual(w['skl:three'], 0.8)                 # age 3.0: no discount yet
+        self.assertAlmostEqual(w['skl:seven'], 0.8 * 0.8, 4)   # age 7: 1 - 0.05 * 4 = 0.8
+        self.assertEqual(w['skl:old'], round(0.8 * 0.6, 4))   # floor 0.6
+
+    def test_tools_are_not_discounted(self):
+        g, o = self.graph([('tec:a', 0.6, '2004-12'), ('skl:x', 0.9, '2004-12')])
+        w = self.w(need_rows(g, o, 40, lambda e: 'unknown'))
+        self.assertEqual(w['tec:a'], 0.6)
+        self.assertEqual(w['skl:x'], 0.54)
+
+    def test_discount_comes_before_the_top_n_choice(self):
+        g, o = self.graph([('skl:old_strong', 0.9, '2004-12'), ('skl:new_mid', 0.6, '2026-08')])   # 0.9 x 0.6 = 0.54 < 0.6
+        out = need_rows(g, o, 1, lambda e: 'unknown')
+        self.assertEqual([n['id'] for n in out], ['skl:new_mid'])
+        out = need_rows(g, o, 2, lambda e: 'unknown')
+        self.assertEqual([n['id'] for n in out], ['skl:new_mid', 'skl:old_strong'])   # and the list order uses the discounted weight
+
+    def test_tool_cap_uses_the_discounted_median(self):
+        g, o = self.graph([('skl:a', 0.9, '2004-12'), ('skl:b', 0.8, '2004-12'), ('skl:c', 0.7, '2004-12'), ('tec:t', 0.8, '2026-08')])
+        capped = self.w(cap_tool_weights(need_rows(g, o, 40, lambda e: 'unknown')))
+        self.assertEqual(capped['skl:b'], 0.48)
+        self.assertEqual(capped['tec:t'], 0.48)    # the median of 0.54, 0.48, 0.42; with undiscounted weights it would be 0.8
+
+    def test_no_reference_date_means_no_discount(self):
+        export.RATING_REF = None
+        g, o = self.graph([('skl:old', 0.8, '2004-12')])
+        self.assertEqual(self.w(need_rows(g, o, 40, lambda e: 'unknown'))['skl:old'], 0.8)
+
+    def test_real_slices_carry_discounted_weights(self):
+        d = os.path.join(ROOT, 'data', 'graph', 'slices')
+        if not os.path.isdir(d): self.skipTest('no exports yet')
+        db_path, rep_path, _ = graph_paths()
+        ref = export.rating_ref(json.load(open(rep_path, encoding='utf8'))['onet_release'])
+        db = sqlite3.connect(db_path)
+        edge = {(a, b): (w, ao) for a, b, w, ao in db.execute("SELECT src, dst, weight, as_of FROM edge WHERE kind='needs'")}
+        db.close()
+        checked = discounted = 0
+        for f in sorted(os.listdir(d))[::30]:
+            s = json.load(open(os.path.join(d, f), encoding='utf8'))
+            lists = [(s['occ']['id'], s['needs'])] + [(t['occ']['id'], t['needs']) for t in s['targets'][:3]]
+            for occ, lst in lists:
+                for n in lst:
+                    gw, ao = edge[(occ, n['id'])]
+                    if n['id'].startswith('tec:'):
+                        self.assertLessEqual(n['w'], round(gw, 4)); continue    # a tool: never discounted (the cap may lower it)
+                    want = round(gw * freshness.rating_weight(freshness.age_years(ao, ref)), 4)
+                    self.assertEqual(n['w'], want, (f, occ, n['id'], ao))
+                    checked += 1; discounted += n['w'] < round(gw, 4)
+        self.assertGreater(checked, 500); self.assertGreater(discounted, 0)
+        rep = json.load(open(os.path.join(ROOT, 'data', 'graph', 'export_report.json'), encoding='utf8'))
+        self.assertEqual(rep['rating_age_discount']['reference_date'], ref.isoformat())
 
 
 class Freshness(unittest.TestCase):

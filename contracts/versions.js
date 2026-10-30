@@ -7,7 +7,7 @@
 // Frozen at the end of S0 (contracts/FROZEN.md): contracts/tests/freeze.test.mjs fails when a contract file changes without its version.
 // PROFILE_V and API_V stay 1 through the S0 owner decisions D1 to D6, because no version was released before the freeze (deviations.md).
 export const versions = Object.freeze({
-  MATCHER_VERSION: '1.1.0',
+  MATCHER_VERSION: '1.2.0',
   PROFILE_V: 1,
   SLICE_V: 1,
   API_V: 1,

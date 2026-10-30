@@ -78,7 +78,13 @@ export function normaliseRoad(raw, slice, profile) {
   const flags = (raw.flags || []).map(f => { const id = typeof f === 'string' ? f : (f && f.id) || ''; return { id, text: FLAG_TEXT[id] || id }; }).filter(f => f.id);
   const lvl = raw.level || {};
   const fit = ['below', 'in', 'above'].includes(lvl.fit) ? lvl.fit : null;
-  const bridges = (Array.isArray(raw.bridges) ? raw.bridges : []).map(b => ({ label: typeof b === 'string' ? b : (b && (b.label || b.name)) || '' })).filter(b => b.label);
+  // Bridges come from roads[].bridge_detail (matcher 1.2.0): only reviewed courses, each with the facts the catalogue knows. Unknown details are left out.
+  const bd = raw.bridge_detail && raw.bridge_detail.status === 'reviewed' ? raw.bridge_detail : null;
+  const bridges = ((bd && bd.items) || []).filter(b => b && b.label).map(b => ({
+    label: b.label, issuer: b.issuer || null, url: b.url || null,
+    facts: [b.cost_inr != null ? 'Costs about ₹' + Number(b.cost_inr).toLocaleString('en-IN') : null, b.hours != null ? 'About ' + b.hours + ' hours' : null,
+      b.validity_years != null ? 'Valid for ' + b.validity_years + ' years' : null].filter(Boolean),
+  }));
   const comps = raw.components || {};
   const components = COMP.map(([key, label]) => {
     const c = comps[key === 'short_move' ? 'short' : key];
@@ -93,7 +99,8 @@ export function normaliseRoad(raw, slice, profile) {
     gaps, flags, components, signals,
     bridges,
     fit, fitText: fit ? FIT_TEXT[fit] : null,
-    targetLevel: lvl.target === undefined ? null : lvl.target,
+    targetLevel: Array.isArray(lvl.range) ? lvl.range : (lvl.target === undefined ? null : lvl.target),
+    payChange: typeof raw.pay_change_pct === 'number' ? raw.pay_change_pct : null,
     newRole: !!raw.new_role,
     via: t ? t.via : [],
   };

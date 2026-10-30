@@ -12,6 +12,7 @@ const ROOT = join(APP, '..', '..');
 const dir = mkdtempSync(join(tmpdir(), 'mw-state-'));
 mkdirSync(join(dir, 'contracts'));
 copyFileSync(join(APP, 'state.js'), join(dir, 'state.js'));
+copyFileSync(join(APP, 'constraints_model.js'), join(dir, 'constraints_model.js'));
 copyFileSync(join(ROOT, 'contracts', 'validate_lib.js'), join(dir, 'contracts', 'validate_lib.js'));
 const S = await import(pathToFileURL(join(dir, 'state.js')).href);
 test.after(() => rmSync(dir, { recursive: true, force: true }));
