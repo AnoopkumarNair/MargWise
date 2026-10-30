@@ -351,12 +351,56 @@ All four decisions together make matcher 1.1.0 (D23).
 - Effect: results carry 1.2.0. The frontend's adapter keeps working: only fields were added, and `bridges` is still a list of ids or null. Real slices today give kinds, target levels and fit (from job zones); pay, relocation and bridges stay "not yet measured" until their data exists. Some senior people will see "reset" on specialist roads that start lower (K2).
 - Decision: proposed
 
+### D25. The rating-age discount is now applied at export (SPEC 5.6 rule 3)
+- Slice and ticket: S2, T1.3 (freshness) and T1.5
+- Date: 2026-10-30
+- Author: data lane
+- Plan said: SPEC 5.6 rule 3: a rating's weight is multiplied by `max(0.6, 1 - 0.05 * max(0, age_years - 3))`; BUILD_PLAN puts it in S2. D22 recorded that S1 did not apply it.
+- We did: `data/graph/export.py` multiplies the weight of every skill, knowledge and activity need by that factor. The age runs from the edge's own O*NET collection date (`as_of`) to `RATING_REF`, the 15th of the pinned O*NET release month (`onet_release` in `build_report.json`, set from `ONET_RELEASE` in `fetch_onet.py`: 2026-08). It never reads the clock, so a build gives the same bytes on any day (checked: two exports give identical hashes). Order of the steps: discount, then the top-N choice (an old rating now ranks lower), then the tool cap (the O3 median is taken over the discounted weights). Tool needs are not discounted: their `as_of` is the release month (D20), so their age is 0 anyway. The candidate road ranking in the export (`own_w`) uses the discounted weights too, so it compares like with like. The graph keeps the undiscounted weights. `matcher/README.md` now says the matcher must not discount a second time. `export_report.json` gained `rating_age_discount` (reference date, needs written, needs lowered). Tests: `data/graph/tests/test_units.py` `RatingAgeDiscount` (rule, tools, order before top-N, cap on discounted median, real slices against the graph).
+- Why: SPEC 5.6 rule 3, and the "Your job today" screen should not treat a 2008 rating like a 2026 one.
+- Effect: 534,128 of 874,152 non-tool needs written in the slices (61 percent) are lowered, down to 0.6 of the graph weight; every slice hash changed; no schema change. Gzipped slices: largest 19,798 to 19,774 bytes, median 17,757 to 17,819, total 16.06 to 16.10 MB (limit 60,000 each). Matcher golden outputs are hand-made fixtures and do not change. Real-data road coverage moves slightly (older ratings count less); the owner may want to re-run the D19 table on the next people test.
+- Decision: proposed
+
+### D26. Indian dictionary widened: 480 new terms, 185 new titles, `team lead` fixed (T1.5)
+- Slice and ticket: S2, T1.5 (Indian abbreviations and titles)
+- Date: 2026-10-30
+- Author: data lane
+- Plan said: BUILD_PLAN T1.5 asks for about 80 terms; SPEC 5.6 rule 4: new nodes only after the founder approves them (trust `observed`); CLAUDE.md: no invented facts.
+- We did: (1) `abbrev_in.csv` 144 to 618 rows (480 new, 6 removed), all marked "needs owner review": 267 point at `skl:` ids, 273 at `tec:` ids, 78 at `occ:` ids. They map Indian IT, BPM and BFSI vocabulary (GST, TDS, KYC, AML, Tally, Zendesk, VBA, Six Sigma, Jenkins, Looker, SAP modules, loan, claims, audit and so on), generic resume phrases (communication, problem solving, data analysis) and 11 Hindi phrases onto EXISTING graph ids only. Where only a category node fits (for example Tally to "Financial accounting software", Zendesk to "Help desk software") the note says so. Everyday single words that would fire everywhere (billing, audit, forecasting, compliance, recovery, risk management, sales, research) were tried and dropped after the intake fixtures showed them matching on "SaaS billing product" and "audit of delivery delays". Words that are also plain English are marked "ambiguous" (the intake then needs a tool word near them or a skills list). (2) No node was invented. 85 terms with no suitable node are in `abbrev_in_unmapped.csv`, now with `status` (`no_node` or `broad_node_only`) and a suggested `tec:in-*` or `skl:in-*` id for the founder to approve. (3) `titles_in.csv` 34 to 219 rows: BPM, IT and BFSI titles (process associate and executive with seniority, KYC analyst, credit analyst, underwriter, collections, relationship manager, SDE 1 to 3, QA engineer, L1 and L2 support, scrum master, delivery manager, cloud and DevOps, SAP consultants and more). (4) Review fixes: `team lead` and `team leader` no longer map to Office Supervisors alone; they are removed, and only forms with a domain word map (customer support, voice process, operations, accounts, collections, technical support, QA, development, software team lead; technical lead, tech lead, module lead, project lead). `AML`, `KYC` and `TDS` no longer map to occupations (they are skills, not titles; `KYC analyst` and `AML analyst` are titles). `data engineer` now maps to Database Architects and Software Developers (O*NET's own alternate titles also give it Database Administrators, Statisticians and Data Scientists, so the list shows the first three by id: Database Administrators, Database Architects, Software Developers). (5) `export.py` and `validate_graph.py` compared terms with a Latin-only form that turns every Hindi term into an empty key, so any two Hindi terms looked like a clash; both now fall back to the lower-cased term. No app code was changed.
+- Why: the intake fixtures' `outOfDictionary` lists show resumes use terms O*NET does not hold; a reader that misses GST, Tally, KYC or Zendesk looks blind to Indian resumes.
+- Effect: `skills_index.json` alt terms 58 to 525 on 198 skills (ambiguous terms 11 to 39), 176 KB gzipped (limit 1.5 MB); `titles.json` 40,419 to 42,310 keys, 337 KB gzipped. Intake fixtures: of the 16 `outOfDictionary` items, 11 are now found (Tally, Tally ERP, GST, TDS, Zendesk, Data Analysis, Looker, Statistics, VBA, Jenkins and the Hindi communication phrase); 5 are not (gRPC, CRM, Typing speed, Content planning, Email campaigns), and are listed in `abbrev_in_unmapped.csv`. All 93 intake tests stay green, and no `mustNotFind` id appears (0 false positives on every fixture). Fixtures were not edited.
+- Decision: proposed (the owner reads all of it: O5)
+
+### D27. Pay band (PLFS) is not attached: no career carries a PLFS group
+- Slice and ticket: S2, T1.3 (PLFS)
+- Date: 2026-10-30
+- Author: data lane
+- Plan said: BUILD_PLAN T1.3: attach `pay_band_in` through ISCO; "If NCO is missing, attach it only to the 83 careers that already carry PLFS groups."
+- We did: nothing yet. The 83 careers in `data/content.json` carry no PLFS group: `data/plfs.py` removes the per-career mapping on purpose ("PLFS gives broad group averages only") and `pipeline/validate.py` fails a build if a career carries one. `plfs_2025.json` holds seven NCO-2015 division averages (INR a month, salaried employees, 2025, trust `secondary`) and no link from an occupation to a division. The T1.2 SOC to ISCO crosswalk is still blocked (bls.gov, D18 item 5). So no occupation can get a band without a new SOC to NCO division mapping, which is a judgement the owner has not approved.
+- Why: the fallback in the plan assumes a mapping that the student data removed.
+- Effect: pay stays "not yet measured". The frozen slice schema already allows the signal: `kind: pay_band_in`, `period` (up to 20 characters), `value` (string or number), `as_of`, `src` pointing at a `sources` entry (trust `secondary`). What it cannot carry is the division name (up to 40 characters, over the 20 of `period`). See O9.
+- Decision: proposed (O9)
+
+### D28. Frontend S2: plain copy for adults (owner decision 2026-10-30), questions, job today, drill
+- **Owner decision (2026-10-30, relayed by the orchestrator).** Adults should not see how we collect and collate data. All screens (S1, S2, S3) were simplified:
+  - the resume line behind each skill is hidden on the confirm screen; one button, "Where did this come from?", shows them all, and a second tap hides them again;
+  - rating dates, "US data", the O*NET version, source lists and "how the score was made" are off the default screens. They are on one "About this data" page (`#/about`), reached from one footer link. On the road page the score table sits in a closed "Why this order?" section;
+  - the footer is: the "About this data" link, the O*NET credit (kept, the licence needs it, set small), and the release id in small type;
+  - a figure we do not have is left out, not listed as "not yet measured". Two honest exceptions: one short line, "Pay and demand figures are coming.", where pay or demand would be, and the slider note that says those sliders change nothing yet;
+  - the privacy line at intake ("Your resume is read in your browser. Nothing leaves your device.") is unchanged and still shown.
+  - No figure was made up. The "Pay change" row shows only when the matcher worked one out from two real numbers.
+- **Greying and hiding by age (SPEC 5.5) cannot run on real data yet.** The slice has no cadence: `slice.schema.json` has no cadence field and `data/sources.yaml` holds the cadence as prose. `today_model.js` has the rule (`freshness`: greyed above 2x cadence, hidden above 3x; a bare year counts as the end of the year) and a unit test with a fixed "today". The screen uses it only if a source in the slice carries `cadence_months`. Needs from the contract owner: a `cadence_months` number on each slice source (an amendment), filled by the data lane.
+- **The constraint notes depend on data we do not have everywhere.** `below_pay_floor` needs numeric pay on both jobs (O9, D27), `needs_relocation` needs `city_share` signals (provisional format, D24), and `outside_time` needs a reviewed credential catalogue, which the app does not pass because none exists yet. So with real data no note shows today. The test fixture carries made-up numbers (`gen_fixture.py`) so the notes are tested.
+- **Questions never reorder.** The e2e test answers the six questions, then skips them, and checks that the road order is the same.
+- **Drill.** `#/drill/<skill id>` lists the jobs in the loaded slice (the job and its road targets) that need the skill. `#/roads/<occ id>` shows the roads from another job that has its own slice, with the same profile; the browser's back button works because the job is in the address. The profile is not changed, so the person's level still comes from their own roles.
+- **Flow.** Confirm (or skills) leads to the questions, then "Your job today", then the roads. Both are optional to read: "Skip these questions" and "See my roads" are one tap each. The button on the confirm and skills screens now says "Continue".
+
 ## Awaiting owner decision
 
 Questions from the S1 review that only the owner can answer. Nothing below was changed by an agent. Each lists the reviewer's options. O1 to O4 were decided on 2026-10-29 and moved to "Decisions".
 
 ### O5. Review lists
-- The question: `data/graph/raw/abbrev_in.csv` (144 rows) and `titles_in.csv` (34 rows) were drafted by the data lane and are live in the title search; 19 terms in `abbrev_in_unmapped.csv` wait (D18 item 10).
+- The question: `data/graph/raw/abbrev_in.csv` (618 rows after D26; 144 in S1) and `titles_in.csv` (219 rows; 34 in S1) were drafted by the data lane and are live in the title search and the resume reader; 85 terms in `abbrev_in_unmapped.csv` wait for new nodes the founder must approve (D18 item 10, D26).
 - Options: (a) the owner reviews them before the people test; (b) ship S1 without them (O*NET titles only) until reviewed; (c) keep them, marked as a draft in the demo.
 
 ### O6. History squash
@@ -366,3 +410,8 @@ Questions from the S1 review that only the owner can answer. Nothing below was c
 ### O7. Anthropic data: trust level and date
 - The question: the Anthropic Economic Index sources are marked `official`, and their `as_of` (2026-10-22) is the date the files were downloaded, not the date of the data.
 - Options for trust: (a) keep `official` (Anthropic publishes the data itself); (b) mark it `secondary` or `observed` (it is usage seen on one AI product, not an official statistic). Options for the date: (a) keep the download date and say so; (b) use the release date of the dataset version; (c) show both.
+
+### O9. Pay band: which SOC to PLFS group mapping may the export use?
+- The question: PLFS gives seven NCO-2015 division averages (`data/plfs_2025.json`) and no career carries one (D27). Without a mapping there is no `pay_band_in` signal.
+- Options: (a) approve a SOC major group to NCO division table written by the data lane (the two systems follow ISCO-08 major groups, so it is mostly one to one, with judgement calls for 15-xxxx IT, 13-xxxx finance and 43-xxxx clerks; each row would be marked for review); (b) wait for the SOC to ISCO to NCO chain when `bls.gov` is reachable (T1.2); (c) show no pay for India until posting data exists.
+- Either way the owner should also decide the value format that the matcher needs (D24 item 1): a number of rupees a month, with the division name carried in the source entry or in a coded `period` such as `plfs25-nco2`, since `period` holds 20 characters and the division names are longer.

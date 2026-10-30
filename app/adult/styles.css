@@ -153,6 +153,7 @@ textarea { width: 100%; min-height: 12rem; padding: 10px 12px; font: 600 1rem/1.
 .meta { color: var(--ink-soft); font-size: 1rem; }
 .drill-link { font-size: 1rem; min-height: 32px; display: inline-block; padding: 4px 0; }
 .drill-list .card { margin-bottom: 12px; }
+.drill-list .card h2 { font-size: 1.15rem; margin: 0 0 .3em; }
 .signals.wide div { grid-template-columns: 8rem 1fr; }
 .block { display: block; }
 .move-note { margin: .2em 0 .6em; }

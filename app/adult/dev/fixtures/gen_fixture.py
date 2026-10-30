@@ -65,13 +65,13 @@ tasks_acc = [{"id":"tsk:f1","label":"Prepare financial statements and reports.",
              {"id":"tsk:f4","label":"Check that accounts follow the rules.","ai_mode":"used","as_of":"2026-03","src":"fixture_ai"},
              {"id":"tsk:f5","label":"Advise managers on the costs of a plan.","ai_mode":"unknown","as_of":"2025-08","src":"fixture"}]
 s_acc = slice_(acc, A, [
-  target(fin, F, ["close_to"], [sig("ai_obs",0.38),sig("pay_band_in","PLFS broad group: professional, mid band")]),
-  target(bia, D, ["two_step"], [sig("ai_obs",0.51)]),
-  target(mgr, F, ["same_cluster"], [sig("ai_obs",0.22)]),
+  target(fin, F, ["close_to"], [sig("ai_obs",0.38),sig("pay_band_in","PLFS broad group: professional, mid band"),sig("pay_band_in",105000,"2025"),sig("city_share","city:blr=0.9,city:hyd=0.1","2025")]),
+  target(bia, D, ["two_step"], [sig("ai_obs",0.51),sig("pay_band_in",80000,"2025")]),
+  target(mgr, F, ["same_cluster"], [sig("ai_obs",0.22),sig("pay_band_in",140000,"2025")]),
   target(dat, D, ["two_step"], [sig("ai_obs",0.61)]),
   target(pm, P, ["two_step"], []),
   target(leap, ["tec:python","tec:js","tec:git","tec:tableau","tec:sql","tec:powerbi","tec:jira","skl:2.A.1.c","skl:2.A.2.a","skl:2.B.5.a"], ["two_step"], [sig("ai_obs",0.9)]),
- ], [sig("ai_obs",0.42),sig("pay_band_in","PLFS broad group: professional, mid band")], tasks_acc)
+ ], [sig("ai_obs",0.42),sig("pay_band_in","PLFS broad group: professional, mid band"),sig("pay_band_in",100000,"2025")], tasks_acc)  # the 2025 numbers (made up) let the matcher work out a pay change and the pay-floor and relocation notes; the app shows the newest signal, the string
 s_sw = slice_(swd, SW, [
   target(dat, D, ["close_to"], [sig("ai_obs",0.61)]),
   target(pm, P, ["same_cluster"], []),

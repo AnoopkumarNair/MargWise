@@ -20,12 +20,12 @@ The first command must end with `graph checks passed` and `done.`. The second pr
 
 | Step | Do this | You should see |
 | --- | --- | --- |
-| 1 | Open `/work/`. | "Margwise for working adults", a note that there is no sign-in and nothing is stored on a server, and **Start**. The footer says "Job data release: dev-unaccepted (test build, not for real use)", "O*NET version: 31.0", the data dates, and the O*NET credit. |
+| 1 | Open `/work/`. | "Margwise for working adults", a note that there is no sign-in and nothing is stored on a server, and **Start**. The footer has one link, **About this data**, the O*NET credit in small type, and "Release dev-unaccepted (test build, not for real use)". The O*NET version, data dates and sources are on the About page. |
 | 2 | Press **Start**. Type `qwertyuiop`. | "No job found". |
 | 3 | Clear it and type `chartered account`, then `Accountant`. | A pick list with **Accountants and Auditors**. Indian titles such as "CA" also work (they come from the draft lists in `data/graph/raw/`, which you still need to review). |
 | 4 | Pick **Accountants and Auditors**. | "What do you do as Accountants and Auditors?": 40 things in four groups (Skills, Knowledge, Work activities, Tools and software), each with **Tick all**. The count says "0 of 40 ticked" and asks you to tick everything you do. |
 | 5 | Press **Tick all** on Skills and Knowledge, untick one or two, set a few to **Strong**. Open "Tasks in this job, and where AI is used". | The count goes up. The task list says how many tasks had AI use seen and how many had none. Tasks with no AI data have no label. |
-| 6 | Choose a years band and press **See my roads**. | Up to 30 roads, best first. Each card shows Close move or Stretch, the share covered (a whole percent, rounded down, so it never contradicts the badge), the top skills still missing, and "not yet measured" for pay and demand. Leaps are hidden until you press **Show leaps**. |
+| 6 | Choose a years band and press **Continue**, skip the questions, and press **See my roads**. | Up to 30 roads, best first. Each card shows Close move or Stretch, the share covered (a whole percent, rounded down, so it never contradicts the badge), the top skills still missing, and "not yet measured" for pay and demand. Leaps are hidden until you press **Show leaps**. |
 | 7 | Look at the sliders, then move them (Safe from AI to 5, the rest to 0; then Short move to 5). | They start at Short move 3 and the others 1, with a note saying so (owner decision O4). The order changes at once when you move one. A note says pay and demand are not yet measured, so those sliders change nothing yet. |
 | 8 | Press **See details** on a road. | The skills you would still need, each with its importance and, where known, its AI label; "No reviewed course yet"; and how the score was made. |
 | 9 | Go back to the skills and tick fewer (about 10), then see the roads again. | Almost every road becomes a leap. This is the effect in deviation D19: coverage counts only what you tick. "Used" counts 0.85, almost as much as Strong (owner decision O1), so about 20 ticks of the top skills give several stretch roads for most jobs; a close move needs most skills ticked and some marked Strong. |
@@ -33,7 +33,7 @@ The first command must end with `graph checks passed` and `done.`. The second pr
 
 ## What is not real yet
 
-- Pay, demand, level fit and courses say "not yet measured" or "no reviewed course yet" (later slices).
+- Pay and demand figures are not there yet, and the roads page says so in one line. Courses say "no reviewed course yet".
 - AI labels: most skills have none, because the public task data is too thin to label them (deviation D18, item 9).
 - The job data is from the United States (O*NET 31.0). There is no India pay yet: the SOC to ISCO crosswalk could not be fetched (D18, item 5).
 

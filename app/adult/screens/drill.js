@@ -23,7 +23,7 @@ export async function render(args) {
       const meta = 'Importance: ' + importance(r.w) + '.' + (AI_TEXT[r.ai] ? ' ' + AI_TEXT[r.ai] + '.' : '');
       const open = ready.has(r.occ.id) && r.occ.id !== occ.id;
       return h('li', { class: 'card', 'data-role': r.occ.id },
-        h('h3', null, r.occ.label, r.current ? h('span', { class: 'tag' }, 'where you are looking from') : null),
+        h('h2', null, r.occ.label, r.current ? h('span', { class: 'tag' }, 'where you are looking from') : null),
         h('p', { class: 'meta' }, meta),
         open ? h('a', { class: 'btn small', href: '#/roads/' + encodeURIComponent(r.occ.id), 'aria-label': 'See roads from ' + r.occ.label }, 'See roads from this job')
           : (r.occ.id === occ.id ? null : h('p', { class: 'hint' }, 'No roads for this job yet.')));

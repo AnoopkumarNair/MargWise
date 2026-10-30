@@ -88,7 +88,13 @@ for (const v of VIEWS) {
       for (const id of ids) assert.ok(['outside_time', 'below_pay_floor', 'needs_relocation'].includes(id), id);
       assert.match(await page.locator('#flag-note').innerText(), /never hides a road or changes the order/);
       console.log('  notes shown: ' + ids.join(', '));
-    } else console.log(`  matcher ${version}: no notes (flags) yet`);
+    } else console.log(`  matcher ${version}: no notes (flags) for this person in this data`);
+    if (!REAL) {   // the fixture has made-up pay numbers and city shares for three roads (gen_fixture.py)
+      assert.match(await page.locator('li[data-road="occ:13-2051.00"]').innerText(), /Pay may fall below your lowest pay change/);
+      assert.match(await page.locator('li[data-road="occ:13-2051.00"]').innerText(), /May need a move to another city/);
+      assert.equal(await page.locator('li[data-road="occ:11-3031.00"] [data-flag]').count(), 0, 'a road that fits has no note');
+      assert.match(await page.locator('li[data-road="occ:13-2051.00"]').innerText(), /Pay change\s*\+5% compared with your job today/);
+    }
     // notes never hide a road or change the order: skip the questions and compare
     const order = async () => page.locator('ol.cards > li').evaluateAll(els => els.map(e => e.getAttribute('data-road')));
     const withAnswers = await order();
