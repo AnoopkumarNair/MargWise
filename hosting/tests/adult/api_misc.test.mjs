@@ -104,3 +104,12 @@ test('every Pages adapter is one line that builds deps from env and calls the pu
   assert.equal((await profileA({ request: req('DELETE', '/api/v1/me/profile'), env })).status, 405, 'other methods are 405');
   assert.equal((await metricsA({ request: req('GET', '/api/v1/admin/metrics'), env })).status, 403);
 });
+
+test('database down: sign-in and profile answer unavailable (503), not internal; nothing is stored or leaked', async () => {
+  const w = world(); const { token } = await signUp(w, { handlers: H }); w.db.setBroken();
+  for (const [fn, request] of [[startH, req('POST', '/api/v1/email/start', { body: { invite: 'adult1', birthYear: 1990, email: 'a@example.com', turnstile: 'ok' } })], [handleGet, req('GET', '/api/v1/me/profile', { token })], [handleExport, req('POST', '/api/v1/me/export', { token, body: {} })], [eventH, req('POST', '/api/v1/event', { token, body: { type: 'road_added', eid: 'e-12345678', data: { from: 'occ:1', to: 'occ:2', job_release: 'a', matcher_version: '1.0.0' } } })]]) {
+    const r = await json(await fn(request, w.deps)); assert.equal(r.status, 503, request.url); assert.equal(r.body.error.code, 'unavailable'); assert.ok(!JSON.stringify(r.body).includes('D1_ERROR'));
+  }
+  const bug = world(); bug.db.batch = () => { throw new TypeError('our bug'); };
+  assert.equal((await startH(req('POST', '/api/v1/email/start', { body: { invite: 'adult1', birthYear: 1990, email: 'a@example.com', turnstile: 'ok' } }), bug.deps)).status, 500);
+});

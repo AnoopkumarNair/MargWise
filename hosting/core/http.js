@@ -72,6 +72,9 @@ export function checkContract(schema, value) {
   catch { return { ok: false, errors: ['schema could not be applied'] }; }
 }
 
+// A failure of the database itself (D1 errors all start with D1_ or mention D1), as opposed to a bug in our code.
+export const isStoreError = e => !!(e && typeof e.message === 'string' && /^D1_|\bD1\b/.test(e.message));
+
 // Wrap a handler body as handle(request, deps) -> Response. It sets the request id, checks the method, catches bugs
 // (answering `internal`, never the error text) and writes the one log line.
 //   route: 'POST /api/v1/email/start' (a fixed name; this is what gets logged)
@@ -84,7 +87,7 @@ export function defineRoute(route, fn) {
       if (request.method !== method) res = fail('bad_request', { rid, status: 405, headers: { allow: method } });
       else res = await fn(request, deps, { rid });
       if (!(res instanceof Response)) throw new TypeError('handler did not return a Response');   // our bug: answered and logged as internal
-    } catch { res = fail('internal', { rid }); }
+    } catch (e) { res = fail(isStoreError(e) ? 'unavailable' : 'internal', { rid }); }   // the database being down is `unavailable` (the page says so); anything else is our bug
     if (!res.headers.get('x-request-id')) { const h = new Headers(res.headers); h.set('x-request-id', rid); const c = codes.get(res); res = new Response(res.body, { status: res.status, headers: h }); if (c) codes.set(res, c); }
     if (deps.db && route !== 'GET /api/v1/health') { await bump(deps, 'requests'); if (res.status >= 500) await bump(deps, 'http_5xx'); }   // ADR-10 counters: aggregates only, never fatal
     deps.log({ ts: t0, rid, route, status: res.status, ms: deps.now() - t0, release: deps.config.release, api_v: deps.config.apiV, error_code: codeOf(res) });
