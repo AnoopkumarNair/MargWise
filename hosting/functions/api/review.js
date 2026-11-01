@@ -20,7 +20,7 @@ async function authed(request, env) {
 // a counsellor sees their own school; students they added themselves stay private to them
 const visible = (t, me) => me.admin || (t.invite_id != null && t.invite_id === me.invite_id && (t.counsellor_id == null || t.counsellor_id === me.id));
 async function findTester(env, code, me) {
-  const rows = (await env.DB.prepare("SELECT id, name, invite_id, counsellor_id, source, klass, followup_ok FROM testers WHERE substr(upper(replace(id, '-', '')), 1, 6) = ?").bind(code).all()).results;
+  const rows = (await env.DB.prepare("SELECT id, name, invite_id, counsellor_id, source, klass, followup_ok FROM testers WHERE substr(upper(replace(id, '-', '')), 1, 6) = ? AND (track IS NULL OR track = 'student')").bind(code).all()).results;
   const t = rows.length === 1 ? rows[0] : null; return t && visible(t, me) ? t : null;
 }
 async function appTop(env, id, since) {   // the first result after the counsellor locked their picks; a replay later cannot change what is compared
@@ -31,7 +31,7 @@ async function appTop(env, id, since) {   // the first result after the counsell
 const ymd = ms => new Date(ms).toISOString().slice(0, 10);
 async function report(env, me, from, to, csv) {
   const f = DATE.test(from) ? Date.parse(from + 'T00:00:00Z') : 0, t = DATE.test(to) ? Date.parse(to + 'T23:59:59Z') : Date.now() + 86400000;
-  const rows = (await env.DB.prepare("SELECT t.id, t.name, t.klass, t.source, r.baseline, r.blind, r.sure, r.app_top, r.overlap, r.use_it, r.view_after, r.baseline_at, r.reviewed_at, EXISTS(SELECT 1 FROM events e WHERE e.tester_id = t.id AND e.type = 'fields') AS fin FROM testers t LEFT JOIN reviews r ON r.tester_id = t.id AND (? OR r.counsellor_id = ?) WHERE (? OR (t.invite_id = ? AND (t.counsellor_id IS NULL OR t.counsellor_id = ?))) AND t.created_at BETWEEN ? AND ? ORDER BY t.created_at").bind(me.admin ? 1 : 0, me.id, me.admin ? 1 : 0, me.invite_id, me.id, f, t).all()).results;
+  const rows = (await env.DB.prepare("SELECT t.id, t.name, t.klass, t.source, r.baseline, r.blind, r.sure, r.app_top, r.overlap, r.use_it, r.view_after, r.baseline_at, r.reviewed_at, EXISTS(SELECT 1 FROM events e WHERE e.tester_id = t.id AND e.type = 'fields') AS fin FROM testers t LEFT JOIN reviews r ON r.tester_id = t.id AND (? OR r.counsellor_id = ?) WHERE (? OR (t.invite_id = ? AND (t.counsellor_id IS NULL OR t.counsellor_id = ?))) AND (t.track IS NULL OR t.track = 'student') AND t.created_at BETWEEN ? AND ? ORDER BY t.created_at").bind(me.admin ? 1 : 0, me.id, me.admin ? 1 : 0, me.invite_id, me.id, f, t).all()).results;
   const done = rows.filter(r => r.reviewed_at), n = done.length;
   if (csv) return new Response([['student_code', 'student', 'class', 'how_joined', 'finished_game', 'own_top3', 'blind', 'sure', 'app_top3', 'match_of_3', 'would_use', 'view_after_chat', 'reviewed_on']].concat(rows.map(r => [codeOf(r.id), r.name, r.klass || '', r.source === 'counsellor' ? 'counsellor-led' : 'self', r.fin ? 'yes' : 'no', r.baseline || '', r.blind === 1 ? 'yes' : r.baseline ? 'no' : '', r.sure || '', r.app_top ? JSON.parse(r.app_top).slice(0, 3).join(' ') : '', r.overlap ?? '', r.use_it || '', r.view_after || '', r.reviewed_at ? ymd(r.reviewed_at) : ''])).map(r => r.map(csvCell).join(',')).join('\n'), { headers: { 'content-type': 'text/csv; charset=utf-8', 'content-disposition': 'attachment; filename="counsellor-report.csv"', 'cache-control': 'no-store' } });
   // averages are shown from 5 reviews because fewer is too few to mean anything (not a privacy control: the counsellor sees their own students by name)
@@ -44,7 +44,7 @@ export async function onRequest({ request, env }) {
   if (request.method === 'GET' && q.get('report')) return report(env, me, q.get('from') || '', q.get('to') || '', q.get('report') === 'csv');
   if (request.method === 'GET' && !q.get('code')) {   // my students: no typing of codes, no chance of mixing students up
     if (me.admin) return json({ students: [] });
-    const rows = (await env.DB.prepare("SELECT t.id, t.name, t.klass, t.source, t.consent_on, r.baseline_at, r.reviewed_at, EXISTS(SELECT 1 FROM events e WHERE e.tester_id = t.id AND e.type = 'fields') AS has_result FROM testers t LEFT JOIN reviews r ON r.tester_id = t.id AND r.counsellor_id = ? WHERE t.invite_id = ? AND (t.counsellor_id IS NULL OR t.counsellor_id = ?) ORDER BY t.created_at DESC LIMIT 300").bind(me.id, me.invite_id, me.id).all()).results;
+    const rows = (await env.DB.prepare("SELECT t.id, t.name, t.klass, t.source, t.consent_on, r.baseline_at, r.reviewed_at, EXISTS(SELECT 1 FROM events e WHERE e.tester_id = t.id AND e.type = 'fields') AS has_result FROM testers t LEFT JOIN reviews r ON r.tester_id = t.id AND r.counsellor_id = ? WHERE t.invite_id = ? AND (t.counsellor_id IS NULL OR t.counsellor_id = ?) AND (t.track IS NULL OR t.track = 'student') ORDER BY t.created_at DESC LIMIT 300").bind(me.id, me.invite_id, me.id).all()).results;
     return json({ counsellor: me.name, students: rows.map(r => ({ code: codeOf(r.id), name: r.name, klass: r.klass || '', led: r.source === 'counsellor', consent_on: r.consent_on || null, state: r.reviewed_at ? 'done' : r.baseline_at ? 'baselined' : 'new', finished: !!r.has_result })) });
   }
   if (request.method === 'GET') {
