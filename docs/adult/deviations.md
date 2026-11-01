@@ -425,7 +425,7 @@ Questions from the S1 review that only the owner can answer. Nothing below was c
 
 ## S4 backend lane (accounts and saving), 2026-11-01
 
-Written by the backend lane while building T3.1 to T3.7. Nothing below changed a contract. Each entry says what was built and what the owner or another lane must decide or do. D29 needs an owner decision before the pilot.
+Written by the backend lane while building T3.1 to T3.7. Nothing below changed a contract except D29, which the owner decided on 2026-11-01 (amendment A2). Each entry says what was built and what the owner or another lane must decide or do.
 
 ### D29. The email address is not stored when the account is made
 - Slice and ticket: S4, T3.4 (`email_complete`), ADR-04 and ADR-20, SPEC 10 `testers.email`
@@ -436,7 +436,7 @@ Written by the backend lane while building T3.1 to T3.7. Nothing below changed a
 - Why: the frozen contracts give `complete` no way to receive the address, and ADR-20 says the token must not carry it.
 - Effect: a person who has signed up but never signed in again has no stored address. If `EMAIL_KEY` is rotated, their hash cannot be recomputed, so they would need a new account or an owner-run merge. Export and delete are unaffected.
 - Options for the owner: (a) accept this (default, as built); (b) amend `email_complete.request` to add `email` (the app already holds it), and have the server check that its hash equals the one in `pending` before storing it; (c) never store the address at all (best for privacy; a key rotation then means everyone signs in again by code, and the `email` column stays empty). The backend lane recommends (c) or (b).
-- Decision: proposed
+- Decision: decided by owner, 2026-11-01: option (b), as amendment A2 (`contracts/amendments.json`, `FROZEN.md`). `email_complete.request` gains `email` (optional in the schema, so the change is additive; the server requires it). `email/complete` compares the keyed hash of the address with the hash in `pending` and refuses a mismatch (`bad_request`, no address in the answer or any log), then stores the normalised address in `testers.email`, as ADR-04 and SPEC 10 say. The pending token still holds no address (ADR-20). The app sends the address it already holds in memory. When the person opens the emailed link on another device, that device never saw the address, so the profile step asks them to type it (the server checks it the same way). The fallback in `email/verify` (save the address at a later code sign-in when `email` is empty) stays for any account made without it; the notice line now says "and a scrambled form of it". Tests: `hosting/tests/adult/email_flow.test.mjs`, `app/adult/tests/unit/account_complete_email.test.mjs`.
 
 ### D30. Age gate with a birth year only
 - Slice and ticket: S4, T3.4; SPEC 3 and 9
@@ -530,7 +530,7 @@ Written by the frontend lane while building T4.2 and T5.4. Nothing below changed
 - Slice and ticket: S4, T4.2 (**ASK**)
 - Date: 2026-11-01
 - Author: frontend lane
-- We did: `app/adult/notice.md` holds the notice and the two tick labels. It has two blanks, `[[retention period]]` and `[[grievance contact]]`. In a real build the page refuses sign-up ("Account sign-up opens soon") while a blank is left; a `--dev` build shows the blanks. The AI paragraph (SPEC 12) is left out because no text is sent to an AI yet (slice S6); it must be added before S6. The line about keeping the email address "or a scrambled form of it" depends on D29.
+- We did: `app/adult/notice.md` holds the notice and the two tick labels. It has two blanks, `[[retention period]]` and `[[grievance contact]]`. In a real build the page refuses sign-up ("Account sign-up opens soon") while a blank is left; a `--dev` build shows the blanks. The AI paragraph (SPEC 12) is left out because no text is sent to an AI yet (slice S6); it must be added before S6. The line about keeping the email address "or a scrambled form of it" depends on D29 (decided: both are kept).
 - Decision: proposed (owner approves the wording and fills the blanks)
 
 ### D40. Smaller choices

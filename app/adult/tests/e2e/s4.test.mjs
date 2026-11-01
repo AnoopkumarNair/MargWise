@@ -274,9 +274,10 @@ test('S4: the emailed link signs a new person up (the token is taken out of the 
     await p2.locator('#nickname').waitFor();
     assert.equal(new URL(p2.url()).hash, '#/link', 'the token is not left in the address bar');
     assert.ok(!(await p2.evaluate(() => history.length > 0 && document.referrer)).includes(m.link));
-    await p2.locator('#nickname').fill('Ravi'); await p2.locator('#consent').check(); await p2.locator('#research').check(); await p2.locator('#make-account').click();
+    await p2.locator('#confirm-email').fill('link@example.com'); await p2.locator('#nickname').fill('Ravi'); await p2.locator('#consent').check(); await p2.locator('#research').check(); await p2.locator('#make-account').click();
     await p2.locator('#welcome-note:has-text("signed in")').waitFor();
     assert.equal(srv.db.raw.prepare('SELECT research_ok FROM testers').get().research_ok, 1);
+    assert.equal(srv.db.raw.prepare('SELECT email FROM testers').get().email, 'link@example.com', 'D29: the address typed on the second device is stored');
     for (const r of w2.requests) assert.ok(!r.url.includes(m.link), 'the link token is never in a URL');
     // the same link again
     await p2.goto(srv.base + '/work/#link=' + m.link); await p2.reload();

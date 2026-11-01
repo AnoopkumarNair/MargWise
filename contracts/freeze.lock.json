@@ -21,7 +21,7 @@
       ]
     },
     "api/email_complete.request.schema.json": {
-      "sha256": "e4bafed4b9d3671cde87278fb071d5b04a73d6f2845271f9166151b2b961d0be",
+      "sha256": "4e42cfe8e338a5e4d96c158500aa10c72698a1974528aa384aae924401dd9039",
       "version": [
         "API_V"
       ]
@@ -234,6 +234,19 @@
       },
       "versions": {
         "MATCHER_VERSION": "1.0.0",
+        "PROFILE_V": 1,
+        "SLICE_V": 1,
+        "API_V": 1
+      }
+    },
+    {
+      "id": "A2",
+      "date": "2026-11-01",
+      "files": {
+        "api/email_complete.request.schema.json": "4e42cfe8e338a5e4d96c158500aa10c72698a1974528aa384aae924401dd9039"
+      },
+      "versions": {
+        "MATCHER_VERSION": "1.2.0",
         "PROFILE_V": 1,
         "SLICE_V": 1,
         "API_V": 1

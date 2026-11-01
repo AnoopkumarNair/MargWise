@@ -26,10 +26,10 @@ test('happy path: start, verify, complete; the tester is an adult with a band an
   assert.match(w.outbox[0].text, /\/work\/#link=/, 'the link keeps the token in the fragment, which is never sent to a server');
   r = await json(await verify(w, { email: 'asha@example.com', code: mail.code })); assert.equal(r.status, 200); matches('email_verify.response', r.body);
   assert.equal(r.body.needsProfile, true); assert.ok(r.body.pending && !r.body.token);
-  const c = await json(await complete(w, { pending: r.body.pending, nickname: 'Asha', consent: true, research: true })); assert.equal(c.status, 200); matches('email_complete.response', c.body);
+  const c = await json(await complete(w, { pending: r.body.pending, email: 'Asha@Example.com', nickname: 'Asha', consent: true, research: true })); assert.equal(c.status, 200); matches('email_complete.response', c.body);
   const t = rows(w, 'SELECT * FROM testers')[0];
   assert.equal(t.track, 'adult'); assert.equal(t.age_band, '35-44'); assert.equal(t.name, 'Asha'); assert.equal(t.research_ok, 1); assert.equal(t.key_v, 1);
-  assert.match(t.email_hash, /^[0-9a-f]{64}$/); assert.equal(t.email, null, 'the address is not in any later request, so it is not stored yet');
+  assert.match(t.email_hash, /^[0-9a-f]{64}$/); assert.equal(t.email, 'asha@example.com', 'D29: the normalised address is stored when the account is made');
   assert.equal(t.source, null); assert.equal(t.counsellor_id, null); assert.equal(t.klass, null); assert.equal(t.consent_on, '2025-10-20');
   assert.equal(rows(w, 'SELECT uses FROM invites')[0].uses, 1);
   assert.equal(count(w, 'email_codes'), 0, 'the code was used up');
@@ -181,11 +181,12 @@ test('bad input: wrong types, extra fields, oversize body, wrong content type, b
     const r = await json(await verify(w, bad)); assert.equal(r.status, 400, JSON.stringify(bad)); assert.equal(r.body.error.code, 'bad_request');
   }
   for (const bad of [{}, { pending: 'x', nickname: 'a', consent: true, research: false }]) assert.equal((await complete(w, bad)).status, 400);
+  assert.doesNotMatch(JSON.stringify(rows(w, 'SELECT * FROM email_codes')), /asha@/, 'no code row holds the address');
 });
 
 test('complete is idempotent: the same pending token twice, or two devices at once, give one tester', async () => {
   const w = world(); await start(w); let r = await json(await verify(w, { email: 'asha@example.com', code: codeOf(w) }));
-  const body = { pending: r.body.pending, nickname: 'Asha', consent: true, research: false };
+  const body = { pending: r.body.pending, email: 'asha@example.com', nickname: 'Asha', consent: true, research: false };
   const [a, b] = await Promise.all([complete(w, body), complete(w, body)]);
   const A = await json(a), B = await json(b); assert.equal(A.status, 200); assert.equal(B.status, 200);
   assert.equal(count(w, 'testers'), 1); assert.equal(rows(w, 'SELECT uses FROM invites')[0].uses, 1, 'one use claimed once');
@@ -196,7 +197,7 @@ test('complete is idempotent: the same pending token twice, or two devices at on
 
 test('pending tokens: expired after 30 minutes, tampering, a session token in its place, and an unknown key version', async () => {
   const w = world(); await start(w); const r = await json(await verify(w, { email: 'asha@example.com', code: codeOf(w) }));
-  const body = pending => ({ pending, nickname: 'Asha', consent: true, research: false });
+  const body = pending => ({ pending, email: 'asha@example.com', nickname: 'Asha', consent: true, research: false });
   const p = r.body.pending;
   const tampered = p.slice(0, -1) + (p.endsWith('0') ? '1' : '0'); let x = await json(await complete(w, body(tampered))); assert.equal(x.status, 401); assert.equal(x.body.error.code, 'unauthorized');
   const parts = p.split('.'); parts[2] = '2'; x = await json(await complete(w, body(parts.join('.')))); assert.equal(x.status, 401, 'another invite id breaks the MAC');
@@ -213,32 +214,32 @@ test('pending tokens: expired after 30 minutes, tampering, a session token in it
 });
 
 test('the invite is checked again at the end: deactivated, expired or full means forbidden and no tester', async () => {
-  const mk = async mutate => { const w = world(); await start(w); const r = await json(await verify(w, { email: 'asha@example.com', code: codeOf(w) })); mutate(w); return { w, res: await json(await complete(w, { pending: r.body.pending, nickname: 'A', consent: true, research: false })) }; };
+  const mk = async mutate => { const w = world(); await start(w); const r = await json(await verify(w, { email: 'asha@example.com', code: codeOf(w) })); mutate(w); return { w, res: await json(await complete(w, { pending: r.body.pending, email: 'asha@example.com', nickname: 'A', consent: true, research: false })) }; };
   let o = await mk(w => w.db.raw.exec('UPDATE invites SET active = 0 WHERE id = 1')); assert.equal(o.res.status, 403); assert.equal(count(o.w, 'testers'), 0);
   o = await mk(w => w.db.raw.exec('UPDATE invites SET max_uses = 1, uses = 1 WHERE id = 1')); assert.equal(o.res.status, 403); assert.equal(count(o.w, 'testers'), 0); assert.equal(rows(o.w, 'SELECT uses FROM invites')[0].uses, 1);
   o = await mk(w => w.db.raw.prepare('UPDATE invites SET expires_at = ? WHERE id = 1').run(T0 - 1)); assert.equal(o.res.status, 403, 'expired'); assert.equal(count(o.w, 'testers'), 0);
   o = await mk(w => w.db.raw.exec("UPDATE invites SET track = NULL WHERE id = 1")); assert.equal(o.res.status, 403, 'a student invite never makes an adult');
   // the last use goes to exactly one of two people
   const w = world(); w.db.raw.exec('UPDATE invites SET max_uses = 1');
-  const tok = async email => { await start(w, { email }); const v = await json(await verify(w, { email, code: codeOf(w) })); return v.body.pending; };
+  const tok = async email => { await start(w, { email }); const v = await json(await verify(w, { email, code: codeOf(w) })); return [v.body.pending, email]; };
   const p1 = await tok('a@example.com'), p2 = await tok('b@example.com');
-  const rs = await Promise.all([p1, p2].map(p => complete(w, { pending: p, nickname: 'N', consent: true, research: false })));
+  const rs = await Promise.all([p1, p2].map(([p, email]) => complete(w, { pending: p, email, nickname: 'N', consent: true, research: false })));
   assert.deepEqual(rs.map(r => r.status).sort(), [200, 403]); assert.equal(count(w, 'testers'), 1); assert.equal(rows(w, 'SELECT uses FROM invites')[0].uses, 1);
 });
 
 test('the nickname is cleaned and must not be empty after cleaning', async () => {
   const w = world(); await start(w); const r = await json(await verify(w, { email: 'asha@example.com', code: codeOf(w) }));
-  let x = await json(await complete(w, { pending: r.body.pending, nickname: '   ', consent: true, research: false })); assert.equal(x.status, 400);
-  x = await json(await complete(w, { pending: r.body.pending, nickname: '  Asha K  ', consent: true, research: false })); assert.equal(x.status, 200);
+  let x = await json(await complete(w, { pending: r.body.pending, email: 'asha@example.com', nickname: '   ', consent: true, research: false })); assert.equal(x.status, 400);
+  x = await json(await complete(w, { pending: r.body.pending, email: 'asha@example.com', nickname: '  Asha K  ', consent: true, research: false })); assert.equal(x.status, 200);
   assert.equal(rows(w, 'SELECT name FROM testers')[0].name, 'Asha K');
-  for (const bad of [{ consent: false }, { nickname: 'a<b' }, { nickname: 'a@b' }, { research: 'yes' }]) assert.equal((await complete(w, { pending: r.body.pending, nickname: 'A', consent: true, research: false, ...bad })).status, 400, JSON.stringify(bad));
+  for (const bad of [{ consent: false }, { nickname: 'a<b' }, { nickname: 'a@b' }, { research: 'yes' }]) assert.equal((await complete(w, { pending: r.body.pending, email: 'asha@example.com', nickname: 'A', consent: true, research: false, ...bad })).status, 400, JSON.stringify(bad));
 });
 
 test('switches: sign-up off means no new account (a known address still signs in); the mailer decides email_dry_run', async () => {
   const w = world(); await start(w); const r = await json(await verify(w, { email: 'asha@example.com', code: codeOf(w) }));
   w.deps.flags.adultSignup = false;
-  let x = await json(await complete(w, { pending: r.body.pending, nickname: 'A', consent: true, research: false })); assert.equal(x.status, 503); assert.equal(x.body.error.code, 'unavailable'); assert.equal(count(w, 'testers'), 0);
-  w.deps.flags.adultSignup = true; assert.equal((await complete(w, { pending: r.body.pending, nickname: 'A', consent: true, research: false })).status, 200);
+  let x = await json(await complete(w, { pending: r.body.pending, email: 'asha@example.com', nickname: 'A', consent: true, research: false })); assert.equal(x.status, 503); assert.equal(x.body.error.code, 'unavailable'); assert.equal(count(w, 'testers'), 0);
+  w.deps.flags.adultSignup = true; assert.equal((await complete(w, { pending: r.body.pending, email: 'asha@example.com', nickname: 'A', consent: true, research: false })).status, 200);
   w.deps.flags.adultSignup = false; w.clock.advance(HOUR); await start(w); x = await json(await verify(w, { email: 'asha@example.com', code: codeOf(w) })); assert.ok(x.body.token, 'known addresses keep working');
   // verify of a new address when sign-up has since been closed
   const w2 = world(); await start(w2); w2.deps.flags.adultSignup = false; x = await json(await verify(w2, { email: 'asha@example.com', code: codeOf(w2) })); assert.equal(x.status, 503);
@@ -292,4 +293,21 @@ test('logs: no email, code, link, token, IP or body in any line, for every sign-
   const realCode = /code is (\d{6})/.exec(w.outbox[0].text)[1], realLink = /#link=([A-Za-z0-9_-]+)/.exec(w.outbox[0].text)[1];
   assert.ok(!log.includes(realCode) && !log.includes(realLink), 'the code and the link are not logged');
   for (const line of w.deps.logged()) assert.deepEqual(Object.keys(line).sort(), ['api_v', 'error_code', 'ms', 'release', 'rid', 'route', 'status', 'ts']);
+});
+
+test('D29: complete checks the email against the hash in the pending token; a mismatch or a missing address is refused and creates nothing', async () => {
+  const w = world(); await start(w); const r = await json(await verify(w, { email: 'asha@example.com', code: codeOf(w) }));
+  const body = { pending: r.body.pending, nickname: 'Asha', consent: true, research: false };
+  const spy = []; const log = console.log, err = console.error; console.log = console.error = (...a) => spy.push(a.join(' '));
+  let x; try {
+    x = await json(await complete(w, { ...body, email: 'other@example.com' })); assert.equal(x.status, 400);
+    assert.doesNotMatch(JSON.stringify(x.body), /other@|asha@/, 'the error holds no address');
+    assert.equal((await complete(w, body)).status, 400, 'missing email');
+    assert.equal((await complete(w, { ...body, email: 'not an address' })).status, 400, 'fails the contract');
+  } finally { console.log = log; console.error = err; }
+  assert.doesNotMatch(spy.join('\n'), /@example\.com/, 'nothing logged holds an address');
+  assert.equal(count(w, 'testers'), 0); assert.equal(rows(w, 'SELECT uses FROM invites')[0].uses, 0, 'no invite use claimed');
+  assert.ok(!r.body.pending.includes('asha') && !r.body.pending.includes('@'), 'the token holds no address');
+  x = await json(await complete(w, { ...body, email: 'ASHA@example.com' })); assert.equal(x.status, 200, 'the same address in another case (normalised) matches');
+  assert.equal(rows(w, 'SELECT email FROM testers')[0].email, 'asha@example.com');
 });

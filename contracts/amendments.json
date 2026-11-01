@@ -10,6 +10,16 @@
       "summary": "slice.schema.json gains an optional top-level near object ({pairs: [[skill id, skill id, similarity]], as_of, src, trust}: the skill_near pairs between the skills in the slice's needs). Task ai_mode gains the value used (AI use seen, no automation/augmentation split), distinct from none (no use seen) and unknown (no data); bands.json ai_task_mode gains the same value. Every slice valid before is still valid.",
       "files": ["slice.schema.json", "bands.json"],
       "versions": { "SLICE_V": 1, "PROFILE_V": 1, "API_V": 1 }
+    },
+    {
+      "id": "A2",
+      "date": "2026-11-01",
+      "slice": "S4",
+      "decision": "Owner decision D29, 2026-11-01: email_complete.request carries the email address; the backend stores it when the account is made.",
+      "deviation": "docs/adult/deviations.md D29",
+      "summary": "api/email_complete.request.schema.json gains an optional email string (3 to 254 characters). The server requires it, checks that its keyed hash equals the email hash in the pending token (a mismatch is refused), and stores the normalised address in testers.email at account creation. The pending token still carries no address (ADR-20). Optional in the schema so the change stays additive; every body valid before is still valid to the schema.",
+      "files": ["api/email_complete.request.schema.json"],
+      "versions": { "SLICE_V": 1, "PROFILE_V": 1, "API_V": 1 }
     }
   ]
 }

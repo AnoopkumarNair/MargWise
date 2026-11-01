@@ -5,7 +5,7 @@ Margwise for working adults is free to use without an account. An account lets y
 
 ## What we keep
 - Your nickname.
-- Your email address, or a scrambled form of it, so you can sign in.
+- Your email address, and a scrambled form of it, so you can sign in.
 - An age range, such as 25 to 34. We do not keep your birth year.
 - The jobs, skills, years, answers and settings you save. These are ids and bands from our lists, not your own words.
 - What you do in the app, as ids and counts, such as "opened a road". Never your resume.

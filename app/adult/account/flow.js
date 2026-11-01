@@ -3,7 +3,9 @@
 //   email    email, invite code and the human check (Turnstile), then "Send me a code"  -> POST /email/start
 //   code     the six digits from the email (or the link in it)                            -> POST /email/verify
 //   profile  a new address only: nickname, the notice, the required tick, the research tick (off) -> POST /email/complete
-// The email address, the birth year and the pending token live in this module's memory until the flow ends. None is stored.
+// The email address, the birth year and the pending token live in this module's memory until the flow ends. None is stored in the browser.
+// The address is sent again in /email/complete (D29): the server checks it against the token and keeps it, as ADR-04 says.
+// Opened from the emailed link on a device that never saw the address, the profile step asks for it.
 // The server wants an invite code and a birth year on every code request, also for an address that already has an account (deviations D36),
 // so log-in asks for them too. The invite code is remembered on this device after a sign-in, so it is asked for once.
 import { h, mount } from '../dom.js';
@@ -156,10 +158,15 @@ export function startFlow(root, { mode, link } = {}) {
     const consent = h('input', { type: 'checkbox', id: 'consent' });
     const research = h('input', { type: 'checkbox', id: 'research' });
     const go = h('button', { type: 'submit', class: 'btn primary', id: 'make-account', disabled: true }, 'Make my account');
-    const valid = () => { const t = nick.value.trim(); return t.length >= 1 && t.length <= 40 && NICK_RE.test(t); };
+    // Opened from the emailed link on another device: this device never saw the address, so ask for it (the server checks it, D29).
+    const askEmail = !f.email;
+    const addr = askEmail ? h('input', { type: 'email', id: 'confirm-email', autocomplete: 'email', maxLength: 254, spellcheck: false }) : null;
+    const emailOk = () => !askEmail || (EMAIL_RE.test(addr.value.trim()) && addr.value.trim().length <= 254);
+    const valid = () => { const t = nick.value.trim(); return t.length >= 1 && t.length <= 40 && NICK_RE.test(t) && emailOk(); };
     const update = () => { go.disabled = !(valid() && consent.checked); };
-    nick.addEventListener('input', update); consent.addEventListener('change', update);
+    nick.addEventListener('input', update); if (addr) addr.addEventListener('input', update); consent.addEventListener('change', update);
     const form = h('form', { novalidate: true },
+      addr ? field('confirm-email', 'Your email address', addr, 'Type the address this link was sent to. We check that it is the one we verified.') : null,
       field('nickname', 'A first name or nickname', nick, 'We use it to greet you. Please do not use your full name.'),
       h('h2', null, n.title), renderNotice(n),
       h('div', { class: 'tick' }, consent, h('label', { for: 'consent' }, n.consent)),
@@ -167,14 +174,15 @@ export function startFlow(root, { mode, link } = {}) {
       e, s, h('p', null, go));
     form.addEventListener('submit', async ev => {
       ev.preventDefault(); e.textContent = '';
+      if (!emailOk()) { e.textContent = 'Check your email address. It should look like name@example.com.'; addr.focus(); return; }
       if (!valid()) { e.textContent = 'Type a nickname of up to 40 characters, without < > or @.'; nick.focus(); return; }
       if (!consent.checked) { e.textContent = 'Please tick the box to say you have read the notice.'; consent.focus(); return; }
       go.disabled = true; s.textContent = 'Making your account…';
-      const res = await api.post('/email/complete', { pending: f.pending, nickname: nick.value.trim(), consent: true, research: !!research.checked, idempotency_key: f.key }, { auth: false });
+      const res = await api.post('/email/complete', { pending: f.pending, email: askEmail ? addr.value.trim() : f.email, nickname: nick.value.trim(), consent: true, research: !!research.checked, idempotency_key: f.key }, { auth: false });
       if (res.ok && res.body.token) { await signedIn(res.body.token); return; }
       s.textContent = ''; update();
       if (res.error && (res.error.code === 'expired' || res.error.code === 'invalid_code')) { f.pending = null; stepEmail('That took too long. Ask for a new code to carry on.'); return; }
-      e.textContent = sayError(res);
+      e.textContent = res.error && res.error.code === 'bad_request' && askEmail ? 'That is not the address we verified. Type the one the link was sent to.' : sayError(res);
     });
     show('profile', h('h1', { tabindex: '-1' }, 'Almost done'), form);
   }

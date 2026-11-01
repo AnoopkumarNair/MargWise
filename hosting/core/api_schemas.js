@@ -122,6 +122,13 @@ export const SCHEMAS = freeze({
     "maxLength": 200,
     "pattern": "^p[1-9][0-9]{0,2}\\.[0-9a-f]{64}\\.[1-9][0-9]{0,11}\\.(18-24|25-34|35-44|45-54|55-64|65\\+)\\.[0-9]{13}\\.[0-9a-f]{64}$"
    },
+   "email": {
+    "type": "string",
+    "minLength": 3,
+    "maxLength": 254,
+    "pattern": "^[^\\s@]+@[^\\s@]+$",
+    "description": "Added by amendment A2 (deviations D29). The address the person verified. The server checks that its keyed hash equals the hash in pending (and refuses a mismatch), then stores the normalised address in testers.email (SPEC 10, ADR-04). Optional in the schema only because a frozen contract may change additively; the server answers bad_request when it is missing."
+   },
    "nickname": {
     "type": "string",
     "minLength": 1,

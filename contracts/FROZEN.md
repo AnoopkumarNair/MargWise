@@ -42,3 +42,4 @@ The owner may approve an additive change to a frozen contract that keeps its ver
 | Id | Date | Files | Versions kept | Owner decision |
 | --- | --- | --- | --- | --- |
 | A1 | 2026-10-29 | `slice.schema.json`, `bands.json` | `SLICE_V` 1 (and `PROFILE_V`, `API_V` 1) | 2026-10-29, item (2): slice `near` pairs and task `ai_mode` `used` (deviations D14) |
+| A2 | 2026-11-01 | `api/email_complete.request.schema.json` | `API_V` 1 (and `SLICE_V`, `PROFILE_V` 1) | D29, 2026-11-01: `email_complete.request` gains an optional `email`, checked against the pending token's hash |

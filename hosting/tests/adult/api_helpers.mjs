@@ -61,6 +61,6 @@ export async function signUp(w, { handlers, email = 'asha@example.com', birthYea
   const mail = lastMail(w);
   r = await json(await verifyH(req('POST', '/api/v1/email/verify', { body: { email, code: mail.code }, ip }), w.deps)); if (r.status !== 200) throw new Error('verify ' + JSON.stringify(r));
   if (r.body.token) return { token: r.body.token, known: true };
-  const c = await json(await completeH(req('POST', '/api/v1/email/complete', { body: { pending: r.body.pending, nickname, consent: true, research }, ip }), w.deps)); if (c.status !== 200) throw new Error('complete ' + JSON.stringify(c));
+  const c = await json(await completeH(req('POST', '/api/v1/email/complete', { body: { pending: r.body.pending, email, nickname, consent: true, research }, ip }), w.deps)); if (c.status !== 200) throw new Error('complete ' + JSON.stringify(c));
   return { token: c.body.token, known: false };
 }
