@@ -17,9 +17,11 @@ jobs:
         run: python3 pipeline/run.py
         env: { RAW_STRICT: '1' }
       - name: Fail if the rebuild changed committed files
-        run: git diff --exit-code -- data/content.json data/releases/latest.json hosting/functions/api/_claims.json
+        run: git diff --exit-code -- data/content.json data/releases/latest.json hosting/functions/api/_claims.json data/graph/build_report.json data/graph/export_report.json
       - name: Build the game from the accepted release only
         run: python3 app/build.py
+      - name: Fail if the build changed the vendored files (VERSIONS.md must survive the build)
+        run: git diff --exit-code -- hosting/public/vendor && test -f hosting/public/vendor/VERSIONS.md
       - name: Server key check
         run: node hosting/tests/util.test.mjs
       - name: Engine - independent Python reference agrees with the shipped bundle
@@ -28,3 +30,127 @@ jobs:
         run: node --test engine/tests/engine.test.mjs engine/tests/design.test.mjs
       - name: Question map is current
         run: node engine/tools/question_map.mjs --check
+      - name: Vendored files match VERSIONS.md
+        run: node .github/scripts/check_vendor_hashes.mjs
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }   # check_freeze_history.mjs compares with main; under CI=true it fails if main cannot be read
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Freeze history (amendments only appended, lock changes need a bump or an amendment, additive only, owner decision logged)
+        run: node contracts/check_freeze_history.mjs
+      - name: Contract tests
+        run: |
+          if [ -e contracts/tests ]; then
+            node --test 'contracts/tests/*.test.mjs'
+          else
+            echo "skip: contracts/tests does not exist yet"
+          fi
+  graph:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }   # check_registry.py compares with main; under CI=true it fails if main cannot be read
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Id registry is append-only and complete
+        run: |
+          python3 pipeline/check_registry.py
+      - name: Registry unit tests
+        run: |
+          python3 -m unittest discover -s pipeline/tests -p "test_*.py"
+      # The graph and its exports are build outputs (graph.sqlite and data/graph/slices/ are git-ignored, deviations D15):
+      # rebuild them offline from the committed O*NET raw files, then check them. export_report.json holds the slice hashes.
+      - name: Build the graph and its exports
+        run: |
+          python3 data/graph/build_graph.py
+          python3 data/graph/export.py
+      - name: Fail if the graph or its exports changed (build_report.json and export_report.json are committed)
+        run: git diff --exit-code -- data/graph/build_report.json data/graph/export_report.json data/graph/skills_index.json data/graph/titles.json
+      - name: Validate the graph and the exports (slices at most 60 KB gzipped, contract check)
+        run: python3 pipeline/validate_graph.py --exports
+        env: { RAW_STRICT: '1' }
+      - name: Graph tests
+        run: python3 -m unittest discover -s data/graph/tests
+      # TODO after the owner's first --accept (data/releases/graph/latest.json exists): add
+      #   python3 app/adult/build.py            (release build from the accepted slice pack; checks every hash)
+      # (open item in docs/adult/S1_DEMO.md)
+  matcher:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Matcher tests (golden, properties, reference agreement, invariant 8)
+        run: node --test 'matcher/tests/*.test.mjs'
+      - name: Independent Python reference agrees with the golden cases
+        run: python3 matcher/reference.py
+      - name: Version guard (a golden output changes only with MATCHER_VERSION)
+        run: node matcher/tests/version_guard.mjs
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: API tests
+        run: |
+          if [ -e hosting/tests/adult ]; then
+            node --test 'hosting/tests/adult/*.test.mjs'
+          else
+            echo "skip: hosting/tests/adult does not exist yet"
+          fi
+      - name: Migration guard
+        run: |
+          if [ -e hosting/tests/migration_guard.mjs ]; then
+            node hosting/tests/migration_guard.mjs
+          else
+            echo "skip: hosting/tests/migration_guard.mjs does not exist yet"
+          fi
+      - name: Invariant checker
+        run: |
+          if [ -e hosting/tools/check_invariants.mjs ]; then
+            node hosting/tools/check_invariants.mjs
+          else
+            echo "skip: hosting/tools/check_invariants.mjs does not exist yet"
+          fi
+  intake-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Intake and privacy unit tests
+        run: |
+          dirs=""
+          for d in app/adult/tests/intake app/adult/tests/privacy; do [ -e "$d" ] && dirs="$dirs $d/*.test.mjs"; done
+          if [ -n "$dirs" ]; then
+            node --test $dirs
+          else
+            echo "skip: app/adult/tests/intake and privacy do not exist yet"
+          fi
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Install the test-only packages (axe-core, Playwright) and Chromium
+        working-directory: app/adult/tests
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: App unit tests (adapter, lookup, safety, release build on a throwaway copy)
+        run: node --test 'app/adult/tests/unit/*.test.mjs'
+      - name: End-to-end tests on the test fixtures (each test file builds the app into the same folder, so one file at a time)
+        run: node --test --test-concurrency=1 'app/adult/tests/e2e/*.test.mjs' 'app/adult/tests/privacy/*.e2e.mjs'
+      # Real data (MW_E2E_DATA=real) needs the pipeline outputs; run it locally (docs/adult/S1_DEMO.md). TODO after the first --accept:
+      # build with python3 app/adult/build.py (no --dev) and run the e2e on the accepted release.

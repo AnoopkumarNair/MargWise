@@ -154,7 +154,8 @@ CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai
 **Edge weights:**
 
 - `needs`: `(IM-1)/4 * (LV/7)`, clipped to the range 0 to 1, kept only where `IM >= 2.5`.
-- `skill_near`: cosine similarity of the occupations that need both skills, kept if 0.5 or more (computed).
+- `needs` to a technology (`tec:`): 0.8 for an O*NET Hot Technology and 0.6 for any other tool, by rule (O*NET gives tools no rating). The graph keeps these weights; the export caps them in each slice list (5.4).
+- `skill_near`: cosine similarity of the occupations that need both skills, kept if 0.5 or more (computed). The export keeps only the pairs the matcher can count (5.4, 7.1).
 - `close_to`: O*NET related occupations (`weight` 1 for primary-short and 0.7 for the rest), plus the skill-vector cosine.
 
 ### 5.3 Checks (added to `pipeline/validate.py`, failure blocks the build)
@@ -164,19 +165,22 @@ CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai
 - No node or edge has an empty `source`, `trust` or `as_of`, and `trust` is in the allowed set.
 - Every one of the 83 existing careers' SOC codes is present as an occupation.
 - Every `needs` edge has a real collection date from O*NET (not the download date).
-- Slice files are under 60 KB each; `skills_index.json` is under 1.5 MB gzipped.
+- Each slice file is at most 60 KB **gzipped** (what a browser downloads; owner decision 2026-10-29). The raw file may be larger (about 200 KB). `skills_index.json` is under 1.5 MB gzipped.
 
 ### 5.4 Exports
 
 - **`slices/<soc>.json`:**
   - the occupation;
   - its top 40 `needs`, with labels and weights;
-  - its tasks, with AI use;
+  - its tasks, with AI use (`ai_mode`: `automation` or `augmentation` where the data has the split; `used` where AI use was seen without the split; `none` where the task is in the AI data and no use was seen; `unknown` where there is no data);
   - its job zone and level ladder (if known);
   - its signals;
   - its top 30 candidate road targets, from `close_to`, two-step paths with coverage of 0.4 or more, and same-cluster occupations.
 
   For each target, the slice also holds the target's top 40 `needs` (repeated, so a slice is self-contained).
+  The slice also holds `near`: the `skill_near` pairs between the skills in all those needs, as `[skill, skill, similarity]` (slice contract amendment A1), so the matcher needs no other file. It keeps only the pairs the matcher can count (7.1): similarity 0.90 or more, and among the 3 closest neighbours of at least one of the two skills. Leaving the others out changes no result and makes the file smaller (owner decision O2, 2026-10-29).
+- **Tool weights in a slice (owner decision O3, 2026-10-29).** In each needs list the export writes (the occupation's own list, and each target's list, on its own), a tool's weight is at most the median weight of the other needs in that list (for an even count, the mean of the two middle values; 4 decimals). This is an export rule: the graph keeps 0.8 and 0.6 (5.2), and the candidate targets are still ranked with the graph weights.
+  The size limit is on the gzipped file (5.3). If a slice were still too big, the export trims it by a fixed ladder (fewer tasks, then fewer target needs, then fewer targets) and counts every trim in `export_report.json`; with O*NET 31.0 no slice needs it.
 - **`skills_index.json`:** `[{id, label, alt:[...], kind}]` for skills and technology, plus the starter list of Indian abbreviations (`data/graph/raw/abbrev_in.csv`).
 - **`titles.json`:** `{normalised title: [occ ids]}` from O*NET alternate titles and approved user titles.
 
@@ -185,7 +189,7 @@ CREATE TABLE signal (node TEXT NOT NULL, kind TEXT NOT NULL,      -- ai_obs | ai
 | Signal | How it is computed |
 | --- | --- |
 | `ai_obs`, `ai_tier` | From the existing AI layer, per occupation |
-| `ai_task_mode` | Per task: automation, augmentation or none, from the Anthropic Economic Index task data where the split exists. `none` means no use was observed |
+| `ai_task_mode` | Per task: automation, augmentation, used or none, from the Anthropic Economic Index task data. Automation or augmentation only where the split exists; `used` means use was observed but the data has no split; `none` means the task is in the data and no use was observed. A task missing from the data is `unknown` in the slice |
 | Skill AI labels | Computed at export: a skill whose weighted share of tasks with AI use is 0.5 or more is "AI already does much of this"; 0.15 or less is "people still do this"; anything between is "mixed" |
 | `pay_band_in` | PLFS broad group, mapped through NCO to ISCO to SOC |
 | `demand_trend`, `skill_trend`, `entry_share` | Tables exist but are empty until D2 or D3 is answered. The UI shows "not yet measured" |
@@ -272,7 +276,7 @@ Include low-cost Indian routes where they exist: NPTEL and SWAYAM courses with c
 
 **How the matcher uses them:**
 
-- **Skills credited.** A certification the person holds, and that has not expired, credits its `teaches` skills at the `used` level (0.7), unless the person rated those skills themselves. Their own rating wins.
+- **Skills credited.** A certification the person holds, and that has not expired, credits its `teaches` skills at the `used` level (0.85, owner decision O1), unless the person rated those skills themselves. Their own rating wins.
 - **Expired certifications** credit at the `rusty` level (0.4) and are labelled "expired, renew?".
 - **Screening flags.** An `asked_for` certification that the person lacks is shown as a separate screening note on the road ("Often asked for: CKA, in 31 percent of postings"). It does not change coverage, which measures skills only.
 - **Bridges** (7.4) choose from certifications first. Each bridge shows cost, hours, validity, and the official link.
@@ -280,8 +284,8 @@ Include low-cost Indian routes where they exist: NPTEL and SWAYAM courses with c
 ### 5.9 Location
 
 - **Who it is for.** The pilot starts in metros through the founder's network, because that is where most of these jobs are: Bengaluru alone was reported as about 30 percent of GCC hiring, and metros about 88 percent of GCC activity. Tier-2 cities are growing fastest, so none is excluded.
-- **City clusters.** `raw/cities.json` lists Bengaluru, Hyderabad, Pune, Chennai, Delhi NCR, Mumbai, Kolkata, Ahmedabad, a tier-2 list (for example Coimbatore, Kochi, Jaipur, Indore, Bhubaneswar, Visakhapatnam, Thiruvananthapuram, Chandigarh, Nagpur, Mysuru) and "other". Each cluster has a state. Only the **cluster** is stored, never an address.
-- **Inputs.** The profile records the person's current cluster and their openness: same city, these cities, anywhere in India, remote only, abroad.
+- **City clusters.** `raw/cities.json` lists Bengaluru, Hyderabad, Pune, Chennai, Delhi NCR, Mumbai, Kolkata, Ahmedabad, a tier-2 list (for example Coimbatore, Kochi, Jaipur, Indore, Bhubaneswar, Visakhapatnam, Thiruvananthapuram, Chandigarh, Nagpur, Mysuru) and "other". Each cluster has a state. Only the **cluster** is stored, never an address. Cluster ids have the prefix `city:` like every other graph id (`city:blr`, `city:hyd`, ..., `city:other`); the list is `city_cluster` in `contracts/bands.json`.
+- **Inputs.** The profile records the person's current cluster and their openness: same city, these cities, anywhere in India, remote only, abroad. The three choices that are not a city are stored as `open:india`, `open:remote` and `open:abroad`.
 - **Signals.** Once postings are connected, demand and pay are recorded per occupation per cluster, with a "remote or hybrid share". Each road shows "Where these jobs are: mostly Bengaluru, Hyderabad, Pune; 20 percent remote". Until then it shows "not yet measured". A road where most openings are outside the person's acceptable places gets the `needs_relocation` flag. It is never hidden.
 - **Pay by city.** Postings that show pay, per cluster, with `secondary` trust. PLFS has no city-level occupation pay, so it stays a broad national band.
 
@@ -291,13 +295,13 @@ Stored in D1 as JSON, holding ids and bands only:
 
 ```json
 {
-  "v": 1, "rev": 3,
-  "roles": [{"occ": "occ:13-2011.00", "level": 3, "industry": "bfsi", "years": "3-7", "current": true}],
+  "v": 1,
+  "roles": [{"occ": "occ:13-2011.00", "level": 3, "industry": "bfsi", "years": "5-8", "current": true}],
   "skills": [{"id": "skl:2.A.2.a", "strength": "strong", "last": 2026}],
   "creds": [{"id": "cred:aws-saa", "year": 2024, "expires": 2027}],
   "lead": {"people": "1-5", "budget": false, "expert": true},
-  "constraints": {"hours_month": "5-10", "course_budget": "10k-50k", "city": "blr", "open_to": ["blr", "hyd", "remote"], "pay_floor_pct": -10, "mode": "hybrid"},
-  "priorities": {"pay": 1, "ai_safe": 1, "short_move": 1, "demand": 1, "enjoy": 0},
+  "constraints": {"hours_month": "5-10", "course_budget": "10k-50k", "city": "city:blr", "open_to": ["city:blr", "city:hyd", "open:remote"], "pay_floor_pct": -10, "mode": "hybrid"},
+  "priorities": {"pay": 1, "ai_safe": 1, "short_move": 3, "demand": 1, "enjoy": 0},
   "job_release": "abc123", "matcher_version": "1.0.0"
 }
 ```
@@ -307,7 +311,9 @@ Stored in D1 as JSON, holding ids and bands only:
 | `strength` | `used`, `strong`, `rusty` |
 | `level` | 1 to 6 (section 7.2) |
 | Bands | Fixed strings from the lists in `contracts/bands.json` |
-| `rev` | Increases on every save. Used for optimistic concurrency (BACKEND ADR-06) |
+| `years` | Years in that role: `0-2`, `2-5`, `5-8`, `8-12`, `12-18`, `18+`. The same bands as the level thresholds in 7.2. `a-b` means at least `a` and under `b` years |
+| `city`, `open_to` | City cluster ids with the prefix `city:` (5.9). `open_to` also allows `open:india` (anywhere in India), `open:remote` and `open:abroad` |
+| `rev` | Not part of this document. The edit counter lives in the `profiles` table and in the API wrapper `{rev, data}`, and the server sets it on every save (BACKEND ADR-06) |
 | Ids | Must be live or tombstoned-with-replacement in `id_registry.json`. Mapped on read by `contracts/migrate_ids.js` (ADR-05) |
 
 ## 7. Matcher v1 (`matcher/match.js`, mirrored by `matcher/reference.py`)
@@ -317,18 +323,21 @@ Stored in D1 as JSON, holding ids and bands only:
 For person P and target T, with need weights `w_s` from T's slice:
 
 ```
-have(s) = 1.0 if strong, 0.7 if used, 0.4 if rusty (or last-used more than 3 years ago and not strong)
-          if the person did not rate s but holds a credential that teaches s: 0.7 if valid, 0.4 if expired (5.8)
-near(s) = max over P's skills k with skill_near(k, s) >= 0.5 of 0.5 * sim(k, s) * have(k)
+have(s) = 1.0 if strong, 0.85 if used, 0.4 if rusty (or last-used more than 3 years ago and not strong)
+          if the person did not rate s but holds a credential that teaches s: 0.85 if valid, 0.4 if expired (5.8)
+near(s) = max over P's skills k that are among the 3 closest neighbours of s (by sim, ties by id)
+          and have sim(k, s) >= 0.90, of 0.5 * sim(k, s) * have(k)
 cover(s) = max(have(s), near(s))
 coverage = sum(w_s * cover(s)) / sum(w_s)          over T's top 40 needs
 gap = needs with cover(s) < 0.7, ordered by w_s * (1 + 0.5 if skill label is "people still do this") desc
 ```
 
+Owner decisions of 2026-10-29 (deviations, Decisions O1 and O2; matcher 1.1.0): "used" counts 0.85 (it was 0.7), and a near skill counts only when it is one of the 3 closest neighbours of the skill being credited, among the near pairs the slice holds, and is at least 0.90 similar (before: any pair at 0.5 or more). The rank is the credited skill's own: k may be in the top 3 for s while s is not in the top 3 for k.
+
 ### 7.2 Levels
 
 - **Person's level, from 1 to 6:**
-  - start from total years (`<2:1, 2-5:2, 5-8:3, 8-12:4, 12-18:5, 18+:6`);
+  - start from total years, in the year bands of `contracts/bands.json` (`0-2:1, 2-5:2, 5-8:3, 8-12:4, 12-18:5, 18+:6`; `0-2` means under 2 years, and each band includes its lower bound). Each role's `years` (section 6) uses the same bands;
   - add 1 if they lead 6 or more people or own a budget, capped at 6;
   - the current title's seniority word overrides when present (`associate:1-2, senior:3, lead:4, manager:4, senior manager:5, head|director|vp:6`).
 - **Target's typical level:** from the job zone (`zone 1-2: 1-2, 3: 2-3, 4: 3-4, 5: 4-5`) until posting ladders exist.
@@ -355,6 +364,8 @@ components (each normalised to 0..1 across the candidate set):
   enjoy     = interest fit (0 weight unless the walk was taken)
 score = sum(priority_i * component_i) / sum(priority_i)
 ```
+
+Default priorities, when the profile has none and when the app starts (owner decision O4, 2026-10-29): short move 3, pay 1, AI safety 1, demand 1, enjoy 0. So a closer road counts three times as much as AI safety, and a low-coverage road with little AI use no longer comes before a much closer one by default. The person can move every slider from 0 to 5.
 
 Kinds: **adjacent** (coverage 0.7 or more), **stretch** (0.4 to 0.7), **leap** (under 0.4, hidden behind "show leaps"). Constraint flags (`outside_time`, `below_pay_floor`, `needs_relocation`) are shown and never hide a road. Every road displays its components.
 
@@ -416,7 +427,7 @@ Every response is `{ok:true,...}` or `{ok:false, error:{code, message}}`, and ca
 | Endpoint | Request | Behaviour |
 | --- | --- | --- |
 | `POST /api/v1/email/start` | `{invite, birthYear, email, turnstile}` | Verify Turnstile. Check the age on the server. Under 18: count a refusal for the invite, store nothing else, and return `refused_age`. Otherwise the invite must be active with `track=adult`. Limits per address (3 an hour, 10 a day), per IP bucket and site-wide. Store `email_codes`, send the code and link. Always answer "If this address can sign in, we have sent a code" |
-| `POST /api/v1/email/verify` | `{email, code}` or `{link}` | At most 5 tries, then the code is void. New address: `{needsProfile:true, pending}`, where `pending` is a signed 30-minute token holding the email hash, invite and age band. Known address: `{token}` |
+| `POST /api/v1/email/verify` | `{email, code}` or `{link}` | At most 5 tries, then the code is void. New address: `{needsProfile:true, pending}`, where `pending` is a signed 30-minute token holding the email hash, invite and age band (format in BACKEND ADR-20). Known address: `{token}` |
 | `POST /api/v1/email/complete` | `{pending, nickname, consent:true, research:bool}` | Creates the tester. **Idempotent:** the unique `email_hash` index means a repeat returns a token for the same tester |
 | `GET /api/v1/me/profile` | | Returns the profile, upgraded to the current `v` and with ids mapped (ADR-05/06) |
 | `PUT /api/v1/me/profile` | `{rev, data}` | Validates the contract, checks ids against the current release's id list (loaded with `env.ASSETS.fetch` and cached), writes with `WHERE rev = ?`. On a mismatch, `409 conflict` with the current document |
@@ -424,7 +435,7 @@ Every response is `{ok:true,...}` or `{ok:false, error:{code, message}}`, and ca
 | `POST /api/v1/me/delete` | `{confirm:"DELETE"}` | Deletes across every table in the inventory, revokes sessions, and writes an audit row with no identity |
 | `POST /api/v1/me/logout-all` | | Sets `tok_after` |
 | `POST /api/v1/ai/read` | `{text, turnstile}` | Requires login. Text at most 20,000 characters. The provider is called with the extraction prompt. The output must validate against `contracts/extract.schema.json`, unknown ids are dropped, and any output containing an email or phone pattern is rejected. Limits: 10 a person a day, a site daily cap, a 20-second timeout. Never logs the text |
-| `POST /api/v1/event` | `{type, eid, data}` | Adult event types `intake`, `profile_saved`, `roads_viewed`, `road_opened`, `road_added` and `feedback`. Ids and numbers only, plus the capped feedback text. Deduplicated by `eid`. Capped per tester per day |
+| `POST /api/v1/event` | `{type, eid, data}` | Adult event types `intake`, `profile_saved`, `roads_viewed`, `road_opened`, `road_added` and `feedback`. Each type has its own strict request schema, chosen by `type` (`contracts/event_schemas.js`); an unknown type or a field from another type is `bad_request`. Ids and numbers only, plus the capped feedback text. Deduplicated by `eid`. Capped per tester per day |
 | `GET /api/v1/health` | | Database reachable, release id, `API_V`, AI enabled, email configured |
 
 **Secrets, per environment (ADR-02 and ADR-04):** `SIGN_KEY`, `EMAIL_KEY`, `CODE_KEY`, `IP_KEY`, `TURNSTILE_SECRET`, `EMAIL_FROM`, `AI_API_KEY`, plus the settings `AI_ENABLED`, `AI_DAILY_CAP`, `EMAIL_DRY_RUN` and `RETENTION_DAYS`.
@@ -448,7 +459,8 @@ CREATE TABLE IF NOT EXISTS email_sends (email_hash TEXT NOT NULL, day TEXT NOT N
 CREATE TABLE IF NOT EXISTS profiles (tester_id TEXT PRIMARY KEY, v INTEGER NOT NULL, rev INTEGER NOT NULL, data TEXT NOT NULL,
   job_release TEXT, matcher_version TEXT, updated_at INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS under18 (invite_id INTEGER, day TEXT, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (invite_id, day));
-CREATE TABLE IF NOT EXISTS ai_calls (tester_id TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, tokens INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (tester_id, day));
+CREATE TABLE IF NOT EXISTS ai_calls (tester_id TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, tokens INTEGER NOT NULL DEFAULT 0,
+  prompt_version TEXT, PRIMARY KEY (tester_id, day));        -- prompt_version: the extraction prompt of the latest call that day, e.g. 'extract_v1' (ADR-17)
 CREATE TABLE IF NOT EXISTS ops_daily (day TEXT NOT NULL, metric TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, metric));
 ```
 

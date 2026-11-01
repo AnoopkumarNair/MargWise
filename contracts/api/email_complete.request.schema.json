@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/email_complete.request.schema.json",
+  "title": "email_complete request",
+  "description": "POST /api/v1/email/complete (SPEC 9). Creates the tester. Idempotent: a repeat returns a token for the same tester (unique email_hash; optional idempotency_key per ADR-09). pending is the 30-minute token from email/verify, in the BACKEND ADR-20 format p<keyver>.<email_hash>.<invite_id>.<age_band>.<iat>.<mac>; the server checks its MAC and age before anything else.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["pending", "nickname", "consent", "research"],
+  "properties": {
+    "pending": {
+      "type": "string",
+      "minLength": 140,
+      "maxLength": 200,
+      "pattern": "^p[1-9][0-9]{0,2}\\.[0-9a-f]{64}\\.[1-9][0-9]{0,11}\\.(18-24|25-34|35-44|45-54|55-64|65\\+)\\.[0-9]{13}\\.[0-9a-f]{64}$"
+    },
+    "nickname": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "pattern": "^[^<>@\\u0000-\\u001f]+$"
+    },
+    "consent": {
+      "enum": [true]
+    },
+    "research": {
+      "type": "boolean"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{8,64}$"
+    }
+  }
+}

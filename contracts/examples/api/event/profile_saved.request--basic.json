@@ -1,0 +1,12 @@
+{
+  "type": "profile_saved",
+  "eid": "e-profilesaved-0001",
+  "data": {
+    "rev": 3,
+    "n_roles": 2,
+    "n_skills": 24,
+    "n_creds": 1,
+    "job_release": "abc123",
+    "matcher_version": "1.0.0"
+  }
+}

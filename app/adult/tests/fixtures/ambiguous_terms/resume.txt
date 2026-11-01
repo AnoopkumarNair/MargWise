@@ -1,0 +1,36 @@
+Ravindran Canarypally
+Backend and Data Engineer
+canary.mail.7731@example.com | +91 98765 43210 | PAN ABCDE1234F | Aadhaar 2345 6789 0123
+
+Summary
+Backend engineer who writes services in Go and does statistics in R. Strong C and C++ background from embedded work. I consistently excel at explaining technical work to non-technical people, and I excel in client-facing roles.
+
+Experience
+
+Backend Engineer
+Canaryworks Pvt Ltd, Bengaluru
+Mar 2022 - Present
+- Built payment microservices in Go with gRPC; reduced p99 latency by 35 percent.
+- Wrote a go-to-market dashboard for the sales team and helped them go live in two weeks.
+- Analysed experiment results in R (tidyverse, ggplot2) and presented them to C-level stakeholders.
+- Provided read access to production logs for the support team and reviewed role-based access rules.
+- Pipelines in Python and PostgreSQL.
+
+Embedded Software Engineer
+Brightloom Devices, Pune
+Jun 2018 - Feb 2022
+- Wrote firmware in C and C++ for a battery controller.
+- Worked with the R&D team on test benches; supported the QA team in bug triage.
+- Used Linux and Git for daily work.
+
+Software Intern
+Kestrel Software, Coimbatore
+Spring 2018 internship, Jan 2018 - May 2018
+- Fixed bugs and tested a mobile app. Learned how to go from a ticket to a release.
+
+Education
+B.E. Electronics, Canary Institute of Technology, 2014 - 2018
+Exchange semester abroad, Spring 2017
+
+Skills
+Go, R, Python, C, C++, PostgreSQL, gRPC, Linux, Git

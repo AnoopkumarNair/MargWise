@@ -1,0 +1,8 @@
+# Changes to these paths need the repository owner's review (review finding S6). GitHub enforces this only when branch
+# protection on main has "Require review from Code Owners" turned on; that setting is the owner's (docs/adult/deviations.md D21).
+# The frozen contracts and their freeze tooling, and the two design documents they come from.
+/contracts/                 @AnoopkumarNair
+/docs/adult/SPEC.md         @AnoopkumarNair
+/docs/adult/BACKEND.md      @AnoopkumarNair
+# The file that says who owns the paths above.
+/.github/CODEOWNERS         @AnoopkumarNair

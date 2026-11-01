@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/event.response.schema.json",
+  "title": "event response",
+  "description": "Accepted. A repeat eid is accepted and stored once.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok"],
+  "properties": {
+    "ok": {
+      "enum": [true]
+    }
+  }
+}

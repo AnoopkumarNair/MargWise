@@ -1,0 +1,7 @@
+# Adult graph build outputs (rebuilt by the pipeline; never committed)
+data/graph/graph.sqlite
+# slices are rebuilt by python3 pipeline/run.py (about 190 MB raw). export_report.json (committed) holds their hashes and sizes;
+# --accept stores them as one xz pack in data/releases/graph/<release>/slices.jsonl.xz (docs/adult/deviations.md D15)
+data/graph/slices/
+data/graph/raw/onet/*/zip
+__pycache__/

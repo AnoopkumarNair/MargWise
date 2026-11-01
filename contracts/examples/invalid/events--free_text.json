@@ -1,0 +1,13 @@
+{
+  "type": "roads_viewed",
+  "eid": "e-roadsviewed-0002",
+  "data": {
+    "from": "occ:13-2011.00",
+    "roads": ["occ:13-2051.00", "occ:13-2041.00", "occ:ai-llm-evaluator"],
+    "n_leaps": 4,
+    "leaps_shown": false,
+    "job_release": "abc123",
+    "matcher_version": "1.0.0",
+    "note": "I live in Indiranagar"
+  }
+}

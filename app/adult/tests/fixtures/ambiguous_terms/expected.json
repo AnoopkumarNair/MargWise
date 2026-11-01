@@ -1,0 +1,51 @@
+{
+  "id": "ambiguous_terms",
+  "shape": "Ambiguous terms: R, Go, C as languages; Spring (the season), Excel (the verb), Access (the noun) as ordinary words",
+  "binary": "resume.pdf",
+  "looksLikeResume": true,
+  "roles": [
+    {
+      "titleContains": "Backend Engineer",
+      "startYear": 2022,
+      "endYear": 2026,
+      "current": true
+    },
+    {
+      "titleContains": "Embedded Software Engineer",
+      "startYear": 2018,
+      "endYear": 2022,
+      "current": false
+    },
+    {
+      "titleContains": "Software Intern",
+      "startYear": 2018,
+      "endYear": 2018,
+      "current": false
+    }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": [
+    "tec:go",
+    "tec:r",
+    "tec:c",
+    "tec:cpp",
+    "tec:python",
+    "tec:postgresql",
+    "tec:linux",
+    "tec:git"
+  ],
+  "mustNotFind": [
+    "tec:microsoft-excel",
+    "tec:microsoft-access",
+    "tec:spring-framework",
+    "tec:spring-boot"
+  ],
+  "mustFindYears": {
+    "tec:go": 2026,
+    "tec:cpp": 2022
+  },
+  "outOfDictionary": [
+    "gRPC"
+  ],
+  "notes": "'go-to-market', 'go live', 'go from a ticket', 'R&D', 'C-level', 'access rules', 'Spring 2018 internship', 'excel at' and 'excel in' must not match. The 'Spring 2018 internship, Jan 2018 - May 2018' line is one role, not two."
+}

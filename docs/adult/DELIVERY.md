@@ -121,7 +121,7 @@ As in `TEST_PLAN.md`: every test layer for the slice passes in CI, the invariant
 
 1. **Releasing the graph.** Review `CHANGES.md` and the graph change report, `--accept`, rebuild, tag `graph-<release_id>`.
 2. **Migrations.**
-   1. `wrangler d1 migrations list` for preview, then production.
+   1. `npx wrangler@4 d1 migrations list <database> --remote` for preview, then production (exact names in `docs/PILOT_RUNBOOK.md`).
    2. Rehearse on a local copy of the production export.
    3. Apply to preview, then run the smoke test.
    4. Apply to production, then run the invariant checker.

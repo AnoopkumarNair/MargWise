@@ -1,0 +1,13 @@
+{
+ "_doc": "Hand-built credential teaches lists for tests (SPEC 5.8). Not real data. Format {cred id: [skill ids]}.",
+ "cred:itil4": [
+  "tec:servicenow",
+  "skl:2.C.3.a",
+  "skl:2.B.2.i"
+ ],
+ "cred:copc": [
+  "skl:2.A.2.d",
+  "skl:2.B.5.d",
+  "skl:2.B.1.b"
+ ]
+}

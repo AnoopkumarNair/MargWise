@@ -1,0 +1,21 @@
+{
+ "_doc": "Written by node matcher/tests/version_guard.mjs --write. Do not edit by hand.",
+ "matcher_version": "1.2.0",
+ "cases": {
+  "acc-core": "a771d7b4e3a337ef20a379db5dc29bfcad6f7b26cfb0438b131c7eab3a6d1163",
+  "acc-rusty": "0bd40f1ebc87c6cdd0d1c3c2a5d372c8cb899977168b1d3a378dcf419c2a8e8c",
+  "swdev-data": "e5b4a72cc9f28ba0330acc56f49154e901464f23e271bbdccf76df018af29ddf",
+  "swdev-qa-near": "ff8300fa27749bd085a5b664e3027e35564148035b87f0b5e56e9d96953dde30",
+  "csr-voice": "e5d31c651e5c408de65bcde1ff18bb807c7244cdd61d5bef0c7641339bbfc35f",
+  "csr-creds": "08e235694eba415d36096d89a8e32d0c433eb029de50be06c372662774fc6baf",
+  "nurse-core": "47d5052944459a2ac4aa3d58d9a2c155ead950d4ff7763426f6fe645832cf5fb",
+  "nurse-lead-short": "e7714b4e2717e6810999dc3f46867055150c3b466ea88eb6ebf0a5242c621daa",
+  "csr-real-near": "502d9448c759e2971ea8cf4e9aec1281416a187a94bff2c3cd325f8f5de26f0d",
+  "near-rank": "6076ca2cbca8c0e57e2cdacadb7015fb3bc5207491abf8599235e288ccea5e1c",
+  "acc-real-tools": "3eed76802125b1f663a9d93201a6425710e8a4ec5ad399cc77888cbe9a5c9505",
+  "qa-llm-adjacent": "d56b028822f34eb7407b35ac7b41a4aecb97156a2a0d11ecf5de11265bff94c5",
+  "bpm-lead-reset": "b2de1681aed6c0ebc14af5148175fedf166f4b69a9338c5faf42e6ac0b640405",
+  "bfsi-pay-floor": "6196679885efd851352b02f020b7212c20073e8cda4fd6c68b45aa5350ccff57",
+  "csr-cert-bridge": "840820866ace7862e0b6d3f6c63a222d34366f1724840be37f02a2a51da8c57d"
+ }
+}

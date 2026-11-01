@@ -1,0 +1,49 @@
+{
+  "id": "pasted_text",
+  "shape": "Plain pasted text: no headings, one paragraph per role, dates in brackets",
+  "binary": null,
+  "looksLikeResume": true,
+  "roles": [
+    {
+      "titleContains": "Product Support Engineer",
+      "startYear": 2022,
+      "endYear": 2026,
+      "current": true
+    },
+    {
+      "titleContains": "Technical Support Executive",
+      "startYear": 2019,
+      "endYear": 2022,
+      "current": false
+    },
+    {
+      "titleContains": "Customer Care Associate",
+      "startYear": 2016,
+      "endYear": 2019,
+      "current": false
+    }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": [
+    "tec:structured-query-language-sql",
+    "tec:mysql",
+    "tec:linux",
+    "tec:python",
+    "tec:atlassian-jira",
+    "tec:atlassian-confluence",
+    "tec:servicenow",
+    "tec:microsoft-excel"
+  ],
+  "mustNotFind": [
+    "tec:r",
+    "tec:go",
+    "tec:zoom"
+  ],
+  "mustFindYears": {
+    "tec:mysql": 2026,
+    "tec:servicenow": 2022,
+    "tec:microsoft-excel": 2019
+  },
+  "outOfDictionary": [],
+  "notes": "Dates are in brackets at the end of the title line. 'Zoom calls' is a meeting, not a skill: Zoom needs a nearby marketing word or a skills list."
+}

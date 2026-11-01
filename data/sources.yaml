@@ -102,3 +102,33 @@ sources:
     cadence: monthly
     stage: manual until automated (abroad.json fx)
     feeds: [abroad.fx]
+  - id: onet_database
+    name: O*NET database, text format (skills, knowledge, work activities, tasks, software, titles, related occupations, job zones)
+    publisher: US Department of Labor, Employment and Training Administration
+    url: https://www.onetcenter.org/database.html
+    licence: CC BY 4.0
+    trust: official
+    cadence: yearly (O*NET publishes several database versions a year; the pipeline pins one in data/graph/fetch_onet.py)
+    stage: graph/fetch_onet.py
+    feeds: [graph.occupations, graph.needs, graph.has_task, graph.close_to, graph.titles]
+    notes: Every needs edge keeps O*NET's own rating date. The release date and the pinned version are in data/graph/raw/onet/<version>/SOURCE.md.
+  - id: margwise_fields
+    name: Margwise field assignments (which of the 16 fields each student career belongs to)
+    publisher: Margwise (curated in data/content.json)
+    url: see data/content.json (careers[].field, careers[].soc)
+    licence: Margwise
+    trust: estimate
+    cadence: whenever content.json changes
+    stage: graph/build_graph.py (reads data/content.json)
+    feeds: [graph.clusters, graph.in_cluster]
+    notes: Our own grouping, not an official classification. Where content.json holds an old O*NET code, data/graph/raw/soc_aliases.csv maps it to the current one.
+  - id: margwise_abbrev_in
+    name: Indian job-title and abbreviation starter list (IT, BPM, BFSI)
+    publisher: Margwise (drafted by the data lane)
+    url: see data/graph/raw/abbrev_in.csv and data/graph/raw/titles_in.csv
+    licence: Margwise
+    trust: estimate
+    cadence: whenever the owner reviews it
+    stage: graph/export.py (reads data/graph/raw/abbrev_in.csv and raw/titles_in.csv)
+    feeds: [skills_index.alt, titles]
+    notes: NEEDS OWNER REVIEW. Not taken from a published list. Each mapping is a plain-language judgement.

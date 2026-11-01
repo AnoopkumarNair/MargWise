@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "db": true,
+  "release": "abc123",
+  "api_v": 1,
+  "ai_enabled": false,
+  "email_configured": true,
+  "flags": {
+    "adult_signup": false,
+    "ai_enabled": false,
+    "email_dry_run": true,
+    "show_demand": false
+  },
+  "environment": "production"
+}

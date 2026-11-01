@@ -1,0 +1,243 @@
+{
+  "_doc": "Contract freeze lock (contracts/FROZEN.md). Written by node contracts/freeze.mjs --write; never edit by hand. contracts/tests/freeze.test.mjs fails when a contract file differs from its hash here, and --write refuses unless one of the versions in \"version\" went up, or an owner amendment in amendments.json names the file (--write --amend <id>).",
+  "frozen": "S0",
+  "versions": {
+    "MATCHER_VERSION": "1.2.0",
+    "PROFILE_V": 1,
+    "SLICE_V": 1,
+    "API_V": 1
+  },
+  "files": {
+    "api/ai_read.request.schema.json": {
+      "sha256": "29d63df012a63af0b0cfc9750cae9a94c0c2bc007cddc91808c1a906ba569ec7",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/ai_read.response.schema.json": {
+      "sha256": "eeee44f334cd9e3789fcd2bdfc83e918900101e44983e22326ec3b911bfa206c",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/email_complete.request.schema.json": {
+      "sha256": "e4bafed4b9d3671cde87278fb071d5b04a73d6f2845271f9166151b2b961d0be",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/email_complete.response.schema.json": {
+      "sha256": "1be6e18b85aa7b5045daccd206b55bf00dade576ee3c58433b476b690fa64658",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/email_start.request.schema.json": {
+      "sha256": "a5fcc719628694e4bcd5f283a2b576390a505ea0c8795057371c1754c266cb9a",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/email_start.response.schema.json": {
+      "sha256": "e3fcb0f8d2c4e6e93160bb6629b8dba568e21c84a65f0a5ceabc322ece59e720",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/email_verify.request.schema.json": {
+      "sha256": "f5826e853216e66fb52e4cdf3cd9f287c9b09cb112c17c7e7530ba54bb8b8346",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/email_verify.response.schema.json": {
+      "sha256": "2ab94cb89a8a8e783c5ac481e1d47312732f189d363b12ac931c71d300f2239b",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/error.schema.json": {
+      "sha256": "305ac4644364d959c7bc9b52a63929e1e593cd10494bc2661a1b5279f6bcd61d",
+      "version": [
+        "API_V",
+        "PROFILE_V"
+      ]
+    },
+    "api/event.response.schema.json": {
+      "sha256": "ac7152808b61c56088d162d9524b4a5fcaee0dcc74444b35f5cc63fed627d69b",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/event/feedback.request.schema.json": {
+      "sha256": "571f0f0dec37c661bd71ef81bfd009209a6c40d7f36f95f1a248611d6039845c",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/event/intake.request.schema.json": {
+      "sha256": "7c9b764c83c4ad06a9a6fc8e7f53c7075f675ba44c84dcd57806a13565a5d5db",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/event/profile_saved.request.schema.json": {
+      "sha256": "8533221f79088913e7c1b87afea7da8b4ee65b0a464b3ff2261ea9c6a8640fe0",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/event/road_added.request.schema.json": {
+      "sha256": "fb2b2e5523dd81fa9bf0967e2b4a6ad3c9b38c4a55bb144c9d7560cee2c4559d",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/event/road_opened.request.schema.json": {
+      "sha256": "8a2cfa82ea500935c7a9d391beb260a84a0802565c6bf0e8af81a7761db3f46e",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/event/roads_viewed.request.schema.json": {
+      "sha256": "5699f73320fbd0c24ab8ea7618aa96bf650b570daec580ff05010ccfaff0ebe5",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/health.request.schema.json": {
+      "sha256": "c0dabeaef59533b53d24ba66f32e3bfad8198b98a4eaa89c80304973da530537",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/health.response.schema.json": {
+      "sha256": "289b39993cfa5adaf049bb9558e06f8a744b7a1da2c56a0ddd2d35bbe918fc73",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/me_delete.request.schema.json": {
+      "sha256": "5466db3182d658570b184954f5c72aae3e18cb330004d5edf5c19c5ec2722631",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/me_delete.response.schema.json": {
+      "sha256": "6caf5696005fb37812db3970522986da86d4ff3eaca72eaa672b9592f1fd5764",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/me_export.request.schema.json": {
+      "sha256": "1e4ef76c454f7d19b734841fb23edb442d318c1639971948551917cf6ab6c302",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/me_export.response.schema.json": {
+      "sha256": "2fc45bb264f790a73414f1e773930feb3b43ccd801be9bcc9ebaef66501c3260",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/me_logout_all.request.schema.json": {
+      "sha256": "dc991ad1f25a8579234052fc338ef2ac1fb444a68de0f8ea8a4027f30e7a5b83",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/me_logout_all.response.schema.json": {
+      "sha256": "1a0077d935603bc86741e14e46fcb9351bff2db5206ed870e2da99015f2c146f",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/me_profile_get.request.schema.json": {
+      "sha256": "fae69e6503f7a5cec81a2329b587daca06625f068184e7dce574ddfadee9a757",
+      "version": [
+        "API_V"
+      ]
+    },
+    "api/me_profile_get.response.schema.json": {
+      "sha256": "01fa2b8dbe6592cf3d0c06ffd540a51a924b57adf77996ecd59f551c4137f70b",
+      "version": [
+        "API_V",
+        "PROFILE_V"
+      ]
+    },
+    "api/me_profile_put.request.schema.json": {
+      "sha256": "0c9b4a016c0289c2be82f696c4d4273d6a40ea9c84e82578fe2dfa67879adcce",
+      "version": [
+        "API_V",
+        "PROFILE_V"
+      ]
+    },
+    "api/me_profile_put.response.schema.json": {
+      "sha256": "153cf979da4c491c61a0fafe84f4f678a613aa2e15d8defd5693cf590afbc777",
+      "version": [
+        "API_V"
+      ]
+    },
+    "bands.json": {
+      "sha256": "0acc607adc63c53635ab84d4b67ce87383e20de5e8d3a7a05eaaa4aa7dad6615",
+      "version": [
+        "PROFILE_V",
+        "SLICE_V",
+        "API_V"
+      ]
+    },
+    "event_schemas.js": {
+      "sha256": "d28543827dad2d0a12282d12744555ddf8cf6d72b2c4c4c6e701cceec95d09e9",
+      "version": [
+        "API_V"
+      ]
+    },
+    "events.schema.json": {
+      "sha256": "523a2c33abcc83f17e2cd66e57005ebc32905616fd973019fd1ed207ac042d27",
+      "version": [
+        "API_V"
+      ]
+    },
+    "extract.schema.json": {
+      "sha256": "a7c3a2719e23f6f098d77b42caa32a1192cde15c7795591a784f808e11f28ec4",
+      "version": [
+        "API_V"
+      ]
+    },
+    "profile.schema.json": {
+      "sha256": "70e52759c836ed2a71eb96a1a104625d2e02877144a2ea20e290d2178685388d",
+      "version": [
+        "PROFILE_V"
+      ]
+    },
+    "skills_index.schema.json": {
+      "sha256": "65cd75cb87b846b100e0f12583b434367801173456f1d610c4f64871257b0440",
+      "version": [
+        "SLICE_V"
+      ]
+    },
+    "slice.schema.json": {
+      "sha256": "b135f530a15c0da6af93dce82a9deb26aa49109c9e778e68f935bb9040d38d81",
+      "version": [
+        "SLICE_V"
+      ]
+    }
+  },
+  "amendments": [
+    {
+      "id": "A1",
+      "date": "2026-10-29",
+      "files": {
+        "slice.schema.json": "b135f530a15c0da6af93dce82a9deb26aa49109c9e778e68f935bb9040d38d81",
+        "bands.json": "0acc607adc63c53635ab84d4b67ce87383e20de5e8d3a7a05eaaa4aa7dad6615"
+      },
+      "versions": {
+        "MATCHER_VERSION": "1.0.0",
+        "PROFILE_V": 1,
+        "SLICE_V": 1,
+        "API_V": 1
+      }
+    }
+  ]
+}

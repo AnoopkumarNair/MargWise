@@ -1,0 +1,44 @@
+{
+  "id": "indian_format",
+  "shape": "Indian format: DOB, father's name, religion, marital status, address block, declaration",
+  "binary": "resume.pdf",
+  "looksLikeResume": true,
+  "roles": [
+    {
+      "titleContains": "Customer Support Executive",
+      "startYear": 2020,
+      "endYear": 2026,
+      "current": true
+    },
+    {
+      "titleContains": "Process Associate",
+      "startYear": 2017,
+      "endYear": 2020,
+      "current": false
+    }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": [
+    "tec:microsoft-excel",
+    "tec:atlassian-jira",
+    "tec:microsoft-word",
+    "tec:microsoft-powerpoint",
+    "tec:microsoft-office-software"
+  ],
+  "mustNotFind": [
+    "tec:r",
+    "tec:go",
+    "tec:c",
+    "tec:linkedin"
+  ],
+  "mustFindYears": {
+    "tec:microsoft-excel": 2020,
+    "tec:atlassian-jira": 2026
+  },
+  "outOfDictionary": [
+    "Zendesk",
+    "CRM",
+    "Typing speed"
+  ],
+  "notes": "The date of birth '12/08/1996', the declaration date '15/10/2026' and the education years must not become roles. Personal details are in the text but must never show up as skills."
+}
