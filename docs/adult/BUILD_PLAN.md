@@ -4,7 +4,7 @@ Read `docs/adult/SPEC.md` first. It is the source of truth. **Build in the verti
 
 ## Ground rules for the implementing session
 
-- **Branch.** Work on the branch you were given. Commit after each ticket with a clear message. Never push to `main`. Never deploy (`wrangler pages deploy`) and never apply SQL to the live D1 database: the owner does both.
+- **Branch.** Work on the branch you were given. Commit after each ticket with a clear message. Never push to `main`. Deploy (`wrangler pages deploy`) only when the owner asks for it in the session (see `CLAUDE.md`). Never apply SQL to the live D1 database: the owner does that.
 - **Match the existing code.** Python scripts in `data/` and `pipeline/` are small, plain and dependency-light. Pages Functions follow `hosting/functions/api/*.js`: parameterised SQL, `json()` and `readJson()` from `_util.js`, fail closed. No new frameworks, no bundler, no TypeScript, no ORM.
 - **Third-party browser code is vendored** into `hosting/public/vendor/` (as `gsap.min.js` is today), with exact versions noted in `hosting/public/vendor/VERSIONS.md`. The pages use a strict CSP, so do not load scripts from CDNs.
 - **Keep the student product green.** After every ticket, run:
