@@ -1,4 +1,4 @@
-# Handoff: state at 30 Oct 2026
+# Handoff: state at 1 Nov 2026
 
 Branch `ccr-4a84cc2e-h7kisr`, draft PR #20 into `main`. Nothing is deployed. `--accept` has not been run. No SQL has been applied to any remote database.
 
@@ -57,3 +57,13 @@ CI has never run on GitHub. The first PR run will show whether the workflow work
 ## Rules to keep
 
 Never deploy, never apply SQL to the live database, never push to `main`, no scraping of LinkedIn, Indeed or Naukri, no workaround for the BLS block. A contract change needs an owner decision and the amendment mechanism in `contracts/FROZEN.md`.
+
+## Update, 1 Nov 2026
+
+- **S2:** T1.9 city clusters done (`data/graph/raw/cities.json`). T1.7 and T1.8 still wait for fetched quotes and the owner's approval of the seed lists.
+- **S4 built and reviewed:** backend T3.1 to T3.7 (`0001_adult.sql`, email sign-in, profile, export, delete, events, metrics), frontend sign-up, log-in, saving and account screens, amendment A2 (email in `complete`), `S4_DEMO.md`, independent Opus review in `S4_REVIEW.md`; both blockers and the should-fix items are fixed. All checks green, e2e 34 pass.
+- **Owner answers (recommended options):** O6 squash on merge, O7 keep `official`, O9 show no pay, K1 to K5 keep, D29 amend, D36 log in without an invite (ADR-21), D30 keep.
+- **Needs the owner:** approve `app/adult/notice.md` and fill its two blanks (retention period, grievance contact); D38 research opt-out endpoint; open nits in `deviations.md` D42.
+- **Deploy order:** apply `0001_adult.sql` to the database BEFORE deploying this code (student queries now read `track`). The owner runs it.
+- **Check on a preview deployment:** the Cloudflare `EMAIL` binding and `EMAIL_FROM`, Turnstile under the CSP, `.github/workflows/health-watch.yml` (needs adding; runs `hosting/tools/health_watch.mjs`).
+- **Next:** S5 on-device suggestions, then S6, S7; T1.7 and T1.8 once approved.
