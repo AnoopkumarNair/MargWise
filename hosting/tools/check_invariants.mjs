@@ -19,6 +19,9 @@ export const FREE_TEXT_STRING_MAX = 80;    // the longest id the contracts allow
 export const isFreeText = x => typeof x === 'string' && (x.length > FREE_TEXT_STRING_MAX || /\s/.test(x));
 const DAY = 86400000;
 const MATCHER = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'matcher', 'match.js');
+const REGISTRY = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'data', 'graph', 'id_registry.json');
+// The adult events that carry a result (contracts/events.schema.json requires job_release and matcher_version for exactly these).
+export const RESULT_EVENT_TYPES = ['profile_saved', 'roads_viewed', 'road_opened', 'road_added'];
 
 // Invariant 8 (ADR-16), a static check on matcher/match.js. The same rule as the matcher's own test (matcher/tests/match.test.mjs):
 // no property read and no allowed input field names anything demographic or commercial, and the profile is never read by computed key.
@@ -46,7 +49,7 @@ const fail = (id, title, violations) => ({ id, title, status: 'fail', note: '', 
 const na = (id, title, note) => ({ id, title, status: 'n/a', note, violations: [] });
 const verdict = (id, title, v) => v.length ? fail(id, title, v) : pass(id, title);
 
-export async function runInvariants(db, { now = Date.now(), profileV = versions.PROFILE_V, matcherPath = MATCHER } = {}) {
+export async function runInvariants(db, { now = Date.now(), profileV = versions.PROFILE_V, matcherPath = MATCHER, registryPath = REGISTRY } = {}) {
   const out = [];
   const adultReady = (await hasTable(db, 'testers')) && (await hasCol(db, 'testers', 'track'));
 
@@ -97,7 +100,23 @@ export async function runInvariants(db, { now = Date.now(), profileV = versions.
     out.push(verdict(id, title, v));
   }
 
-  out.push(na(3, 'Every id in every profile is in the id registry', 'not applicable until T1.x (data/graph/id_registry.json, F0.2) and T3.1 (profiles table)'));
+  { // 3
+    const id = 3, title = 'Every id in every profile is in the id registry: live, or a tombstone with a replacement';
+    let reg = null; try { reg = JSON.parse(fs.readFileSync(registryPath, 'utf8')); } catch { /* no registry file */ }
+    const entries = reg && Array.isArray(reg.entries) ? reg.entries : [];
+    if (!(await hasTable(db, 'profiles'))) out.push(na(id, title, 'not applicable until T3.1 (profiles table)'));
+    else if (!entries.length) out.push(na(id, title, 'not applicable until the first accepted graph release fills data/graph/id_registry.json (it is empty now)'));
+    else {
+      const byId = new Map(entries.map(e => [e.id, e])), v = [], bad = new Set();
+      for (const r of (await db.prepare('SELECT data FROM profiles').all()).results) {
+        let d; try { d = JSON.parse(r.data); } catch { v.push('profiles: a stored profile is not JSON'); continue; }
+        const ids = [...(d.roles || []).map(x => x && x.occ), ...(d.skills || []).map(x => x && x.id), ...(d.creds || []).map(x => x && x.id)];
+        for (const x of ids) { const e = byId.get(x); if (!e || (e.status !== 'live' && !(e.status === 'tombstone' && Array.isArray(e.replaced_by) && e.replaced_by.length))) bad.add(x); }
+      }
+      if (bad.size) v.push(`profiles: ${bad.size} id(s) are not live and have no replacement in the registry`);   // counts only, never the profile
+      out.push(verdict(id, title, v));
+    }
+  }
 
   { // 4
     const id = 4, title = 'Every profile v is at most PROFILE_V, and rev is at least 1';
@@ -132,7 +151,20 @@ export async function runInvariants(db, { now = Date.now(), profileV = versions.
     out.push(verdict(id, title, v));
   }
 
-  out.push(na(7, 'Every result event carries job_release and matcher_version', 'not applicable until T3.x/T5.x (adult result events; the adult event handler)'));
+  { // 7
+    const id = 7, title = 'Every result event carries job_release and matcher_version';
+    if (!adultReady) out.push(na(id, title, 'not applicable until T3.1 (testers.track), so adult events can be told apart'));
+    else {
+      const v = []; let n = 0;
+      for (const r of (await db.prepare("SELECT e.type, e.data FROM events e JOIN testers t ON t.id = e.tester_id WHERE t.track = 'adult'").all()).results) {
+        if (!RESULT_EVENT_TYPES.includes(r.type)) continue;
+        let d; try { d = JSON.parse(r.data); } catch { d = null; }
+        if (!d || typeof d.job_release !== 'string' || !d.job_release || typeof d.matcher_version !== 'string' || !d.matcher_version) n++;
+      }
+      if (n) v.push(`events: ${n} adult result event(s) without job_release or matcher_version`);
+      out.push(verdict(id, title, v));
+    }
+  }
   { // 8 (static: the matcher source, not the database)
     const id = 8, title = 'The matcher inputs contain no commercial or demographic field';
     if (!fs.existsSync(matcherPath)) out.push(na(id, title, 'not applicable until T2.x (matcher/match.js and its allowed-fields list); this is a static check on that file'));

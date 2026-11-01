@@ -28,7 +28,28 @@ test('a clean database passes; planned checks say when they start to apply', asy
   assert.equal(r[6].status, 'fail', 'the inventory lists the adult tables, so a database without them is not current');
   for (const id of [1, 3, 4, 5, 7, 9]) { assert.equal(r[id].status, 'n/a', id); assert.match(r[id].note, /not applicable until T/, id); }
   const adult = await run(withAdult());
-  for (const id of [1, 2, 4, 5, 9]) assert.equal(adult[id].status, 'pass', `${id}: ${adult[id].violations}`);
+  for (const id of [1, 2, 4, 5, 7, 9]) assert.equal(adult[id].status, 'pass', `${id}: ${adult[id].violations}`);
+  assert.equal(adult[3].status, 'n/a'); assert.match(adult[3].note, /registry/, 'the real registry is empty until the first accepted release');
+});
+
+const REG = (...entries) => { const f = path.join(mkdtempSync(path.join(tmpdir(), 'reg-')), 'id_registry.json'); writeFileSync(f, JSON.stringify({ registry_version: 1, entries })); return f; };
+const live = id => ({ id, kind: 'skill', label: 'x', first_release: 'r', status: 'live', replaced_by: null, note: '' });
+test('3: profile ids must be live or a tombstone with a replacement (counts only in the message)', async () => {
+  const registryPath = REG(live('skl:1'), live('occ:15-1252.00'), { ...live('skl:old'), status: 'tombstone', replaced_by: ['skl:1'] }, { ...live('skl:gone'), status: 'tombstone', replaced_by: null });
+  const put = async (db, data) => sql(db, 'INSERT INTO profiles VALUES (?, 1, 1, ?, NULL, NULL, ?)', 'a' + Math.random(), JSON.stringify(data), NOW);
+  const r3 = async db => (await runInvariants(db, { now: NOW, registryPath }))[2];
+  let db = withAdult(); await put(db, { v: 1, roles: [{ occ: 'occ:15-1252.00' }], skills: [{ id: 'skl:1' }, { id: 'skl:old' }] }); assert.equal((await r3(db)).status, 'pass');
+  db = withAdult(); await put(db, { v: 1, roles: [], skills: [{ id: 'skl:gone' }, { id: 'skl:nowhere' }] }); const bad = await r3(db); assert.equal(bad.status, 'fail'); assert.match(bad.violations.join(), /2 id\(s\)/); assert.ok(!bad.violations.join().includes('skl:'), 'ids are not repeated: a profile is personal');
+  db = withAdult(); await sql(db, "INSERT INTO profiles VALUES ('a9', 1, 1, 'not json', NULL, NULL, ?)", NOW); assert.equal((await r3(db)).status, 'fail');
+  assert.equal((await run(beforeAdult()))[3].status, 'n/a');
+});
+test('7: an adult result event without job_release or matcher_version is a violation; other events are not checked', async () => {
+  let db = withAdult(); await tester(db, 'a1', { track: 'adult', age_band: '30s', email_hash: 'h' });
+  await event(db, 'a1', 'road_added', { from: 'occ:1', to: 'occ:2', job_release: 'r1', matcher_version: '1.0.0' }); await event(db, 'a1', 'intake', { source: 'upload', mode: 'none' }); await event(db, 'a1', 'feedback', { about: 'road' });
+  assert.equal((await run(db))[7].status, 'pass');
+  for (const type of ['profile_saved', 'roads_viewed', 'road_opened', 'road_added']) { const d = withAdult(); await tester(d, 'a1', { track: 'adult', age_band: '30s', email_hash: 'h' }); await event(d, 'a1', type, { job_release: 'r1' }); assert.match((await run(d))[7].violations.join(), /1 adult result event/, type); }
+  db = withAdult(); await tester(db, 'a1', { track: 'adult', age_band: '30s', email_hash: 'h' }); await event(db, 'a1', 'road_added', { job_release: '', matcher_version: '1' }); assert.equal((await run(db))[7].status, 'fail');
+  db = withAdult(); await student(db, 's1'); await event(db, 's1', 'result', { code: ['I'] }); assert.equal((await run(db))[7].status, 'pass', 'a student result event is not an adult result event');
 });
 
 test('1: an adult without age band or email hash, a duplicate hash, and a non-adult with a hash', async () => {

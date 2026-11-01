@@ -422,3 +422,75 @@ Questions from the S1 review that only the owner can answer. Nothing below was c
 - **O7:** keep `official` and the download date.
 - **K1 to K5:** keep the current matcher choices. No version change.
 - **T1.9:** `data/graph/raw/cities.json` added, with a test against `contracts/bands.json`.
+
+## S4 backend lane (accounts and saving), 2026-11-01
+
+Written by the backend lane while building T3.1 to T3.7. Nothing below changed a contract. Each entry says what was built and what the owner or another lane must decide or do. D29 needs an owner decision before the pilot.
+
+### D29. The email address is not stored when the account is made
+- Slice and ticket: S4, T3.4 (`email_complete`), ADR-04 and ADR-20, SPEC 10 `testers.email`
+- Date: 2026-11-01
+- Author: backend lane
+- Plan said: `testers.email` holds the normalised address, "needed to send codes" and to recompute `email_hash` if `EMAIL_KEY` is rotated (ADR-04). The `pending` token holds only the email hash (ADR-20), and `email_complete.request` has no email field.
+- We did: `email/complete` creates the tester with `email` empty, because the address reaches the server only in `email/start` and `email/verify`, and neither is kept (the code table holds hashes only). The address is saved on the first later sign-in by code, from the `email/verify` body (`UPDATE ... WHERE email IS NULL`). Sending a code never needs the stored address, because the person types it every time.
+- Why: the frozen contracts give `complete` no way to receive the address, and ADR-20 says the token must not carry it.
+- Effect: a person who has signed up but never signed in again has no stored address. If `EMAIL_KEY` is rotated, their hash cannot be recomputed, so they would need a new account or an owner-run merge. Export and delete are unaffected.
+- Options for the owner: (a) accept this (default, as built); (b) amend `email_complete.request` to add `email` (the app already holds it), and have the server check that its hash equals the one in `pending` before storing it; (c) never store the address at all (best for privacy; a key rotation then means everyone signs in again by code, and the `email` column stays empty). The backend lane recommends (c) or (b).
+- Decision: proposed
+
+### D30. Age gate with a birth year only
+- Slice and ticket: S4, T3.4; SPEC 3 and 9
+- Date: 2026-11-01
+- Author: backend lane
+- Plan said: "Birth year first. Under 18: refuse." Only the year is asked, so a person born in (this year - 18) may be 17 or 18.
+- We did: `hosting/core/keys.js` lets a person in only when this year minus the birth year is at least 19 (`AGE_GATE_GAP`). The band stored is worked out from the same difference (18-24, 25-34, ...).
+- Why: a legal gate for under-18s should err on the side of refusing. The cost is that some 18-year-olds born in the year (this year - 18) are refused until January.
+- Effect: the app's own check (screen 1) should use the same rule so the two never disagree. Change the constant to 18 if the owner prefers the other error.
+- Decision: proposed
+
+### D31. Limits use existing tables, with key prefixes
+- Slice and ticket: S4, T3.4
+- Date: 2026-11-01
+- Author: backend lane
+- Plan said: limits per address (3 an hour, 10 a day) in `email_sends (email_hash, day, n)`, per IP bucket and site-wide (SPEC 9, 10). SPEC 10 has one row per address per day.
+- We did: the hour limit uses extra `email_sends` rows whose `day` is the hour (`2026-10-31T14`); the purge compares as text, so both kinds go after 7 days. IP bucket limits use `joins (ip, ts)` with the prefix `e:` (start) or `v:` (verify) and a keyed hash of the bucket (`IP_KEY`); wrong admin keys on the metrics page use `admin_fail` with `m:`. The site cap is the day's `codes_sent` counter (`EMAIL_DAILY_CAP`, default 300). No new table or column.
+- Why: SPEC 10 is exact, and a migration change needs the architect.
+- Effect: the inventory text for `email_sends.day` now says "day or hour". Limits: 20 starts and 60 verifies an hour per IP bucket.
+- Decision: proposed
+
+### D32. The release id list: files the app build must publish
+- Slice and ticket: S4, T3.5; frontend and data lanes (`app/adult/build.py`)
+- Date: 2026-11-01
+- Author: backend lane
+- Plan said: `PUT` checks ids against "the current release's id list (loaded with `env.ASSETS.fetch` and cached)"; `GET` maps retired ids through the id registry (ADR-05). No file names were fixed.
+- We did: `hosting/core/release_ids.js` reads `/work/manifest.json` (`release_id`, `graph.base`), then `<base>ids.json` (`{ids:[...]}`) if present, otherwise `skills_index.json` plus `occupations.json` (both already published) plus an optional `credentials.json`; and an optional `<base>id_registry.json` (a copy of `data/graph/id_registry.json`). Results are cached per release id for 5 minutes. If the ids cannot be read, `PUT` answers `unavailable` (it fails closed).
+- Why: no `ids.json`, `id_registry.json` or credential list is published today.
+- Effect: (1) until `id_registry.json` is copied into `hosting/public/work/graph/<release>/`, `GET /me/profile` maps nothing and reports nothing. (2) Until a credentials list exists (T1.8), `PUT` rejects every `cred:` id, which matches the confirm screen dropping credentials. Request to the frontend lane: have `app/adult/build.py` copy the registry, and write `ids.json` (every live id, one list) when the data lane supplies it.
+- Decision: proposed
+
+### D33. Sliding sessions are renewed in a response header
+- Slice and ticket: S4, T3.3 and T3.5; ADR-04 ("refreshed on use at most once a day")
+- Date: 2026-11-01
+- Author: backend lane
+- Plan said: sessions slide and are refreshed on use at most once a day. The response bodies in the contracts have no field for a new token.
+- We did: when the token in use is more than a day old, any authenticated adult endpoint adds the response header `x-session-token` with a new token (the old one stays valid until it is 31 days old). The app should replace its stored token when it sees the header. No body changed.
+- Effect: the frontend lane must read this header and store the new token. Without it, sessions end 31 days after sign-in.
+- Decision: proposed
+
+### D34. Sign-in email: link format, provider call, dry-run printing
+- Slice and ticket: S4, T3.4
+- Date: 2026-11-01
+- Author: backend lane
+- Plan said: the code and link are sent through Cloudflare Email Service; `EMAIL_DRY_RUN=1` records the message for tests.
+- We did: the link is `<origin>/work/#link=<token>`: the token is in the fragment, so it is never sent to a server or written to a log; `APP_ORIGIN` sets the origin, otherwise the request's own. The app reads the fragment and sends `{link}` to `email/verify`. The real mailer calls `env.EMAIL.send({from, to, subject, text})` with `from` set to `EMAIL_FROM`; the exact call must be checked against Cloudflare's Email Service documentation on the preview deployment, which could not be done here (no network access to a Cloudflare account). The dry run keeps messages in memory only. `EMAIL_DRY_RUN_PRINT=1` also prints the message to the local console, for a manual demo; leave it unset in preview and production.
+- Effect: the owner adds an `EMAIL` binding and `EMAIL_FROM` in Cloudflare, and sets `EMAIL_DRY_RUN=0` in production only. The QA lane's browser tests need the code: they should call the handlers directly or set `EMAIL_DRY_RUN_PRINT=1` on a local server.
+- Decision: proposed
+
+### D35. Deploy order and a few smaller choices
+- Slice and ticket: S4, T3.1 and T3.2; ADR-03 rule 5
+- Date: 2026-11-01
+- Author: backend lane
+- Plan said: "deploy code first, migrate second, for additive changes".
+- We did: the student and admin code (T3.2) now reads `testers.track` and `invites.track`, so on the live database `0001_adult.sql` must be applied BEFORE the deploy that carries this code, or every student sign-in and admin page would fail with an unknown-column error. The migration is additive, so the old code keeps working after it. (The new adult endpoints are the reverse: they need the migration too.)
+- Smaller choices, for the owner to know: (1) `admin.js ?revoke=<id>` still works on an adult id (it only sets `tok_after`); it is the owner's way to cut a leaked adult session. Every other admin action on an adult id answers "not found". (2) Under-18 refusals are counted only in `under18`; the metrics page reads them from there, so `ops_daily` has no under-18 metric. (3) `ops_daily` keeps day totals, so the 5xx and error rates in `hosting/tools/health_watch.mjs` are rates over the UTC day so far, not over the last hour. (4) Adults get `testers.consent_on` set to the day they accepted the notice (it was students-only); `source` stays empty. (5) The `.github/workflows/health-watch.yml` file is left to the QA lane: it only has to run `node hosting/tools/health_watch.mjs` every 30 minutes with `MARGWISE_URL` and `ADMIN_KEY` secrets and open an issue when the exit code is 1.
+- Decision: proposed
