@@ -703,7 +703,7 @@
       <div class="bubblebar"><div class="bubble" id="bubble" aria-live="polite"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
     </div>
     <div class="objs" id="options"></div>
-    <p class="howto" id="howto" hidden>You have two flasks of oil. Spend them on the two things you would most enjoy: both on one if you love it, or one on each. There are no right answers and nothing is marked.</p>
+    <p class="howto" id="howto" hidden>You have two flasks of oil. Spend them on the two things you would most enjoy: both on one if you love it, or one on each. Pick what you really like, not a bit of everything. There are no right answers and nothing is marked.</p>
     <div class="actions"><button class="go" id="light" aria-label="Light the lamp"><span class="lbl">Light the lamp</span></button><button class="go" id="nextBtn" type="button" hidden><span class="lbl">Next</span></button></div>
   </section>
 
@@ -1223,7 +1223,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   function clearWalk() { SRVWALK = null; try { localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ } }
   function readWalk() { try { var w = JSON.parse(localStorage.getItem(WALK_KEY) || 'null'); return w && TK && w.tid === TK.id && w.choices && w.choices.length && Date.now() - w.at < 7200000 ? w : null; } catch (e) { return null; } }
   function resumeWalk(w) { trapBack(); SEED = w.seed; state.choices = w.choices; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.lockDone = w.lockDone || {}; track('walk_resume', { n: litCount() }); advance(false); }
-  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.ilaFinal = false; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.lockDone = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
+  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.ilaFinal = false; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.lockDone = {}; state.hinted = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
 
   var advTimer = null;
   function advance(first) {
@@ -1246,6 +1246,21 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     var h = jyoHome(); if (first) jyoGo(h.x, h.y, 0); else { jyoGo(h.x, h.y - 30, 600); jyoToHome(650); }
     state.busy = true; document.body.classList.add('busy');
     advTimer = setTimeout(function () { state.busy = false; document.body.classList.remove('busy'); }, state.reduce ? 0 : (first ? 700 : 1500));
+  }
+  // ---------- oil hints (shown between places, like the story beats): one gentle line, once per walk, when a walk is heading for 'no clear shape'.
+  // They look only at how much and how evenly oil is spent, never at which areas, so they do not steer.
+  var HINT_LOW = 'You can give oil to anything that looks fun, even just one flask. It costs nothing, and it helps the lantern learn what you enjoy.';
+  var HINT_SPREAD = 'Try giving your oil only to the things you would really enjoy doing. It is fine to skip the rest.';
+  function oilHint() {
+    var h = state.hinted || (state.hinted = {}), lit = state.choices.filter(function (c) { return !c.echoOf; }), n = lit.length, msg = null, kind = null;
+    if (h.low || h.spread) return null;
+    if (n >= 4 && lit.filter(function (c) { return !Object.keys(c.spent || {}).length; }).length / n >= .5) { kind = 'low'; msg = HINT_LOW; }
+    else if (n >= 8) {
+      try { var r = M.journeyResult(bank, state.choices), v = AREAS.map(function (a) { return r.profile[a]; }), mu = v.reduce(function (a, b) { return a + b; }, 0) / 6, sd = Math.sqrt(v.reduce(function (a, b) { return a + (b - mu) * (b - mu); }, 0) / 6); if (sd < .25 && !r.lowEngagement) { kind = 'spread'; msg = HINT_SPREAD; } } catch (e) { /* no hint */ }
+    }
+    if (!kind) return null;
+    h[kind] = 1; track('oil_hint', { kind: kind, n: n });
+    return msg;
   }
 
   var FALLBACK = '<svg class="fallback" viewBox="0 0 60 80" aria-hidden="true"><path d="M22 8h16" stroke="#fff3d6" stroke-width="3" stroke-linecap="round"/><path d="M20 14h20l6 12v32a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26z" fill="rgba(255,243,214,.18)" stroke="#fff3d6" stroke-width="2.4" stroke-linejoin="round"/><path d="M30 28c2 8 10 10 10 20a10 10 0 0 1-20 0c0-6 4-8 5-14c2 2 4 3 5 -6z" fill="#f2a03d"/><path d="M30 42c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#ffe08a"/></svg>';
@@ -1356,6 +1371,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
       if (META.ila[n]) beat = ['Ila', '', META.ila[n]];
       else META.chapters.forEach(function (c) { if (c.at === n && n > 0) beat = [c.roman, c.title, c.line]; });
     }
+    if (!beat) { var hm = oilHint(); if (hm) beat = ['Jyo', '', hm]; }
     // No timer: the student reads at their own pace and taps Next.
     state.cont = beat ? function () { showBeat(beat[0], beat[1], beat[2], function () { advance(false); }); } : function () { advance(false); };
     advTimer = setTimeout(function () { document.body.classList.add('awaiting'); $('nextBtn').hidden = false; $('nextBtn').focus(); }, state.reduce ? 0 : 1100);
