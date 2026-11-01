@@ -717,7 +717,7 @@
 
   <section class="screen pad res" id="reveal">
     <div class="stepbar" data-s="1"></div>
-    <div class="head"><h2>Your interest shape</h2><p id="revealLine"></p></div>
+    <div class="head"><h2 id="revealHead">Your interest shape</h2><p id="revealLine"></p></div>
     <div class="radarwrap"><svg id="compass" viewBox="-10 0 340 290" role="img" aria-label="Radar chart of your six interest areas"></svg><p class="howto">Further from the middle means you enjoyed it more, compared with your own other choices. Tap an area to see what it means.</p><p class="rinfo" id="rInfo" aria-live="polite" hidden></p></div>
     <div id="legend"></div>
     <div class="sure" id="sure" hidden></div>
@@ -1459,8 +1459,9 @@
     $('sure').hidden = false; $('sure').innerHTML = '<div class="sureRow"><span class="meter m' + lvl + '" aria-hidden="true"><i></i><i></i><i></i></span><b>' + ['', 'A rough first draft', 'Fairly clear', 'Clear'][lvl] + '</b></div><details><summary>Why?</summary><p>' + esc(notes.join(' ')) + '</p></details>';
     $('notes').hidden = !warn; $('notes').textContent = notes.filter(function (t) { return /^Most of your oil|^Not much caught/.test(t); }).join(' ');
     var none = r.noSignal; document.querySelector('#reveal .stepbar').hidden = none; $('compass').parentNode.hidden = none; $('legend').hidden = none; if (none) { $('sure').hidden = true; $('notes').hidden = false; } $('openDoors').hidden = none; $('revealLine').hidden = none;
-    if (none) { $('notes').textContent = 'There is not enough here to show a shape. That happens when almost no oil is spent or everything feels the same. It does not mean anything is wrong. Try the walk again and spend your oil on what you would enjoy most.'; $('revealLine').hidden = true; }
-    var na = $('noSigAgain'); if (!na) { na = document.createElement('button'); na.type = 'button'; na.id = 'noSigAgain'; na.className = 'go'; na.textContent = 'Walk the road again'; na.addEventListener('click', function () { show('welcome'); }); $('notes').parentNode.appendChild(na); } na.hidden = !none;
+    $('revealHead').textContent = none ? 'No clear shape this time' : 'Your interest shape';
+    if (none) { $('notes').textContent = (r.lowEngagement ? 'Very little oil was spent on this walk, so no clear shape showed up.' : 'Your oil was spread over many different things, so no clear shape showed up.') + ' That is fine, and nothing is wrong. Walk again and give your oil to what you would really enjoy doing.'; $('revealLine').hidden = true; }
+    var na = $('noSigAgain'); if (!na) { na = document.createElement('button'); na.type = 'button'; na.id = 'noSigAgain'; na.className = 'go'; na.textContent = 'Walk the road again'; na.addEventListener('click', function () { track('nosignal_again'); startWalk(); });   /* straight back onto the road: the welcome and intro were seen already */ $('notes').parentNode.appendChild(na); } na.hidden = !none;
     var rl = $('retLine'); rl.hidden = !(MWC && TK && RET) || none; rl.innerHTML = RET ? '<span aria-hidden="true">\ud83d\udd11</span><span>Your login code <b>' + esc(RET) + '</b></span><span class="rbtns"><button type="button" class="linkbtn" id="retCopy">Copy</button>' + (navigator.share ? '<button type="button" class="linkbtn" id="retShare">Share</button>' : '') + '</span>' : ''; rl.title = 'Log in with it to see these results again on any phone or laptop, without answering again.';
   }
   function saveSnapshot(r) {
@@ -1817,7 +1818,7 @@
   var LEVEL_WORD = ['Growing', 'Steady', 'Strong', 'Strong'];
   function paintApt() {
     var a = aptScores(), el = $('aptCard'); if (!el) { el = document.createElement('div'); el.id = 'aptCard'; el.className = 'aptcard'; $('legend').parentNode.insertBefore(el, $('legend').nextSibling); }
-    if (a.n < 2 || (state.result && state.result.noSignal)) { el.hidden = true; return; }
+    if (a.n < 2) { el.hidden = true; return; }   /* puzzles stand on their own, so they show even when the walk gave no interest shape */
     el.hidden = false;
     el.innerHTML = '<b class="t">Puzzle strengths</b>' + APT.filter(function (d) { return a.s[d] !== undefined; }).map(function (d) { return '<div class="ar"><span>' + APTN[d] + '</span><span>' + LEVEL_WORD[a.s[d]] + '</span></div>'; }).join('') + '<span style="font-weight:600;font-size:13.5px;color:#f3ecd8">These are a few quick puzzles, so a rough signal only. They do not change your interest shape or the order of fields.</span>';
   }
