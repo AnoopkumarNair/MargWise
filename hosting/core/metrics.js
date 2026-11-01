@@ -22,14 +22,13 @@ export const handle = defineRoute('GET /api/v1/admin/metrics', async (request, d
   const u18 = (await deps.db.prepare('SELECT day, SUM(n) AS n FROM under18 WHERE day >= ? GROUP BY day ORDER BY day').bind(since).all()).results;
   const byDay = {}; for (const r of rows) (byDay[r.day] ||= {})[r.metric] = r.n;
   for (const r of u18) (byDay[r.day] ||= {}).under18_refusals = r.n;
-  const count = async sql => (await deps.db.prepare(sql).first()).n;
   return ok({
     generated_at: now,
     days: Object.keys(byDay).sort().map(day => ({ day, metrics: byDay[day] })),
     totals: {
-      adult_testers: await count("SELECT COUNT(*) AS n FROM testers WHERE track = 'adult'"),
-      profiles: await count('SELECT COUNT(*) AS n FROM profiles'),
-      open_codes: await count('SELECT COUNT(*) AS n FROM email_codes'),
+      adult_testers: (await deps.db.prepare("SELECT COUNT(*) AS n FROM testers WHERE track = 'adult'").first()).n,
+      profiles: (await deps.db.prepare('SELECT COUNT(*) AS n FROM profiles').first()).n,
+      open_codes: (await deps.db.prepare('SELECT COUNT(*) AS n FROM email_codes').first()).n,
     },
     limits: { ai_daily_cap: deps.config.aiDailyCap, email_daily_cap: deps.config.emailDailyCap },
     health: healthBody(deps, true),
