@@ -26,15 +26,18 @@ def fetch(name):
     p = os.path.join(a.cache, name)
     if a.refresh or not os.path.exists(p): urllib.request.urlretrieve(SRC[name], p)
     return p
+BLS_FRESH = False   # set when the BLS file was really downloaded on this run
 def load_bls():
+    global BLS_FRESH
     csvp, xl = os.path.join(a.cache, 'bls_ai_exposure.csv'), os.path.join(a.cache, 'bls_ai_exposure.xlsx')
     if a.refresh and not os.path.exists(xl):
         try:
-            req = urllib.request.Request('https://www.bls.gov/emp/ind-occ-matrix/ai-exposure-categories.xlsx', headers={'User-Agent': UA}); blob = urllib.request.urlopen(req, timeout=60).read(); open(xl, 'wb').write(blob)   # read first, so a blocked download never leaves an empty file behind
+            req = urllib.request.Request('https://www.bls.gov/emp/ind-occ-matrix/ai-exposure-categories.xlsx', headers={'User-Agent': UA}); blob = urllib.request.urlopen(req, timeout=60).read(); open(xl, 'wb').write(blob); BLS_FRESH = True   # read first, so a blocked download never leaves an empty file behind
         except Exception as e: print('NOTE: BLS download blocked (%s); using the committed copy. Download the xlsx by hand to update.' % e)
     if os.path.exists(xl) and os.path.getsize(xl) == 0: os.remove(xl)
     if os.path.exists(xl) and (not os.path.exists(csvp) or os.path.getmtime(xl) > os.path.getmtime(csvp)):
         import openpyxl
+        BLS_FRESH = True   # a newer xlsx, downloaded by this run or by hand
         ws = openpyxl.load_workbook(xl, read_only=True, data_only=True).active; rows = []
         for r in ws.iter_rows(values_only=True):
             if r and isinstance(r[1], str) and re.fullmatch(r'\d\d-\d{4}', r[1]):
@@ -83,7 +86,9 @@ for x in c['careers']:
 # so an offline rebuild does not change committed data.
 rp = os.path.join(a.cache, 'retrieved.json')
 prev = json.load(open(rp)).get('retrieved') if os.path.exists(rp) else None
-if a.refresh or not prev: prev = datetime.date.today().isoformat(); json.dump({'retrieved': prev}, open(rp, 'w'))
+# The date moves only when every source was re-read: BLS often blocks scripts, and then the old date stays true.
+if (a.refresh and BLS_FRESH) or not prev: prev = datetime.date.today().isoformat(); json.dump({'retrieved': prev}, open(rp, 'w'))
+elif a.refresh: print('NOTE: BLS was not re-read, so aiMeta.retrieved stays %s' % prev)
 c.pop('aiMeta', None)
 c['aiMeta'] = {'retrieved': prev,
  'tiers': {'veryhigh': 'BLS: very high relative exposure (top quarter of occupations)', 'high': 'BLS: high', 'moderate': 'BLS: moderate', 'low': 'BLS: low', 'nodata': 'not covered'},
