@@ -79,8 +79,13 @@ for x in c['careers']:
         try: x['us']['growthPct'] = float(b['chgPct']); x['us']['growthYears'] = '2025-35'
         except Exception: pass
     if old.get(x['id']) != tier: changes.append({'id': x['id'], 'title': x['title'], 'was': old.get(x['id']), 'now': tier})
+# 'retrieved' is when the sources were last read. It is stored in ai/retrieved.json and changes only with --refresh,
+# so an offline rebuild does not change committed data.
+rp = os.path.join(a.cache, 'retrieved.json')
+prev = json.load(open(rp)).get('retrieved') if os.path.exists(rp) else None
+if a.refresh or not prev: prev = datetime.date.today().isoformat(); json.dump({'retrieved': prev}, open(rp, 'w'))
 c.pop('aiMeta', None)
-c['aiMeta'] = {'retrieved': datetime.date.today().isoformat(),
+c['aiMeta'] = {'retrieved': prev,
  'tiers': {'veryhigh': 'BLS: very high relative exposure (top quarter of occupations)', 'high': 'BLS: high', 'moderate': 'BLS: moderate', 'low': 'BLS: low', 'nodata': 'not covered'},
  'watch': 'BLS very high AND Anthropic observed exposure of 0.10 or more',
  'sources': [
