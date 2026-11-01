@@ -26,12 +26,12 @@ export const INVENTORY = [
     followup_ok: { purpose: 'Whether the consent covers follow-up checks (students).', retention: 'A student with this set keeps only name, class, consent date and follow-up notes after the retention period.' },
     ret_hash: { purpose: 'Keyed hash of the return code, so a returning student can find their last result.', who: ['nobody'] },
     tok_after: 'Sessions issued before this time stop working (log out everywhere, admin revoke).',
-    track: { purpose: "Which product: empty means student, 'adult' means working adult.", planned: true },
-    age_band: { purpose: 'Age band from the age check; used only to check fairness across groups, never for matching.', planned: true, ...P },
-    email: { purpose: 'Normalised email address, needed to send sign-in codes. Adults only.', planned: true, ...P, who: ['nobody'] },
-    email_hash: { purpose: 'Keyed hash of the email, for look-ups and the one-account-per-address rule.', planned: true, who: ['nobody'] },
-    research_ok: { purpose: 'Whether the person agreed that their anonymous data may be used for research.', planned: true },
-    key_v: { purpose: 'Which version of the session key signed their token (key rotation).', planned: true },
+    track: { purpose: "Which product: empty means student, 'adult' means working adult.", },
+    age_band: { purpose: 'Age band from the age check; used only to check fairness across groups, never for matching.', ...P },
+    email: { purpose: 'Normalised email address, kept so the keyed hash can be recomputed if the key is rotated (ADR-04). Filled in at the next code sign-in. Adults only.', ...P, who: ['nobody'] },
+    email_hash: { purpose: 'Keyed hash of the email, for look-ups and the one-account-per-address rule.', who: ['nobody'] },
+    research_ok: { purpose: 'Whether the person agreed that their anonymous data may be used for research.', },
+    key_v: { purpose: 'Which version of the session key signed their token (key rotation).', },
   }),
   table('events', 'live', { purpose: 'What a tester did in the app: ids, numbers and capped feedback. Never resume text.', retention: 'Same as the tester.', who: ['tester', 'owner', 'counsellor'], deletion: D, erase: { key: 'tester_id' } }, {
     id: 'Row number.', tester_id: 'Who did it.', session_id: 'Groups events of one visit.', ts: 'When (UTC milliseconds).', type: 'What kind of event.',
@@ -42,7 +42,7 @@ export const INVENTORY = [
   }),
   table('invites', 'live', { purpose: 'Invite codes that let people join, with limits.', retention: 'Until the owner removes the invite.', who: ['owner'], deletion: 'The owner deletes the invite. Holds no personal data.', erase: { key: null } }, {
     id: 'Row number.', code: 'The invite code.', label: 'What the invite is for (a school, a group).', max_uses: 'How many people may use it.', uses: 'How many have.', expires_at: 'When it stops working.', active: 'On or off.', created_at: 'When made.',
-    track: { purpose: "Whether the invite is for students (empty) or working adults ('adult').", planned: true },
+    track: { purpose: "Whether the invite is for students (empty) or working adults ('adult').", },
   }),
   table('claims', 'live', { purpose: 'Facts from the data build that need a human check.', retention: 'Until the owner clears the review run.', who: ['owner'], deletion: 'Replaced when the review run is loaded again. Holds no personal data.', erase: { key: null } }, {
     id: 'Claim id.', run: 'Which review run.', batch: 'Batch number in the run.', field_key: 'Which fact.', statement: 'What the data says.', urls: 'Public sources.',
@@ -70,25 +70,25 @@ export const INVENTORY = [
     id: 'Row number.', tester_id: 'Which student.', months: 'Months after the result.', stream: 'Stream chosen.', used: 'Whether they used the result.', note: { purpose: 'Counsellor note.', ...P }, counsellor_id: 'Which counsellor.', created_at: 'When saved.',
   }),
 
-  // Planned: SPEC section 10, migration 0001_adult.sql (T3.1).
-  table('email_codes', 'planned', { purpose: 'The pending sign-in code for an address.', retention: 'Expires after 15 minutes; rows older than 24 hours are purged daily.', who: ['nobody'], deletion: 'Expires and is purged. Also deleted on me/delete when the hash matches.', erase: { key: 'email_hash' } }, {
+  // Adult tables: SPEC section 10, migration 0001_adult.sql (T3.1).
+  table('email_codes', 'live', { purpose: 'The pending sign-in code for an address.', retention: 'Expires after 15 minutes; rows older than 24 hours are purged daily.', who: ['nobody'], deletion: 'Expires and is purged. Also deleted on me/delete when the hash matches.', erase: { key: 'email_hash' } }, {
     email_hash: 'Keyed hash of the address.', code_hash: { purpose: 'Keyed hash of the 6-digit code.', who: ['nobody'] }, link_hash: { purpose: 'Keyed hash of the sign-in link token.', who: ['nobody'] },
     expires_at: 'When the code stops working.', tries: 'Wrong tries so far (limit 5).', invite_id: 'Invite used to start.', age_band: { purpose: 'Age band carried to account creation.', ...P }, created_at: 'When made.',
   }),
-  table('email_sends', 'planned', { purpose: 'How many codes were sent to an address per day, for limits.', retention: 'Rows older than 7 days are purged daily.', who: ['nobody'], deletion: 'Purged after 7 days. Also deleted on me/delete.', erase: { key: 'email_hash' } }, {
-    email_hash: 'Keyed hash of the address.', day: 'Day (UTC).', n: 'Codes sent that day.',
+  table('email_sends', 'live', { purpose: 'How many codes were requested for an address per hour and per day, for limits.', retention: 'Rows older than 7 days are purged daily.', who: ['nobody'], deletion: 'Purged after 7 days. Also deleted on me/delete.', erase: { key: 'email_hash' } }, {
+    email_hash: 'Keyed hash of the address.', day: 'Day (UTC, like 2026-10-31) or hour (like 2026-10-31T14) the count is for.', n: 'Codes requested in that day or hour.',
   }),
-  table('profiles', 'planned', { purpose: "A working adult's skills and choices: ids and levels only.", retention: 'Until the retention period ends or the person deletes it.', who: ['tester'], deletion: D, erase: { key: 'tester_id' } }, {
+  table('profiles', 'live', { purpose: "A working adult's skills and choices: ids and levels only.", retention: 'Until the retention period ends or the person deletes it.', who: ['tester'], deletion: D, erase: { key: 'tester_id' } }, {
     tester_id: 'Whose profile.', v: 'Profile schema version.', rev: 'Edit counter (conflict check).', data: { purpose: 'The profile document, at most 32 KB: graph ids and levels; no resume text.', ...P }, job_release: 'Graph release the result was made with.', matcher_version: 'Matcher version used.', updated_at: 'When last saved.',
   }),
-  table('under18', 'planned', { purpose: 'A count of refused under-18 attempts per invite per day. Nothing else is stored about them.', retention: 'Kept as counts only.', who: ['owner'], deletion: 'Not about a person; counts only.', erase: { key: null } }, {
+  table('under18', 'live', { purpose: 'A count of refused under-18 attempts per invite per day. Nothing else is stored about them.', retention: 'Kept as counts only.', who: ['owner'], deletion: 'Not about a person; counts only.', erase: { key: null } }, {
     invite_id: 'Which invite.', day: 'Day (UTC).', n: 'Refusals.',
   }),
-  table('ai_calls', 'planned', { purpose: 'How many AI reads a person made per day, for the daily limit and cost.', retention: 'Same as the tester.', who: ['owner'], deletion: D, erase: { key: 'tester_id' } }, {
+  table('ai_calls', 'live', { purpose: 'How many AI reads a person made per day, for the daily limit and cost.', retention: 'Same as the tester.', who: ['owner'], deletion: D, erase: { key: 'tester_id' } }, {
     tester_id: 'Who.', day: 'Day (UTC).', n: 'Calls.', tokens: 'Tokens used (cost).',
-    prompt_version: { purpose: "Which extraction prompt the latest call that day used, such as 'extract_v1' (ADR-17).", planned: true },
+    prompt_version: { purpose: "Which extraction prompt the latest call that day used, such as 'extract_v1' (ADR-17).", },
   }),
-  table('ops_daily', 'planned', { purpose: 'Daily counters for operations: sign-ups, codes, AI calls, errors.', retention: 'Kept as long as the service runs.', who: ['owner'], deletion: 'Not about a person; counts only.', erase: { key: null } }, {
+  table('ops_daily', 'live', { purpose: 'Daily counters for operations: sign-ups, codes, AI calls, errors.', retention: 'Kept as long as the service runs.', who: ['owner'], deletion: 'Not about a person; counts only.', erase: { key: null } }, {
     day: 'Day (UTC).', metric: 'Counter name.', n: 'Count.',
   }),
 ];

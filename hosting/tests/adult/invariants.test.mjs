@@ -13,16 +13,9 @@ import { versions } from '../../core/versions.js';
 
 const TOOL = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../tools/check_invariants.mjs');
 const NOW = 1760000000000, DAY = 86400000;
-// The adult tables as SPEC section 10 designs them. They are not migrated yet, so the tests add them here to prove the checks work.
-const ADULT_DDL = `
-ALTER TABLE testers ADD COLUMN track TEXT; ALTER TABLE testers ADD COLUMN age_band TEXT; ALTER TABLE testers ADD COLUMN email TEXT; ALTER TABLE testers ADD COLUMN email_hash TEXT;
-ALTER TABLE invites ADD COLUMN track TEXT;
-CREATE TABLE email_codes (email_hash TEXT PRIMARY KEY, code_hash TEXT NOT NULL, link_hash TEXT NOT NULL, expires_at INTEGER NOT NULL, tries INTEGER NOT NULL DEFAULT 0, invite_id INTEGER, age_band TEXT, created_at INTEGER NOT NULL);
-CREATE TABLE email_sends (email_hash TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (email_hash, day));
-CREATE TABLE profiles (tester_id TEXT PRIMARY KEY, v INTEGER NOT NULL, rev INTEGER NOT NULL, data TEXT NOT NULL, job_release TEXT, matcher_version TEXT, updated_at INTEGER NOT NULL);`;
-
 const run = async db => Object.fromEntries((await runInvariants(db, { now: NOW })).map(r => [r.id, r]));
-const withAdult = () => { const db = createFakeDb(); db.raw.exec(ADULT_DDL); return db; };
+const withAdult = () => createFakeDb();   // 0001_adult.sql is part of the migrations now
+const beforeAdult = () => createFakeDb({ upTo: 0 });   // the baseline only: the checks that need the adult tables say 'n/a'
 const sql = (db, s, ...a) => db.prepare(s).bind(...a).run();
 const tester = (db, id, extra = {}) => sql(db, 'INSERT INTO testers (id, name, created_at, track, age_band, email_hash, counsellor_id, klass, source, invite_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
   id, 'N', NOW, extra.track ?? null, extra.age_band ?? null, extra.email_hash ?? null, extra.counsellor_id ?? null, extra.klass ?? null, extra.source ?? null, extra.invite_id ?? null);
@@ -30,8 +23,9 @@ const student = (db, id) => sql(db, 'INSERT INTO testers (id, name, created_at) 
 const event = (db, tid, type, data) => sql(db, 'INSERT INTO events (tester_id, ts, type, data) VALUES (?, ?, ?, ?)', tid, NOW, type, JSON.stringify(data));
 
 test('a clean database passes; planned checks say when they start to apply', async () => {
-  const r = await run(createFakeDb());
-  for (const id of [2, 6, 8]) assert.equal(r[id].status, 'pass', `${id}: ${r[id].violations}`);
+  const r = await run(beforeAdult());
+  for (const id of [2, 8]) assert.equal(r[id].status, 'pass', `${id}: ${r[id].violations}`);
+  assert.equal(r[6].status, 'fail', 'the inventory lists the adult tables, so a database without them is not current');
   for (const id of [1, 3, 4, 5, 7, 9]) { assert.equal(r[id].status, 'n/a', id); assert.match(r[id].note, /not applicable until T/, id); }
   const adult = await run(withAdult());
   for (const id of [1, 2, 4, 5, 9]) assert.equal(adult[id].status, 'pass', `${id}: ${adult[id].violations}`);
@@ -40,7 +34,8 @@ test('a clean database passes; planned checks say when they start to apply', asy
 test('1: an adult without age band or email hash, a duplicate hash, and a non-adult with a hash', async () => {
   let db = withAdult(); await tester(db, 'a1', { track: 'adult', email_hash: 'h1' }); assert.match((await run(db))[1].violations.join(), /without age_band or email_hash/);
   db = withAdult(); await tester(db, 'a1', { track: 'adult', age_band: '30s' }); assert.equal((await run(db))[1].status, 'fail');
-  db = withAdult(); await tester(db, 'a1', { track: 'adult', age_band: '30s', email_hash: 'h' }); await tester(db, 'a2', { track: 'adult', age_band: '30s', email_hash: 'h' });
+  db = withAdult(); db.raw.exec('DROP INDEX testers_email');   // the unique index normally stops this; the check is for a damaged copy
+  await tester(db, 'a1', { track: 'adult', age_band: '30s', email_hash: 'h' }); await tester(db, 'a2', { track: 'adult', age_band: '30s', email_hash: 'h' });
   assert.match((await run(db))[1].violations.join(), /used more than once/);
   db = withAdult(); await tester(db, 's1', { email_hash: 'h' }); assert.match((await run(db))[1].violations.join(), /not adults/);
   db = withAdult(); await tester(db, 'a1', { track: 'adult', age_band: '30s', email_hash: 'h' }); assert.equal((await run(db))[1].status, 'pass');
@@ -132,7 +127,7 @@ test('2: D1 platform tables (_cf_*) are skipped, like the data inventory skips t
 });
 test('the command line reads the .sql text from wrangler d1 export', () => {
   const d = mkdtempSync(path.join(tmpdir(), 'inv-sql-'));
-  const good = path.join(d, 'good.sql'); writeFileSync(good, readFileSync(new URL('../../migrations/0000_baseline.sql', import.meta.url), 'utf8') + "\nINSERT INTO testers (id, name, created_at) VALUES ('t1', 'N', 1);\n");
+  const good = path.join(d, 'good.sql'); writeFileSync(good, readFileSync(new URL('../../migrations/0000_baseline.sql', import.meta.url), 'utf8') + '\n' + readFileSync(new URL('../../migrations/0001_adult.sql', import.meta.url), 'utf8') + "\nINSERT INTO testers (id, name, created_at) VALUES ('t1', 'N', 1);\n");
   const r = spawnSync(process.execPath, [TOOL, '--db', good], { encoding: 'utf8' }); assert.equal(r.status, 0, r.stdout + r.stderr);
   const bad = path.join(d, 'bad.sql'); writeFileSync(bad, readFileSync(good, 'utf8') + "INSERT INTO events (tester_id, ts, type, data) VALUES ('ghost', 1, 'x', '{}');\n");
   assert.equal(spawnSync(process.execPath, [TOOL, '--db', bad], { encoding: 'utf8' }).status, 1);

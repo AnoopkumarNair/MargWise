@@ -18,9 +18,9 @@ test('every entry says purpose, retention, who sees it and how it is deleted', (
 });
 
 test('adult tables from SPEC 10 are listed, and counsellors never see adult data', () => {
-  for (const n of ['email_codes', 'email_sends', 'profiles', 'under18', 'ai_calls', 'ops_daily']) assert.equal(byName[n].status, 'planned', n);
+  for (const n of ['email_codes', 'email_sends', 'profiles', 'under18', 'ai_calls', 'ops_daily']) assert.equal(byName[n].status, 'live', n);
   for (const n of ['profiles', 'email_codes', 'ai_calls']) assert.ok(!byName[n].who.includes('counsellor'), n);
-  assert.ok(byName.testers.fields.email_hash.planned && byName.testers.fields.email.planned);
+  assert.ok(!byName.testers.fields.email_hash.planned && !byName.testers.fields.email.planned && !byName.ai_calls.fields.prompt_version.planned, 'T3.1 landed: nothing is planned any more');
 });
 
 test('tables that hold a person are findable by deletion', () => {
@@ -38,12 +38,13 @@ test('a new column that is not in the inventory is caught', async () => {
   assert.ok((await inventoryProblems(db)).some(m => /testers\.phone/.test(m)));
 });
 test('a planned table that has landed, or a live one that vanished, is caught', async () => {
-  const db = createFakeDb(); await db.exec('CREATE TABLE profiles (tester_id TEXT, v INTEGER, rev INTEGER, data TEXT, job_release TEXT, matcher_version TEXT, updated_at INTEGER)');
-  assert.ok((await inventoryProblems(db)).some(m => /profiles exists, so its inventory status must change/.test(m)));
+  const db = createFakeDb({ upTo: 0 });   // the baseline has no adult tables, but the inventory lists them as live
+  assert.ok((await inventoryProblems(db)).some(m => /lists table profiles but the database has none/.test(m)));
   const d2 = createFakeDb(); await d2.exec('DROP TABLE followups');
   assert.ok((await inventoryProblems(d2)).some(m => /lists table followups but the database has none/.test(m)));
+  assert.deepEqual(await inventoryProblems(createFakeDb()), [], '0001_adult.sql and the inventory agree');
 });
 test('an inventory entry with the wrong erase key is caught', async () => {
-  const db = createFakeDb(); await db.exec('CREATE TABLE email_codes (email_hash TEXT)');
-  const p = await inventoryProblems(db); assert.ok(p.some(m => /email_codes exists/.test(m)));
+  const db = createFakeDb(); await db.exec('CREATE TABLE notes (email_hash TEXT, tester_id TEXT)');
+  const p = await inventoryProblems(db); assert.ok(p.some(m => /notes is not in the data inventory/.test(m)));
 });
