@@ -14,9 +14,12 @@ export async function authenticate(deps, request, { rid } = {}) {
   // tok_after revokes everything issued up to and including that millisecond (fail closed on a tie)
   if (!t || (t.tok_after != null && s.iat <= t.tok_after)) return { response: fail('unauthorized', { rid }) };
   const headers = {};
-  if (deps.now() - s.iat > SESSION_REFRESH_AFTER) {   // sliding session: a new token at most once a day, sent in the x-session-token header
-    headers['x-session-token'] = await mintSession(deps, t.id);
-    await deps.db.prepare('UPDATE testers SET key_v = ? WHERE id = ? AND track = ?').bind(deps.config.signKeyV, t.id, 'adult').run();
+  const at = deps.now();
+  if (at - s.iat > SESSION_REFRESH_AFTER) {   // sliding session: a new token at most once a day, sent in the x-session-token header
+    // The new token is handed out only if this UPDATE still finds tok_after before its issue time `at`. So a "log out everywhere" that commits
+    // between the check above and here either stops the refresh, or revokes the new token (its iat is not after tok_after). (S3)
+    const u = await deps.db.prepare("UPDATE testers SET key_v = ? WHERE id = ? AND track = 'adult' AND (tok_after IS NULL OR tok_after < ?)").bind(deps.config.signKeyV, t.id, at).run();
+    if (u.meta && u.meta.changes === 1) headers['x-session-token'] = await mintSession(deps, t.id, at);
   }
   return { tester: t, headers };
 }

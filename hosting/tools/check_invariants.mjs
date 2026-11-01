@@ -130,12 +130,12 @@ export async function runInvariants(db, { now = Date.now(), profileV = versions.
   }
 
   { // 5
-    const id = 5, title = 'No email_codes row is older than 24 hours (and no email_sends row older than 7 days)';
+    const id = 5, title = 'No email_codes row is older than 24 hours (and no email_sends row older than 2 days)';
     if (!(await hasTable(db, 'email_codes'))) out.push(na(id, title, 'not applicable until T3.1 (email_codes table)'));
     else {
       const v = [];
       const a = await count(db, 'SELECT COUNT(*) AS n FROM email_codes WHERE created_at < ?', now - DAY); if (a) v.push(`email_codes: ${a} row(s) older than 24 hours`);
-      if (await hasTable(db, 'email_sends')) { const cut = new Date(now - 7 * DAY).toISOString().slice(0, 10); const b = await count(db, 'SELECT COUNT(*) AS n FROM email_sends WHERE day < ?', cut); if (b) v.push(`email_sends: ${b} row(s) older than 7 days`); }
+      if (await hasTable(db, 'email_sends')) { const cut = new Date(now - 2 * DAY).toISOString().slice(0, 10); const b = await count(db, 'SELECT COUNT(*) AS n FROM email_sends WHERE day < ?', cut); if (b) v.push(`email_sends: ${b} row(s) older than 2 days`); }
       out.push(verdict(id, title, v));
     }
   }

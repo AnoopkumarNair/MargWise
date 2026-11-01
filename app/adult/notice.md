@@ -5,7 +5,7 @@ Margwise for working adults is free to use without an account. An account lets y
 
 ## What we keep
 - Your nickname.
-- Your email address, and a scrambled form of it, so you can sign in.
+- Your email address, and a scrambled form of it. We use them to find your account when you sign in.
 - An age range, such as 25 to 34. We do not keep your birth year.
 - The jobs, skills, years, answers and settings you save. These are ids and bands from our lists, not your own words.
 - What you do in the app, as ids and counts, such as "opened a road". Never your resume.
@@ -18,10 +18,11 @@ Margwise for working adults is free to use without an account. An account lets y
 ## Who sees it
 - Only you and the Margwise team. We do not sell it or share it, and no one pays to change your results.
 - Our email service sees your address when it sends your code.
+- Cloudflare runs this site and its human check. When you ask for a code, Cloudflare sees your IP address and some details of your browser.
 
 ## Your choices
 - Download everything we keep, at any time.
-- Delete your account and your data, at any time. It is done at once.
+- Delete your account and your data, at any time. It is done at once. Copies in our backups can stay for up to 60 days, then they are gone.
 - Log out of every device, at any time.
 - We delete your data [[retention period]] after you join, even if you do nothing.
 - To change your mind about research, write to us at the address below.

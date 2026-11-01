@@ -1,7 +1,11 @@
 // The adult daily purge (SPEC 10, BACKEND ADR-11): on the first request of the day, delete `email_codes` older than 24 hours, `email_sends`
-// older than 7 days and `joins` older than 24 hours; and, when RETENTION_DAYS_ADULT is set, adults older than that, from every table.
+// older than 2 days and `joins` older than 24 hours; and, when RETENTION_DAYS_ADULT is set, adults older than that, from every table.
 // Safe to call on every request: a meta row ('adult_purge') holds the day it last ran. Errors never block a request.
 import { dayKey, DAY } from './limits.js';
+
+export const SENDS_KEEP_DAYS = 2;   // email_sends only has to cover the current hour and day; two days is kept so a UTC midnight never splits a limit (S7)
+export const TOMBSTONE_LIFE = 3600000;   // 'del:<hash>' meta rows (see account.js): one hour, longer than a pending token (30 minutes)
+const doneToday = new WeakMap();   // db object -> the day the purge last ran in this process, so most requests skip the look-up
 
 // Everything about the adults created before `cut`, from every table in the data inventory (hosting/core/data_inventory.js). A test checks
 // that a database with a row in every such table is empty of that person afterwards.
@@ -21,11 +25,13 @@ export function retentionStatements(db, cut) {
 export async function purgeAdultDaily(deps) {
   try {
     const now = deps.now(), today = dayKey(now);
+    if (doneToday.get(deps.db) === today) return false;
     const last = await deps.db.prepare("SELECT v FROM meta WHERE k = 'adult_purge'").first();
-    if (last && last.v === today) return false;
+    if (last && last.v === today) { doneToday.set(deps.db, today); return false; }
     const stmts = [
       deps.db.prepare('DELETE FROM email_codes WHERE created_at < ?').bind(now - DAY),
-      deps.db.prepare('DELETE FROM email_sends WHERE day < ?').bind(dayKey(now - 7 * DAY)),
+      deps.db.prepare('DELETE FROM email_sends WHERE day < ?').bind(dayKey(now - SENDS_KEEP_DAYS * DAY)),
+      deps.db.prepare("DELETE FROM meta WHERE k LIKE 'del:%' AND CAST(v AS INTEGER) < ?").bind(now - TOMBSTONE_LIFE),
       deps.db.prepare('DELETE FROM joins WHERE ts < ?').bind(now - DAY),
     ];
     const days = deps.config.retentionDays.adult;
@@ -36,6 +42,7 @@ export async function purgeAdultDaily(deps) {
     }
     stmts.push(deps.db.prepare("INSERT INTO meta (k, v) VALUES ('adult_purge', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind(today));
     await deps.db.batch(stmts);
+    doneToday.set(deps.db, today);
     return true;
   } catch { return false; }
 }

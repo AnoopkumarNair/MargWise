@@ -426,7 +426,7 @@ Every response is `{ok:true,...}` or `{ok:false, error:{code, message}}`, and ca
 
 | Endpoint | Request | Behaviour |
 | --- | --- | --- |
-| `POST /api/v1/email/start` | `{invite, birthYear, email, turnstile}` | Verify Turnstile. Check the age on the server. Under 18: count a refusal for the invite, store nothing else, and return `refused_age`. Otherwise the invite must be active with `track=adult`. Limits per address (3 an hour, 10 a day), per IP bucket and site-wide. Store `email_codes`, send the code and link. Always answer "If this address can sign in, we have sent a code" |
+| `POST /api/v1/email/start` | `{invite, birthYear, email, turnstile}` | Verify Turnstile. Check the age on the server. Under 18: count a refusal for the invite, store nothing else, and return `refused_age`. Otherwise: an address that already has an account needs no active invite (D36); a new address needs an active invite with `track=adult`, and without one it is answered like a stranger (nothing sent, same answer). Limits per address (3 an hour, 10 a day), per IP bucket and site-wide. Store `email_codes`, send the code and link. The email is sent after the reply goes out, so a known and an unknown address take the same time. Always answer "If this address can sign in, we have sent a code" |
 | `POST /api/v1/email/verify` | `{email, code}` or `{link}` | At most 5 tries, then the code is void. New address: `{needsProfile:true, pending}`, where `pending` is a signed 30-minute token holding the email hash, invite and age band (format in BACKEND ADR-20). Known address: `{token}` |
 | `POST /api/v1/email/complete` | `{pending, email, nickname, consent:true, research:bool}` | Creates the tester. The server checks that the keyed hash of `email` equals the hash in `pending` (a mismatch is refused) and stores the normalised address in `testers.email` (amendment A2, D29). **Idempotent:** the unique `email_hash` index means a repeat returns a token for the same tester |
 | `GET /api/v1/me/profile` | | Returns the profile, upgraded to the current `v` and with ids mapped (ADR-05/06) |
@@ -464,7 +464,7 @@ CREATE TABLE IF NOT EXISTS ai_calls (tester_id TEXT NOT NULL, day TEXT NOT NULL,
 CREATE TABLE IF NOT EXISTS ops_daily (day TEXT NOT NULL, metric TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, metric));
 ```
 
-Every table holding `tester_id` or `email_hash` must be listed in `hosting/core/data_inventory.js`, which deletion, purge, export and the invariant checker all use (ADR-11, ADR-14). `email_codes` rows older than 24 hours and `email_sends` rows older than 7 days are purged daily (on first request of the day, as today's lazy purge).
+Every table holding `tester_id` or `email_hash` must be listed in `hosting/core/data_inventory.js`, which deletion, purge, export and the invariant checker all use (ADR-11, ADR-14). `email_codes` rows older than 24 hours and `email_sends` rows older than 2 days are purged daily (on the first adult request of the day, as today's lazy purge; changed from 7 days in the S4 review fixes, D41).
 
 ## 11. Acceptance rules (frozen before data)
 

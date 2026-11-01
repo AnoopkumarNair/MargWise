@@ -82,8 +82,8 @@ export function newUuid(deps) {
 }
 
 // ---- session tokens ----
-export async function mintSession(deps, testerId) {
-  const v = deps.config.signKeyV, iat = String(deps.now()).padStart(13, '0');
+export async function mintSession(deps, testerId, at = deps.now()) {   // `at`: the issue time, when the caller read the clock earlier (auth.js)
+  const v = deps.config.signKeyV, iat = String(at).padStart(13, '0');
   return `v${v}.${testerId}.${iat}.${await hmacHex(signKey(deps, v), `adult|${testerId}|${iat}|${v}`)}`;
 }
 // -> {id, iat, keyver} for a token that is well-formed, signed by a key we hold, and neither too new nor too old; otherwise null.

@@ -3,6 +3,7 @@
 // Success: {ok:true, ...}. Failure: {ok:false, error:{code, message}}. The message is safe to show to a person.
 import { validate } from '../../contracts/validate_lib.js';
 import { bump } from './ops.js';
+import { purgeAdultDaily } from './purge.js';
 
 // The only error codes, in their canonical order. contracts/bands.json (error_code) and contracts/api/error.schema.json list exactly
 // these keys in this order; hosting/tests/adult/http.test.mjs checks it. A new code needs a note in docs/adult/deviations.md.
@@ -85,7 +86,10 @@ export function defineRoute(route, fn) {
     const t0 = deps.now(), rid = newRid(deps); let res;
     try {
       if (request.method !== method) res = fail('bad_request', { rid, status: 405, headers: { allow: method } });
-      else res = await fn(request, deps, { rid });
+      else {
+        if (deps.db && route !== 'GET /api/v1/health') await purgeAdultDaily(deps);   // once a day, from whichever adult route is called first (S1); never throws
+        res = await fn(request, deps, { rid });
+      }
       if (!(res instanceof Response)) throw new TypeError('handler did not return a Response');   // our bug: answered and logged as internal
     } catch (e) { res = fail(isStoreError(e) ? 'unavailable' : 'internal', { rid }); }   // the database being down is `unavailable` (the page says so); anything else is our bug
     if (!res.headers.get('x-request-id')) { const h = new Headers(res.headers); h.set('x-request-id', rid); const c = codes.get(res); res = new Response(res.body, { status: res.status, headers: h }); if (c) codes.set(res, c); }

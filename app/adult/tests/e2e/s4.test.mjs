@@ -83,7 +83,7 @@ for (const v of VIEWS) {
       // 2. Sign up from the save box: age first, then email (the invite code comes from ?c=), the code, the notice
       await page.locator('#make-account-link').click();
       await page.locator('#birth-year').waitFor();
-      assert.match(await page.locator('main').innerText(), /We do not keep the year/);
+      assert.match(await page.locator('main').innerText(), /The year you were born/);
       assert.equal(await noSideScroll(page), true);
       await shot(page, v, 's4-02-birth-year');
       const ax = { birth: await axeCheck(page, 'birth year') };
@@ -226,7 +226,7 @@ test('S4: under the age limit, nothing is sent or kept (the page decides; the se
     await page.locator('#birth-year').fill(String(YEAR - 18)); await page.locator('#birth-next').click();   // 18 this year: the server rule (D30) refuses
     await page.locator('#refused').waitFor();
     assert.match(await page.locator('#refused').innerText(), new RegExp('born in ' + (YEAR - 19) + ' or earlier'));
-    assert.match(await page.locator('main').innerText(), /not sent or saved anything/);
+    assert.match(await page.locator('main').innerText(), /born in \d{4} or earlier/);
     await shot(page, VIEWS[0], 's4-08-refused');
     assert.deepEqual(await apiLog(srv), [], 'no request');
     assert.deepEqual(w.requests.filter(r => /\/api\//.test(r.url)), []);
@@ -245,16 +245,15 @@ test('S4: under the age limit, nothing is sent or kept (the page decides; the se
   } finally { await srv.close(); }
 });
 
-test('S4: the server refuses an under-age year too, and a wrong invite code is said plainly', async () => {
+test('S4: a wrong invite code for a new address gets the same answer as any address, and no email (D36, ADR-21)', async () => {
   const srv = await startApiServer(PUBLIC);
   try {
     const ctx = await newCtx(VIEWS[0]); const page = await ctx.newPage();
     await page.goto(srv.base + '/work/#/signup');
     await page.locator('#birth-year').fill(String(YEAR - 30)); await page.locator('#birth-next').click();
     await page.locator('#email').fill('x@example.com'); await page.locator('#invite').fill('nope'); await page.locator('#send-code').click();
-    await page.locator('#flow-error:not(:empty)').waitFor();
-    assert.match(await page.locator('#flow-error').innerText(), /invite code/i);
-    assert.equal(await page.locator('#send-code').isDisabled(), false, 'the person can try again');
+    await page.locator('#code').waitFor();   // the same next step as for any address; the server says nothing about the invite or the address
+    assert.equal(srv.db.raw.prepare('SELECT COUNT(*) AS n FROM testers').get().n, 0);
     await ctx.close();
   } finally { await srv.close(); }
 });

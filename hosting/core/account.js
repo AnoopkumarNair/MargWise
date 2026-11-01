@@ -45,6 +45,9 @@ export function deleteStatements(db, id, emailHash, now) {
     db.prepare('DELETE FROM ai_calls WHERE tester_id = ?').bind(id),
     db.prepare('DELETE FROM email_codes WHERE email_hash = ?').bind(emailHash || ''),
     db.prepare('DELETE FROM email_sends WHERE email_hash = ?').bind(emailHash || ''),
+    // a short-lived mark so a pending sign-up token issued before now cannot make the account again (S4); the purge removes it after an hour
+    db.prepare("INSERT INTO meta (k, v) VALUES (?, ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind('del:' + (emailHash || ''), String(now)),
+    db.prepare("DELETE FROM meta WHERE k LIKE 'del:%' AND CAST(v AS INTEGER) < ?").bind(now - 3600000),
     db.prepare("DELETE FROM testers WHERE id = ? AND track = 'adult'").bind(id),   // the token stops working once the tester is gone: that is the session revoke
     db.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'account_deleted', JSON.stringify({ track: 'adult' })),
   ];

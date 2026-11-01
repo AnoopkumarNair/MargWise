@@ -446,7 +446,7 @@ Written by the backend lane while building T3.1 to T3.7. Nothing below changed a
 - We did: `hosting/core/keys.js` lets a person in only when this year minus the birth year is at least 19 (`AGE_GATE_GAP`). The band stored is worked out from the same difference (18-24, 25-34, ...).
 - Why: a legal gate for under-18s should err on the side of refusing. The cost is that some 18-year-olds born in the year (this year - 18) are refused until January.
 - Effect: the app's own check (screen 1) should use the same rule so the two never disagree. Change the constant to 18 if the owner prefers the other error.
-- Decision: proposed
+- Decision: owner decided 2026-11-01: keep the year-only rule (gap 19).
 
 ### D31. Limits use existing tables, with key prefixes
 - Slice and ticket: S4, T3.4
@@ -507,7 +507,7 @@ Written by the frontend lane while building T4.2 and T5.4. Nothing below changed
 - We did: `POST /email/start` requires `invite`, `birthYear` and `turnstile` for every address, known or not (the server checks age and invite before it looks the address up). So the log-in screen asks for the birth year, the email and the invite code. The invite code is remembered on the device after a sign-in (localStorage key `mw_adult_invite`, not personal) and filled in from `?c=`. The birth year is asked every time and never kept.
 - Effect: a person on a new device must still have their invite code. If the invite is switched off, existing people cannot log in.
 - Options: (a) accept (as built); (b) amend `email_start.request` so a known address needs only `email` and `turnstile` (the server would still have to answer the same for unknown addresses; the age check would move to sign-up only). The frontend lane recommends (b) before the pilot opens beyond invited testers.
-- Decision: proposed
+- Decision: owner decided 2026-11-01: (b) in effect, with no contract change. Existing accounts log in without an active invite; an invite is needed only to create an account. Built in the S4 review fixes (D41, ADR-21).
 
 ### D37. Turnstile needs a site key at build time, and the `/work/` policy allows Cloudflare's host
 - Slice and ticket: S4, T4.2
@@ -538,3 +538,34 @@ Written by the frontend lane while building T4.2 and T5.4. Nothing below changed
 - Saving is explicit ("Save to my account"). It also happens once at sign-up when the person came from "Make an account to save". The app never overwrites a saved profile without asking, and never sends events yet (`profile_saved` is not sent; the admin funnel in T7.2 will not show saves until it is).
 - `app/adult/build.py` now also writes `ids.json` and, for real data, copies `data/graph/id_registry.json` into the graph folder (D32). The id registry is empty today, so nothing is mapped yet.
 - The e2e for S4 runs the real handlers behind a small Node server (`tests/e2e/api_server.mjs`) because `wrangler pages dev` needs network access to start. Run `npx wrangler pages dev hosting/public` with `EMAIL_DRY_RUN=1 EMAIL_DRY_RUN_PRINT=1` for a manual demo.
+
+## S4 review fixes, 2026-11-01
+
+Written while fixing `S4_REVIEW.md`. Nothing here changed a contract or a version number.
+
+### D41. What changed after the S4 review
+- **B1** `email/start` sends the email after the reply (`deps.background`, which is Pages `waitUntil`), and answers the same for every address, including when the provider fails (counted in `email_errors`). A missing mailer, or no `APP_ORIGIN` in production, is `unavailable` for every address. Tests: hanging, failing and working providers; equal queries before the reply.
+- **B2, S6** `notice.md` now says deleted data can stay in backups for up to 60 days, that Cloudflare runs the site and the human check and sees the IP address, and that the address is kept to find the account at sign-in. The two blanks (`[[retention period]]`, `[[grievance contact]]`) are still the owner's.
+- **S1** `defineRoute` runs the daily purge from every adult route except health. A process-local note skips the look-up on later requests the same day.
+- **S3** The sliding refresh hands out a token only when `UPDATE ... AND (tok_after IS NULL OR tok_after < <issue time>)` changed a row, and the token carries the issue time read before it.
+- **S4** `email/complete` refuses (`unauthorized`) a pending token issued at or before the account's `tok_after`, and one issued at or before a delete of that address. A delete leaves a `del:<keyed hash>` row in `meta` with the time; the purge removes it after one hour (at the latest on the first request of the next day). It is listed in the inventory. Risk left: none that we know of; the row holds only a keyed hash.
+- **S5** The screens say nothing about data collection except the privacy line on the welcome screen ("... stays on this page unless you make an account.") and the notice. Hints under the birth year are just "For example 1990."
+- **S7** Chosen: avoid, not explain. `email_sends` is purged after 2 days, not 7 (it only has to cover the hour and the day). SPEC 10, the inventory and invariant 5 say 2 days. People who never finish still leave a keyed hash for up to 2 days (and a code row for 24 hours); the inventory says so.
+- **S8** `EMAIL_DRY_RUN_PRINT` prints only when `ENVIRONMENT` is unset or `local`.
+- **S9** The inventory text is corrected (`testers.email`, `joins.ip`, `email_sends`, `meta`).
+- **Nits done:** N1 (repeat path fills `testers.email`), N2 (`APP_ORIGIN` required in production), N4 in part (Cloudflare's test secrets refused in production), N12 (the client no longer sends `idempotency_key`).
+- **Decisions recorded:** D30 keep the year-only rule; D36 see ADR-21.
+
+### D42. Open after the S4 review
+- **S2 / D36, the screen:** the server no longer needs an active invite to log in, but the log-in screen still asks for the invite code (the contract still requires the field). Let the screen send the remembered code, or any code, and hide the field. Needs a frontend change; no contract change.
+- **S2, the answer for a mistyped invite:** a new address with a wrong or expired invite now gets the same message as everyone else and no email. The screen cannot say "that invite is wrong". Accepted, because a different answer would reveal which addresses have accounts.
+- **D38** research opt-out endpoint: still open (owner decision, contract change).
+- **N3** `SIGN_KEY_PREV_UNTIL` unset keeps the old key for ever; `SIGN_KEY_V` is not checked to be 1 to 999; rotating `SIGN_KEY` also breaks student return codes (add to the runbook).
+- **N4** the Turnstile `hostname` and `action` in the reply are not checked.
+- **N5** the IP-bucket count and the site-wide cap check are not atomic; bursts can go a little over at pilot scale (accepted, as in D31).
+- **N6** the invite claim and the tester INSERT in `email/complete` are separate statements (a thrown INSERT leaves a use claimed).
+- **N7** `metrics.js` `safeEqual` returns early on a length mismatch.
+- **N8** a student-side guess of an adult invite code gets a distinct message and is not counted in `joins`.
+- **N9** the under-18 path is not IP-limited, so the `under18` count can be inflated (low risk).
+- **N10** an orphan profile row is possible if `me/delete` commits between `authenticate` and the profile INSERT (invariant 6 would catch it).
+- **N11** after it loads, Cloudflare's Turnstile script can read the token in localStorage. Accepted with D37.

@@ -21,10 +21,9 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const INVITE_RE = /^[A-Za-z0-9_-]{1,24}$/;
 const NICK_RE = /^[^<>@\u0000-\u001f]+$/;
 
-function newKey() { const b = crypto.getRandomValues(new Uint8Array(16)); return Array.from(b, x => x.toString(16).padStart(2, '0')).join(''); }
 
 export function startFlow(root, { mode, link } = {}) {
-  const f = { mode, birthYear: null, email: '', invite: recalledInvite(), pending: null, key: newKey(), widget: null };
+  const f = { mode, birthYear: null, email: '', invite: recalledInvite(), pending: null, widget: null };
   const login = mode === 'login';
   const noun = login ? 'Log in' : 'Make an account';
 
@@ -45,7 +44,7 @@ export function startFlow(root, { mode, link } = {}) {
     const e = err();
     const year = h('input', { type: 'text', id: 'birth-year', inputmode: 'numeric', autocomplete: 'bday-year', maxLength: 4, pattern: '[0-9]{4}', 'aria-describedby': 'birth-year-hint', value: f.birthYear ? String(f.birthYear) : '' });
     const go = h('button', { type: 'submit', class: 'btn primary', id: 'birth-next' }, 'Continue');
-    const form = h('form', { novalidate: true }, field('birth-year', 'The year you were born', year, 'We ask this first, to check your age. We do not keep the year.'), e, h('p', null, go));
+    const form = h('form', { novalidate: true }, field('birth-year', 'The year you were born', year, 'For example 1990.'), e, h('p', null, go));
     form.addEventListener('submit', ev => {
       ev.preventDefault();
       const y = parseYear(year.value);
@@ -60,7 +59,7 @@ export function startFlow(root, { mode, link } = {}) {
   function stepRefused() {
     f.birthYear = null;
     show('refused', h('h1', { tabindex: '-1' }, 'We cannot open an account for you'),
-      h('p', { id: 'refused', role: 'alert' }, 'Margwise for working adults is for people born in ' + latestBirthYear() + ' or earlier. We have not sent or saved anything.'),
+      h('p', { id: 'refused', role: 'alert' }, 'Margwise for working adults is for people born in ' + latestBirthYear() + ' or earlier.'),
       h('p', null, h('a', { class: 'btn', href: '#/' }, 'Back to the start')));
   }
 
@@ -76,7 +75,7 @@ export function startFlow(root, { mode, link } = {}) {
     let token = mode_ === 'dev' ? DEV_TOKEN : null;
     const ready = () => { go.disabled = !token; };
     const form = h('form', { novalidate: true },
-      login ? field('birth-year', 'The year you were born', year, 'We check your age each time. We do not keep the year.') : null,
+      login ? field('birth-year', 'The year you were born', year, 'For example 1990.') : null,
       field('email', 'Your email address', email, 'We send a six-digit code to this address.'),
       field('invite', 'Your invite code', invite, 'From the link or message you were given.'),
       mode_ === 'widget' ? h('div', { class: 'field' }, h('p', { class: 'hint', id: 'ts-hint' }, 'A quick check that you are a person.'), box) : null,
@@ -178,7 +177,7 @@ export function startFlow(root, { mode, link } = {}) {
       if (!valid()) { e.textContent = 'Type a nickname of up to 40 characters, without < > or @.'; nick.focus(); return; }
       if (!consent.checked) { e.textContent = 'Please tick the box to say you have read the notice.'; consent.focus(); return; }
       go.disabled = true; s.textContent = 'Making your account…';
-      const res = await api.post('/email/complete', { pending: f.pending, email: askEmail ? addr.value.trim() : f.email, nickname: nick.value.trim(), consent: true, research: !!research.checked, idempotency_key: f.key }, { auth: false });
+      const res = await api.post('/email/complete', { pending: f.pending, email: askEmail ? addr.value.trim() : f.email, nickname: nick.value.trim(), consent: true, research: !!research.checked }, { auth: false });
       if (res.ok && res.body.token) { await signedIn(res.body.token); return; }
       s.textContent = ''; update();
       if (res.error && (res.error.code === 'expired' || res.error.code === 'invalid_code')) { f.pending = null; stepEmail('That took too long. Ask for a new code to carry on.'); return; }

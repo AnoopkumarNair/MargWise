@@ -28,7 +28,7 @@ export const INVENTORY = [
     tok_after: 'Sessions issued before this time stop working (log out everywhere, admin revoke).',
     track: { purpose: "Which product: empty means student, 'adult' means working adult.", },
     age_band: { purpose: 'Age band from the age check; used only to check fairness across groups, never for matching.', ...P },
-    email: { purpose: 'Normalised email address, kept so the keyed hash can be recomputed if the key is rotated (ADR-04). Filled in at the next code sign-in. Adults only.', ...P, who: ['nobody'] },
+    email: { purpose: 'Normalised email address, stored when the account is made, so the keyed hash can be recomputed if the key is rotated (ADR-04). Adults only. The person sees it in the download.', ...P, who: ['tester'] },
     email_hash: { purpose: 'Keyed hash of the email, for look-ups and the one-account-per-address rule.', who: ['nobody'] },
     research_ok: { purpose: 'Whether the person agreed that their anonymous data may be used for research.', },
     key_v: { purpose: 'Which version of the session key signed their token (key rotation).', },
@@ -38,7 +38,7 @@ export const INVENTORY = [
     data: { purpose: 'Event details: ids and numbers; for feedback, a capped text.', ...P }, eid: 'Client event id, so a repeat is stored once.',
   }),
   table('joins', 'live', { purpose: 'Recent sign-up attempts per network address bucket, to slow guessing of invite codes.', retention: 'Rows older than 24 hours are deleted on the next sign-up.', who: ['nobody'], deletion: 'Expires by itself after 24 hours.', erase: { key: null } }, {
-    ip: { purpose: 'Network address (as received) of the attempt.', ...P }, ts: 'When.',
+    ip: { purpose: 'A keyed hash of the network address bucket (adults: a prefix and 16 characters of the hash of the /64 or IPv4 address) or the address as received (students).', ...P }, ts: 'When.',
   }),
   table('invites', 'live', { purpose: 'Invite codes that let people join, with limits.', retention: 'Until the owner removes the invite.', who: ['owner'], deletion: 'The owner deletes the invite. Holds no personal data.', erase: { key: null } }, {
     id: 'Row number.', code: 'The invite code.', label: 'What the invite is for (a school, a group).', max_uses: 'How many people may use it.', uses: 'How many have.', expires_at: 'When it stops working.', active: 'On or off.', created_at: 'When made.',
@@ -50,7 +50,7 @@ export const INVENTORY = [
   table('claim_reviews', 'live', { purpose: 'Reviewer verdicts on claims.', retention: 'Until the owner clears the review run.', who: ['owner'], deletion: 'Removed with its run. Holds a reviewer label, not a tester.', erase: { key: null } }, {
     id: 'Row number.', claim_id: 'Which claim.', reviewer: 'Reviewer label chosen by the owner.', verdict: 'Right, wrong or unsure.', says: 'What the reviewer found.', checked_on: 'Date checked.', created_at: 'When saved.', applied: 'Whether the owner applied it.',
   }),
-  table('meta', 'live', { purpose: 'Small settings, such as when the last purge ran.', retention: 'Kept as long as the service runs.', who: ['owner'], deletion: 'Not personal; not deleted per person.', erase: { key: null } }, { k: 'Setting name.', v: 'Setting value.' }),
+  table('meta', 'live', { purpose: 'Small settings, such as when the last purge ran. Also a short-lived row per deleted account (key \'del:\' and a keyed hash of the address, value the time), so a sign-up link opened after the deletion cannot make the account again.', retention: 'Settings are kept as long as the service runs. A \'del:\' row is purged after one hour (at the latest, on the first request of the next day).', who: ['owner'], deletion: 'Not deleted per person; the \'del:\' rows expire by themselves.', erase: { key: null } }, { k: 'Setting name.', v: 'Setting value.' }),
   table('admin_fail', 'live', { purpose: 'Failed admin and counsellor key attempts, for the lock-out.', retention: 'Old rows are deleted on the next failed attempt.', who: ['nobody'], deletion: 'Expires by itself.', erase: { key: null } }, {
     ip: { purpose: 'Network address (as received) with a prefix saying which page.', ...P }, ts: 'When.',
   }),
@@ -75,7 +75,7 @@ export const INVENTORY = [
     email_hash: 'Keyed hash of the address.', code_hash: { purpose: 'Keyed hash of the 6-digit code.', who: ['nobody'] }, link_hash: { purpose: 'Keyed hash of the sign-in link token.', who: ['nobody'] },
     expires_at: 'When the code stops working.', tries: 'Wrong tries so far (limit 5).', invite_id: 'Invite used to start.', age_band: { purpose: 'Age band carried to account creation.', ...P }, created_at: 'When made.',
   }),
-  table('email_sends', 'live', { purpose: 'How many codes were requested for an address per hour and per day, for limits.', retention: 'Rows older than 7 days are purged daily.', who: ['nobody'], deletion: 'Purged after 7 days. Also deleted on me/delete.', erase: { key: 'email_hash' } }, {
+  table('email_sends', 'live', { purpose: 'How many codes were requested for an address per hour and per day, for limits. Also covers addresses that never made an account (every code request, and the look-alike request for a stranger), under the keyed hash of the address only.', retention: 'Rows older than 2 days are purged daily.', who: ['nobody'], deletion: 'Purged after 2 days. Also deleted on me/delete.', erase: { key: 'email_hash' } }, {
     email_hash: 'Keyed hash of the address.', day: 'Day (UTC, like 2026-10-31) or hour (like 2026-10-31T14) the count is for.', n: 'Codes requested in that day or hour.',
   }),
   table('profiles', 'live', { purpose: "A working adult's skills and choices: ids and levels only.", retention: 'Until the retention period ends or the person deletes it.', who: ['tester'], deletion: D, erase: { key: 'tester_id' } }, {

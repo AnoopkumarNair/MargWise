@@ -160,9 +160,13 @@ test('the invite must exist, be active, be an adult invite and not be expired', 
   const w = world();
   w.db.raw.exec("INSERT INTO invites (code, label, created_at, track, active) VALUES ('stud1', 's', 1, NULL, 1), ('off1', 'o', 1, 'adult', 0)");
   w.db.raw.prepare("INSERT INTO invites (code, label, created_at, track, active, expires_at) VALUES ('old1', 'o', 1, 'adult', 1, ?)").run(T0 - 1);
-  for (const invite of ['nosuch', 'stud1', 'off1', 'old1']) { const r = await json(await start(w, { invite })); assert.equal(r.status, 403, invite); assert.equal(r.body.error.code, 'forbidden'); }
-  assert.equal(count(w, 'email_codes'), 0); assert.equal(w.outbox.length, 0);
-  assert.equal((await start(w, { invite: 'ADULT1' })).status, 200, 'invite codes are not case sensitive');
+  // D36: a new address with no usable invite is treated as a stranger: the same answer as for anyone, a decoy row, nothing sent
+  const same = (await json(await start(w))).body; assert.equal(w.outbox.length, 1); w.outbox.length = 0;
+  for (const invite of ['nosuch', 'stud1', 'off1', 'old1']) { const r = await json(await start(w, { invite, email: invite + '@example.com' })); assert.equal(r.status, 200, invite); assert.deepEqual(r.body, same); }
+  assert.equal(w.outbox.length, 0, 'no email for a new address without an active invite');
+  assert.equal(count(w, 'email_codes'), 5, 'one real row and four decoys');
+  const dec = await json(await verify(w, { email: 'off1@example.com', code: '123456' })); assert.equal(dec.body.error.code, 'invalid_code');
+  assert.equal((await start(w, { invite: 'ADULT1', email: 'b@example.com' })).status, 200, 'invite codes are not case sensitive'); assert.equal(w.outbox.length, 1);
 });
 
 test('bad input: wrong types, extra fields, oversize body, wrong content type, bad JSON', async () => {
@@ -251,8 +255,8 @@ test('the dry run records the message and sends nothing; a real mailer gets exac
   const sent = []; const w2 = world({ env: { EMAIL_DRY_RUN: '0' } }); w2.deps.email = { dryRun: false, send: async m => { sent.push(m); } };
   await start(w2); assert.equal(sent.length, 1); assert.equal(sent[0].to, 'asha@example.com');
   const w3 = world(); w3.deps.email = { send: async () => { throw new Error('provider down'); } };
-  let r = await json(await start(w3)); assert.equal(r.status, 503); assert.equal(r.body.error.code, 'unavailable'); assert.match(r.body.error.message, /could not send your code/);
-  assert.equal(rows(w3, "SELECT n FROM ops_daily WHERE metric = 'email_errors'")[0].n, 1);
+  let r = await json(await start(w3)); assert.equal(r.status, 200, 'B1: a provider failure is not in the reply');
+  await w3.deps.settle(); assert.equal(rows(w3, "SELECT n FROM ops_daily WHERE metric = 'email_errors'")[0].n, 1); assert.equal(rows(w3, "SELECT COUNT(*) AS n FROM ops_daily WHERE metric = 'codes_sent'")[0].n, 0);
   const w4 = world(); w4.deps.email = null; r = await json(await start(w4)); assert.equal(r.status, 503);
   const w5 = world({ env: { SIGN_KEY: 'short' } }); r = await json(await start(w5)); assert.equal(r.status, 503, 'a missing key fails closed');
 });
@@ -275,11 +279,11 @@ test('the counters: codes sent, code failures and sign-ups are counted, and noth
 test('the daily purge removes old codes, send counts and IP rows once a day', async () => {
   const w = world(); await start(w);
   w.db.raw.prepare("INSERT INTO email_codes VALUES ('old', 'c', 'l', 1, 0, NULL, NULL, ?)").run(T0 - DAY - 1000);
-  w.db.raw.prepare("INSERT INTO email_sends VALUES ('old', '2025-10-01', 1), ('old', '2025-10-14', 1), ('old', '2025-10-13T23', 1)").run();
+  w.db.raw.prepare("INSERT INTO email_sends VALUES ('old', '2025-10-01', 1), ('old', '2025-10-19', 1), ('old', '2025-10-18T23', 1)").run();
   w.db.raw.prepare("INSERT INTO joins VALUES ('e:old', ?)").run(T0 - DAY - 1000);
   w.clock.advance(DAY); await start(w, { email: 'next@example.com' });
   assert.equal(rows(w, "SELECT COUNT(*) AS n FROM email_codes WHERE email_hash = 'old'")[0].n, 0);
-  assert.deepEqual(rows(w, "SELECT day FROM email_sends WHERE email_hash = 'old' ORDER BY day").map(r => r.day), ['2025-10-14']);
+  assert.deepEqual(rows(w, "SELECT day FROM email_sends WHERE email_hash = 'old' ORDER BY day").map(r => r.day), ['2025-10-19'], 'S7: two days are kept');
   assert.equal(rows(w, "SELECT COUNT(*) AS n FROM joins WHERE ip = 'e:old'")[0].n, 0);
   assert.equal(rows(w, "SELECT v FROM meta WHERE k = 'adult_purge'")[0].v, '2025-10-21');
 });

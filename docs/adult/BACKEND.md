@@ -360,6 +360,15 @@ Owner decision D1, 2026-10-29. Replaces the token format line in ADR-04. Everyth
 - **Enforced by.** The patterns in `contracts/api/email_verify.response`, `email_complete.request` and `email_complete.response` check the shapes. `hosting/core/keys.js` (T3.3) makes and checks the tokens; it is not built yet.
 - **Why.** The tester id in the token lets the server check the MAC before it reads the database. The track and the key version inside the MAC stop a token from being reused for another track or moved to another key.
 
+### ADR-21. Existing accounts log in without an invite; the email goes out after the reply
+
+Owner decision D36, 2026-11-01 (S4 review). No contract change: `email/start` still takes `invite`.
+
+- **Rule.** An address that already has an account gets a code whatever the state of the invite. A new address needs an active adult invite. Without one it is treated as a stranger: a decoy `email_codes` row, nothing sent, and the same answer.
+- **Why.** Closing a cohort's invite must not lock its people out of their saved data. A different answer for "new address, bad invite" would tell a caller which addresses have accounts (ADR-13), so there is none.
+- **Timing.** The email is sent with `waitUntil` after the reply, so the reply never waits for the provider and never shows a provider error. Both paths run the same look-ups and writes before the reply. A failed send is counted in `email_errors`.
+- **Pending tokens (ADR-20 addendum).** `email/complete` refuses a pending token issued at or before the account's `tok_after`, or at or before a delete of that address (a `del:<hash>` row in `meta`, purged after one hour).
+
 ## Invariants (machine-checked)
 
 `hosting/tools/check_invariants.mjs` runs against `fakedb` in CI, and against a local copy of a production export, run by the owner monthly and after every migration:

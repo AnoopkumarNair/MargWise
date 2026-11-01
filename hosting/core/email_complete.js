@@ -21,9 +21,19 @@ export const handle = defineRoute('POST /api/v1/email/complete', async (request,
   // the address must be the one that was verified: compare keyed hashes, so the token never holds it. Never logged, never in an error.
   if (typeof b.email !== 'string' || !safeEqual(await emailHash(deps, b.email), p.emailHash)) return fail('bad_request', { rid });
 
-  const existing = () => deps.db.prepare("SELECT id FROM testers WHERE email_hash = ? AND track = 'adult'").bind(p.emailHash).first();
-  const done = async id => { await deps.db.prepare('UPDATE testers SET key_v = ? WHERE id = ?').bind(deps.config.signKeyV, id).run(); return ok({ token: await mintSession(deps, id) }, { rid }); };
-  const again = await existing(); if (again) return done(again.id);
+  // A pending token is not revoked by "log out everywhere" or by delete on its own, so check both here (S4): an account whose tok_after is at
+  // or after the token's issue time is not opened again, and an address deleted since the token was issued (a short-lived `del:` row in meta,
+  // see account.js) is not made again.
+  const gone = await deps.db.prepare('SELECT v FROM meta WHERE k = ?').bind('del:' + p.emailHash).first();
+  if (gone && Number(gone.v) >= p.iat) return fail('unauthorized', { rid });
+  const existing = () => deps.db.prepare("SELECT id, tok_after FROM testers WHERE email_hash = ? AND track = 'adult'").bind(p.emailHash).first();
+  const done = async t => {
+    if (t.tok_after != null && t.tok_after >= p.iat) return fail('unauthorized', { rid });
+    // an account made before the address was stored (N1): fill it in now, the body carries a checked address
+    await deps.db.prepare('UPDATE testers SET key_v = ?, email = COALESCE(email, ?) WHERE id = ?').bind(deps.config.signKeyV, normaliseEmail(b.email), t.id).run();
+    return ok({ token: await mintSession(deps, t.id) }, { rid });
+  };
+  const again = await existing(); if (again) return done(again);
 
   if (!deps.flags.adultSignup) return fail('unavailable', { rid });
   const name = b.nickname.replace(CLEAN, '').trim().slice(0, 40); if (!name) return fail('bad_request', { rid });
@@ -37,7 +47,7 @@ export const handle = defineRoute('POST /api/v1/email/complete', async (request,
   if (!ins.meta || ins.meta.changes !== 1) {   // lost a race with another device: give the use back and answer for the tester that won
     await deps.db.prepare('UPDATE invites SET uses = uses - 1 WHERE id = ? AND uses > 0').bind(p.inviteId).run();
     const won = await existing(); if (!won) return fail('internal', { rid });
-    return done(won.id);
+    return done(won);
   }
   await bump(deps, 'signups');
   return ok({ token: await mintSession(deps, id) }, { rid });

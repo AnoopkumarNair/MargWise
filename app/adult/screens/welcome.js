@@ -30,7 +30,7 @@ export async function render() {
       h('li', null, 'For each job: how much of it you already cover, and the top skills still missing.'),
       h('li', null, 'The reasons behind the order. You can change what matters to you.')),
     h('p', null, 'It takes a few minutes.'),
-    h('p', { class: 'privacy' }, h('strong', null, 'Your privacy: '), 'no sign-in needed. Your resume is read in your browser. Nothing leaves your device. What you share stays on this page. Nothing is stored on a server unless you make an account and choose to save.'),
+    h('p', { class: 'privacy' }, h('strong', null, 'Your privacy: '), 'no sign-in needed. Your resume is read in your browser. Nothing leaves your device. What you share stays on this page unless you make an account.'),
     h('p', { class: 'actions' }, h('a', { class: 'btn primary', href: '#/intake', id: 'start' }, 'Start'), ' ', h('a', { class: 'btn', href: '#/login', id: 'have-account' }, 'I have been here before')),
     back);
 }

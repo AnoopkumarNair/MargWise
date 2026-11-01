@@ -110,3 +110,15 @@ test('the notice file parses: a title, sections, two ticks, and its blanks are f
   assert.equal(full.blanks, false); assert.deepEqual(full.blocks.at(-1), { t: 'ul', items: ['one', 'two'] });
   assert.equal(nt.noticeComplete(nt.parseNotice('# T\nonly text')), false, 'without the ticks it is not usable');
 });
+
+test('S4 review: the notice names backups, Cloudflare and the IP address, and the address purpose is right; the screens carry no data detail', () => {
+  const text = readFileSync(APP + 'notice.md', 'utf8');
+  assert.match(text, /backups can stay for up to 60 days/);
+  assert.match(text, /Cloudflare runs this site and its human check[^\n]*IP address/);
+  assert.match(text, /We use them to find your account when you sign in/); assert.doesNotMatch(text, /so you can sign in/);
+  assert.deepEqual(text.match(/\[\[[a-z ]+\]\]/g), ['[[retention period]]', '[[grievance contact]]'], 'the two blanks stay for the owner');
+  for (const f of ['account/flow.js', 'screens/account.js', 'screens/welcome.js']) {
+    const src = readFileSync(APP + f, 'utf8');
+    for (const bad of ['We do not keep the year', 'We have not sent or saved', 'It lists your nickname', 'Nothing is stored on a server', 'idempotency_key']) assert.ok(!src.includes(bad), f + ' still says: ' + bad);
+  }
+});

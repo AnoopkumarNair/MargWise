@@ -17,7 +17,7 @@ test('the profile step posts the address held in the flow beside the pending tok
 
 test('that body fits the email_complete contract, and a bad address does not', () => {
   const h = 'a'.repeat(64), pending = `p1.${h}.42.25-34.1761609600000.${h}`;
-  const body = { pending, email: 'asha@example.com', nickname: 'Asha', consent: true, research: false, idempotency_key: 'retry-key-0001' };
+  const body = { pending, email: 'asha@example.com', nickname: 'Asha', consent: true, research: false };
   assert.ok(checkContract(SCHEMAS.email_complete, body).ok);
   for (const bad of ['asha', 'a b@example.com', '@']) assert.ok(!checkContract(SCHEMAS.email_complete, { ...body, email: bad }).ok, bad);
 });

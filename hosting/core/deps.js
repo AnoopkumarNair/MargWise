@@ -1,10 +1,14 @@
 // What a handler may use (BACKEND ADR-01): db, now, random, log, config, assets, flags, and the slots email, ai, turnstile
 // (filled in by later tickets). Handlers are pure: handle(request, deps) -> Response. No handler reads env, Date or Math.random itself.
-import { readFlags, parseSwitch } from './flags.js';
+import { readFlags, parseSwitch, isProduction } from './flags.js';
 import { makeLogger } from './log.js';
 import { versions } from './versions.js';
 import { makeMailer, makeDryRunMailer } from './email_send.js';
 import { makeTurnstile } from './turnstile.js';
+
+// EMAIL_DRY_RUN_PRINT puts codes and addresses in the console, which on Cloudflare is the log stream. Honoured only on a local machine
+// (ENVIRONMENT unset or 'local'), never on preview or production.
+export const printAllowed = env => { const e = String((env && env.ENVIRONMENT) || '').trim().toLowerCase(); return e === '' || e === 'local'; };
 
 const num = (v, d) => { const n = Number(v); return Number.isFinite(n) && n >= 0 ? n : d; };
 
@@ -42,9 +46,11 @@ export function makeDeps(env = {}, extra = {}) {
     flags,
     assets: env.ASSETS || null,
     // email: {send({to, subject, text})}. Dry run records the message in memory only (never in a log); otherwise Cloudflare Email Service, or null when not set up.
-    email: flags.emailDryRun ? makeDryRunMailer({ print: parseSwitch(env.EMAIL_DRY_RUN_PRINT) === true }) : makeMailer(env, config),
+    email: flags.emailDryRun ? makeDryRunMailer({ print: parseSwitch(env.EMAIL_DRY_RUN_PRINT) === true && printAllowed(env) }) : makeMailer(env, config),
     ai: null,
-    turnstile: makeTurnstile(config.secrets.turnstile),   // turnstile(token) -> true | false; null without a secret
+    // background(fn): run fn() after the reply is sent (Pages `waitUntil`; the function files pass it in). Errors are swallowed, because nobody is waiting.
+    background: fn => { Promise.resolve().then(fn).catch(() => {}); },
+    turnstile: makeTurnstile(config.secrets.turnstile, undefined, { production: isProduction(env) }),   // turnstile(token) -> true | false; null without a secret
     ...extra,
   };
 }
@@ -56,8 +62,10 @@ export function makeFakeDeps({ db = null, env = {}, now = 1760000000000, seed = 
   const logs = []; let s = (seed >>> 0) || 1;
   const next = () => { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s; };
   const assetMap = assets;
+  const tasks = [];
   const deps = makeDeps({ ...env, DB: db }, {
     now: () => clock.t,
+    background: fn => { tasks.push(Promise.resolve().then(fn).catch(() => {})); },   // started at once; `await deps.settle()` waits for all of them
     random: n => Uint8Array.from({ length: n }, () => next() & 255),
     log: makeLogger(line => logs.push(line)),
     email: makeDryRunMailer(),   // the recorded messages are in deps.email.outbox
@@ -65,5 +73,5 @@ export function makeFakeDeps({ db = null, env = {}, now = 1760000000000, seed = 
     assets: assetMap ? { fetch: async req => { const p = new URL(typeof req === 'string' ? req : req.url, 'https://x.invalid').pathname; return p in assetMap ? new Response(typeof assetMap[p] === 'string' ? assetMap[p] : JSON.stringify(assetMap[p]), { status: 200 }) : new Response('not found', { status: 404 }); } } : null,
     ...extra,
   });
-  return Object.assign(deps, { clock, logs, logged: () => logs.map(l => JSON.parse(l)) });
+  return Object.assign(deps, { clock, logs, settle: async () => { while (tasks.length) await tasks.shift(); }, logged: () => logs.map(l => JSON.parse(l)) });
 }

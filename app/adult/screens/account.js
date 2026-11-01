@@ -91,7 +91,7 @@ export async function render() {
     h('h1', { tabindex: '-1' }, 'My account'), note,
     h('h2', null, 'Your saved profile'), savedBox,
     h('h2', null, 'What we keep'),
-    h('p', null, 'Download everything we keep about you, as a file you can read. It lists your nickname, your saved jobs and skills and your settings.'),
+    h('p', null, 'Download everything we keep about you, as a file you can read.'),
     h('p', null, dl), dlStatus,
     h('h2', null, 'Log out'),
     h('p', null, '“Log out everywhere” ends your session on every device, including this one.'),

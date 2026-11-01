@@ -86,7 +86,7 @@ for (const v of VIEWS) {
     // 1. Welcome
     await page.getByRole('heading', { level: 1 }).waitFor();
     assert.match(await page.locator('main').innerText(), /no sign-in/i);
-    assert.match(await page.locator('main').innerText(), /nothing is stored on a server/i);
+    assert.match(await page.locator('main').innerText(), /stays on this page unless you make an account/i);
     await footerOk(page);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true, 'no sideways scroll');
     await shot(page, v, '01-welcome');
