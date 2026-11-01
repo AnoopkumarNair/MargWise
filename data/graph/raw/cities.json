@@ -1,0 +1,119 @@
+{
+  "_doc": "City clusters (SPEC 5.9). Only the cluster is ever stored, never an address. Ids must match city_cluster in contracts/bands.json. City demand stays 'not yet measured' until postings exist.",
+  "clusters": [
+    {
+      "id": "city:blr",
+      "label": "Bengaluru",
+      "state": "Karnataka",
+      "tier": "metro"
+    },
+    {
+      "id": "city:hyd",
+      "label": "Hyderabad",
+      "state": "Telangana",
+      "tier": "metro"
+    },
+    {
+      "id": "city:pnq",
+      "label": "Pune",
+      "state": "Maharashtra",
+      "tier": "metro"
+    },
+    {
+      "id": "city:maa",
+      "label": "Chennai",
+      "state": "Tamil Nadu",
+      "tier": "metro"
+    },
+    {
+      "id": "city:ncr",
+      "label": "Delhi NCR",
+      "state": "Delhi, Haryana, Uttar Pradesh",
+      "tier": "metro"
+    },
+    {
+      "id": "city:bom",
+      "label": "Mumbai",
+      "state": "Maharashtra",
+      "tier": "metro"
+    },
+    {
+      "id": "city:ccu",
+      "label": "Kolkata",
+      "state": "West Bengal",
+      "tier": "metro"
+    },
+    {
+      "id": "city:amd",
+      "label": "Ahmedabad",
+      "state": "Gujarat",
+      "tier": "metro"
+    },
+    {
+      "id": "city:cjb",
+      "label": "Coimbatore",
+      "state": "Tamil Nadu",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:cok",
+      "label": "Kochi",
+      "state": "Kerala",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:jai",
+      "label": "Jaipur",
+      "state": "Rajasthan",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:idr",
+      "label": "Indore",
+      "state": "Madhya Pradesh",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:bbi",
+      "label": "Bhubaneswar",
+      "state": "Odisha",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:vtz",
+      "label": "Visakhapatnam",
+      "state": "Andhra Pradesh",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:trv",
+      "label": "Thiruvananthapuram",
+      "state": "Kerala",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:ixc",
+      "label": "Chandigarh",
+      "state": "Chandigarh, Punjab, Haryana",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:nag",
+      "label": "Nagpur",
+      "state": "Maharashtra",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:mys",
+      "label": "Mysuru",
+      "state": "Karnataka",
+      "tier": "tier2"
+    },
+    {
+      "id": "city:other",
+      "label": "Anywhere else in India",
+      "state": "",
+      "tier": "other"
+    }
+  ]
+}

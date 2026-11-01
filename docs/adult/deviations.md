@@ -415,3 +415,10 @@ Questions from the S1 review that only the owner can answer. Nothing below was c
 - The question: PLFS gives seven NCO-2015 division averages (`data/plfs_2025.json`) and no career carries one (D27). Without a mapping there is no `pay_band_in` signal.
 - Options: (a) approve a SOC major group to NCO division table written by the data lane (the two systems follow ISCO-08 major groups, so it is mostly one to one, with judgement calls for 15-xxxx IT, 13-xxxx finance and 43-xxxx clerks; each row would be marked for review); (b) wait for the SOC to ISCO to NCO chain when `bls.gov` is reachable (T1.2); (c) show no pay for India until posting data exists.
 - Either way the owner should also decide the value format that the matcher needs (D24 item 1): a number of rupees a month, with the division name carried in the source entry or in a coded `period` such as `plfs25-nco2`, since `period` holds 20 characters and the division names are longer.
+
+### Owner answers, 2026-10-30 (all recommended options)
+- **O9:** (c) show no pay for India until posting data exists. No workaround for the BLS block.
+- **O6:** squash PR #20 when merging. Agents change nothing.
+- **O7:** keep `official` and the download date.
+- **K1 to K5:** keep the current matcher choices. No version change.
+- **T1.9:** `data/graph/raw/cities.json` added, with a test against `contracts/bands.json`.
