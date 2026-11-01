@@ -703,7 +703,7 @@
       <div class="bubblebar"><div class="bubble" id="bubble" aria-live="polite"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
     </div>
     <div class="objs" id="options"></div>
-    <p class="howto" id="howto" hidden>You have two flasks of oil. Spend them on the two things you would most enjoy: both on one if you love it, or one on each. There are no right answers and nothing is marked.</p>
+    <p class="howto" id="howto" hidden>You have two flasks of oil. Spend them on the two things you would most enjoy: both on one if you love it, or one on each. Pick what you really like, not a bit of everything. There are no right answers and nothing is marked.</p>
     <div class="actions"><button class="go" id="light" aria-label="Light the lamp"><span class="lbl">Light the lamp</span></button><button class="go" id="nextBtn" type="button" hidden><span class="lbl">Next</span></button></div>
   </section>
 
@@ -717,7 +717,7 @@
 
   <section class="screen pad res" id="reveal">
     <div class="stepbar" data-s="1"></div>
-    <div class="head"><h2>Your interest shape</h2><p id="revealLine"></p></div>
+    <div class="head"><h2 id="revealHead">Your interest shape</h2><p id="revealLine"></p></div>
     <div class="radarwrap"><svg id="compass" viewBox="-10 0 340 290" role="img" aria-label="Radar chart of your six interest areas"></svg><p class="howto">Further from the middle means you enjoyed it more, compared with your own other choices. Tap an area to see what it means.</p><p class="rinfo" id="rInfo" aria-live="polite" hidden></p></div>
     <div id="legend"></div>
     <div class="sure" id="sure" hidden></div>
@@ -1164,12 +1164,12 @@
   $('beatGo').addEventListener('click', function () { track('beat', { who: $('beatWho').textContent }); $('beat').hidden = true; var f = beatCb; beatCb = null; if (f) f(); });
   // ---------- resume: the walk is a list of choices, so it is saved after every step and can be replayed after a refresh or a dropped connection
   var WALK_KEY = 'margwise.walk', SRVWALK = null;   // SRVWALK: unfinished walk saved on the server (another device or a cleared browser)
-  function saveWalk() { if (!TK) return; try { localStorage.setItem(WALK_KEY, JSON.stringify({ tid: TK.id, seed: SEED, choices: state.choices, slots: state.slots, apt: state.apt, lockDone: state.lockDone, at: Date.now() })); } catch (e) { /* storage blocked */ }
+  function saveWalk() { if (!TK) return; try { localStorage.setItem(WALK_KEY, JSON.stringify({ tid: TK.id, seed: SEED, choices: state.choices, slots: state.slots, apt: state.apt, lockDone: state.lockDone, hinted: state.hinted || {}, at: Date.now() })); } catch (e) { /* storage blocked */ }
     var ap = {}; APT.forEach(function (d) { ap[d] = state.apt[d].map(function (x) { return [x.l || 0, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); }); track('progress', { choices: state.choices, apt: ap, seed: SEED, slots: state.slots, lockDone: state.lockDone, ctx: state.ctx }); }
   function clearWalk() { SRVWALK = null; try { localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ } }
   function readWalk() { try { var w = JSON.parse(localStorage.getItem(WALK_KEY) || 'null'); return w && TK && w.tid === TK.id && w.choices && w.choices.length && Date.now() - w.at < 7200000 ? w : null; } catch (e) { return null; } }
-  function resumeWalk(w) { trapBack(); SEED = w.seed; state.choices = w.choices; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.lockDone = w.lockDone || {}; track('walk_resume', { n: litCount() }); advance(false); }
-  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.ilaFinal = false; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.lockDone = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
+  function resumeWalk(w) { trapBack(); SEED = w.seed; state.choices = w.choices; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.lockDone = w.lockDone || {}; state.hinted = w.hinted || {}; track('walk_resume', { n: litCount() }); advance(false); }
+  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.ilaFinal = false; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.lockDone = {}; state.hinted = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
 
   var advTimer = null;
   function advance(first) {
@@ -1192,6 +1192,23 @@
     var h = jyoHome(); if (first) jyoGo(h.x, h.y, 0); else { jyoGo(h.x, h.y - 30, 600); jyoToHome(650); }
     state.busy = true; document.body.classList.add('busy');
     advTimer = setTimeout(function () { state.busy = false; document.body.classList.remove('busy'); }, state.reduce ? 0 : (first ? 700 : 1500));
+  }
+  // ---------- oil hints (shown between places, like the story beats): one gentle line, once per walk, when a walk is heading for 'no clear shape'.
+  // They look only at how much and how evenly oil is spent, never at which areas, so they do not steer.
+  var HINT_LOW = 'You can give oil to anything that looks fun, even just one flask. It costs nothing, and it helps the lantern learn what you enjoy.';
+  var HINT_SPREAD = 'Try giving your oil only to the things you would really enjoy doing. It is fine to skip the rest.';
+  // the same spread measure decides 'no clear shape' on the result screen; the hint warns a little before it
+  var NOSIGNAL_SD = .2, HINT_SD = .25;
+  function areaSpread(pr) { var v = AREAS.map(function (a) { return pr[a]; }), mu = v.reduce(function (a, b) { return a + b; }, 0) / 6; return Math.sqrt(v.reduce(function (a, b) { return a + (b - mu) * (b - mu); }, 0) / 6); }
+  // returns the hint due now, or null; it is marked as shown only when it is shown (see doLight)
+  function oilHint() {
+    var h = state.hinted || (state.hinted = {}), lit = state.choices.filter(function (c) { return !c.echoOf; }), n = litCount();
+    if (h.low || h.spread) return null;
+    if (n >= 4 && lit.filter(function (c) { return !Object.keys(c.spent || {}).length; }).length / n >= .5) return { kind: 'low', msg: HINT_LOW, n: n };
+    if (n === 8 || n === 10 || n === 12) {   // scoring the whole walk is not free, so only check at a few points
+      try { var r = M.journeyResult(bank, state.choices); if (areaSpread(r.profile) < HINT_SD && !r.lowEngagement) return { kind: 'spread', msg: HINT_SPREAD, n: n }; } catch (e) { /* no hint */ }
+    }
+    return null;
   }
 
   var FALLBACK = '<svg class="fallback" viewBox="0 0 60 80" aria-hidden="true"><path d="M22 8h16" stroke="#fff3d6" stroke-width="3" stroke-linecap="round"/><path d="M20 14h20l6 12v32a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26z" fill="rgba(255,243,214,.18)" stroke="#fff3d6" stroke-width="2.4" stroke-linejoin="round"/><path d="M30 28c2 8 10 10 10 20a10 10 0 0 1-20 0c0-6 4-8 5-14c2 2 4 3 5 -6z" fill="#f2a03d"/><path d="M30 42c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#ffe08a"/></svg>';
@@ -1302,8 +1319,9 @@
       if (META.ila[n]) beat = ['Ila', '', META.ila[n]];
       else META.chapters.forEach(function (c) { if (c.at === n && n > 0) beat = [c.roman, c.title, c.line]; });
     }
+    var hint = beat ? null : oilHint(); if (hint) beat = ['Jyo', '', hint.msg];
     // No timer: the student reads at their own pace and taps Next.
-    state.cont = beat ? function () { showBeat(beat[0], beat[1], beat[2], function () { advance(false); }); } : function () { advance(false); };
+    state.cont = beat ? function () { if (hint) { state.hinted[hint.kind] = 1; saveWalk(); track('oil_hint', { kind: hint.kind, n: hint.n }); } showBeat(beat[0], beat[1], beat[2], function () { advance(false); }); } : function () { advance(false); };
     advTimer = setTimeout(function () { document.body.classList.add('awaiting'); $('nextBtn').hidden = false; $('nextBtn').focus(); }, state.reduce ? 0 : 1100);
     if (!echoing && (n === 4 || n === 8 || n === 12)) setTimeout(beamSweep, 500);
   }
@@ -1430,9 +1448,9 @@
     clearWalk(); state.fits = null; state.fieldId = null; state.seen = {};
     var r = state.result = M.journeyResult(bank, state.choices);
     var code = r.code.code, pr = r.profile;
-    var vs = AREAS.map(function (a) { return pr[a]; }), mu = vs.reduce(function (a, b) { return a + b; }, 0) / 6, sd = Math.sqrt(vs.reduce(function (a, b) { return a + (b - mu) * (b - mu); }, 0) / 6);
+    var sd = areaSpread(pr);
     var tot = state.slots.reduce(function (a, b) { return a + b; }, 0), biased = tot >= 8 && Math.max.apply(null, state.slots) / tot >= .8;
-    r.noSignal = !(sd >= .2) || !!r.lowEngagement; var tsp = {}, tt = 0; state.choices.forEach(function (c) { Object.keys(c.spent || {}).forEach(function (k) { var a = k.slice(-1); tsp[a] = (tsp[a] || 0) + c.spent[k]; tt += c.spent[k]; }); }); var oneNote = tt >= 8 && Math.max.apply(null, AREAS.map(function (a) { return tsp[a] || 0; })) / tt >= .7; r.oneNote = oneNote;
+    r.noSignal = !(sd >= NOSIGNAL_SD) || !!r.lowEngagement; var tsp = {}, tt = 0; state.choices.forEach(function (c) { Object.keys(c.spent || {}).forEach(function (k) { var a = k.slice(-1); tsp[a] = (tsp[a] || 0) + c.spent[k]; tt += c.spent[k]; }); }); var oneNote = tt >= 8 && Math.max.apply(null, AREAS.map(function (a) { return tsp[a] || 0; })) / tt >= .7; r.oneNote = oneNote;
     r.cautious = r.confidence === 'broad' || biased || oneNote || sd < .5; r.biased = biased;
     if (!restored) { track('result', { code: code, alts: r.code.alternatives, profile: pr, scores: r.scores, confidence: r.confidence, noSignal: r.noSignal, cautious: r.cautious, biased: biased, sd: +sd.toFixed(3), stops: r.stopsPlayed, mixed: r.consistency && r.consistency.mixed, lowEngagement: !!r.lowEngagement, slots: state.slots }); saveSnapshot(r); }
     $('selfq').hidden = !MWC || !TK || !!restored; Array.prototype.forEach.call($('selfq').children, function (c) { if (c.id !== 'chkOpen') c.hidden = r.noSignal; }); $('selfq').querySelectorAll('.rate button').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); }); $('chkOpen').hidden = !MWC;
@@ -1459,8 +1477,9 @@
     $('sure').hidden = false; $('sure').innerHTML = '<div class="sureRow"><span class="meter m' + lvl + '" aria-hidden="true"><i></i><i></i><i></i></span><b>' + ['', 'A rough first draft', 'Fairly clear', 'Clear'][lvl] + '</b></div><details><summary>Why?</summary><p>' + esc(notes.join(' ')) + '</p></details>';
     $('notes').hidden = !warn; $('notes').textContent = notes.filter(function (t) { return /^Most of your oil|^Not much caught/.test(t); }).join(' ');
     var none = r.noSignal; document.querySelector('#reveal .stepbar').hidden = none; $('compass').parentNode.hidden = none; $('legend').hidden = none; if (none) { $('sure').hidden = true; $('notes').hidden = false; } $('openDoors').hidden = none; $('revealLine').hidden = none;
-    if (none) { $('notes').textContent = 'There is not enough here to show a shape. That happens when almost no oil is spent or everything feels the same. It does not mean anything is wrong. Try the walk again and spend your oil on what you would enjoy most.'; $('revealLine').hidden = true; }
-    var na = $('noSigAgain'); if (!na) { na = document.createElement('button'); na.type = 'button'; na.id = 'noSigAgain'; na.className = 'go'; na.textContent = 'Walk the road again'; na.addEventListener('click', function () { show('welcome'); }); $('notes').parentNode.appendChild(na); } na.hidden = !none;
+    $('revealHead').textContent = none ? 'No clear shape this time' : 'Your interest shape'; $('saveBtn').hidden = none || !!MWC; document.querySelector('#reveal .nexthint').hidden = none;
+    if (none) { $('notes').textContent = (r.lowEngagement ? 'Very little oil was spent on this walk, so no clear shape showed up.' : 'Your oil was spread over many different things, so no clear shape showed up.') + ' That is fine, and nothing is wrong. Walk again and give your oil to what you would really enjoy doing.'; $('revealLine').hidden = true; }
+    var na = $('noSigAgain'); if (!na) { na = document.createElement('button'); na.type = 'button'; na.id = 'noSigAgain'; na.className = 'go'; na.textContent = 'Walk the road again'; na.addEventListener('click', function () { track('nosignal_again'); state.skipIntro = true; show('welcome'); });   /* the welcome keeps its 'Not you?' check on shared devices; the intro is skipped next time */ $('notes').parentNode.appendChild(na); } na.hidden = !none;
     var rl = $('retLine'); rl.hidden = !(MWC && TK && RET) || none; rl.innerHTML = RET ? '<span aria-hidden="true">\ud83d\udd11</span><span>Your login code <b>' + esc(RET) + '</b></span><span class="rbtns"><button type="button" class="linkbtn" id="retCopy">Copy</button>' + (navigator.share ? '<button type="button" class="linkbtn" id="retShare">Share</button>' : '') + '</span>' : ''; rl.title = 'Log in with it to see these results again on any phone or laptop, without answering again.';
   }
   function saveSnapshot(r) {
@@ -1477,7 +1496,7 @@
     SEED = a.seed == null ? SEED : a.seed; state.choices = a.choices; state.slots = a.slots && a.slots.length === 4 ? a.slots : [0, 0, 0, 0]; state.lockDone = {};
     state.apt = { N: [], V: [], S: [], P: [] }; APT.forEach(function (d) { state.apt[d] = ((a.apt && a.apt[d]) || []).map(function (x) { return { l: x[0], ok: !!x[1], skip: !!x[2] }; }); });
     state.ctx.cls = a.ctx.cls || ''; state.ctx.board = a.ctx.board || ''; state.ctx.lean = a.ctx.lean || '';
-    state.ilaFinal = false; trapBack(); toReveal(true); paintApt(); return true;
+    state.ilaFinal = false; state.hinted = {}; trapBack(); toReveal(true); paintApt(); return true;
   }
   function paintLast() {
     var el = $('lastRes'), a = ME && ME.filter(function (x) { return !x.noSignal && x.code && x.code.length; })[0], b = $('begin');
@@ -1817,9 +1836,9 @@
   var LEVEL_WORD = ['Growing', 'Steady', 'Strong', 'Strong'];
   function paintApt() {
     var a = aptScores(), el = $('aptCard'); if (!el) { el = document.createElement('div'); el.id = 'aptCard'; el.className = 'aptcard'; $('legend').parentNode.insertBefore(el, $('legend').nextSibling); }
-    if (a.n < 2 || (state.result && state.result.noSignal)) { el.hidden = true; return; }
+    if (a.n < 2) { el.hidden = true; return; }   /* puzzles stand on their own, so they show even when the walk gave no interest shape */
     el.hidden = false;
-    el.innerHTML = '<b class="t">Puzzle strengths</b>' + APT.filter(function (d) { return a.s[d] !== undefined; }).map(function (d) { return '<div class="ar"><span>' + APTN[d] + '</span><span>' + LEVEL_WORD[a.s[d]] + '</span></div>'; }).join('') + '<span style="font-weight:600;font-size:13.5px;color:#f3ecd8">These are a few quick puzzles, so a rough signal only. They do not change your interest shape or the order of fields.</span>';
+    el.innerHTML = '<b class="t">Puzzle strengths</b>' + APT.filter(function (d) { return a.s[d] !== undefined; }).map(function (d) { return '<div class="ar"><span>' + APTN[d] + '</span><span>' + LEVEL_WORD[a.s[d]] + '</span></div>'; }).join('') + '<span style="font-weight:600;font-size:13.5px;color:#f3ecd8">These are a few quick puzzles, so a rough signal only. ' + (state.result && state.result.noSignal ? 'They are separate from the interest walk.' : 'They do not change your interest shape or the order of fields.') + '</span>';
   }
   function trackApt() { var a = aptScores(); track('apt', { s: a.s, items: APT.reduce(function (o, d) { o[d] = state.apt[d].map(function (x) { return [x.l, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); return o; }, {}) }); }
 
@@ -1878,7 +1897,8 @@
   $('introSkip').addEventListener('click', endIntro);
   $('begin').addEventListener('click', function () {
     try { if (localStorage.getItem('margwise.mute') !== '1' && Snd.available() && !Snd.isOn()) { Snd.set(true); paintSound(); } } catch (e) { /* storage blocked: stay silent */ }
-    if (INTRO.length) { introI = 0; trapBack(); show('intro'); paintIntro(); } else startWalk();
+    var skip = state.skipIntro; state.skipIntro = false;
+    if (INTRO.length && !skip) { introI = 0; trapBack(); show('intro'); paintIntro(); } else startWalk();
   });
   $('aboutBtn').addEventListener('click', function () { $('about').hidden = false; $('aboutClose').focus(); });
   $('aboutClose').addEventListener('click', function () { $('about').hidden = true; });
