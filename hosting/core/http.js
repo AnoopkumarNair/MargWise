@@ -2,6 +2,7 @@
 // Every response: content-type application/json, cache-control no-store, x-content-type-options nosniff, x-request-id. No CORS headers (same origin only).
 // Success: {ok:true, ...}. Failure: {ok:false, error:{code, message}}. The message is safe to show to a person.
 import { validate } from '../../contracts/validate_lib.js';
+import { bump } from './ops.js';
 
 // The only error codes, in their canonical order. contracts/bands.json (error_code) and contracts/api/error.schema.json list exactly
 // these keys in this order; hosting/tests/adult/http.test.mjs checks it. A new code needs a note in docs/adult/deviations.md.
@@ -85,6 +86,7 @@ export function defineRoute(route, fn) {
       if (!(res instanceof Response)) throw new TypeError('handler did not return a Response');   // our bug: answered and logged as internal
     } catch { res = fail('internal', { rid }); }
     if (!res.headers.get('x-request-id')) { const h = new Headers(res.headers); h.set('x-request-id', rid); const c = codes.get(res); res = new Response(res.body, { status: res.status, headers: h }); if (c) codes.set(res, c); }
+    if (deps.db && route !== 'GET /api/v1/health') { await bump(deps, 'requests'); if (res.status >= 500) await bump(deps, 'http_5xx'); }   // ADR-10 counters: aggregates only, never fatal
     deps.log({ ts: t0, rid, route, status: res.status, ms: deps.now() - t0, release: deps.config.release, api_v: deps.config.apiV, error_code: codeOf(res) });
     return res;
   };
