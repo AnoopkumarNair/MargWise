@@ -217,8 +217,10 @@ test('the CSP allows the PDF worker from this site only, and still blocks inline
   const ctx = await browser.newContext(); const page = await ctx.newPage();
   const res = await page.goto(base + '/work/');
   const csp = res.headers()['content-security-policy'].split(', ').find(p => p.includes("object-src 'none'"));
-  assert.match(csp, /worker-src 'self'/); assert.match(csp, /script-src 'self';/); assert.match(csp, /connect-src 'self'/);
-  assert.ok(!/unsafe-inline|unsafe-eval|wasm-unsafe-eval|blob:|https?:/.test(csp), 'no inline, eval, blob or remote sources: ' + csp);
+  assert.match(csp, /worker-src 'self'/); assert.match(csp, /script-src 'self' https:\/\/challenges\.cloudflare\.com;/); assert.match(csp, /connect-src 'self' https:\/\/challenges\.cloudflare\.com;/);
+  // S4 (D37): Turnstile's host is the only remote source, for scripts, connections and frames
+  assert.deepEqual([...new Set(csp.match(/https?:\/\/[^\s;]+/g))], ['https://challenges.cloudflare.com']);
+  assert.ok(!/unsafe-inline|unsafe-eval|wasm-unsafe-eval|blob:/.test(csp), 'no inline, eval or blob sources: ' + csp);
   await ctx.close();
 });
 

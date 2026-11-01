@@ -2,6 +2,7 @@
 import { h, mount } from '../dom.js';
 import { state, PRIORITIES, active } from '../state.js';
 import { loadOccupations, loadSlice } from '../data.js';
+import { renderSaveBox } from '../account/save_box.js';
 import { computeRoads, timing, badges, moveNote, coverageBar, signalList, flagList } from './common.js';
 
 export function title() { return 'Your roads'; }
@@ -76,6 +77,7 @@ export async function render(args) {
     h('h1', { tabindex: '-1' }, 'Roads from ' + here.occ.label), away,
     h('p', { class: 'lead' }, 'Coverage is how much of each job’s top skills you already cover, with the skills that matter most counting most. A higher number is a shorter move.'),
     sliders, h('h2', null, 'Jobs you could move to'), count, flagNote, list, h('p', null, leapBtn),
+    state.focus ? null : renderSaveBox(),
     h('p', null, h('a', { href: '#/today', id: 'to-today' }, 'Your job today'), ' · ', h('a', { href: '#/constraints', id: 'to-constraints' }, 'Change my answers')),
     h('p', null, h('a', { href: state.path === 'resume' ? '#/confirm' : '#/skills', id: 'change-skills' }, state.path === 'resume' ? 'Change what we found' : 'Change my skills'), ' · ', h('a', { href: '#/', id: 'start-again' }, 'Start again')));
   await refresh();

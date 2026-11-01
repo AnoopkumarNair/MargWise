@@ -494,3 +494,47 @@ Written by the backend lane while building T3.1 to T3.7. Nothing below changed a
 - We did: the student and admin code (T3.2) now reads `testers.track` and `invites.track`, so on the live database `0001_adult.sql` must be applied BEFORE the deploy that carries this code, or every student sign-in and admin page would fail with an unknown-column error. The migration is additive, so the old code keeps working after it. (The new adult endpoints are the reverse: they need the migration too.)
 - Smaller choices, for the owner to know: (1) `admin.js ?revoke=<id>` still works on an adult id (it only sets `tok_after`); it is the owner's way to cut a leaked adult session. Every other admin action on an adult id answers "not found". (2) Under-18 refusals are counted only in `under18`; the metrics page reads them from there, so `ops_daily` has no under-18 metric. (3) `ops_daily` keeps day totals, so the 5xx and error rates in `hosting/tools/health_watch.mjs` are rates over the UTC day so far, not over the last hour. (4) Adults get `testers.consent_on` set to the day they accepted the notice (it was students-only); `source` stays empty. (5) The `.github/workflows/health-watch.yml` file is left to the QA lane: it only has to run `node hosting/tools/health_watch.mjs` every 30 minutes with `MARGWISE_URL` and `ADMIN_KEY` secrets and open an issue when the exit code is 1.
 - Decision: proposed
+
+## S4 frontend lane (accounts and saving), 2026-11-01
+
+Written by the frontend lane while building T4.2 and T5.4. Nothing below changed a contract. Each entry needs an owner or architect decision.
+
+### D36. Log-in needs the invite code and the birth year
+- Slice and ticket: S4, T4.2 (screen 3); `contracts/api/email_start.request.schema.json`
+- Date: 2026-11-01
+- Author: frontend lane
+- Plan said: "Log-in. Email, then the code." (SPEC 8 screen 3).
+- We did: `POST /email/start` requires `invite`, `birthYear` and `turnstile` for every address, known or not (the server checks age and invite before it looks the address up). So the log-in screen asks for the birth year, the email and the invite code. The invite code is remembered on the device after a sign-in (localStorage key `mw_adult_invite`, not personal) and filled in from `?c=`. The birth year is asked every time and never kept.
+- Effect: a person on a new device must still have their invite code. If the invite is switched off, existing people cannot log in.
+- Options: (a) accept (as built); (b) amend `email_start.request` so a known address needs only `email` and `turnstile` (the server would still have to answer the same for unknown addresses; the age check would move to sign-up only). The frontend lane recommends (b) before the pilot opens beyond invited testers.
+- Decision: proposed
+
+### D37. Turnstile needs a site key at build time, and the `/work/` policy allows Cloudflare's host
+- Slice and ticket: S4, T4.2
+- Date: 2026-11-01
+- Author: frontend lane
+- We did: Turnstile cannot be vendored. `account/turnstile.js` adds Cloudflare's script only on the email step. `hosting/public/_headers` (`/work/*` block only) now starts with `! Content-Security-Policy`, which removes the site-wide policy for `/work/` (without it the site-wide `script-src 'self' 'unsafe-inline'` would block the widget, because every matching block is enforced), then sets the old strict policy plus `https://challenges.cloudflare.com` in `script-src`, `connect-src` and `frame-src`. The site key is public: `TURNSTILE_SITEKEY=<key> python3 app/adult/build.py` writes it into `index.html`. With no key, a `--dev` build has no widget (the server's test setting accepts any token), and a release build shows "Sign-up and log-in are not open yet".
+- To check on the preview deployment: that Pages accepts the `!` line and replaces the policy; that the widget loads and verifies (it may need `style-src` or another directive; add it only if the console shows a block). The e2e server (`app/adult/tests/e2e/server.mjs`) now understands `!` lines, as Cloudflare does.
+- Decision: proposed
+
+### D38. Research opt-out has no endpoint
+- Slice and ticket: S4, T5.4 (screen 12 lists "Research opt-out")
+- Date: 2026-11-01
+- Author: frontend lane
+- Plan said: the account screen has a research opt-out. SPEC 9 has no endpoint that changes `testers.research_ok` after sign-up.
+- We did: the account screen says how to change it (write to the contact in the notice; deleting the data also ends it). Nothing is sent.
+- Options: add `POST /me/research {research:bool}` (a contract change) or keep this. The frontend lane recommends adding the endpoint; the screen needs one switch.
+- Decision: proposed
+
+### D39. The sign-up notice is a draft with two blanks
+- Slice and ticket: S4, T4.2 (**ASK**)
+- Date: 2026-11-01
+- Author: frontend lane
+- We did: `app/adult/notice.md` holds the notice and the two tick labels. It has two blanks, `[[retention period]]` and `[[grievance contact]]`. In a real build the page refuses sign-up ("Account sign-up opens soon") while a blank is left; a `--dev` build shows the blanks. The AI paragraph (SPEC 12) is left out because no text is sent to an AI yet (slice S6); it must be added before S6. The line about keeping the email address "or a scrambled form of it" depends on D29.
+- Decision: proposed (owner approves the wording and fills the blanks)
+
+### D40. Smaller choices
+- Sessions: the token is in localStorage (ADR-04) and replaced when a reply carries `x-session-token` (D33). A refused token (401) is dropped.
+- Saving is explicit ("Save to my account"). It also happens once at sign-up when the person came from "Make an account to save". The app never overwrites a saved profile without asking, and never sends events yet (`profile_saved` is not sent; the admin funnel in T7.2 will not show saves until it is).
+- `app/adult/build.py` now also writes `ids.json` and, for real data, copies `data/graph/id_registry.json` into the graph folder (D32). The id registry is empty today, so nothing is mapped yet.
+- The e2e for S4 runs the real handlers behind a small Node server (`tests/e2e/api_server.mjs`) because `wrangler pages dev` needs network access to start. Run `npx wrangler pages dev hosting/public` with `EMAIL_DRY_RUN=1 EMAIL_DRY_RUN_PRINT=1` for a manual demo.

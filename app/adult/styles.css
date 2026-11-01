@@ -51,7 +51,7 @@ main:focus, h1:focus { outline: none; box-shadow: none; }
 
 /* title screen */
 .lbl { display: block; font-weight: 800; margin-bottom: 4px; }
-input[type=text], select { width: 100%; min-height: 48px; padding: 8px 12px; font: 600 1.05rem var(--body); color: var(--ink); background: #fff; border: 2px solid var(--ink-soft); border-radius: 8px; }
+input[type=text], input[type=email], select { width: 100%; min-height: 48px; padding: 8px 12px; font: 600 1.05rem var(--body); color: var(--ink); background: #fff; border: 2px solid var(--ink-soft); border-radius: 8px; }
 .picks { list-style: none; padding: 0; margin: 0 0 1em; display: grid; gap: 8px; }
 .pick { width: 100%; min-height: 48px; text-align: left; padding: 10px 14px; background: var(--card); border: 2px solid var(--sky-mid); border-radius: 8px; font: 700 1rem var(--body); color: var(--sky-top); cursor: pointer; display: flex; flex-direction: column; }
 .pick:hover:not(:disabled) { background: var(--cream); }
@@ -176,3 +176,18 @@ textarea { width: 100%; min-height: 12rem; padding: 10px 12px; font: 600 1rem/1.
   .cards { grid-template-columns: 1fr 1fr; }
 }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+/* S4: header link, account screens */
+.top-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+#acct a { color: var(--cream); font-weight: 700; display: inline-block; min-height: 32px; padding: 4px 0; }
+.turnstile { min-height: 65px; margin: .4em 0; }
+.tick { display: flex; align-items: flex-start; gap: 10px; margin: .8em 0; }
+.tick label { flex: 1; padding-top: 1px; }
+.notice { background: var(--cream); border-left: 6px solid var(--glow-deep); padding: 4px 14px 4px; border-radius: 4px; margin: 0 0 1em; }
+.notice h3 { margin-top: .9rem; }
+.savebox { background: var(--card); border: 2px solid var(--line); border-radius: 8px; padding: 4px 14px 8px; margin: 1.2em 0; }
+.two { display: grid; gap: 10px; }
+.btn.danger { border-color: var(--rose-ink); background: var(--rose-ink); color: #fff; }
+.btn.danger:hover:not(:disabled) { background: #7b1a38; }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+@media (min-width: 720px) { .two { grid-template-columns: 1fr 1fr; } }

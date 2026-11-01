@@ -2,11 +2,14 @@
 // These are plain GET requests for static files. Nothing about the person is sent.
 import { state } from './state.js';
 
-async function getJson(url, init) {
+async function get(url, init, asText) {
   const r = await fetch(url, Object.assign({ credentials: 'omit' }, init));
   if (!r.ok) throw new Error(url + ' returned ' + r.status);
-  return r.json();
+  return asText ? r.text() : r.json();
 }
+const getJson = (url, init) => get(url, init, false);
+// A static text file of the app (the sign-up notice). Also a plain GET.
+export async function loadText(url) { return get(url, { cache: 'no-cache' }, true); }
 
 let pTitles = null; let pOccs = null; let pSkills = null;
 const slices = new Map();

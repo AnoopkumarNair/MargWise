@@ -1,5 +1,6 @@
 // A tiny static server for the e2e tests. It serves hosting/public and applies hosting/public/_headers the way Cloudflare Pages does:
 // every matching block applies, and a header set by two blocks is joined with ", " (two CSP policies are both enforced).
+// A line "! Header-Name" first removes that header as set by the earlier blocks (the /work/ block uses it to replace the site-wide policy).
 import http from 'node:http';
 import { readFileSync, statSync, existsSync } from 'node:fs';
 import { join, extname, normalize, sep } from 'node:path';
@@ -12,6 +13,7 @@ export function parseHeaders(text) {
   for (const line of text.split('\n')) {
     if (!line.trim() || line.trim().startsWith('#')) continue;
     if (!/^\s/.test(line)) { cur = { pattern: line.trim(), headers: [] }; blocks.push(cur); }
+    else if (line.trim().startsWith('!')) cur.headers.push(['!', line.trim().slice(1).trim()]);   // "! Name" detaches a header set by an earlier block
     else { const i = line.indexOf(':'); cur.headers.push([line.slice(0, i).trim(), line.slice(i + 1).trim()]); }
   }
   return blocks;
@@ -22,7 +24,7 @@ function matches(pattern, path) {
 }
 export function headersFor(blocks, path) {
   const out = new Map();
-  for (const b of blocks) if (matches(b.pattern, path)) for (const [k, v] of b.headers) out.set(k, out.has(k) ? out.get(k) + ', ' + v : v);
+  for (const b of blocks) if (matches(b.pattern, path)) for (const [k, v] of b.headers) { if (k === '!') out.delete(v); else out.set(k, out.has(k) ? out.get(k) + ', ' + v : v); }
   return out;
 }
 

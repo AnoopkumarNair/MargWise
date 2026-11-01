@@ -79,7 +79,7 @@ export async function render() {
   return h('section', { class: 'screen' },
     h('h1', { tabindex: '-1' }, 'A few quick questions'),
     h('p', { class: 'lead' }, 'These help us flag roads that may not fit your time, money or place. Every question is optional.'),
-    h('p', { class: 'privacy' }, h('strong', null, 'They never change the order of your roads. '), 'They only add a note to a road when it may not fit. Nothing here is saved or sent anywhere.'),
+    h('p', { class: 'privacy' }, h('strong', null, 'They never change the order of your roads. '), 'They only add a note to a road when it may not fit. Nothing here is sent anywhere unless you save your profile to an account.'),
     form,
     h('p', { class: 'actions' }, next, ' ', skip),
     h('p', null, h('a', { href: state.path === 'resume' ? '#/confirm' : '#/skills' }, 'Back')));

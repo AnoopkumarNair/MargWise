@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the adult app (slices S1, S3 and S2) into hosting/public/work/.
+"""Build the adult app (slices S1, S3, S2 and S4) into hosting/public/work/.
 
   python3 app/adult/build.py --dev   build from the working files in data/graph/ (or the test fixtures in app/adult/dev/fixtures/ while
                                      that folder has no slices yet); stamps the release id 'dev-unaccepted'. Never deploy this.
@@ -15,6 +15,10 @@ The app and its graph files always carry the same release id (ADR-12): the graph
 The graph files are written as plain .json: the web server compresses them on the way (the 60 KB slice limit is the gzipped size).
 hosting/public/work/ is a build output and is git-ignored (hosting/.gitignore), like the student game's index.html; it is built before
 each deploy (deviations D15). A --dev build also writes a .gitignore into work/, so it is never committed even without that rule.
+Accounts (S4): the page needs the public Turnstile site key. Set it when building: TURNSTILE_SITEKEY=<key> python3 app/adult/build.py ...
+(the key is public; the secret stays on the server). Without it a --dev build has no human check and the server's test setting must be on;
+a release build without it shows "sign-up is not open yet". The build also publishes ids.json (every id the profile may hold) and a copy of
+data/graph/id_registry.json beside the graph files, because the server reads them to check and to map saved ids (deviations D32).
 Uses only the Python standard library.
 """
 import argparse, glob, hashlib, json, os, re, shutil, sys
@@ -164,14 +168,22 @@ def main():
         app_files[rel] = sha(dst)
 
     # 1. the app: everything at the top of app/adult/ that the browser needs, and screens/
-    for name in ('styles.css', 'app.js', 'dom.js', 'lookup.js', 'matcher_adapter.js', 'state.js', 'data.js', 'footer.js',
+    for name in ('styles.css', 'notice.md', 'app.js', 'dom.js', 'lookup.js', 'matcher_adapter.js', 'state.js', 'data.js', 'footer.js',
                  'intake_file.js', 'intake_profile.js', 'intake_read.js', 'constraints_model.js', 'today_model.js'):
         put(name, os.path.join(APP, name))
     for p in sorted(glob.glob(os.path.join(APP, 'screens', '*.js'))):
         put('screens/' + os.path.basename(p), p)
+    for p in sorted(glob.glob(os.path.join(APP, 'account', '*.js'))):
+        put('account/' + os.path.basename(p), p)
     html = open(os.path.join(APP, 'index.html'), encoding='utf8').read()
     assert html.count('__RELEASE__') == 1, 'index.html must hold the __RELEASE__ marker exactly once'
-    stamped = html.replace('__RELEASE__', release_id)
+    sitekey = os.environ.get('TURNSTILE_SITEKEY', '').strip()
+    if sitekey and not re.match(r'^[A-Za-z0-9_-]{8,64}$', sitekey):
+        die('TURNSTILE_SITEKEY does not look like a Turnstile site key')
+    assert html.count('__TURNSTILE_SITEKEY__') == 1, 'index.html must hold the __TURNSTILE_SITEKEY__ marker exactly once'
+    if not sitekey and not args.dev:
+        print('WARNING: TURNSTILE_SITEKEY is not set, so this build shows "sign-up is not open yet". Set it before deploying.')
+    stamped = html.replace('__RELEASE__', release_id).replace('__TURNSTILE_SITEKEY__', sitekey)
     open(os.path.join(OUT, 'index.html'), 'w', encoding='utf8').write(stamped)
     app_files['index.html'] = sha(os.path.join(OUT, 'index.html'))
 
@@ -216,9 +228,20 @@ def main():
     op = os.path.join(OUT, gbase, 'occupations.json')
     json.dump(occ_list, open(op, 'w', encoding='utf8'), separators=(',', ':'), ensure_ascii=False)
     gout['occupations.json'] = sha(op)
+    # ids.json: every id a saved profile may hold (skills, technologies and occupations the app offers). The server checks a save against it.
+    ids = sorted({e['id'] for e in json.loads(gdata['skills_index.json'])} | {o['id'] for o in occ_list})
+    ip = os.path.join(OUT, gbase, 'ids.json')
+    json.dump({'release': release_id, 'ids': ids}, open(ip, 'w', encoding='utf8'), separators=(',', ':'))
+    gout['ids.json'] = sha(ip)
+    # id_registry.json: which retired ids map to which new ones. Real data only: the test fixtures have their own ids and no registry.
+    reg = os.path.join(GRAPH_DEV, 'id_registry.json')
+    if not is_fixture and os.path.exists(reg):
+        rp = os.path.join(OUT, gbase, 'id_registry.json')
+        shutil.copyfile(reg, rp)
+        gout['id_registry.json'] = sha(rp)
 
     manifest = {
-        'app': 'adult', 'slice': 'S2', 'release_id': release_id, 'dev_build': args.dev, 'fixture_data': is_fixture,
+        'app': 'adult', 'slice': 'S4', 'release_id': release_id, 'dev_build': args.dev, 'fixture_data': is_fixture,
         'built_at': None,  # no clock, so a rebuild of the same inputs gives the same bytes
         'sources': [srcs[k] for k in sorted(srcs)],
         # the O*NET version the slices were built from (their release id 'onet-31-0-<hash>'), so a dev build's footer can show it too
