@@ -2,7 +2,7 @@
 
 Question for this review: students say the storyline is boring and there are too many questions, so they do not finish. Why, and what should we change first?
 
-Short answer: students leave when the game shows the first town a second time (the "second look"), about six towns and four locks in. That screen looks like a bug and the counter goes up. Behind it sits a bigger problem: the game is long, it promises "About 15 minutes", and almost nobody gets the short version.
+Short answer: students leave when the game shows a town they already played a second time (the "second look"), about six towns and four locks in. That screen looks like a bug and the counter goes up. Behind it sits a bigger problem: the game is long, it promises "About 15 minutes", and almost nobody gets the short version.
 
 ## 1. What we did
 
@@ -42,7 +42,7 @@ Totals: the 8 who stopped at the second look did so after 6 towns and 4 locks, b
 
 ### (a) The "second look" reads as a bug, and the counter goes up (all 9)
 
-What they saw: after Place 6, the first town (here Orchard Village, Night Bazaar or Herbalists' Garden, depending on the run) comes back with the same four choices in a new order.
+What they saw: after Place 6, a town they already played (Orchard Village, Night Bazaar or Herbalists' Garden, depending on the run) comes back with the same four choices in a new order.
 
 - Aarav: "I already did the apple place. Is it glitching?"
 - Ishita: "Did I mess up?"
