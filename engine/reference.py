@@ -3,7 +3,7 @@
 Run `python3 engine/reference.py` to check it against engine/tests/golden.json (vectors produced by the shipped bundle)."""
 import json, math, os, sys
 TR = ['R', 'I', 'A', 'S', 'E', 'C']
-CFG = dict(beta=1.5, keep=0.5, priorSd=1.0, minStops=8, stopZ=1.0, clearZ=0.7, broadRange=1.4, echoAfter=6, noneShare=0.5, scoreCentre=20, scoreScale=8, tieWithin=3, echoMinOverlap=0.5)
+CFG = dict(beta=1.5, keep=0.5, priorSd=1.0, draftAt=8, draftCover=4, stopZ=0.5, clearZ=0.7, broadRange=1.4, noneShare=0.5, scoreCentre=20, scoreScale=8, tieWithin=3)
 M32 = 0xFFFFFFFF
 def imul(a, b):
     a &= M32; b &= M32; r = (a * b) & M32
@@ -29,10 +29,11 @@ def info(scene, theta):
     p = probs(scene, theta); L = [vec(o['loads']) for o in scene['options']]; b2 = CFG['beta'] ** 2
     mean = [sum(p[k] * L[k][t] for k in range(len(L))) for t in range(6)]
     return [[2 * b2 * (sum(p[k] * L[k][t] * L[k][u] for k in range(len(L))) - mean[t] * mean[u]) for u in range(6)] for t in range(6)]
+def played(choices): return [c for c in choices if not c.get('echoOf')]   # entries from journey-v1 "second look" repeats are ignored
 def scenes_of(bank, choices):
     ix = {s['id']: s for s in bank}; out = []
-    for c in choices:
-        sc = ix[c.get('echoOf') or c['sceneId']]; out.append((sc, [c['spent'].get(o['id'], 0) for o in sc['options']]))
+    for c in played(choices):
+        sc = ix[c['sceneId']]; out.append((sc, [c['spent'].get(o['id'], 0) for o in sc['options']]))
     return out
 def estimate(bank, choices):
     obs = scenes_of(bank, choices); r = 1 / CFG['priorSd'] ** 2; th = [0.0] * 6
@@ -68,35 +69,58 @@ def code_of(scores):
     alts.sort(key=lambda a: tuple((-scores[a[k]], TR.index(a[k])) for k in range(3)))
     return top, alts
 def journey_result(bank, choices):
-    th, cov = estimate(bank, choices); mu = sum(th) / 6; prof = {t: th[i] - mu for i, t in enumerate(TR)}
+    choices = played(choices); th, cov = estimate(bank, choices); mu = sum(th) / 6; prof = {t: th[i] - mu for i, t in enumerate(TR)}
     scores = {t: max(0.0, min(40.0, CFG['scoreCentre'] + CFG['scoreScale'] * prof[t])) for t in TR}
     mz = 0 if not choices else min_z(th, cov); rng = max(th) - min(th)
     none = sum(1 for c in choices if all(v == 0 for v in c['spent'].values()))
     top, alts = code_of(scores)
-    orig = next((c for c in choices if c.get('echoOf')), None); base = orig and next((c for c in choices if not c.get('echoOf') and c['sceneId'] == orig['echoOf']), None)
-    if orig and base:
-        keys = set(base['spent']) | set(orig['spent']); ov = sum(min(base['spent'].get(k, 0), orig['spent'].get(k, 0)) for k in keys) / 2
-        cons = {'checked': True, 'overlap': ov, 'mixed': ov < CFG['echoMinOverlap']}
-    else: cons = {'checked': False, 'overlap': 1, 'mixed': False}
     return {'profile': prof, 'scores': scores, 'code': top, 'alternatives': alts, 'confidence': 'broad' if rng < CFG['broadRange'] else 'clear' if mz >= CFG['clearZ'] else 'close',
-            'lowEngagement': bool(choices) and none / len(choices) >= CFG['noneShare'], 'stopsPlayed': sum(1 for c in choices if not c.get('echoOf')), 'consistency': cons}
+            'lowEngagement': bool(choices) and none / len(choices) >= CFG['noneShare'], 'stopsPlayed': len(choices)}
+def main_types(sc): return {max(TR, key=lambda t: (sc_load(o, t), -TR.index(t))) for o in sc['options']}
+def sc_load(o, t): return float(o['loads'].get(t, 0))
+def cover_possible(need, pool, picks):
+    """Can `picks` scenes from `pool` (sets of main types) bring every type's remaining need to 0? Exhaustive search; the bank is small."""
+    if all(n <= 0 for n in need.values()): return True
+    if picks <= 0 or max(need.values()) > picks: return False
+    import itertools
+    for combo in itertools.combinations(range(len(pool)), min(picks, len(pool))):
+        left = dict(need)
+        for k in combo:
+            for t in pool[k]: left[t] -= 1
+        if all(n <= 0 for n in left.values()): return True
+    return False
+def draft_at(bank): return min(CFG['draftAt'], len(bank))
+def is_done(bank, choices, est=None):
+    k = len(played(choices))
+    if k >= len(bank): return True
+    if k < draft_at(bank): return False
+    th, cov = est or estimate(bank, choices); return min_z(th, cov) >= CFG['stopZ']
 def step(bank, choices):
-    played = [c for c in choices if not c.get('echoOf')]
-    if len(played) >= len(bank): return {'done': True, 'echo': False, 'scene': None}
-    if len(played) >= CFG['echoAfter'] and not any(c.get('echoOf') for c in choices):
-        best = None
-        for c in played:
-            m = max([0] + list(c['spent'].values()))
-            if best is None or m > best[0]: best = (m, c)
-        if best and best[0] > 0: return {'done': False, 'echo': True, 'scene': best[1]['sceneId']}
+    k = len(played(choices)); draft = k >= draft_at(bank)
+    if k >= len(bank): return {'done': True, 'draft': draft, 'scene': None}
     th, cov = estimate(bank, choices)
-    if len(played) >= CFG['minStops'] and min_z(th, cov) >= CFG['stopZ']: return {'done': True, 'echo': False, 'scene': None}
-    seen = {c.get('echoOf') or c['sceneId'] for c in choices}; best, bs = None, -math.inf
-    for sc in bank:
-        if sc['id'] in seen: continue
+    if is_done(bank, choices, (th, cov)): return {'done': True, 'draft': draft, 'scene': None}
+    seen = {c['sceneId'] for c in played(choices)}; cand = [sc for sc in bank if sc['id'] not in seen]
+    left = draft_at(bank) - k
+    if left > 0:   # before the draft point: keep it possible for every type to be a main card in draftCover of the first draftAt stops
+        have = {t: 0 for t in TR}
+        for sc in bank:
+            if sc['id'] in seen:
+                for t in main_types(sc): have[t] += 1
+        ok = []
+        for sc in cand:
+            mt = main_types(sc); need = {t: CFG['draftCover'] - have[t] - (1 if t in mt else 0) for t in TR}
+            if cover_possible(need, [main_types(x) for x in cand if x is not sc], left - 1): ok.append(sc)
+        if ok: cand = ok
+    best, bs = None, -math.inf
+    for sc in cand:
         I = info(sc, th); t = sum(cov[i][j] * I[j][i] for i in range(6) for j in range(6))
         if t > bs + 1e-12: best, bs = sc['id'], t
-    return {'done': False, 'echo': False, 'scene': best}
+    return {'done': False, 'draft': draft, 'scene': best}
+def walk_status(bank, choices):
+    k = len(played(choices)); m = len(bank); ready = k >= draft_at(bank)
+    z = min_z(*estimate(bank, choices)) if ready and k > 0 else None; done = k >= m or (z is not None and z >= CFG['stopZ'])
+    return {'played': k, 'draftAt': draft_at(bank), 'maxStops': m, 'draftReady': ready, 'done': done, 'sharpness': None if z is None else min(1.0, z / CFG['stopZ']), 'sharpenLeft': 0 if done else m - k}
 def career_fit(profile, careers):
     def z(v):
         x = [v[t] for t in TR]; m = sum(x) / 6; sd = math.sqrt(sum((a - m) ** 2 for a in x) / 6)
@@ -123,12 +147,13 @@ def main():
         if not ok: bad += 1; print('MISMATCH', msg)
     for ji, j in enumerate(g['journeys']):
         for k, s in enumerate(j['steps']):
-            r = step(bank, j['choices'][:k]); chk(r == s, 'journey %d step %d: %s vs %s' % (ji, k, r, s))
+            r = step(bank, j['choices'][:k]); chk(r == {x: s[x] for x in ('done', 'draft', 'scene')}, 'journey %d step %d: %s vs %s' % (ji, k, r, s))
+            w = walk_status(bank, j['choices'][:k]); e = s['status']
+            chk(all(w[x] == e[x] for x in w if x != 'sharpness') and ((w['sharpness'] is None) == (e['sharpness'] is None)) and (w['sharpness'] is None or abs(w['sharpness'] - e['sharpness']) < 1e-9), 'journey %d status %d: %s vs %s' % (ji, k, w, e))
         r = journey_result(bank, j['choices']); e = j['result']
         for t in TR: chk(abs(r['profile'][t] - e['profile'][t]) < 1e-6 and abs(r['scores'][t] - e['scores'][t]) < 1e-5, 'journey %d profile %s' % (ji, t))
         chk(r['code'] == e['code'], 'journey %d code %s vs %s' % (ji, r['code'], e['code'])); chk(r['alternatives'] == e['alternatives'], 'journey %d alternatives' % ji)
         for k in ('confidence', 'lowEngagement', 'stopsPlayed'): chk(r[k] == e[k], 'journey %d %s' % (ji, k))
-        chk(r['consistency']['checked'] == e['consistency']['checked'] and r['consistency']['mixed'] == e['consistency']['mixed'] and abs(r['consistency']['overlap'] - e['consistency']['overlap']) < 1e-9, 'journey %d consistency' % ji)
     for ci, c in enumerate(g['careers']):
         r = career_fit(c['profile'], c['careers']); chk([x['careerId'] for x in r] == [x['careerId'] for x in c['fit']] and all((a['r'] is None and b['r'] is None) or abs(a['r'] - b['r']) < 1e-9 for a, b in zip(r, c['fit'])), 'career set %d' % ci)
     ix = {s['id']: s for s in bank}
