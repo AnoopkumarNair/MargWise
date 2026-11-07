@@ -1,5 +1,7 @@
 # Student playtest, November 2026
 
+Round 2 (after the fixes, neutral brief): see [student_playtest_2026-11_round2.md](student_playtest_2026-11_round2.md). This page is round 1 and is kept as it was.
+
 Question for this review: students say the storyline is boring and there are too many questions, so they do not finish. Why, and what should we change first?
 
 Short answer: students leave when the game shows a town they already played a second time (the "second look"), about six towns and four locks in. That screen looks like a bug and the counter goes up. Behind it sits a bigger problem: the game is long, it promises "About 15 minutes", and almost nobody gets the short version.
