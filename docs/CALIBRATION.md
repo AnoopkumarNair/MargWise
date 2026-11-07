@@ -35,9 +35,9 @@ After steps 1 to 3 pass: "interest snapshot with known reliability". "Fit" or "s
 - Controlled-test status: the hosted build is for adult testers, or for minors only with parental agreement collected by the test owner. A verifiable parental consent flow is needed before any wider student use.
 
 ## Lamp locks (aptitude puzzles) and India pay
-- Eight original puzzle items (numbers, words, shapes, patterns; two per area, the second item adapts up or down) sit inside the story after places 2, 4, 6 and 8. No commercial test items are used.
-- Scores are 0 to 3 per area and are shown as Growing / Steady / Strong. They never change the RIASEC radar. They nudge the field order by at most about 0.35 of a field-score standard deviation, using field-by-area weights that are my judgement, not validated. Treat the weights as a hypothesis.
-- Needed before trusting them: norms by class and board, item difficulty from real answers, reliability (8 items will be low), checks for English-language and schooling bias, and whether the nudge improves agreement with counsellor ratings.
+- Four original puzzle items (numbers, words in English, shapes, patterns) are offered after the result as an optional bonus. They are no longer part of the walk. No commercial test items are used.
+- No scores, levels or labels are shown: the page says how many puzzles were tried. They never change the RIASEC radar or the field order (the old field-order nudge was removed). The puzzle answers are still sent as the `apt` event for later study.
+- Needed before any score is shown or used: norms by class and board, item difficulty from real answers, reliability (4 items will be low), checks for English-language and schooling bias, and whether it improves agreement with counsellor ratings.
 - India pay uses PLFS 2025 averages by broad occupation group (NCO-2015 division), mapped from O*NET SOC codes by hand. The mapping is approximate and the averages cover all ages and experience.
 
 ## Status after independent review 3 (22 Oct 2026)

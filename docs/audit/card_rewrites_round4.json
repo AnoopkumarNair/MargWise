@@ -1,0 +1,302 @@
+{
+ "s01-R": {
+  "old_round3": "Open the engine and fix it, with oily hands and no one to ask for help",
+  "proposal_v3": "Fix the ferry's engine with a mechanic's tools",
+  "new": "Fix the ferry engine, with no one to ask for help"
+ },
+ "s01-I": {
+  "old_round3": "Work out from tides and wind why it stalled, though the answer may come too late",
+  "proposal_v3": "Read tide and wind data to find why it stalled",
+  "new": "Read tide and wind data to find the fault, though it takes time"
+ },
+ "s01-A": {
+  "old_round3": "Paint a big board so the crowd knows what is happening, with an hour to finish",
+  "proposal_v3": "Make a short video to tell the waiting crowd",
+  "new": "Make a short video for the waiting crowd, with one hour to finish"
+ },
+ "s01-S": {
+  "old_round3": "Keep the waiting children calm and busy, even if you miss the repair",
+  "proposal_v3": "Help worried passengers find food, shade and news",
+  "new": "Help passengers find food, shade and news, even if you miss the repair"
+ },
+ "s02-R": {
+  "old_round3": "Fit the new planks by hand in the cold, getting every joint tight before midnight",
+  "proposal_v3": "Bolt on new steel supports and test every joint",
+  "new": "Bolt on steel supports and test each joint, in the cold night wind"
+ },
+ "s02-I": {
+  "old_round3": "Find out why this arch cracked, even if it takes all night of measuring",
+  "proposal_v3": "Measure the cracks to work out why the arch failed",
+  "new": "Measure the cracks to find why the arch failed, all night if needed"
+ },
+ "s02-A": {
+  "old_round3": "Sketch a new arch shape for the bridge, though most first ideas get thrown out",
+  "proposal_v3": "Design a new arch and model it on screen",
+  "new": "Design a new arch and model it on screen, though first ideas often fail"
+ },
+ "s02-E": {
+  "old_round3": "Lead the repair team, and face the blame if it goes wrong",
+  "proposal_v3": "Lead the repair crew and answer for the result",
+  "new": "Lead the repair crew and take the blame if it goes wrong"
+ },
+ "s03-R": {
+  "old_round3": "Climb the tower and follow the broken gear by hand, in a dusty, cramped space",
+  "proposal_v3": "Open the tower clock and fix its gears",
+  "new": "Open the tower clock and fix its gears, in a dusty, cramped space"
+ },
+ "s03-I": {
+  "old_round3": "Study the pattern of missed chimes, though it may take days to spot the cause",
+  "proposal_v3": "Log the missed chimes to find the cause",
+  "new": "Write a small script to log missed chimes, though bugs may eat your evening"
+ },
+ "s03-A": {
+  "old_round3": "Repaint the clock face so it is easier to read, even if some liked the old one",
+  "proposal_v3": "Redesign the clock face so it reads clearly",
+  "new": "Redesign the clock face to read clearly, though some liked the old one"
+ },
+ "s03-C": {
+  "old_round3": "Write up a step-by-step repair checklist, redoing it as things change",
+  "proposal_v3": "Set up a spreadsheet to log every repair",
+  "new": "Build a repair tracker that flags what is due, then keep it updated"
+ },
+ "s04-R": {
+  "old_round3": "Run the press and keep it humming all day",
+  "proposal_v3": "Repair and run the juice press all day",
+  "new": "Fix the juice press and run it all day, with aching arms"
+ },
+ "s04-I": {
+  "old_round3": "Test apple blends to work out why one tastes best",
+  "proposal_v3": "Test apple mixes to find why one tastes best",
+  "new": "Test apple mixes to find why one tastes best, though most will taste bad"
+ },
+ "s04-S": {
+  "old_round3": "Teach visiting children to make juice through games",
+  "proposal_v3": "Show younger neighbours how to run the press safely",
+  "new": "Teach neighbours to run the press safely, though it takes patience"
+ },
+ "s04-E": {
+  "old_round3": "Sell the fresh juice to passers-by on the village road",
+  "proposal_v3": "Start a small juice business on the village road",
+  "new": "Start a small juice stall on the village road, and risk unsold crates"
+ },
+ "s05-R": {
+  "old_round3": "Mend the dim signal lamp alone on the ridge, in freezing wind",
+  "proposal_v3": "Mend the dim signal lamp on the windy ridge",
+  "new": "Mend the dim signal lamp on the windy ridge, alone in the cold"
+ },
+ "s05-I": {
+  "old_round3": "Map where the fog is thickest to find a safer path, standing still in the cold",
+  "proposal_v3": "Plot a safer route through the fog on a map",
+  "new": "Plot a safer route from weather and map data, though you may be wrong"
+ },
+ "s05-S": {
+  "old_round3": "Lift the lost travellers' spirits on a long, cold walk",
+  "proposal_v3": "Keep the lost travellers calm and talking",
+  "new": "Keep the lost travellers talking and steady, even when they are tired and cross"
+ },
+ "s05-C": {
+  "old_round3": "Count everyone through the pass so no one is left behind, even as people grow impatient",
+  "proposal_v3": "Count every traveller through so no one is left",
+  "new": "Run a headcount app at the pass, rechecking whenever people move"
+ },
+ "s06-R": {
+  "old_round3": "Build a sturdy stall frame from the plan, working fast as the light fades",
+  "proposal_v3": "Repair a neighbour's broken phone at the stall",
+  "new": "Repair a neighbour's broken phone at the stall, with tiny screws and bad light"
+ },
+ "s06-I": {
+  "old_round3": "Examine the old machine to learn its use, though it may turn out to be junk",
+  "proposal_v3": "Examine the old machine to learn what it does",
+  "new": "Examine the old machine to learn what it does, though it may be junk"
+ },
+ "s06-E": {
+  "old_round3": "Win over the passing buyers, knowing some will walk away",
+  "proposal_v3": "Pitch your stall to buyers, even if some walk away",
+  "new": "Pitch your stall to buyers, even if some walk away"
+ },
+ "s06-C": {
+  "old_round3": "Label the shelves so buyers find things fast, before the doors open",
+  "proposal_v3": "Track the stall's sales in a spreadsheet",
+  "new": "Set up a stock and price list for the stall, before the doors open"
+ },
+ "s07-R": {
+  "old_round3": "Build a raft from whatever wood is nearby, with sore arms and wet feet",
+  "proposal_v3": "Lash together a raft from what you find",
+  "new": "Lash a raft together from what you find, with wet feet and sore arms"
+ },
+ "s07-A": {
+  "old_round3": "Dream up a new boat shape for the crossing, though it may not float the first time",
+  "proposal_v3": "Sketch a new boat shape for the crossing",
+  "new": "Sketch a new boat shape for the crossing, though it may sink first"
+ },
+ "s07-S": {
+  "old_round3": "Care for the tired travellers through the night while others plan the crossing",
+  "proposal_v3": "Look after the tired travellers through the night",
+  "new": "Look after the tired travellers through the night, while others plan the crossing"
+ },
+ "s07-E": {
+  "old_round3": "Run the camp meeting and push for a decision, even if some people are unhappy",
+  "proposal_v3": "Run the camp meeting and push for a decision",
+  "new": "Run the camp meeting and push for a decision, even if some are unhappy"
+ },
+ "s08-R": {
+  "old_round3": "Repair the creaking loom, crawling under it with tools for hours",
+  "proposal_v3": "Fix the loom's motor and belts, crawling under it",
+  "new": "Fix the loom's motor and belts, crawling under it for hours"
+ },
+ "s08-A": {
+  "old_round3": "Design a banner pattern for the town, knowing not everyone will like it",
+  "proposal_v3": "Design the banner pattern and film a short promo",
+  "new": "Design the banner pattern and film a promo, though some will dislike it"
+ },
+ "s08-S": {
+  "old_round3": "Coach a nervous new weaver, even though progress is slow and they may give up",
+  "proposal_v3": "Coach a nervous new weaver, even if progress is slow",
+  "new": "Coach a nervous new weaver, even if progress is slow"
+ },
+ "s08-C": {
+  "old_round3": "Track the cloth rolls for market day, recounting whenever the totals don't match",
+  "proposal_v3": "Log cloth stock in a spreadsheet and fix mismatches",
+  "new": "Log cloth stock in a simple app, and recount whenever totals do not match"
+ },
+ "s09-R": {
+  "old_round3": "Rope down a short stretch to test the rock, which is slow, tiring work",
+  "proposal_v3": "Rope down a short stretch to test the rock",
+  "new": "Rope down a short stretch to test the rock, slow and tiring work"
+ },
+ "s09-A": {
+  "old_round3": "Draw a picture map of the glowing cliff for the climbers, redrawing it as the light shifts",
+  "proposal_v3": "Film a short climb video for the group",
+  "new": "Film a short climb video for the group, redoing shots as the light shifts"
+ },
+ "s09-E": {
+  "old_round3": "Lead the climbers to the top, though some will grumble at your choices",
+  "proposal_v3": "Lead the climbers up, even if some grumble",
+  "new": "Lead the climbers up the cliff, even if some grumble"
+ },
+ "s09-C": {
+  "old_round3": "Check every harness against the safety list while others start climbing first",
+  "proposal_v3": "Check every harness against the safety list first",
+  "new": "Check the harnesses against the safety list first, while the others wait"
+ },
+ "s10-R": {
+  "old_round3": "Haul the salt sacks off the road and stack them, heavy work in the heat",
+  "proposal_v3": "Load the cart and fix its broken wheel",
+  "new": "Load the cart and fix its broken wheel, in the hot sun"
+ },
+ "s10-S": {
+  "old_round3": "Calm the gathering crowd and listen to each person's worry, which takes a while",
+  "proposal_v3": "Calm the crowd and listen to each person's worry",
+  "new": "Listen to each person's worry and settle the crowd, which takes a while"
+ },
+ "s10-E": {
+  "old_round3": "Settle the argument with a deal both traders accept, though neither is fully happy",
+  "proposal_v3": "Settle the argument with a deal both traders accept",
+  "new": "Settle the argument with a deal both traders accept, though neither is fully happy"
+ },
+ "s10-C": {
+  "old_round3": "Weigh what salt is left so each trader's loss is clear, with the crowd shouting nearby",
+  "proposal_v3": "Record each trader's loss in a simple sheet",
+  "new": "Weigh the leftover salt and record each loss, with the crowd shouting nearby"
+ },
+ "s11-I": {
+  "old_round3": "Chart the stars and wonder what is out there",
+  "proposal_v3": "Write a small program to chart the stars",
+  "new": "Write a small program to chart the stars, even if it keeps crashing"
+ },
+ "s11-A": {
+  "old_round3": "Paint the night sky and notice how it changes",
+  "proposal_v3": "Take night-sky photos and edit them",
+  "new": "Shoot night-sky photos and edit them, though most shots will be blurry"
+ },
+ "s11-S": {
+  "old_round3": "Welcome the visitors and help each one find a good spot to look",
+  "proposal_v3": "Welcome visitors and help each find a good spot",
+  "new": "Help visitors find a good spot to look, though the hill is crowded"
+ },
+ "s11-E": {
+  "old_round3": "Recruit new members for the stargazing club",
+  "proposal_v3": "Start a stargazing club and get people to join",
+  "new": "Start a stargazing club and get people to join, with no promise anyone will"
+ },
+ "s12-I": {
+  "old_round3": "Test soils and seeds to grow healthier plants",
+  "proposal_v3": "Test soil with a sensor and pick better seeds",
+  "new": "Test the soil with a sensor and pick better seeds, though results come slowly"
+ },
+ "s12-A": {
+  "old_round3": "Shape the garden so it feels peaceful to walk in",
+  "proposal_v3": "Design the garden layout so it feels peaceful",
+  "new": "Model a peaceful garden in a 3D app, even if it looks plain"
+ },
+ "s12-S": {
+  "old_round3": "Show children how to care for the plants through stories",
+  "proposal_v3": "Teach neighbours to grow herbs at home",
+  "new": "Teach neighbours to grow herbs at home, answering the same questions again"
+ },
+ "s12-C": {
+  "old_round3": "Label each herb bed so nothing gets mixed up",
+  "proposal_v3": "Make a planting calendar so nothing is missed",
+  "new": "Make a planting calendar with reminders, and update it each week"
+ },
+ "s13-I": {
+  "old_round3": "Investigate how the old press works, reading faded notes that may lead nowhere",
+  "proposal_v3": "Find out how the old press works from faded notes",
+  "new": "Work out how the old press works from faded notes, which may lead nowhere"
+ },
+ "s13-A": {
+  "old_round3": "Design a new letter style for the press, then redo it if people can't read it",
+  "proposal_v3": "Write the first story and design the page",
+  "new": "Write the lead story and lay out the page, rewriting if it reads badly"
+ },
+ "s13-E": {
+  "old_round3": "Launch a new newspaper for the quarter, at the risk it does not sell",
+  "proposal_v3": "Launch a local news page, even if few follow it",
+  "new": "Launch a local news page, even if few people follow it"
+ },
+ "s13-C": {
+  "old_round3": "Proofread each page before printing, starting over whenever a mistake slips through",
+  "proposal_v3": "Check every page for mistakes before printing",
+  "new": "Proofread the pages before printing, and start again if a mistake slips through"
+ },
+ "s14-I": {
+  "old_round3": "Test the water to find what is making people ill, with many tests that show nothing",
+  "proposal_v3": "Test the water to find what is making people ill",
+  "new": "Test the water to find what makes people ill, though most tests show nothing"
+ },
+ "s14-S": {
+  "old_round3": "Sit with the sick travellers and talk with them, though some would rather be left alone",
+  "proposal_v3": "Sit and talk with sick travellers, if they want it",
+  "new": "Sit and talk with sick travellers, though some would rather be left alone"
+ },
+ "s14-E": {
+  "old_round3": "Lead the clinic team tonight, even when someone has to wait",
+  "proposal_v3": "Lead the clinic team tonight, even if someone must wait",
+  "new": "Lead the clinic team tonight, even if someone has to wait"
+ },
+ "s14-C": {
+  "old_round3": "Sort the medicine store so the right dose is quick to find, checking label after label",
+  "proposal_v3": "Sort medicines and update the patient register",
+  "new": "Sort the medicine store and update the patient register, checking label after label"
+ },
+ "s15-A": {
+  "old_round3": "Create the welcome arch, though you may still be painting it as the lamps arrive",
+  "proposal_v3": "Design a festival game people play on the square",
+  "new": "Design a festival game for the square, still tweaking as the lamps arrive"
+ },
+ "s15-S": {
+  "old_round3": "Greet newcomers and help them join in, staying by the gate while the fun starts",
+  "proposal_v3": "Coach the junior team for the festival match",
+  "new": "Coach the junior team for the festival match, though they may lose"
+ },
+ "s15-E": {
+  "old_round3": "Manage the festival stalls, then face the stallholders if sales are slow",
+  "proposal_v3": "Manage the festival stalls and face slow sales",
+  "new": "Manage the festival stalls, and face the stallholders if sales are slow"
+ },
+ "s15-C": {
+  "old_round3": "Keep the timetable so every act starts on time, working out of sight all evening",
+  "proposal_v3": "Build the festival schedule and keep to it",
+  "new": "Build the festival schedule and keep acts on time, working out of sight"
+ }
+}

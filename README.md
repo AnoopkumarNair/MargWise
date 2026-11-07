@@ -10,7 +10,7 @@ In Class 9 and 10, a family makes the biggest education decision of a child's li
 
 ## What Margwise does
 
-A student walks a lamp-lit road at night. In each town they spend two flasks of oil on the activity they would enjoy most. There are no marks and no wrong answers. Along the way they open a few "lamp locks", short puzzles that quietly add a rough signal about strengths. In about 15 minutes they get:
+A student walks a lamp-lit road at night. In each town they spend two flasks of oil on the activity they would enjoy most. There are no marks and no wrong answers. After 8 towns they get a first draft and can stop there or keep going (up to 7 more towns) to sharpen it. In about 10 to 15 minutes they get:
 
 - **Their interest shape**: six interest areas on a radar chart, with an honest note when the shape is unclear.
 - **16 career fields, ranked for them**, each with careers to look at and why they fit.

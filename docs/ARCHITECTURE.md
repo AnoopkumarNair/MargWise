@@ -67,7 +67,7 @@ Three curated data files plus the built `content.json`. Contracts are in `data/s
   - `ai`: `tier` (BLS relative exposure: very high, high, moderate, low), `obs` (observed exposure from real Claude usage, Anthropic), `watch` (BLS very high and observed 0.10 or more), tasks where AI is used today, tasks with no AI use seen, and the number of tasks matched.
   - `us.growthPct`: BLS projected job change 2025 to 2035.
 - **abroad.json**: eight countries, with ranges for tuition, living cost and salary, each with a trust badge and a source link, plus visa and settling notes and the exchange rates used.
-- **story2.json**: the 15 places, their narration, keepers and the four activity cards each (one per trait).
+- **story2.json**: the 15 towns (the walk uses 8 to 15), their narration, keepers and the four activity cards each (one per trait).
 
 **The SOC code is the join key.** Adding a career means adding one line to the career list; every dataset keyed on SOC then attaches automatically, or is reported as `nodata`.
 
@@ -123,7 +123,7 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 - **Radar** shows the six traits, top three highlighted.
 - **Honesty rules**: "not enough signal" when the profile is flat; "rough" when the profile spread is below 0.5 or 70 percent of oil goes to one trait; no claim of accuracy beyond what the pilot will show.
 - **Field ranking** is presented as tied "areas to explore" (a pill marks fields within 0.05 of the next one, each card gives a one-line reason). For each field, the mean fit of its four best-matching careers (correlation between the profile and the career's O*NET interest profile), converted to a percentile against 360 reference profiles built from consistent simulated players. This evens out fields with many broad careers. It does not remove bias: across 120 fresh ideal profiles the top field ranges from 1 (law) to 19 (sports).
-- **Aptitude puzzles ("lamp locks")**: eight original items inside the story. They never change the radar. A flag (`APT_NUDGE`, default off) controls whether they may nudge the field order; it stays off until item difficulty, language bias and incremental value are tested. The puzzle card is display only.
+- **Bonus puzzles**: four optional puzzles (numbers, words in English, shapes, patterns), offered after the result "just for fun". They are not part of the walk, give no score, level or label (the page only says how many the student tried) and never change the radar or the field order.
 - **Results are an interest guide, not an ability test or a prediction.**
 
 ## 8. Runtime and operations
@@ -148,7 +148,7 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 ## 9. Evidence that it works, and how it was checked
 
 - `app/tests/cover.mjs`, `refcal.mjs` (headless browser): simulate random, positional, one-note and consistent players over all 120 ordered trait triples. Findings are in `docs/CALIBRATION.md` and `docs/reviews/opus_review3.md`.
-- Walk-throughs with a fake clock (`app/tests/t25.mjs`, `t26.mjs`) play a full journey including all eight puzzle locks.
+- Walk-throughs with a fake clock (`app/tests/hosted_tablet.mjs`) play the walk to the draft and then the result screens. `app/tests/playtest/autoplay.mjs` plays the draft, the sharpen path and the bonus puzzles (see its header).
 - Three independent AI-assisted reviews (security, UX, psychometrics, content) were run; their reports and the fixes are in the repository history. The most recent verdict: adult controlled testers acceptable; Class 9 to 12 students not yet.
 
 ## 10. How to change things
