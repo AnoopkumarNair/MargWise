@@ -66,3 +66,14 @@ Flagged stops fell from 12 to 6 of 15. A smaller bias remains: Social still rate
 
 ## Round 3: single-construct audit (against an external review's point that some cards still measure more than one thing)
 Data: `docs/audit/card_construct_audit.json`, `docs/audit/card_rewrites_round3.json`. One rater rated each of the 60 cards for its dominant activity and any second type. 12 cards were compound (mostly Persuader cards such as "lead the team and handle the money") and one (s07-A) read as engineering rather than Creator. Thirteen cards were rewritten to one activity each, plus s02-A and s04-I after the final code review. The cost clauses stay: they modify one activity, they do not add a second. Borderline cards left alone are listed in the audit data. The same limits apply: one rater, no student data.
+
+## Round 5 (2026-11-07): plain choices that fit each town
+
+The owner found the cost tails forced and uneven: Builder cards read as hardship ("tiny screws and bad light", "dusty, cramped space") while others barely cost anything. That pushes students away from Builder, the opposite of the aim.
+
+- All 60 cards are now short, plain activities with no cost tails, in the style of the O*NET Interest Profiler.
+- In each town the four cards are four ways to respond to that town's situation. Some setups were reworded so every type has a natural role. Ids and types are unchanged.
+- Checked by blind raters (AI, not students) who did not see the types. All 60 cards read as their intended type. The "looks good" spread across types fell to 0.9 (it was 2.1 in round 1). Every card fits its town at 3 or more out of 5, and no two cards in a town are the same activity.
+- Still open: Organiser cards rate lowest for "fun to do" (about 2 out of 5). Some of this may be a real difference among teens. Check with real students.
+
+Old and new text for every card: `docs/audit/card_rewrites_round5.md`.
