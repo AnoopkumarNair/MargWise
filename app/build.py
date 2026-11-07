@@ -39,6 +39,9 @@ for f in sorted(glob.glob(os.path.join(A, 'art', 'bg-*.jpg'))):
     key = os.path.basename(f)[3:-4]; im = Image.open(f).convert('RGB'); w, h = im.size; cw = int(h * 2 / 3); x = (w - cw) // 2
     im = im.crop((x, 0, x + cw, h)).resize((540, 810), Image.LANCZOS); p = os.path.join(dist, 'art', 'bg-%s.webp' % key); im.save(p, 'WEBP', quality=80, method=6)
     art['bg'][key] = 'art/bg-%s.webp' % key; total += os.path.getsize(p)
+# 2b. optional opening audio: app/audio/*.mp3|ogg are copied next to the page and listed in it. No files, no list, and the page shows no sound button.
+AUD = os.path.join(A, 'audio'); aud = sorted(f for f in (os.listdir(AUD) if os.path.isdir(AUD) else []) if f.lower().endswith(('.mp3', '.ogg', '.opus', '.m4a')))
+s, n = re.subn(r'<script>window\.OP_AUDIO = \[[^\n]*?\];</script>', lambda m: '<script>window.OP_AUDIO = ' + json.dumps(['audio/' + f for f in aud]) + ';</script>', s, count=1); assert n == 1, 'OP_AUDIO marker not found'
 new = '<script>window.LAMP_ART = ' + json.dumps(art, separators=(',', ':')) + ';</script>'
 s, n = re.subn(r'<script>window\.LAMP_ART = \{[^\n]*?\};</script>', lambda m: new, s, count=1); assert n == 1, 'LAMP_ART marker not found'
 body = s[s.index('<body>') + 6: s.rindex('</body>')].lstrip('\n')
@@ -70,6 +73,9 @@ if os.path.exists(share):
 os.makedirs(H, exist_ok=True); open(os.path.join(H, 'index.html'), 'w', encoding='utf8').write(doc)
 for tgt in (dist, H):
     shutil.rmtree(os.path.join(tgt, 'vendor'), ignore_errors=True); shutil.copytree(os.path.join(A, 'vendor'), os.path.join(tgt, 'vendor'))
+for tgt in (dist, H):
+    shutil.rmtree(os.path.join(tgt, 'audio'), ignore_errors=True)
+    if aud: os.makedirs(os.path.join(tgt, 'audio')); [shutil.copy(os.path.join(AUD, f), os.path.join(tgt, 'audio', f)) for f in aud]
 shutil.rmtree(os.path.join(H, 'art'), ignore_errors=True); shutil.copytree(os.path.join(dist, 'art'), os.path.join(H, 'art'))
 os.makedirs(os.path.join(H, 'counsellor'), exist_ok=True)
 _c = json.load(open(os.path.join(D, 'content.json') if args.dev else os.path.join(REL, 'latest.json'), encoding='utf8'))

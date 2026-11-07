@@ -23,6 +23,6 @@ while (guard++ < 400) {
     const opt = e.choices.filter(c => c.sel.startsWith('[data-h')); if (opt.length) { await call('click', String(opt[(lockN++) % opt.length].n)); lockSel = true; continue; } }
   if (e.screen === 'stop') { const key = e.text.split('\n')[0]; if (key !== stopKey) { stopKey = key; clicked = 0; } let objs = e.choices.filter(c => /\.obj/.test(c.sel) && !c.disabled); if (PREF) objs = objs.slice().sort((x, y) => PREF.indexOf(x.sel.match(/-([RIASEC])"/)?.[1]) - PREF.indexOf(y.sel.match(/-([RIASEC])"/)?.[1]));
     if (clicked < 2 && objs.length >= 2) { await call('click', objs[clicked === 0 ? 0 : 1].sel); clicked++; continue; } if (has('#light')) { await call('click', '#light'); picks++; continue; } }
-  let done = false; for (const id of ['#introNext', '#dreamGo', '#fnGo', '#fnSkip', '#openDoors', '#csDone', '#consentYes', '#begin']) if (has(id)) { await call('click', id); done = true; break; }
+  let done = false; for (const id of ['#opGo', '#introNext', '#dreamGo', '#fnGo', '#fnSkip', '#openDoors', '#csDone', '#consentYes', '#begin']) if (has(id)) { await call('click', id); done = true; break; }
   if (!done) { await call('wait', '1500'); }
 }
