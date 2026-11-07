@@ -15,7 +15,7 @@ python3 app/build.py                 # build the student game from the accepted 
 python3 engine/reference.py          # engine bundle vs independent Python reference
 node --test engine/tests/engine.test.mjs engine/tests/design.test.mjs
 node hosting/tests/util.test.mjs
-# run from hosting/ so the API functions are uploaded
+# run from hosting/ so the API functions are served too
 cd hosting && npx wrangler pages dev public  # local server for pages + functions
 ```
 
