@@ -198,10 +198,6 @@
  },
  "meta": {
   "chapters": [],
-  "ila": {
-   "1": "Everyone said I'd take her place. I never chose it. I need to ask her why.",
-   "6": "Each keeper remembers her at a different job. Why would she try them all?"
-  },
   "premise": "The lighthouse is dark. Find out why.",
   "outro": "The lighthouse is lit. This is the light you carry.",
   "sharpen": {
@@ -224,7 +220,7 @@
    },
    "7": {
     "who": "Jyo",
-    "text": "I know where she went: the lighthouse. I promised to wait until you were ready."
+    "text": "I miss her. She went to the lighthouse. I promised to wait for you."
    }
   },
   "draft": {
