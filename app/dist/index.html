@@ -2205,7 +2205,12 @@ var Hu=e=>Math.max(0,Math.min(40,e));function Uu(e,t,n=Su){t=mwPlayed(t);let r=A
   // ---------- finale: the lighthouse lights, then the shape appears
   var fnTimers = [];
   function fnAfter(ms, f) { fnTimers.push(setTimeout(f, ms)); }
-  function playFinale() {
+  // Takes the lighthouse off the screen for good. The fade-out leaves a finished "fill: forwards" animation on #finale; if it stays, the NEXT lighthouse (sharpening from the result) plays at opacity 0 over the held result: a blurred, empty screen.
+  function endFinale() { var f = $('finale'); fnTimers.forEach(clearTimeout); fnTimers = []; try { f.getAnimations().forEach(function (a) { a.cancel(); }); } catch (e) { /* no web animations */ } f.classList.remove('on', 'lit'); f.style.opacity = ''; try { MWV.stopEnding(); } catch (e) { /* video is optional */ } }
+  // The lighthouse is a bonus. If anything in it fails, drop it and show the result.
+  function playFinale() { try { playFinale1(); } catch (e) { try { endFinale(); } catch (e2) { /* ignore */ } startReveal(); } }
+  function playFinale1() {
+    endFinale();
     var f = $('finale'), r = state.result, code = r.code.code, n = litCount(), COL = ['#ffcf6b', '#46b3b0', '#e8708a'];
     $('fnBg').style.backgroundImage = ART.bg && ART.bg.lighthouse ? 'url(' + ART.bg.lighthouse + ')' : 'linear-gradient(180deg,#0a0f2e,#24306a 55%,#ffbf6a)';
     $('fnJyo').innerHTML = sprite('jyo');
@@ -2219,7 +2224,7 @@ var Hu=e=>Math.max(0,Math.min(40,e));function Uu(e,t,n=Su){t=mwPlayed(t);let r=A
       $('fnChips').innerHTML = code.map(function (a, i) { return '<span class="fnchip show" style="--c:' + COL[i] + '"><b>' + (i + 1) + '</b>' + NAME[a] + '</span>'; }).join('');
       $('fnNote').classList.add('show'); $('fnGo').classList.add('show'); $('fnGo').disabled = false; $('fnGo').focus();
     }
-    function leave() { fnTimers.forEach(clearTimeout); $('reveal').scrollTop = 0; startReveal(); var done = function () { MWV.stopEnding(); f.classList.remove('on', 'lit'); f.style.opacity = ''; try { $('openDoors').focus({ preventScroll: true }); } catch (e) { /* focus */ } }; if (state.reduce || !f.animate) return done(); f.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: 'ease-in-out', fill: 'forwards' }).onfinish = done; }
+    function leave() { fnTimers.forEach(clearTimeout); $('reveal').scrollTop = 0; startReveal(); var gone = false, done = function () { if (gone) return; gone = true; endFinale(); try { $('openDoors').focus({ preventScroll: true }); } catch (e) { /* focus */ } }; if (state.reduce || !f.animate) return done(); try { f.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: 'ease-in-out', fill: 'forwards' }).onfinish = done; } catch (e) { return done(); } setTimeout(done, 1200); }
     $('fnGo').onclick = leave; $('fnSkip').onclick = finish;
     if (state.reduce) { finish(); return; }
     fnAfter(500, function () { $('fnL1').classList.add('show'); $('fnL1').textContent = 'Every lamp you lit is still burning.'; });

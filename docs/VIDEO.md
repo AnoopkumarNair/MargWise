@@ -51,3 +51,16 @@ The page shows one line from the manifest sizes, for example "Video uses about 0
 1. Put the files in `app/video/` with the exact names above.
 2. Run `python3 app/build.py`. It copies them to `app/dist/video` and `hosting/public/video` and writes the manifest into the page (`window.MW_VIDEO`).
 3. Check the cover, the opening, one town and the ending on a phone with the connection throttled. Then ask the owner to deploy.
+
+## Before every deploy: walk to the result
+
+CI cannot run this (it has no browser). Run it by hand on the built page before you deploy, and after any change to the opening, the lighthouse or the result screen. It plays the real game on a phone-sized Chromium to the result and fails on any page error, an invisible lighthouse, or a result that is not shown.
+
+```bash
+python3 app/build.py && git checkout hosting/public/manifest.json   # build, then undo the tracked side effect
+PORT=8801 bash app/tests/playtest/start_server.sh
+NODE_PATH=<folder with playwright> URL_=http://localhost:8801/ node app/tests/result_walk.mjs
+bash app/tests/playtest/stop_server.sh
+```
+
+Paths: see my result, Sharpen it, Sharpen then stop, skip the quick questions, reduced motion, reload and resume, and "Sharpen my result" from the result page. `PATHS=rsharpen` runs a subset. `OUT=dir` saves screenshots. It exits 1 on any failure. This guards the 2026-11-07 bug: a second lighthouse played at opacity 0 and left a blurred empty screen.
