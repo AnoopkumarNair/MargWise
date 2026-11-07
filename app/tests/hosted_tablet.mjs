@@ -17,7 +17,7 @@ for(const [name,[w,h]] of Object.entries(VPS)){ if(only&&only!==name)continue;
     if(m.hScroll>0||m.bad.length)issues.push({tag,...m}); };
   await pg.clock.install(); await pg.goto(URL); await pg.clock.fastForward(3500); await snap('cover');
   await pg.click('#gStart'); await pg.clock.fastForward(1200); await snap('gate');
-  await pg.fill('#gName','E2E Tablet'); await pg.fill('#gCode',CODE); await pg.check('#gOk'); await pg.click('#gGo'); await pg.clock.fastForward(2500);
+  await pg.fill('#gName','E2E Tablet'); await pg.fill('#gCode',CODE); await pg.click('#gGo'); await pg.clock.fastForward(2500);
   await snap('after-join');
   if(await pg.locator('#consentYes').isVisible().catch(()=>false)){await snap('consent');await pg.click('#consentYes');await pg.clock.fastForward(1500)}
   await snap('welcome');

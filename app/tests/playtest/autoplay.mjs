@@ -7,7 +7,7 @@ let lockSel = false, stopKey = '', clicked = 0, picks = 0, lockN = 0, guard = 0,
 // MODE=draft (default) stops at the draft with "See my result"; MODE=sharpen taps "Sharpen it" and plays to the end; MODE=stopearly sharpens once, then "Stop and see my result"; PUZZLES=1 also tries the optional puzzles after the result.
 const PREF = process.env.PREF || '';   // e.g. PREF=ICR: tap the two cards of the preferred kinds first (gives a clear shape; the default taps the first two cards, which gives none)
 const MODE = process.env.MODE || 'draft', PUZ = process.env.PUZZLES === '1'; let puzzled = false, ctxDone = false;
-if (process.argv[3] === 'signup') for (const a of [['click', '#gStart'], ['fill', '#gName', 'Asha'], ['fill', '#gCode', 'master'], ['check', '#gOk'], ['click', '#gGo'], ['click', '#consentYes'], ['click', '#csDone'], ['click', '#begin']]) await call(...a);
+if (process.argv[3] === 'signup') for (const a of [['click', '#gStart'], ['fill', '#gName', 'Asha'], ['fill', '#gCode', 'master'], ['click', '#gGo'], ['click', '#consentYes'], ['click', '#csDone'], ['click', '#begin']]) await call(...a);
 while (guard++ < 400) {
   await call('look'); const e = last(); const has = id => e.choices.find(c => c.sel === id && !c.disabled);
   if (e.screen !== prev) { console.log(`#${e.n} ${e.screen} words=${e.words} ${e.text.slice(0, 70).replace(/\n/g, ' | ')}`); prev = e.screen; }

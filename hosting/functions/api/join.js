@@ -4,7 +4,7 @@ export async function onRequestPost({ request, env }) {
   const r = await readJson(request, 4000); if (r.err) return json({ error: r.err }, r.status); const b = r.b;
   const name = String(b.name || '').replace(/[\u0000-\u001f<>]/g, '').trim().slice(0, 40), code = String(b.code || '').trim().toLowerCase();
   if (!name) return json({ error: 'Please add your name.' }, 400);
-  if (b.consent !== true) return json({ error: 'Please tick the box to continue.' }, 400);
+  if (b.consent !== true) return json({ error: 'Please say that you are 18 or older, or that a parent or guardian agrees.' }, 400);
   const need = String(env.INVITE_CODE || '').trim(), ip = await ipHash(request, env.SIGN_KEY), now = Date.now();
   await env.DB.prepare('DELETE FROM joins WHERE ts < ?').bind(now - 86400000).run();
   try { await purgeOld(env, now); } catch (e) { /* retention must never block sign-up; failure shows as a missing audit row */ }

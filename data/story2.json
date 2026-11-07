@@ -213,8 +213,7 @@
   ],
   "ila": {
    "3": "Ila waves her ferry lantern. \"I am Ila, her student. She left three nights ago and took no oil. Will you help me?\"",
-   "6": "Ila catches up. \"Everyone says she was happy. Nobody says she was lost.\"",
-   "last": "Ila hands you her lantern. \"She was never lost. She went ahead to make room for you.\""
+   "6": "Ila catches up. \"Everyone says she was happy. Nobody says she was lost.\""
   },
   "note": [
    "A lamp",
@@ -315,7 +314,7 @@
   },
   "react": {
    "R": [
-    "Good with your hands. Jyo noticed.",
+    "You like hands-on work. Jyo noticed.",
     "Oil on your fingers, and glad of it.",
     "Hands first. Jyo's wings flicker.",
     "Tools, wood, and a job done.",
@@ -337,9 +336,9 @@
    ],
    "S": [
     "You went to the people first.",
-    "Kind and patient. Jyo noticed.",
+    "You like helping people. Jyo noticed.",
     "Someone feels better because of you.",
-    "You listen well. The town felt it.",
+    "You like listening to people.",
     "Jyo hums softly. People matter to you."
    ],
    "E": [
@@ -351,7 +350,7 @@
    ],
    "C": [
     "Everything in its place. Jyo approves.",
-    "Careful and steady. Nothing missed.",
+    "You like things careful and steady.",
     "You made it tidy and clear.",
     "A plan, then a done job.",
     "Jyo likes how you keep order."

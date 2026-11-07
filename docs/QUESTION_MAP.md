@@ -19,7 +19,7 @@ The game measures **interest**, not ability. It uses the six Holland (RIASEC) ty
 2. **Forced choice.** Because the four cards in a stop are four different types, the student cannot say yes to everything. The estimate is relative (what stands out for this student), which is why the app calls it an interest shape and not a score.
 3. **Estimate.** The choices are combined by a multinomial-logit model into six trait estimates with an uncertainty. Stops are chosen adaptively. After 8 stops a draft result is ready and the student may stop there or keep going (up to 15 stops) to sharpen it; the walk ends early once the leading traits are clear. No stop is ever asked twice.
 4. **Match to careers.** The six-trait shape is correlated with each career's O*NET interest profile; a field's score is the mean of its best four careers, converted to a percentile against a reference set and balanced across fields (`data/fieldbias.json`).
-5. **Not used for ranking:** the lamp-lock puzzles show rough aptitude signals on the results page but do not change the field order until they are validated.
+5. **Not used for ranking:** the lamp-lock puzzles are an optional bonus after the result. They do not affect the result or the field order.
 
 **How the two flasks work.**
 - **Both flasks on one card** counts that card twice: a stronger signal that you prefer it to the other three.

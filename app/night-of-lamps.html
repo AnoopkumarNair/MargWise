@@ -636,7 +636,6 @@
         <p class="gtest">You are one of the first to try this. Tell us what to fix.</p>
         <label>Your name<input type="text" id="gName" maxlength="40" autocomplete="given-name" enterkeyhint="next"><small class="fp">So the person who invited you can match your feedback.</small></label>
         <label id="gCodeL" hidden>Invite code<input type="text" id="gCode" maxlength="40" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="go"><small class="fp">You got this from the person who invited you.</small></label>
-        <label class="chkrow"><input type="checkbox" id="gOk"><span>I am 18 or older, or my parent or guardian knows about this and agrees.</span></label>
         <p class="err" id="gErr" role="alert"></p>
         <button class="go" id="gGo" type="button">Start the walk</button>
         <p class="fp">You get a login code when you start. Played before? Use <b>Log in with my code</b>.</p>
@@ -661,10 +660,18 @@
     <div class="fntext"><p class="fnl1" id="fnL1"></p><h2 class="fnt" id="fnT">The lighthouse is lit.</h2><div class="fnchips" id="fnChips"></div><p class="fnnote" id="fnNote"></p><button class="go" id="fnGo" type="button">See your shape</button></div>
   </section>
   <div id="consent" hidden role="dialog" aria-modal="true" aria-labelledby="consentT"><div class="beatcard">
-    <small>Before you begin</small><h3 id="consentT">Has a parent or guardian agreed?</h3>
-    <p>Please make sure a parent or guardian has agreed to this, or do it together with them. Students under 18 should not do it without that.</p>
-    <button class="go" id="consentYes" type="button">A parent has agreed</button>
+    <small>Before you begin</small><h3 id="consentT">Are you 18 or older, or has a parent or guardian agreed?</h3>
+    <div id="consentAsk">
+    <p>Students under 18 should not do this without a parent or guardian knowing and agreeing. You can also do it together with them.</p>
+    <button class="go" id="consentYes" type="button">Yes, I am 18 or older, or a parent has agreed</button>
     <button class="go quiet" id="consentNo" type="button">Not yet. I will ask first.</button>
+    </div>
+    <div id="consentWait" hidden>
+    <p>No problem. Ask a parent, then come back with this link. Your teacher can also help.</p>
+    <button class="go" id="consentCopy" type="button">Copy the link</button>
+    <button class="go quiet" id="consentBack" type="button">Go back</button>
+    <p class="mute" id="consentMsg" aria-live="polite"></p>
+    </div>
   </div></div>
   <div class="beat" id="beat" hidden role="dialog" aria-modal="true" aria-labelledby="beatWho"><div class="beatcard"><div class="beatart" id="beatArt" hidden></div><small id="beatWho"></small><h3 id="beatTitle"></h3><p id="beatText"></p><button class="go" id="beatGo" type="button">Walk on</button></div></div>
   <div id="loader" role="status" aria-live="polite"><div class="ld-in">
@@ -820,7 +827,7 @@
   <h3>What did you think?</h3>
   <div class="fld" style="display:grid;gap:4px"><b>How did it look and feel?</b><div class="rate" data-k="look"></div><div class="rl"><span>Poor</span><span>Great</span></div></div>
   <div class="fld" style="display:grid;gap:4px"><b>Was it clear what to do?</b><div class="rate" data-k="clear"></div><div class="rl"><span>Confusing</span><span>Very clear</span></div></div>
-  <div class="fld" style="display:grid;gap:4px"><b>How did the puzzle locks feel?</b><div class="rate" data-k="puz"></div><div class="rl"><span>Stressful</span><span>Enjoyable</span></div></div>
+  <div class="fld" style="display:grid;gap:4px"><b>If you tried the puzzles, how did they feel?</b><div class="rate" data-k="puz"></div><div class="rl"><span>Stressful</span><span>Enjoyable</span></div></div>
   <div class="fld" style="display:grid;gap:4px"><b>Did you enjoy the walk?</b><div class="rate" data-k="fun"></div><div class="rl"><span>Not at all</span><span>A lot</span></div></div>
   <label class="fld">Anything else? What was confusing, boring or good?<textarea id="fbText" maxlength="1500"></textarea></label>
   <p class="err" id="fbMsg" aria-live="polite"></p>
@@ -1116,13 +1123,16 @@
   // The walk has two parts. The first 8 towns give a draft. After that the student may sharpen it, one town at a time, and can stop any time.
   // The count only ever goes down: the first 8 are lamp dots, then "N more at most".
   var WS0 = M.walkStatus(bank, []);
+  // Sharpening is the student's choice, so once they ask for it the walk goes on until they stop or the towns run out. The engine's own stop rule only decides how sure the draft is.
+  var SHARPCFG = Object.assign({}, M.CONFIG, { stopZ: 1e9 });
+  function cfgFor() { return state.sharpen ? SHARPCFG : undefined; }
   function progressText(done) {
     var v = state.view;
     if (v === 'draft') return 'Your first draft';
     if (v === 'lock') return 'Bonus puzzles';
     if (v === 'dreams' || v === 'reveal' || v === 'doors' || v === 'field' || v === 'abroad') return 'Walk finished';
     if (!state.sharpen) return 'First draft';
-    var left = M.walkStatus(bank, state.choices).sharpenLeft;
+    var left = M.walkStatus(bank, state.choices, SHARPCFG).sharpenLeft;
     return 'Sharpening <span>· ' + (left <= 0 ? 'last town' : left + ' more at most') + '</span>';
   }
   function totalSpent() { return Object.keys(state.spent).reduce(function (a, k) { return a + state.spent[k]; }, 0); }
@@ -1180,14 +1190,19 @@
   $('beatGo').addEventListener('click', function () { track('beat', { who: $('beatWho').textContent }); $('beat').hidden = true; var f = beatCb; beatCb = null; if (f) f(); });
   // ---------- resume: the walk is a list of choices, so it is saved after every step and can be replayed after a refresh or a dropped connection
   var WALK_KEY = 'margwise.walk', SRVWALK = null;   // SRVWALK: unfinished walk saved on the server (another device or a cleared browser)
-  function saveWalk() { if (!TK) return; try { localStorage.setItem(WALK_KEY, JSON.stringify({ tid: TK.id, seed: SEED, choices: state.choices, slots: state.slots, apt: state.apt, hinted: state.hinted || {}, at: Date.now() })); } catch (e) { /* storage blocked */ }
-    var ap = {}; APT.forEach(function (d) { ap[d] = state.apt[d].map(function (x) { return [x.l || 0, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); }); track('progress', { choices: state.choices, apt: ap, seed: SEED, slots: state.slots, ctx: state.ctx }); }
+  function saveWalk() { if (!TK) return; try { localStorage.setItem(WALK_KEY, JSON.stringify({ tid: TK.id, seed: SEED, choices: state.choices, slots: state.slots, apt: state.apt, hinted: state.hinted || {}, ended: state.ended || '', at: Date.now() })); } catch (e) { /* storage blocked */ }
+    var ap = {}; APT.forEach(function (d) { ap[d] = state.apt[d].map(function (x) { return [x.l || 0, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); }); track('progress', { ended: state.ended || '', choices: state.choices, apt: ap, seed: SEED, slots: state.slots, ctx: state.ctx }); }
   function clearWalk() { SRVWALK = null; try { localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ } }
   function readWalk() { try { var w = JSON.parse(localStorage.getItem(WALK_KEY) || 'null'); return w && TK && w.tid === TK.id && w.choices && w.choices.length && Date.now() - w.at < 7200000 ? w : null; } catch (e) { return null; } }
   // old saved walks may hold "second look" entries; they are dropped, so the count of lamps stays right
   function cleanWalk(ch) { return (ch || []).filter(function (c) { return c && !c.echoOf && !/~echo/.test(String(c.sceneId)); }); }
-  function resumeWalk(w) { trapBack(); SEED = w.seed; state.choices = cleanWalk(w.choices); state.sharpen = state.choices.length > WS0.draftAt; state.draftSeen = state.sharpen; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.hinted = w.hinted || {}; track('walk_resume', { n: litCount() }); advance(false); }
-  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.sharpen = false; state.draftSeen = false; state.endVia = ''; state.lastReact = ''; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.puzDone = false; state.hinted = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
+  function resumeWalk(w) {
+    trapBack(); SEED = w.seed; state.choices = cleanWalk(w.choices); state.sharpen = state.choices.length > WS0.draftAt; state.draftSeen = state.sharpen; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.hinted = w.hinted || {}; state.ended = w.ended === 'stop' || w.ended === 'draft' ? w.ended : '';
+    track('walk_resume', { n: litCount() });
+    if (state.ended && state.choices.length >= WS0.draftAt) { state.draftSeen = true; state.endVia = state.ended; return toDreams(); }   // they had already chosen to see the result: show it, not the next town
+    state.ended = ''; advance(false);
+  }
+  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.sharpen = false; state.draftSeen = false; state.endVia = ''; state.ended = ''; state.lastReact = ''; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.puzDone = false; state.hinted = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
 
   var advTimer = null;
   function idle() { state.busy = false; document.body.classList.remove('busy'); }
@@ -1195,9 +1210,9 @@
     clearTimeout(advTimer); state.cont = null; $('nextBtn').hidden = true; document.body.classList.remove('awaiting');
     state.lit = false;
     var s, ws;
-    try { s = M.step(bank, state.choices); ws = M.walkStatus(bank, state.choices); } catch (e) { console.error(e); idle(); return; }
+    try { s = M.step(bank, state.choices, cfgFor()); ws = M.walkStatus(bank, state.choices, cfgFor()); } catch (e) { console.error(e); idle(); return; }
     if (!first && ws.draftReady && !state.draftSeen && !state.sharpen) { idle(); return toDraftStory(); }   // the 8th town: the mystery ends, then the draft
-    if (s.done) { idle(); state.endVia = 'stop'; return toDreams(); }
+    if (s.done) { idle(); state.endVia = 'stop'; state.ended = 'stop'; saveWalk(); return toDreams(); }
     state.scene = s.scene; state.spent = {}; $('howto').hidden = litCount() > 0;
     show('stop');
     setScene(s.scene.id, first ? 'cut' : 'walk');
@@ -1221,24 +1236,24 @@
     })();
   }
   function toDraft() {
-    var r = M.journeyResult(bank, state.choices), ws = M.walkStatus(bank, state.choices), sd = annotate(r), left = ws.sharpenLeft, more = !ws.done && left > 0;
+    var r = M.journeyResult(bank, state.choices), ws = M.walkStatus(bank, state.choices), sd = annotate(r), left = M.walkStatus(bank, state.choices, SHARPCFG).sharpenLeft, more = left > 0, sure = ws.done;
     show('draft'); Snd.door(); $('draft').scrollTop = 0;
     $('drHead').textContent = r.noSignal ? 'No clear shape yet' : 'Your first draft';
     $('drLine').textContent = r.noSignal ? 'Not much stood out in ' + ws.played + ' towns.' : 'From ' + ws.played + ' towns, these stand out most:';
     $('drChips').innerHTML = r.noSignal ? '' : r.code.code.map(function (a, i) { return '<span class="drchip" style="--c:' + ['#ffcf6b', '#46b3b0', '#e8708a'][i] + '"><b>' + (i + 1) + '</b>' + NAME[a] + '</span>'; }).join('');
-    $('drNote').textContent = !more ? 'More towns are unlikely to change this picture.' : r.noSignal ? 'More towns give it more to work with. Give your oil to what you would really enjoy.' : 'This is a draft. More towns can change the order of the areas, or add one.';
+    $('drNote').textContent = !more ? 'You have walked every town, so this is your full picture.' : sure && !r.noSignal ? 'This picture is fairly clear. A few more towns can still sharpen it.' : r.noSignal ? 'More towns give it more to work with. Give your oil to what you would really enjoy.' : 'This is a draft. More towns can change the order of the areas, or add one.';
     $('drSharpen').hidden = !more; $('drSharpen').textContent = 'Sharpen it';
     $('drHint').textContent = more ? 'Sharpening: up to ' + left + ' more towns, about a minute each. You can stop any time.' : '';
-    track('draft', { n: ws.played, more: more });
+    if (state.draftTracked !== ws.played) { state.draftTracked = ws.played; track('draft', { n: ws.played, more: more }); }
   }
-  $('drSee').addEventListener('click', function () { track('draft', { choice: 'see', n: litCount() }); state.endVia = 'draft'; toDreams(); });
+  $('drSee').addEventListener('click', function () { track('draft', { choice: 'see', n: litCount() }); state.endVia = 'draft'; state.ended = 'draft'; saveWalk(); toDreams(); });
   $('drSharpen').addEventListener('click', function () {
-    track('draft', { choice: 'sharpen', n: litCount() }); state.sharpen = true; var c = META.sharpen;
+    track('draft', { choice: 'sharpen', n: litCount() }); state.sharpen = true; state.ended = ''; saveWalk(); var c = META.sharpen;
     if (c) showBeat(c.roman, c.title, c.line, function () { advance(false); }, 'Walk on'); else advance(false);
   });
   $('stopNow').addEventListener('click', function () {
     clearTimeout(advTimer); Voice.stop(); state.cont = null; $('nextBtn').hidden = true; document.body.classList.remove('awaiting'); idle();
-    track('sharpen_stop', { n: litCount() }); state.endVia = 'stop'; toDreams();
+    track('sharpen_stop', { n: litCount() }); state.endVia = 'stop'; state.ended = 'stop'; saveWalk(); toDreams();
   });
   // ---------- oil hints (shown between places, like the story beats): one gentle line, once per walk, when a walk is heading for 'no clear shape'.
   // They look only at how much and how evenly oil is spent, never at which areas, so they do not steer.
@@ -1392,7 +1407,7 @@
   // Back from a later screen opens the last town again with its oil still placed.
   function reopenLast() {
     var last = state.choices[state.choices.length - 1];
-    state.choices = M.undo(state.choices); saveWalk();
+    state.choices = M.undo(state.choices); state.ended = ''; saveWalk();
     if (state.choices.length < WS0.draftAt) { state.sharpen = false; state.draftSeen = false; }   // back before the 8th town: the draft comes again
     state.scene = bank.scenes.filter(function (s) { return s.id === last.sceneId; })[0]; state.spent = {};
     Object.keys(last.spent || {}).forEach(function (k) { state.spent[k] = last.spent[k]; });
@@ -1516,7 +1531,7 @@
     var r = state.result = M.journeyResult(bank, state.choices);
     var code = r.code.code, pr = r.profile;
     var sd = annotate(r), biased = r.biased;
-    if (!restored) { track('result', { code: code, alts: r.code.alternatives, profile: pr, scores: r.scores, confidence: r.confidence, noSignal: r.noSignal, cautious: r.cautious, biased: biased, sd: +sd.toFixed(3), stops: r.stopsPlayed, draft: litCount() <= WS0.draftAt, lowEngagement: !!r.lowEngagement, slots: state.slots }); saveSnapshot(r); }
+    if (!restored) { track('result', { ev: M.ENGINE_VERSION, code: code, alts: r.code.alternatives, profile: pr, scores: r.scores, confidence: r.confidence, noSignal: r.noSignal, cautious: r.cautious, biased: biased, sd: +sd.toFixed(3), stops: r.stopsPlayed, draft: litCount() <= WS0.draftAt, lowEngagement: !!r.lowEngagement, slots: state.slots }); saveSnapshot(r); }
     $('selfq').hidden = !MWC || !TK || !!restored; Array.prototype.forEach.call($('selfq').children, function (c) { if (c.id !== 'chkOpen') c.hidden = r.noSignal; }); $('selfq').querySelectorAll('.rate button').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); }); $('chkOpen').hidden = !MWC;
     show('reveal'); if (r.noSignal) Snd.reveal(); $('reveal').scrollTop = 0;
     $('compass').innerHTML = radar(pr, code); $('compass').dataset.sel = ''; $('rInfo').hidden = true; $('rInfo').previousElementSibling.hidden = false;
@@ -1548,7 +1563,7 @@
   }
   function saveSnapshot(r) {
     var apt = {}; APT.forEach(function (d) { apt[d] = state.apt[d].map(function (x) { return [x.l || 0, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); });
-    var snap = { choices: state.choices, apt: apt, seed: SEED, slots: state.slots, ctx: state.ctx, code: r.code.code, noSignal: !!r.noSignal };
+    var snap = { ev: M.ENGINE_VERSION, choices: state.choices, apt: apt, seed: SEED, slots: state.slots, ctx: state.ctx, code: r.code.code, noSignal: !!r.noSignal };
     track('snapshot', snap); if (ME) { snap.ts = Date.now(); ME.unshift(JSON.parse(JSON.stringify(snap))); }
   }
   function restoreAttempt(a) {
@@ -1579,7 +1594,7 @@
     if (!MWC || !TK || TK.led) return;
     var t = TK; fetch(MWC.api + '/me', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ testerId: t.id, token: t.token }) })
       .then(function (r) { if (r.status === 403) { if (TK && TK.id === t.id) { try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); paintTester(); $('gate').hidden = false; } return null; } return r.ok ? r.json() : null; })
-      .then(function (j) { if (j && TK && TK.id === t.id) { ME = j.attempts || []; var pg = j.progress, goRes = GO_RES; GO_RES = false; SRVWALK = null; if (pg && pg.choices && pg.choices.length && (!ME.length || pg.ts > ME[0].ts) && !readWalk()) { SRVWALK = { tid: TK.id, seed: pg.seed == null ? SEED : pg.seed, choices: pg.choices, slots: pg.slots && pg.slots.length === 4 ? pg.slots : [0, 0, 0, 0], apt: (function () { var o = { N: [], V: [], S: [], P: [] }; APT.forEach(function (d) { o[d] = ((pg.apt && pg.apt[d]) || []).map(function (x) { return { l: x[0], ok: !!x[1], skip: !!x[2] }; }); }); return o; })() }; } paintLast(); paintTester();
+      .then(function (j) { if (j && TK && TK.id === t.id) { ME = j.attempts || []; var pg = j.progress, goRes = GO_RES; GO_RES = false; SRVWALK = null; if (pg && pg.choices && pg.choices.length && (!ME.length || pg.ts > ME[0].ts) && !readWalk()) { SRVWALK = { tid: TK.id, seed: pg.seed == null ? SEED : pg.seed, choices: pg.choices, slots: pg.slots && pg.slots.length === 4 ? pg.slots : [0, 0, 0, 0], ended: pg.ended || '', apt: (function () { var o = { N: [], V: [], S: [], P: [] }; APT.forEach(function (d) { o[d] = ((pg.apt && pg.apt[d]) || []).map(function (x) { return { l: x[0], ok: !!x[1], skip: !!x[2] }; }); }); return o; })() }; } paintLast(); paintTester();
         var last = goRes && !SRVWALK && ME.filter(function (x) { return !x.noSignal && x.code && x.code.length; })[0]; if (last) restoreAttempt(last); } }, function () { /* offline: the game still works */ });
   }
   $('openDoors').addEventListener('click', function () { toDoors(); });
@@ -2216,9 +2231,17 @@
   $('pPrint').addEventListener('click', function () { window.print(); });
   // ---- consent popup before starting the test
   var consentGo = null;
-  function askConsent(go) { consentGo = go; $('consent').hidden = false; $('consentYes').focus(); }
+  function askConsent(go) { consentGo = go; $('consentAsk').hidden = false; $('consentWait').hidden = true; $('consentMsg').textContent = ''; $('consent').hidden = false; $('consentYes').focus(); }
   $('consentYes').addEventListener('click', function () { $('consent').hidden = true; var g = consentGo; consentGo = null; if (g) g(); });
-  $('consentNo').addEventListener('click', function () { $('consent').hidden = true; consentGo = null; });
+  $('consentNo').addEventListener('click', function () { $('consentAsk').hidden = true; $('consentWait').hidden = false; $('consentCopy').focus(); });   // nothing is sent; the student gets a clear next step
+  $('consentBack').addEventListener('click', function () { $('consent').hidden = true; consentGo = null; });
+  $('consentCopy').addEventListener('click', function () {
+    var link = location.origin + location.pathname, msg = $('consentMsg');
+    function ok() { msg.textContent = 'Link copied. Send it to a parent.'; }
+    function fail() { msg.textContent = 'Could not copy. The link is: ' + link; }
+    try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(link).then(ok, fail); return; } } catch (e) { /* fall through */ }
+    fail();
+  });
   // ---- gate
   function paintCode() { var e = $('scLine'); if (e && MWC && TK) e.textContent = ' Your student code: ' + studentCode() + '.'; }
   function doLogout() {
@@ -2233,7 +2256,7 @@
   function paintTester() {
     var el = $('welcomeBack'); Array.prototype.forEach.call(document.querySelectorAll('.logout'), function (b) { b.hidden = !(MWC && TK); });
     if (STALE_LED && !(TK && TK.led)) { STALE_LED = false; $('begin').hidden = false; }
-    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } if (RET) { var rc = document.createElement('small'); rc.className = 'wret'; rc.textContent = 'Your login code is ' + RET + '. Use it to log in next time, on any phone or laptop.'; el.appendChild(rc); } var rw = readWalk() || SRVWALK; if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = 'Continue your walk (' + cleanWalk(rw.choices).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
+    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } if (RET) { var rc = document.createElement('small'); rc.className = 'wret'; rc.textContent = 'Your login code is ' + RET + '. Use it to log in next time, on any phone or laptop.'; el.appendChild(rc); } var rw = readWalk() || SRVWALK; if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = rw.ended ? 'See your result (' + cleanWalk(rw.choices).length + ' lamps lit)' : 'Continue your walk (' + cleanWalk(rw.choices).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
   }
   if (MWC) {
     try { $('gScene').style.setProperty('--art', 'url(' + ((ART.bg && (ART.bg.gate || ART.bg.lighthouse)) || 'art/bg-gate.webp') + ')'); } catch (e) { /* plain dark gate */ }
@@ -2253,7 +2276,6 @@
       var name = $('gName').value.trim(), code = $('gCode').value.trim(); $('gErr').textContent = '';
       if (!name) { $('gErr').textContent = 'Please add your name.'; return; }
       if (!$('gCodeL').hidden && !code) { $('gErr').textContent = 'Please add the invite code you were given.'; return; }
-      if (!$('gOk').checked) { $('gErr').textContent = 'Please tick the box to continue.'; return; }
       if (!$('consent').hidden) return; askConsent(function () { doJoin(name, code); });
     });
     function doJoin(name, code) {
