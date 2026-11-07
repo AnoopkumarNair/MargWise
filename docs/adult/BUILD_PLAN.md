@@ -249,7 +249,7 @@ Every endpoint is a pure handler in `hosting/core/` with a one-line adapter in `
 
 `app/adult/build.py` copies the app to `hosting/public/work/`, copies the release's graph files to `hosting/public/work/graph/`, and stamps the release id. `--dev` uses the working files in `data/graph/` and stamps `dev-unaccepted`. Add a strict CSP for `/work/*` to `hosting/public/_headers`.
 
-- **Done when:** `/work/` serves locally (`npx wrangler pages dev hosting/public`), the release id shows in the footer, and the page works at phone width.
+- **Done when:** `/work/` serves locally (`cd hosting && npx wrangler pages dev public`), the release id shows in the footer, and the page works at phone width.
 
 **T4.2 Sign-up and log-in screens** (SPEC 8 screens 1 to 3). The birth-year refusal happens in the page and on the server. The adult notice text goes in `app/adult/notice.md`. **ASK** the owner to approve the wording.
 
