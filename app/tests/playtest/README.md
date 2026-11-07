@@ -28,7 +28,7 @@ Node, `npx wrangler`, `curl`, and Playwright with a Chromium browser (resolved t
 ## What to compare after a change
 
 - Where each persona would quit (screen, towns, estimated minutes). The first run, on the old game: 8 of 9 at the "second look" after about 6 towns and 4 locks. The game now has no second look, no locks in the walk, and a draft after 8 towns.
-- Total screens and estimated minutes against the "About 8 to 10 minutes" promise.
+- Total screens and estimated minutes against the "About 10 to 15 minutes" promise.
 - Page errors listed in the logs.
 
 Trust: these are guesses by an AI in character. Use them to find problems, not to measure how many real students would quit.

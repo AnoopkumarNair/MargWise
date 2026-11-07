@@ -33,7 +33,7 @@
   #app { position: relative; z-index: 1; height: 100dvh; max-width: 520px; margin: 0 auto; overflow: hidden; }
   .screen { position: absolute; inset: 0; display: none; min-height: 0; min-width: 0; }
   .screen.on { display: flex; flex-direction: column; }
-  .screen.pad { padding: calc(var(--safe-top) + 58px) 14px calc(var(--safe-bot) + 10px); gap: 10px; animation: slidein .45s cubic-bezier(.2,.8,.2,1) both; }
+  .screen.pad { --padx: 14px; padding: calc(var(--safe-top) + 58px) var(--padx) calc(var(--safe-bot) + 10px); gap: 10px; animation: slidein .45s cubic-bezier(.2,.8,.2,1) both; }
   .screen.pad.on { background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 60%, #3b2f66 100%); }
   .screen.pad > * { flex-shrink: 0; } .screen.pad > .chips { flex-shrink: 1; }
   #reveal.on { overflow-y: auto; }
@@ -107,7 +107,8 @@
   .obj .art { position: relative; flex: 1; min-height: 0; border-radius: 22px 22px 14px 14px; overflow: hidden; border: 2px solid rgba(255,243,214,.5); background: radial-gradient(circle at 50% 62%, rgba(255,214,120,.42), rgba(70,50,110,.22) 62%, rgba(24,22,60,.38)); box-shadow: 0 8px 20px rgba(0,0,0,.4), inset 0 0 22px rgba(255,200,100,.2); transition: box-shadow .35s, border-color .35s, transform .15s; display: grid; place-items: center; }
   .obj .art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .obj .art svg.fallback { width: 52%; max-width: 92px; height: auto; filter: drop-shadow(0 0 10px rgba(255,200,90,.7)); }
-  .obj .tag { position: relative; margin: -12px 6px 0; background: var(--cream); color: var(--ink); border-radius: 14px; padding: 7px 9px 8px; font-weight: 800; font-size: 14.5px; line-height: 1.22; text-align: center; box-shadow: 0 4px 0 #b9955a, 0 8px 14px rgba(0,0,0,.3); display: grid; place-items: center; min-height: 3.75em; }
+  .obj .tag { position: relative; margin: -12px 6px 0; background: var(--cream); color: var(--ink); border-radius: 14px; padding: 8px 9px 10px; font-weight: 800; font-size: 17px; line-height: 1.4; text-align: center; box-shadow: 0 4px 0 #b9955a, 0 8px 14px rgba(0,0,0,.3); display: grid; place-items: center; min-height: 3.75em; }
+  @media (min-height: 760px) { .obj .tag { font-size: 18px; } }
   .obj:active .art { transform: scale(.97); }
   .obj .fl { position: absolute; right: 8px; top: 8px; display: flex; gap: 1px; }
   .obj .fl svg { width: 22px; height: 28px; animation: ignite .45s cubic-bezier(.2,1.6,.4,1) both, wave 1.1s ease-in-out .5s infinite; transform-origin: 50% 90%; filter: drop-shadow(0 0 6px rgba(255,190,70,.9)); }
@@ -156,7 +157,7 @@
   .tl li { position: relative; }
   .tl li::before { content: ''; position: absolute; left: -24px; top: 4px; width: 13px; height: 13px; border-radius: 50%; background: var(--glow); box-shadow: 0 0 8px rgba(255,207,107,.8); }
   .tl li.now::before { background: var(--rose); box-shadow: 0 0 8px rgba(232,112,138,.9); }
-  .tl small { display: block; font-weight: 800; font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--glow); }
+  .tl small { display: block; font-weight: 800; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--glow); }
   .tl span { font-size: 15.5px; font-weight: 600; }
   .fineprint { font-size: 13px; color: rgba(255,243,214,.7); }
   /* ----- Jyo the firefly, and the lamp-lighting sequence ----- */
@@ -183,11 +184,11 @@
   .rcards button[aria-pressed="true"] { background: rgba(255,233,168,.16); border-color: var(--glow); }
   .rcards b { font-size: 16px; } .rcards ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 3px; font-size: 14px; font-weight: 600; color: rgba(255,243,214,.9); }
   .acard { background: rgba(255,255,255,.08); border-radius: 16px; padding: 14px; display: grid; gap: 12px; }
-  .acard h3 { font-size: 22px; } .acard .k { font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 800; color: var(--glow); }
+  .acard h3 { font-size: 22px; } .acard .k { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 800; color: var(--glow); }
   .acard .v { font-weight: 800; font-size: 17px; } .acard .sm { font-size: 14px; font-weight: 600; color: rgba(255,243,214,.85); }
   .acard .vf { background: rgba(255,207,107,.14); border: 1.5px dashed var(--glow-deep); border-radius: 12px; padding: 8px 10px; font-size: 14px; font-weight: 600; }
   .acard ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; font-weight: 600; }
-  .pill.cf { font-size: 11.5px; padding: 1px 8px; margin-left: 6px; vertical-align: middle; } .pill.cf.official { background: #bfe5e2; } .pill.cf.secondary { background: #ffe9a8; } .pill.cf.estimate { background: #e9dfe8; }
+  .pill.cf { font-size: 13px; padding: 1px 8px; margin-left: 6px; vertical-align: middle; } .pill.cf.official { background: #bfe5e2; } .pill.cf.secondary { background: #ffe9a8; } .pill.cf.estimate { background: #e9dfe8; }
   .acard a { color: var(--glow); } .us { color: var(--cream-2); font-size: 13.5px; font-weight: 700; }
   /* ----- contrast pass ----- */
   .progwrap { background: rgba(14,16,40,.62); border-radius: 12px; padding: 4px 10px 5px; }
@@ -205,7 +206,7 @@
   #consent { position: absolute; inset: 0; z-index: 60; display: grid; place-items: center; padding: 18px; background: rgba(10,12,30,.78); }
   #consent .beatcard { gap: 12px; } #consent .go.quiet { margin-top: 0; }
   /* ----- parent summary ----- */
-  #how { overflow-y: auto; } #how .pgcard { background: #fff8e6; color: #2a2038; border-radius: 18px; padding: 16px; display: grid; gap: 12px; } #how h3 { margin: 8px 0 2px; font-size: 16px; } #how p, #how li { font-size: 14.5px; line-height: 1.45; margin: 0; } #how ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; } #how .brow { display: grid; grid-template-columns: 92px 1fr 64px; gap: 8px; align-items: center; font-size: 14px; } #how .bar { height: 10px; border-radius: 6px; background: rgba(0,0,0,.12); overflow: hidden; } #how .bar i { display: block; height: 100%; background: #e0a526; } #how .tag { display: inline-block; padding: 1px 8px; border-radius: 99px; background: #efe3c0; font-size: 12.5px; font-weight: 800; } #how .q { font-style: italic; }
+  #how { overflow-y: auto; } #how .pgcard { background: #fff8e6; color: #2a2038; border-radius: 18px; padding: 16px; display: grid; gap: 12px; } #how h3 { margin: 8px 0 2px; font-size: 16px; } #how p, #how li { font-size: 14.5px; line-height: 1.45; margin: 0; } #how ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; } #how .brow { display: grid; grid-template-columns: 92px 1fr 64px; gap: 8px; align-items: center; font-size: 14px; } #how .bar { height: 10px; border-radius: 6px; background: rgba(0,0,0,.12); overflow: hidden; } #how .bar i { display: block; height: 100%; background: #e0a526; } #how .tag { display: inline-block; padding: 1px 8px; border-radius: 99px; background: #efe3c0; font-size: 13px; font-weight: 800; } #how .q { font-style: italic; }
   #parent { overflow-y: auto; } #parent .pgcard { background: #fff8e6; color: #2a2038; border-radius: 18px; padding: 16px; display: grid; gap: 12px; }
   #parent h3 { font-size: 17px; margin: 0; color: #2a2038; } #parent .pnm { font: inherit; font-weight: 800; font-size: 18px; padding: 8px 10px; border-radius: 10px; border: 2px solid #8a7a98; background: #fff; color: #2a2038; width: 100%; }
   #parent .pmeta { font-size: 14px; color: #4a3f5c; font-weight: 600; }
@@ -236,7 +237,7 @@
   .ai-veryhigh { border-color: #ffd978; color: #ffe9a8; } .ai-high { border-color: rgba(255,217,120,.75); color: #ffe9a8; } .ai-watch { background: #ffd978; color: #2a2038; border-color: #ffd978; }
   .ai-moderate { color: #fff3d6; }
   .aiblk details { font-size: 13.5px; } .aiblk details b { font-size: 13.5px; } .aiblk summary { cursor: pointer; font-weight: 800; color: #ffe08a; min-height: 32px; display: flex; align-items: center; }
-  .aiblk ul { margin: 4px 0 6px; padding-left: 18px; display: grid; gap: 3px; } .aiblk .aisrc { font-size: 12.5px; color: #e6dfcc; margin: 4px 0 0; }
+  .aiblk ul { margin: 4px 0 6px; padding-left: 18px; display: grid; gap: 3px; } .aiblk .aisrc { font-size: 13px; color: #e6dfcc; margin: 4px 0 0; }
   /* ----- lamp locks (puzzles) ----- */
   #lock .lkcard { background: rgba(20,22,52,.72); border: 1.5px solid rgba(255,243,214,.35); border-radius: 18px; padding: 14px; display: grid; gap: 12px; }
   #lock .lkq { font-weight: 800; font-size: 17px; line-height: 1.35; color: #fff3d6; }
@@ -281,7 +282,7 @@
   .stepbar ol::before { content: ''; position: absolute; left: 12.5%; right: 12.5%; top: 14px; height: 2px; background: rgba(255,243,214,.2); }
   .stepbar button { position: relative; width: 100%; background: none; border: 0; color: inherit; font: inherit; display: grid; justify-items: center; gap: 3px; padding: 0 0 2px; min-height: 44px; cursor: pointer; }
   .stepbar .n { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 13px; background: #1c2050; border: 2px solid rgba(255,243,214,.35); color: rgba(255,243,214,.8); }
-  .stepbar .l { font-size: 11.5px; font-weight: 800; line-height: 1.15; text-align: center; color: rgba(255,243,214,.7); }
+  .stepbar .l { font-size: 13px; font-weight: 800; line-height: 1.15; text-align: center; color: rgba(255,243,214,.9); }
   .stepbar li.done .n { background: rgba(255,207,107,.25); border-color: var(--glow); color: var(--glow); }
   .stepbar li.on .n { background: var(--glow); border-color: var(--glow); color: var(--ink); box-shadow: 0 0 12px rgba(255,207,107,.7); }
   .stepbar li.on .l { color: var(--cream); }
@@ -289,20 +290,21 @@
   .t3 { position: relative; display: grid; justify-items: center; text-align: center; gap: 2px; background: rgba(255,255,255,.08); border: 2px solid var(--rc); border-radius: 16px; padding: 14px 6px 10px; opacity: 0; animation: cardin .5s ease forwards; }
   .t3 .rk { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--rc); color: var(--ink); font-family: var(--display); font-weight: 800; font-size: 14px; border: 2px solid #2a2038; }
   .t3 .ic { font-size: 30px; line-height: 1.2; }
-  .t3 b { font-size: 16px; font-weight: 800; } .t3 small { font-size: 12.5px; font-weight: 700; line-height: 1.2; color: var(--cream-2); min-height: 2.4em; }
+  .t3 b { font-size: 16px; font-weight: 800; } .t3 small { font-size: 13px; font-weight: 700; line-height: 1.2; color: var(--cream-2); min-height: 2.4em; }
   .t3 .bar { width: 100%; height: 6px; border-radius: 9px; background: rgba(255,243,214,.15); overflow: hidden; margin-top: 4px; } .t3 .bar i { display: block; height: 100%; background: var(--rc); border-radius: 9px; }
   .subjline { font-size: 14px; font-weight: 600; color: var(--cream-2); margin: 10px 2px 0; }
   .rest { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; } .rest small { font-size: 13px; font-weight: 800; opacity: .75; margin-right: 2px; }
   .rc { font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,243,214,.25); }
   .sure { background: rgba(255,255,255,.07); border-radius: 14px; padding: 8px 12px; } .sure details summary { cursor: pointer; font-weight: 800; font-size: 14px; color: #ffe08a; min-height: 32px; display: flex; align-items: center; } .sure details p { font-size: 14px; font-weight: 600; margin: 2px 0 4px; }
-  .sure .sureRow::before { content: 'How sure is this?'; font-size: 13.5px; font-weight: 700; opacity: .8; }
+  .sure .sureRow::before { content: 'How sure is this?'; font-size: 13.5px; font-weight: 700; opacity: .9; }
   #saveBtn { align-self: center; width: auto; min-width: 0; padding: 8px 18px; font-size: 15px; }
-  #reveal .nextbar { position: sticky; bottom: calc(-1 * (var(--safe-bot) + 14px)); z-index: 3; margin: 0 -14px calc(-1 * (var(--safe-bot) + 14px)); padding: 26px 14px calc(var(--safe-bot) + 12px); background: linear-gradient(180deg, rgba(20,26,58,0) 0, rgba(20,26,58,.97) 20px); }
+  /* Sticky bottom bar: it sits at the very end of the content (no bottom margin trick), carries its own safe-area padding, so the last lines are never behind the button. */
+  #reveal.screen.pad.res { padding-bottom: 0; } #reveal .nextbar { position: sticky; bottom: 0; z-index: 3; margin: 0 calc(-1 * var(--padx, 14px)); padding: 26px var(--padx, 14px) calc(var(--safe-bot) + 12px); background: linear-gradient(180deg, rgba(20,26,58,0) 0, rgba(20,26,58,.97) 20px); }
   .nexthint { text-align: center; font-size: 13px; font-weight: 800; color: var(--cream-2); }
-  .fcard .why { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-top: 6px; } .fcard .why small { font-size: 13px; font-weight: 800; color: #4a3f5c; } .fcard .why .tc { color: var(--ink); background: #fff3d6; font-size: 12.5px; padding: 2px 9px; }
+  .fcard .why { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-top: 6px; } .fcard .why small { font-size: 13px; font-weight: 800; color: #4a3f5c; } .fcard .why .tc { color: var(--ink); background: #fff3d6; font-size: 13px; padding: 2px 9px; }
   .minor { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; } .minor .linkbtn { text-align: center; font-size: 14.5px; }
   .cstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .cs { display: grid; justify-items: start; gap: 1px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 6px 8px; } .cs small { font-size: 10.5px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; opacity: .75; white-space: nowrap; } .cs b { font-size: 16px; font-weight: 900; white-space: nowrap; } .cs > span:last-child { font-size: 11.5px; font-weight: 700; opacity: .8; }
+  .cs { display: grid; justify-items: start; gap: 1px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 6px 8px; } .cs small { font-size: 13px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; opacity: .9; white-space: nowrap; } .cs b { font-size: 16px; font-weight: 900; white-space: nowrap; } .cs > span:last-child { font-size: 13px; font-weight: 700; opacity: .9; }
   .cs.up b { color: #7fe0b0; } .cs.dn b { color: #ff9a9a; } .cs.fl b { color: #ffe08a; }
   .aim { display: inline-flex; gap: 3px; align-items: flex-end; height: 20px; margin: 2px 0; } .aim i { width: 7px; border-radius: 2px; background: rgba(255,243,214,.22); } .aim i:nth-child(1) { height: 6px; } .aim i:nth-child(2) { height: 10px; } .aim i:nth-child(3) { height: 15px; } .aim i:nth-child(4) { height: 20px; }
   .aim i.on { background: #ffe08a; } .aim.w i.on { background: #ffb347; }
@@ -310,12 +312,12 @@
   .road::before { content: ''; position: absolute; left: 10%; right: 10%; top: 21px; height: 3px; border-radius: 3px; background: repeating-linear-gradient(90deg, rgba(255,207,107,.7) 0 8px, transparent 8px 14px); }
   .road button { position: relative; background: none; border: 0; color: inherit; font: inherit; display: grid; justify-items: center; gap: 4px; padding: 0; min-height: 64px; cursor: pointer; }
   .road .sic { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 21px; background: #23285e; border: 2px solid rgba(255,207,107,.45); transition: transform .2s, box-shadow .2s; }
-  .road small { font-size: 12px; font-weight: 800; text-align: center; line-height: 1.15; opacity: .8; }
+  .road small { font-size: 13px; font-weight: 800; text-align: center; line-height: 1.15; opacity: .9; }
   .road button.done .sic { background: #3a3470; border-color: var(--glow); }
   .road button[aria-selected="true"] .sic { background: #ffe9a8; border-color: var(--glow); box-shadow: 0 0 16px rgba(255,207,107,.8); transform: scale(1.1); }
   .road button[aria-selected="true"] small { opacity: 1; color: var(--glow); }
   .roadpanel { background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,207,107,.45); border-radius: 16px; padding: 12px 14px 4px; animation: cardin .35s ease both; }
-  .roadpanel small { display: block; font-weight: 800; font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--glow); } .roadpanel p { font-size: 15.5px; font-weight: 600; margin: 4px 0; } .roadpanel a { color: var(--glow); }
+  .roadpanel small { display: block; font-weight: 800; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--glow); } .roadpanel p { font-size: 15.5px; font-weight: 600; margin: 4px 0; } .roadpanel a { color: var(--glow); }
   .tlwrap .xplain { margin: 8px 0 0; } .tlwrap .tl { margin-top: 6px; }
   .aptcard { background: rgba(20,22,52,.72); border: 1.5px solid rgba(255,243,214,.35); border-radius: 14px; padding: 10px 12px; display: grid; gap: 6px; font-size: 14.5px; font-weight: 600; color: #fff3d6; }
   .aptcard b.t { font-size: 16px; } .aptcard .ar { display: flex; justify-content: space-between; gap: 10px; } .aptcard .ar span:last-child { color: #ffe9a8; font-weight: 800; }
@@ -342,8 +344,8 @@
   #gate .gfacts { margin: 0; font-size: 15px; font-weight: 800; color: #ffe08a; }
   #gate .gcard { background: #fff8e6; color: var(--ink); border-radius: 22px; padding: 16px; display: grid; gap: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.45); }
   #gate .gtest { margin: 0; font-size: 14.5px; font-weight: 700; color: #4a3f5c; line-height: 1.4; }
-  #gate .gdata { font-size: 14px; font-weight: 600; color: #4a3f5c; line-height: 1.45; } #gate .gdata summary { cursor: pointer; font-weight: 800; color: var(--ink); min-height: 32px; display: flex; align-items: center; } #gate .gdata p { margin: 6px 0 0; }
-  #gate .gfine { margin: 0; font-size: 12.5px; font-weight: 600; color: #4a3f5c; line-height: 1.4; }
+  #gate .gdata { font-size: 14px; font-weight: 600; color: #4a3f5c; line-height: 1.45; } #gate .gdata summary { cursor: pointer; text-decoration: underline; font-weight: 800; color: var(--ink); min-height: 32px; display: flex; align-items: center; } #gate .gdata p { margin: 6px 0 0; }
+  #gate .gfine { margin: 0; font-size: 13px; font-weight: 600; color: #4a3f5c; line-height: 1.4; }
   #gate input[type=text]:focus-visible, #gate summary:focus-visible, #gate .go:focus-visible, #gate input[type=checkbox]:focus-visible { outline: 3px solid #1f6feb; outline-offset: 2px; }
   #gate label, .sheet label.fld { display: grid; gap: 4px; font-weight: 800; font-size: 14.5px; }
   #gate input[type=text], .sheet textarea { font: inherit; font-size: 16px; padding: 10px 12px; border-radius: 12px; border: 2px solid var(--ink-soft); background: #fff; color: var(--ink); min-height: 46px; width: 100%; }
@@ -355,7 +357,7 @@
   .rate { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
   .rate button { border: 2px solid var(--ink-soft); background: #fff; color: var(--ink); border-radius: 12px; min-height: 44px; font-weight: 800; font-size: 16px; }
   .rate button[aria-pressed="true"] { background: var(--glow); border-color: var(--glow-deep); }
-  .rl { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--ink-soft); font-weight: 700; margin-top: 2px; }
+  .rl { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-soft); font-weight: 700; margin-top: 2px; }
   #selfq { display: grid; gap: 8px; background: rgba(255,255,255,.08); border-radius: 14px; padding: 12px; }
   #selfq .rate button { background: rgba(255,255,255,.1); color: var(--cream); border-color: rgba(255,243,214,.4); } #selfq .rate button[aria-pressed="true"] { background: var(--glow); color: var(--ink); }
   #selfq .rl { color: rgba(255,243,214,.8); }
@@ -445,7 +447,7 @@
   .head p { color: rgba(255,243,214,.88); margin-top: 4px; font-size: 15.5px; }
   .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-content: start; min-height: 0; flex: 1; }
   .chip { border: 2px solid rgba(255,243,214,.3); background: rgba(255,255,255,.07); border-radius: 14px; padding: 8px 10px; text-align: left; font-size: 14.5px; min-height: 48px; font-weight: 800; transition: background .2s, border-color .2s, transform .15s; }
-  .chip small { display: block; font-family: var(--hand); font-size: 12.5px; color: var(--glow); line-height: 1.2; margin-bottom: 2px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; }
+  .chip small { display: block; font-family: var(--hand); font-size: 13px; color: var(--glow); line-height: 1.2; margin-bottom: 2px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; }
   .chip[aria-pressed="true"] { background: #ffe9a8; color: var(--ink); border-color: var(--glow-deep); transform: scale(1.02); }
   .chip[aria-pressed="true"] small { color: #a8661d; }
 
@@ -489,12 +491,12 @@
 
   @media (max-height: 700px) {
     .bubble { font-size: 14.5px; min-height: 44px; padding-block: 6px; } .bubble .thread { font-size: 13px; }
-    .obj .tag { font-size: 14px; padding: 5px 7px 6px; } .place-tag { font-size: 15px; }
+    .obj .tag { padding: 6px 7px 8px; } .place-tag { font-size: 15px; }
     #welcome .hero p { font-size: 14.5px; } #welcome .hero h1 { font-size: 32px; }
   }
   @media (max-height: 640px) {
     #stop { gap: 6px; } .bubble .thread { display: none; } .bubble { font-size: 14px; line-height: 1.25; }
-    .obj .tag { font-size: 13.5px; margin-top: -8px; min-height: 0; } .objs { gap: 8px 10px; }
+    .obj .tag { margin-top: -8px; min-height: 0; } .objs { gap: 8px 10px; overflow-y: auto; }
     .go { min-height: 46px; padding-block: 10px; font-size: 16.5px; }
   }
   /* ---------- field page: visual summary first, detail on tap ---------- */
@@ -505,14 +507,15 @@
   .tchips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; } .tc { font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 99px; background: rgba(0,0,0,.3); border: 2px solid var(--c, #ffcf6b); } .tc b { letter-spacing: 2px; color: var(--c, #ffcf6b); }
   .tc.tR { --c: var(--tR); } .tc.tI { --c: var(--tI); } .tc.tA { --c: var(--tA); } .tc.tS { --c: var(--tS); } .tc.tE { --c: var(--tE); } .tc.tC { --c: var(--tC); }
   .ftry { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; background: linear-gradient(135deg, #ffe08a, #ffb347); color: #2a2038; border-radius: 16px; padding: 12px 14px; font-weight: 800; box-shadow: 0 4px 0 #b9812e; }
-  .ftry .ico { font-size: 26px; } .ftry small { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
+  .ftry .ico { font-size: 26px; } .ftry small { display: block; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; opacity: .9; }
+  .topc { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; } .topc li { display: grid; gap: 2px; background: rgba(255,255,255,.08); border-radius: 12px; padding: 10px 12px; font-size: 16px; line-height: 1.4; } .topc li b { font-size: 17px; color: #ffe08a; } .topc li span { font-weight: 600; }
   .whystrip { display: grid; gap: 8px; background: rgba(255,255,255,.07); border-radius: 16px; padding: 10px 12px; }
   .sureRow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 14.5px; } .sureWhy { opacity: .85; font-weight: 600; }
   .meter { display: inline-flex; gap: 3px; } .meter i { width: 18px; height: 10px; border-radius: 4px; background: rgba(255,243,214,.25); } .meter.m1 i:nth-child(1), .meter.m2 i:nth-child(-n+2), .meter.m3 i { background: #ffcf6b; }
   .evrow { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; } .evrow small { font-weight: 800; opacity: .8; font-size: 13px; }
   .ev { font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 99px; background: rgba(255,207,107,.2); border: 1px solid rgba(255,207,107,.55); }
   .near { font-size: 13.5px; font-weight: 800; padding: 6px 12px; border-radius: 99px; background: rgba(255,255,255,.12); border: 2px solid rgba(255,243,214,.5); min-height: 36px; }
-  .swipe { font-size: 12px; font-weight: 700; opacity: .7; margin-left: 6px; }
+  .swipe { font-size: 13px; font-weight: 700; opacity: .88; margin-left: 6px; }
   .cscroll { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
   .ccard { flex: 0 0 82%; scroll-snap-align: start; background: rgba(255,255,255,.09); border-radius: 16px; padding: 12px; display: grid; gap: 6px; align-content: start; }
   .ccard b { font-size: 17px; } .ccard p { font-size: 14.5px; font-weight: 600; opacity: .9; } .ccard .tags { display: flex; gap: 6px; flex-wrap: wrap; } .ccard summary { cursor: pointer; font-weight: 800; font-size: 14px; color: #ffe08a; min-height: 36px; display: flex; align-items: center; }
@@ -537,7 +540,7 @@
   @media (min-width: 700px) {
     /* reading and result screens widen; art scenes stay a portrait stage with blurred art filling the sides */
     body[data-view="doors"] #app, body[data-view="field"] #app, body[data-view="abroad"] #app, body[data-view="parent"] #app, body[data-view="how"] #app, body[data-view="dreams"] #app { max-width: min(100vw, 1040px); }
-    .screen.pad { padding-left: 28px; padding-right: 28px; }
+    .screen.pad { --padx: 28px; }
     #fields { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); } #fields .fcard { min-width: 0; }
     #allFields { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; } #allFields h3 { grid-column: 1 / -1; }
     .rcards { grid-template-columns: 1fr 1fr; }
@@ -620,38 +623,35 @@
   <div id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gateT">
     <div class="gscene" id="gScene" aria-hidden="true"></div>
     <div class="gcover" id="gCover">
-      <div class="gct"><div class="gk">Margwise</div><div class="gs">The Night of Lamps</div><p>Find the work that fits you. One lamp at a time.</p></div>
-      <div class="gcb"><button class="go" id="gStart" type="button">Begin</button><span>About 8 to 10 minutes. No marks, no wrong answers.</span><button class="go quiet gback" id="gBackCover" type="button">Played before? Log in with my code</button></div>
+      <div class="gct"><div class="gk">Margwise</div><div class="gs">The Night of Lamps</div><p>Find the work that fits you.</p></div>
+      <div class="gcb"><button class="go" id="gStart" type="button">Begin</button><span id="gTime"></span><button class="go quiet gback" id="gBackCover" type="button">Played before? Log in</button></div>
     </div>
     <div class="gwrap">
       <header class="ghead">
-        <div class="gbrand"><svg viewBox="0 0 60 80" aria-hidden="true"><path d="M22 8h16" stroke="#fff3d6" stroke-width="3.5" stroke-linecap="round"/><path d="M20 14h20l6 12v32a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26z" fill="rgba(255,243,214,.14)" stroke="#fff3d6" stroke-width="3" stroke-linejoin="round"/><path d="M30 28c2 8 10 10 10 20a10 10 0 0 1-20 0c0-6 4-8 5-14c2 2 4 3 5-6z" fill="#f2a03d"/><path d="M30 42c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#ffe08a"/></svg><span class="gword">Margwise</span><span class="gmean">Light your way</span></div>
+        <div class="gbrand"><svg viewBox="0 0 60 80" aria-hidden="true"><path d="M22 8h16" stroke="#fff3d6" stroke-width="3.5" stroke-linecap="round"/><path d="M20 14h20l6 12v32a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26z" fill="rgba(255,243,214,.14)" stroke="#fff3d6" stroke-width="3" stroke-linejoin="round"/><path d="M30 28c2 8 10 10 10 20a10 10 0 0 1-20 0c0-6 4-8 5-14c2 2 4 3 5-6z" fill="#f2a03d"/><path d="M30 42c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#ffe08a"/></svg><span class="gword">Margwise</span></div>
         <h1 id="gateT">What kind of work would suit you?</h1>
-        <p class="glead">A story game for students in Class 9 to 12. Walk a road at night, light lamps, make small choices. You get your interests and the careers worth a look.</p>
-        <p class="gfacts">About 8 to 10 minutes. No marks, no wrong answers.</p>
+        
       </header>
       <div class="gcard">
         <div class="gtabs" role="tablist" aria-label="Sign in"><button type="button" role="tab" id="gTabNew" aria-selected="true" aria-controls="gNew">First time here</button><button type="button" role="tab" id="gTabBack" aria-selected="false" aria-controls="gBack">Log in with my code</button></div>
         <div id="gNew" role="tabpanel" aria-labelledby="gTabNew" class="gpanel">
-        <p class="gtest">You are one of the first to try this. Tell us what to fix.</p>
-        <label>Your name<input type="text" id="gName" maxlength="40" autocomplete="given-name" enterkeyhint="next"><small class="fp">So the person who invited you can match your feedback.</small></label>
-        <label id="gCodeL" hidden>Invite code<input type="text" id="gCode" maxlength="40" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="go"><small class="fp">You got this from the person who invited you.</small></label>
+                <label>Your name<input type="text" id="gName" maxlength="40" autocomplete="given-name" enterkeyhint="next"></label>
+        <label id="gCodeL" hidden>Invite code<input type="text" id="gCode" maxlength="40" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="go"><small class="fp">From the person who invited you.</small></label>
         <p class="err" id="gErr" role="alert"></p>
         <button class="go" id="gGo" type="button">Start the walk</button>
-        <p class="fp">You get a login code when you start. Played before? Use <b>Log in with my code</b>.</p>
         </div>
         <div id="gBack" role="tabpanel" aria-labelledby="gTabBack" class="gpanel" hidden>
-          <label>Your login code<input type="text" id="gRet" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-2345" enterkeyhint="go"><small class="fp">You got it when you first started. It takes you back to your results.</small></label>
+          <label>Your login code<input type="text" id="gRet" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-2345" enterkeyhint="go"><small class="fp">It takes you back to your results.</small></label>
           <p class="err" id="gRetErr" role="alert"></p>
           <button class="go" id="gRetGo" type="button">Log in</button>
-          <p class="fp">Lost it? Ask the person who invited you, or start again.</p>
+          <p class="fp">Lost it? Ask the person who invited you.</p>
         </div>
-        <details class="gdata"><summary>Data: what we keep and who sees it</summary>
+        <details class="gdata"><summary>What we keep and why</summary>
           <p>We keep your name, the choices you make in the game and how long each place takes, your puzzle answers, the class, board and stream you pick, your results, your screen size and any feedback you write. We never ask for your phone number, email or address. A scrambled version of your connection address is kept for 24 hours only, to stop abuse.</p>
           <p>The Margwise team can see it. If you joined through a school, the counsellor at that school can also see your name, whether you finished, and your results. Nobody else can. We use it to improve the game and to check how well it measures interests.</p>
           <p>We keep it until the test ends, about 31 January 2027, then delete it. If your parent also agreed to follow-up checks, the school counsellor keeps your first name, class and their later notes for up to 12 months after the test, and nothing else. To have yours deleted sooner, tell the person who invited you.</p>
         </details>
-        <p class="gfine">Early test version. This is an interest guide, not a test of ability. Career information is still a draft.</p>
+        <p class="gfine">Early test version. An interest guide, not a test of ability.</p>
       </div>
     </div>
   </div>
@@ -660,10 +660,10 @@
     <div class="fntext"><p class="fnl1" id="fnL1"></p><h2 class="fnt" id="fnT">The lighthouse is lit.</h2><div class="fnchips" id="fnChips"></div><p class="fnnote" id="fnNote"></p><button class="go" id="fnGo" type="button">See your shape</button></div>
   </section>
   <div id="consent" hidden role="dialog" aria-modal="true" aria-labelledby="consentT"><div class="beatcard">
-    <small>Before you begin</small><h3 id="consentT">Are you 18 or older, or has a parent or guardian agreed?</h3>
+    <small>Before you begin</small><h3 id="consentT">Are you 18 or older, or has a parent agreed?</h3>
     <div id="consentAsk">
-    <p>Students under 18 should not do this without a parent or guardian knowing and agreeing. You can also do it together with them.</p>
-    <button class="go" id="consentYes" type="button">Yes, I am 18 or older, or a parent has agreed</button>
+    <p>Under 18? Ask a parent or guardian first.</p>
+    <button class="go" id="consentYes" type="button">Yes, I am 18+ or a parent agreed</button>
     <button class="go quiet" id="consentNo" type="button">Not yet. I will ask first.</button>
     </div>
     <div id="consentWait" hidden>
@@ -694,13 +694,13 @@
     <button class="iconbtn soundtop" id="soundChoice" aria-label="Turn sound on" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="wave" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/><path class="slash" d="M3 3l18 18"/></svg></button>
     <div class="jyo-sprite" id="jyoSprite" aria-hidden="true"></div>
     <div class="hero">
-      <div class="kicker">Margwise · Light your way</div>
+      <div class="kicker">Margwise</div>
       <h1>The Night of Lamps</h1>
       <p id="premise"></p>
       <p id="mission"></p>
     </div>
-    <div class="actions"><div class="lastres" id="lastRes" hidden></div><button class="go" id="begin">Take the lantern</button><p class="tiny" id="welcomeBack" hidden></p><p class="tiny">About 8 to 10 minutes. Nothing is marked.</p></div>
-    <div class="foot"><span>Prototype. Places and words are drafts.</span><button id="logoutBtn" class="logout" type="button" hidden>Log out</button><button id="aboutBtn">About</button></div>
+    <div class="actions"><div class="lastres" id="lastRes" hidden></div><button class="go" id="begin">Take the lantern</button><p class="tiny" id="welcomeBack" hidden></p></div>
+    <div class="foot"><span></span><button id="logoutBtn" class="logout" type="button" hidden>Log out</button><button id="aboutBtn">About</button></div>
   </section>
 
   <section class="screen" id="intro">
@@ -718,7 +718,7 @@
       <div class="bubblebar"><div class="bubble" id="bubble" aria-live="polite"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
     </div>
     <div class="objs" id="options"></div>
-    <p class="howto" id="howto" hidden>You have two flasks of oil. Spend them on the two things you would most enjoy: both on one if you love it, or one on each. Pick what you really like, not a bit of everything. There are no right answers and nothing is marked.</p>
+    <p class="howto" id="howto" hidden>You have two flasks of oil. Spend them on what you would enjoy most: both on one choice, or one on each. Pick what you really like. No answer is wrong and nothing is marked.</p>
     <div class="actions"><button class="go" id="light" aria-label="Light the lamp"><span class="lbl">Light the lamp</span></button><button class="go" id="nextBtn" type="button" hidden><span class="lbl">Next</span></button><button class="go quiet" id="stopNow" type="button" hidden>Stop and see my result</button></div>
   </section>
 
@@ -730,7 +730,7 @@
   </section>
 
   <section class="screen pad res" id="dreams">
-    <div class="head"><h2>Two quick things first</h2><p>So the next screens fit your school. Skip anything you like.</p></div>
+    <div class="head"><h2>Two quick things first</h2><p>So the next screens fit your school. Skip any you like, or pick Not sure yet.</p></div>
     <div class="grp"><h3>Which class are you in?</h3><div class="chips" id="cClass"></div></div>
     <div class="grp"><h3>Which board?</h3><div class="chips" id="cBoard"></div></div>
     <div class="grp"><h3>Where is your mind right now?</h3><div class="chips" id="cLean"></div></div>
@@ -794,10 +794,12 @@
     <div class="stepbar" data-s="3"></div>
     <div class="fhero" id="fHero"></div>
     <div class="ftry" id="fTry" hidden></div>
+    <div class="grp"><h3>Top careers here</h3><ul class="topc" id="fTop"></ul></div>
+    <div class="grp"><h3>Your school path <small class="swipe">tap a step</small></h3><div class="seg" id="fBoard" role="group" aria-label="Board"></div><div id="fPath"></div><div class="tlwrap" id="fMore"></div></div>
     <div class="whystrip" id="fWhyStrip"></div>
     <details class="xplain" id="fExplain"><summary>See which choices pointed here</summary><div id="fExplainBody"></div></details>
-    <div class="grp"><h3>Careers in this field <small class="swipe">swipe &rarr;</small></h3><p class="fineprint" id="fAiNote"></p><details class="xplain" id="fPay"><summary>Pay in India: what we know</summary><div class="fineprint" id="fPayBody"></div></details><div class="cscroll" id="fCareers"></div></div>
-    <div class="grp"><h3>Your school path <small class="swipe">tap a step</small></h3><div class="seg" id="fBoard" role="group" aria-label="Board"></div><div id="fPath"></div><div class="tlwrap" id="fMore"></div><button class="linkbtn" id="fAbroad" type="button">Thinking of studying or working abroad? See how it works for this field.</button></div>
+    <details class="xplain" id="fAll"><summary>More: all careers, AI exposure and pay</summary><div class="grp"><h3>All careers in this field <small class="swipe">swipe &rarr;</small></h3><p class="fineprint" id="fAiNote"></p><details class="xplain" id="fPay"><summary>Pay in India: what we know</summary><div class="fineprint" id="fPayBody"></div></details><div class="cscroll" id="fCareers"></div></div></details>
+    <details class="xplain" id="fAbroadD"><summary>More: studying or working abroad</summary><button class="linkbtn" id="fAbroad" type="button">See how it works for this field</button></details>
     <details class="xplain" id="fChk"><summary>Check before relying on this</summary><div class="fineprint" id="fSrc"></div></details>
     <div class="actions"><button class="go quiet" id="fBack">Back to all fields</button></div>
   </section>
@@ -817,10 +819,9 @@
 
 <div class="sheet" id="codeSheet" hidden><div role="dialog" aria-modal="true" aria-labelledby="csT">
   <h3 id="csT">Save your login code</h3>
-  <p>This is your key back in. With it you can see your results again, on this phone or any other, without answering everything again.</p>
-  <div class="cscode" id="csCode"></div>
+    <div class="cscode" id="csCode"></div>
   <div class="row"><button class="go quiet" id="csCopy" type="button" style="flex:1">Copy</button><button class="go quiet" id="csShare" type="button" style="flex:1" hidden>Share</button></div>
-  <p class="mute">Write it down, take a photo, or send it to yourself or a parent. We cannot show it to you again if it is lost, but the person who invited you can make a new one.</p>
+  <p class="mute">Write it down to log back in. Lost it? Ask the person who invited you.</p>
   <button class="go" id="csDone" type="button">I have saved it</button>
 </div></div>
 <div class="sheet" id="fbSheet" hidden><div role="dialog" aria-modal="true" aria-label="Your feedback">
@@ -1202,7 +1203,7 @@
     if (state.ended && state.choices.length >= WS0.draftAt) { state.draftSeen = true; state.endVia = state.ended; return toDreams(); }   // they had already chosen to see the result: show it, not the next town
     state.ended = ''; advance(false);
   }
-  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.sharpen = false; state.draftSeen = false; state.endVia = ''; state.ended = ''; state.lastReact = ''; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.puzDone = false; state.hinted = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); var c = META.chapters[0]; showBeat(c.roman, c.title, c.line, null); }
+  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.sharpen = false; state.draftSeen = false; state.endVia = ''; state.ended = ''; state.lastReact = ''; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.puzDone = false; state.hinted = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); }   // the first town opens at once: no chapter card before it (cuts words before the first choice)
 
   var advTimer = null;
   function idle() { state.busy = false; document.body.classList.remove('busy'); }
@@ -1238,12 +1239,12 @@
   function toDraft() {
     var r = M.journeyResult(bank, state.choices), ws = M.walkStatus(bank, state.choices), sd = annotate(r), left = M.walkStatus(bank, state.choices, SHARPCFG).sharpenLeft, more = left > 0, sure = ws.done;
     show('draft'); Snd.door(); $('draft').scrollTop = 0;
-    $('drHead').textContent = r.noSignal ? 'No clear shape yet' : 'Your first draft';
-    $('drLine').textContent = r.noSignal ? 'Not much stood out in ' + ws.played + ' towns.' : 'From ' + ws.played + ' towns, these stand out most:';
+    $('drHead').textContent = 'Your first draft';
+    $('drLine').textContent = r.noSignal ? 'You like a bit of everything so far. A few more towns will show what stands out.' : 'From ' + ws.played + ' towns, these stand out most:';
     $('drChips').innerHTML = r.noSignal ? '' : r.code.code.map(function (a, i) { return '<span class="drchip" style="--c:' + ['#ffcf6b', '#46b3b0', '#e8708a'][i] + '"><b>' + (i + 1) + '</b>' + NAME[a] + '</span>'; }).join('');
-    $('drNote').textContent = !more ? 'You have walked every town, so this is your full picture.' : sure && !r.noSignal ? 'This picture is fairly clear. A few more towns can still sharpen it.' : r.noSignal ? 'More towns give it more to work with. Give your oil to what you would really enjoy.' : 'This is a draft. More towns can change the order of the areas, or add one.';
+    $('drNote').textContent = !more ? 'You have walked every town, so this is your full picture.' : sure && !r.noSignal ? 'This picture is fairly clear. A few more towns can still sharpen it.' : r.noSignal ? 'Nothing is wrong. Spend your oil on what you would enjoy most, and a shape will start to show.' : 'This is a draft. More towns can change the order of the areas, or add one.';
     $('drSharpen').hidden = !more; $('drSharpen').textContent = 'Sharpen it';
-    $('drHint').textContent = more ? 'Sharpening: up to ' + left + ' more towns, about a minute each. You can stop any time.' : '';
+    $('drHint').textContent = more ? 'Sharpening: up to ' + left + ' more towns, about 1 to 2 minutes each. You can stop any time.' : '';
     if (state.draftTracked !== ws.played) { state.draftTracked = ws.played; track('draft', { n: ws.played, more: more }); }
   }
   $('drSee').addEventListener('click', function () { track('draft', { choice: 'see', n: litCount() }); state.endVia = 'draft'; state.ended = 'draft'; saveWalk(); toDreams(); });
@@ -1435,8 +1436,8 @@
   // ---------- context: class, board, leaning (all optional)
   var CTX = {
     cls: [['9', 'Class 8 or 9'], ['10', 'Class 10'], ['11', 'Class 11'], ['12', 'Class 12']],
-    board: [['cbse', 'CBSE'], ['isc', 'ICSE or ISC'], ['state', 'State board'], ['other', 'Other']],
-    lean: [['science', 'Science'], ['commerce', 'Commerce'], ['humanities', 'Humanities'], ['arts', 'Arts and design'], ['unsure', 'Not sure yet']]
+    board: [['cbse', 'CBSE'], ['isc', 'ICSE or ISC'], ['state', 'State board'], ['other', 'Other'], ['unsure', 'Not sure yet']],
+    lean: [['science', 'Science (PCM or PCB)'], ['commerce', 'Commerce'], ['humanities', 'Humanities'], ['arts', 'Arts and design'], ['unsure', 'Not sure yet']]
   };
   state.ctx = { cls: '', board: '', lean: '' }; state.slots = [0, 0, 0, 0];
   function toDreams() {
@@ -1556,8 +1557,8 @@
     $('sure').hidden = false; $('sure').innerHTML = '<div class="sureRow"><span class="meter m' + lvl + '" aria-hidden="true"><i></i><i></i><i></i></span><b>' + (isDraft ? 'A first draft from ' + litCount() + ' places' : ['', 'A rough first draft', 'Fairly clear', 'Clear'][lvl]) + '</b></div><details><summary>Why?</summary><p>' + esc(notes.join(' ')) + '</p></details>';
     $('notes').hidden = !warn; $('notes').textContent = notes.filter(function (t) { return /^Most of your oil|^Not much caught/.test(t); }).join(' ');
     var none = r.noSignal; document.querySelector('#reveal .stepbar').hidden = none; $('compass').parentNode.hidden = none; $('legend').hidden = none; if (none) { $('sure').hidden = true; $('notes').hidden = false; } $('openDoors').hidden = none; $('revealLine').hidden = none;
-    $('revealHead').textContent = none ? 'No clear shape this time' : 'Your interest shape'; $('saveBtn').hidden = none || !!MWC; document.querySelector('#reveal .nexthint').hidden = none;
-    if (none) { $('notes').textContent = (r.lowEngagement ? 'Very little oil was spent on this walk, so no clear shape showed up.' : 'Your oil was spread over many different things, so no clear shape showed up.') + ' That is fine, and nothing is wrong. Walk again and give your oil to what you would really enjoy doing.'; $('revealLine').hidden = true; }
+    $('revealHead').textContent = none ? 'A bit of everything so far' : 'Your interest shape'; $('saveBtn').hidden = none || !!MWC; document.querySelector('#reveal .nexthint').hidden = none;
+    if (none) { $('notes').textContent = (r.lowEngagement ? 'You kept most of your oil on this walk, so no one area stood out yet.' : 'You like a bit of everything, so no one area stood out yet.') + ' That is fine. Walk again and spend your oil on what you would enjoy most, and a shape will show.'; $('revealLine').hidden = true; }
     var na = $('noSigAgain'); if (!na) { na = document.createElement('button'); na.type = 'button'; na.id = 'noSigAgain'; na.className = 'go'; na.textContent = 'Walk the road again'; na.addEventListener('click', function () { track('nosignal_again'); state.skipIntro = true; show('welcome'); });   /* the welcome keeps its 'Not you?' check on shared devices; the intro is skipped next time */ $('notes').parentNode.appendChild(na); } na.hidden = !none;
     var rl = $('retLine'); rl.hidden = !(MWC && TK && RET) || none; rl.innerHTML = RET ? '<span aria-hidden="true">\ud83d\udd11</span><span>Your login code <b>' + esc(RET) + '</b></span><span class="rbtns"><button type="button" class="linkbtn" id="retCopy">Copy</button>' + (navigator.share ? '<button type="button" class="linkbtn" id="retShare">Share</button>' : '') + '</span>' : ''; rl.title = 'Log in with it to see these results again on any phone or laptop, without answering again.';
   }
@@ -1636,7 +1637,7 @@
   // ---------- doors
   var FIELDS = CONTENT.fields, FBY = {}; FIELDS.forEach(function (f) { FBY[f.id] = f; });
   var GROUPS = ['Science', 'Commerce', 'Humanities', 'Open to any stream'];
-  var FIT = { strong: 'Strong fit', mixed: 'Worth exploring', weak: 'Less likely fit', unclear: 'Not clear' };
+  var FIT = { strong: 'Strong fit', mixed: 'Worth exploring', weak: 'Fits less so far', unclear: 'Not clear' };
   var LEAN_FIELDS = { science: ['health', 'sci', 'eng', 'tec', 'agr', 'mar'], commerce: ['com'], humanities: ['psy', 'law', 'media', 'pub'], arts: ['des', 'media', 'arts'] }, LEAN_NAME = { science: 'Science', commerce: 'Commerce', humanities: 'Humanities', arts: 'Arts and design' };
   var NULLF = null;
   function refPct(id, x) {
@@ -1741,11 +1742,12 @@
     $('fTry').hidden = !f.early; $('fTry').innerHTML = f.early ? '<span class="ico" aria-hidden="true">\u2728</span><div><small>Try this week</small><span>' + esc(f.early) + '</span></div>' : '';
     var hi = x.ms.filter(function (m) { var a = BYID[m.careerId].ai; return a && a.watch; }).length;
     $('fAiNote').textContent = hi ? hi + ' of the ' + x.ms.length + ' careers below ' + (hi === 1 ? 'has' : 'have') + ' very high AI exposure with AI already in use.' : '';
-    $('fCareers').innerHTML = x.ms.map(function (m) { var c = BYID[m.careerId], more = aiLine(c); return '<div class="ccard"><b>' + esc(c.title) + '</b><p>' + esc(c.line) + '</p><p class="inpay">' + NO_IN_PAY + '</p>' + cstats(c) + (more ? '<details><summary>What these mean</summary>' + more + '</details>' : '') + '</div>'; }).join('');
+    $('fTop').innerHTML = x.ms.slice(0, 3).map(function (m) { var c = BYID[m.careerId]; return '<li><b>' + esc(c.title) + '</b><span>' + esc(c.line) + '</span></li>'; }).join('');
+    $('fCareers').innerHTML = x.ms.map(function (m) { var c = BYID[m.careerId], more = aiLine(c); return '<div class="ccard"><b>' + esc(c.title) + '</b><p>' + esc(c.line) + '</p><p class="inpay">' + NO_IN_PAY + '</p>' + cstats(c) + (more ? '<details><summary>About the AI rating</summary>' + more + '</details>' : '') + '</div>'; }).join('');
     $('fPayBody').innerHTML = '<p>' + plfsText() + ' Pay for a specific job can be very different, so ask people who do it.</p><p>Career fit uses US job profiles, so it is a rough guide for India.</p>'; $('fPay').open = false;
     countUp($('fCareers'));
     $('fSrc').innerHTML = (f.verify.length ? '<ul class="chk-list">' + f.verify.map(function (v) { return '<li>' + esc(v) + '</li>'; }).join('') + '</ul>' : '') + '<p class="src" style="margin-top:8px"><b>Where to check:</b> ' + f.sources.map(function (z) { return '<a href="' + z.url + '" target="_blank" rel="noopener noreferrer">' + esc(z.name) + '</a>'; }).join(', ') + '. Career fit uses O*NET interest profiles, which come from US jobs and are only a rough guide for India.</p>';
-    $('fExplain').open = false; $('fChk').open = false;
+    $('fExplain').open = false; $('fChk').open = false; $('fAll').open = false; $('fAbroadD').open = false;
     renderExplain(id, x); renderPath();
   }
   function plfsText() {
@@ -2131,7 +2133,13 @@
 
   // ---------- boot
   buildHud(); paintHud(); paintSound();
-  $('premise').textContent = META.premise || STORY.premise; $('mission').textContent = META.mission || STORY.mission;
+  // Honest time. Source: app/tests/playtest/autoplay.mjs on a 390x844 phone, 8-town path, cover to result (2026-11-07).
+  // Words seen (closed folds not counted): about 1,930 across every distinct screen from cover to the last screen before the result (about 1,330 if a line already seen on the previous screen is not read again), plus 165 on the result screen.
+  // Reading at 150 words a minute = 10 to 14 minutes, plus about 5 seconds for each of the 16 oil choices (1.3 minutes) = 11 to 15 minutes, so the cover says "10 to 15".
+  // Update this when the screens change: re-run the driver and redo the sum.
+  var TIME_TXT = 'About 10 to 15 minutes.';
+  $('gTime').textContent = TIME_TXT;
+  $('premise').textContent = META.premise || STORY.premise; $('mission').textContent = META.mission || ''; $('mission').hidden = !$('mission').textContent;
   $('welcomeArt').innerHTML = artFor('welcome');
   // ---------- study and work abroad
   var AB = window.MW_ABROAD, UGY = { us: 4, ca: 4, uk: 3, au: 3, nl: 3, de: 3, cn: 4, sg: 4 }, PGY = { us: 2, ca: 2, uk: 1, au: 2, nl: 1, de: 2, cn: 2, sg: 2 };
@@ -2192,7 +2200,7 @@
     h += '<div style="display:grid;gap:6px">' + order.map(function (a) { var w = Math.round(zv(pr[a]) * 100); return '<div class="prow"><span>' + NAME[a] + '</span><span class="pbar"><i style="width:' + w + '%"></i></span><span>' + w + '</span></div><div class="pmeta" style="margin-top:-4px">' + esc(BLURB[a]) + '</div>'; }).join('') + '</div>';
     h += '<div><h3>Areas to explore</h3><ul>' + fits.slice(0, 5).map(function (x) { var top = x.ms.slice(0, 3).map(function (m) { var c = CAREERS.filter(function (cc) { return cc.id === m.careerId; })[0]; return c ? c.title + (c.ai && c.ai.watch ? ' (very high AI exposure, in use now)' : '') : ''; }).filter(Boolean).join(', '); return '<li><b>' + esc(x.f.name) + '</b> (' + esc(x.f.stream) + ')<div class="pcar">Careers to look at: ' + esc(top) + '</div></li>'; }).join('') + '</ul></div>';
     var tp = puzzlesTried(); if (state.puzDone) h += '<div><h3>Bonus puzzles</h3><div class="pcar">' + triedText(tp) + '</div><div class="pmeta">Just for fun. They are not an ability test and do not change the interest shape.</div></div>';
-    var conf = r.noSignal ? 'There was not enough signal to show a clear shape.' : r.cautious ? 'The shape was not sharp, so treat this as a rough first draft.' : 'The shape was fairly clear. It can still change as the student grows and tries new things.'; if (litCount() <= WS0.draftAt) conf += ' It comes from ' + litCount() + ' towns, a first draft. Walking more towns can sharpen it.';
+    var conf = r.noSignal ? 'No one area stood out yet, so there is no clear shape to show.' : r.cautious ? 'The shape was not sharp, so treat this as a rough first draft.' : 'The shape was fairly clear. It can still change as the student grows and tries new things.'; if (litCount() <= WS0.draftAt) conf += ' It comes from ' + litCount() + ' towns, a first draft. Walking more towns can sharpen it.';
     h += '<div><h3>How much to trust this</h3><p class="pcar" style="margin:0">' + conf + ' The order of close areas can swap on another day.</p></div>';
     h += '<div><h3>Talking points for home</h3><ul><li>Ask which activities in the game they enjoyed most, and why.</li><li>Look at the careers above together, and check subjects and entrance exams on official sites.</li><li>Ask how AI is changing these jobs. Where a job is marked very high AI exposure, look at which tasks AI already helps with and which skills still matter.</li><li>Treat this as one input next to marks, strengths, family circumstances and a counsellor\'s advice.</li></ul></div>';
     h += '<div class="pfine">This is an interest guide from a prototype game, not a test of ability and not a prediction. It is still being checked against established inventories. Career data: O*NET 31.0 (USDOL/ETA, CC BY 4.0, modified). School and exam facts are drafts for counsellor review.</div>';
@@ -2214,7 +2222,7 @@
     h += '</ul><h3>Step 2. Your interest shape</h3><p>Each card stands for one type (and a smaller share of a related one). In every stop you saw four different types and could only spend two flasks, so the result is about what stood out for you compared with the other cards. Flasks you spent on each type, out of the flasks you could have spent on it. Two flasks on one card count that card twice, a stronger sign that you prefer it. One on each of two cards counts each once. Keeping your oil adds almost nothing. Neither is more correct, and one town is only one of the ' + played.length + ' you played:</p>';
     var order = AREAS.slice().sort(function (a, b) { return r.profile[b] - r.profile[a]; });
     order.forEach(function (a) { var w = Math.round(zv(r.profile[a]) * 100); h += '<div class="brow"><span>' + NAME[a] + '</span><span class="bar"><i style="width:' + w + '%"></i></span><span>' + tally[a] + ' of ' + shownN[a] + '</span></div>'; });
-    h += '<p>The bars come from a statistical estimate over all your choices. ' + (r.noSignal ? 'There was not enough signal for a clear shape.' : r.cautious ? 'Your shape was not sharp, so treat it as rough.' : 'Your shape was fairly clear.') + '</p>';
+    h += '<p>The bars come from a statistical estimate over all your choices. ' + (r.noSignal ? 'No one area stood out yet, so there is no clear shape.' : r.cautious ? 'Your shape was not sharp, so treat it as rough.' : 'Your shape was fairly clear.') + '</p>';
     h += '<h3>Step 3. Closest careers</h3><p>We compare your shape with the interest profile of each of ' + CAREERS.length + ' careers (from US job data) and list the closest:</p><ul>';
     var all = []; state.fits.forEach(function (x) { x.ms.forEach(function (m) { all.push(m); }); }); all.sort(function (a, b) { return b.r - a.r; });
     all.slice(0, 5).forEach(function (m) { var c = BYID[m.careerId]; h += '<li>' + esc(c.title) + '</li>'; });
@@ -2256,7 +2264,7 @@
   function paintTester() {
     var el = $('welcomeBack'); Array.prototype.forEach.call(document.querySelectorAll('.logout'), function (b) { b.hidden = !(MWC && TK); });
     if (STALE_LED && !(TK && TK.led)) { STALE_LED = false; $('begin').hidden = false; }
-    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } if (RET) { var rc = document.createElement('small'); rc.className = 'wret'; rc.textContent = 'Your login code is ' + RET + '. Use it to log in next time, on any phone or laptop.'; el.appendChild(rc); } var rw = readWalk() || SRVWALK; if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = rw.ended ? 'See your result (' + cleanWalk(rw.choices).length + ' lamps lit)' : 'Continue your walk (' + cleanWalk(rw.choices).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
+    if (MWC && TK) { el.hidden = false; el.textContent = ''; el.appendChild(document.createTextNode('Hello, ' + TK.name + '. ')); var nb = document.createElement('button'); nb.type = 'button'; nb.textContent = 'Not you?'; nb.style.cssText = 'background:none;border:0;text-decoration:underline;color:inherit;font:inherit;font-weight:800;padding:8px 4px;min-height:40px'; nb.addEventListener('click', function () { flush(true); evq = []; try { localStorage.removeItem('margwise.tester'); } catch (e) { /* storage blocked */ } TK = null; ME = null; setRet(''); paintLast(); $('gate').hidden = false; $('gName').focus(); paintTester(); }); el.appendChild(nb); if (STALE_LED) { var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'go'; yb.style.cssText = 'display:block;margin:10px auto 0'; yb.textContent = 'Yes, I am ' + TK.name; $('begin').hidden = true; yb.addEventListener('click', function () { STALE_LED = false; $('begin').hidden = false; paintTester(); }); el.firstChild.textContent = 'Is this still ' + TK.name + '? '; el.appendChild(yb); return; } if (RET) { var rc = document.createElement('small'); rc.className = 'wret'; rc.textContent = 'Login code: ' + RET; el.appendChild(rc); } var rw = readWalk() || SRVWALK; if (rw) { var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'go'; rb.style.cssText = 'display:block;margin:10px auto 0'; rb.textContent = rw.ended ? 'See your result (' + cleanWalk(rw.choices).length + ' lamps lit)' : 'Continue your walk (' + cleanWalk(rw.choices).length + ' lamps lit)'; rb.addEventListener('click', function () { el.hidden = true; resumeWalk(rw); }); el.appendChild(rb); } }
   }
   if (MWC) {
     try { $('gScene').style.setProperty('--art', 'url(' + ((ART.bg && (ART.bg.gate || ART.bg.lighthouse)) || 'art/bg-gate.webp') + ')'); } catch (e) { /* plain dark gate */ }

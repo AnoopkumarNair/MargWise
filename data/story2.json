@@ -226,20 +226,9 @@
    "Choose yours."
   ],
   "noteIntro": "Jyo finds a scrap of the lamplighter's note:",
-  "intro": [
-   {
-    "img": "intro2",
-    "text": "Tonight is the Night of Lamps. The lighthouse at the end of the road has gone dark, and its lamplighter has vanished.",
-    "fb": "lighthouse"
-   },
-   {
-    "img": "intro3",
-    "text": "A firefly named Jyo asks you to carry the lantern. At each town, spend two flasks of oil on the work you would enjoy most. No answer is wrong.",
-    "fb": "welcome"
-   }
-  ],
-  "premise": "Once a year the valley lights every lamp on the old road. This year the lighthouse is dark and the lamplighter is gone. Ila and a firefly named Jyo need your help.",
-  "mission": "At each town, help in the way you would most enjoy. Light the lamps, solve the mystery, and see which work fits you.",
+  "intro": [],
+  "premise": "The lighthouse is dark and the lamplighter is missing. Jyo, a firefly, needs you to carry the lantern.",
+  "mission": "",
   "outro": "The lighthouse is lit. Every lamp you lit caught. This is the light you carry.",
   "sharpen": {
    "roman": "Chapter III",
@@ -314,50 +303,50 @@
   },
   "react": {
    "R": [
-    "You like hands-on work. Jyo noticed.",
+    "You like hands-on work.",
     "Oil on your fingers, and glad of it.",
-    "Hands first. Jyo's wings flicker.",
     "Tools, wood, and a job done.",
-    "You like to fix things. Noted."
+    "You like to fix things. Noted.",
+    "Hands first. Jyo's wings flicker."
    ],
    "I": [
-    "You wanted to know why. Jyo nods.",
+    "You wanted to know why.",
     "A question worth chasing.",
-    "Slow, careful, curious. Jyo watches.",
+    "Slow, careful, curious.",
     "You look closely before you act.",
     "Puzzles light you up. Jyo noticed."
    ],
    "A": [
-    "You see it differently. Jyo likes that.",
+    "You see it differently.",
     "A new shape, a new colour.",
     "Your own touch on the town.",
-    "Jyo glows. That looks like you.",
-    "You made something that was not there."
+    "You made something that was not there.",
+    "That looks like you. Jyo glows."
    ],
    "S": [
     "You went to the people first.",
-    "You like helping people. Jyo noticed.",
+    "You like helping people.",
     "Someone feels better because of you.",
     "You like listening to people.",
-    "Jyo hums softly. People matter to you."
+    "People matter to you. Jyo hums."
    ],
    "E": [
-    "You took charge. Jyo noticed.",
-    "Bold choice. Jyo's light jumps.",
+    "You took charge.",
+    "Bold choice.",
     "You were ready to decide.",
     "People followed your lead tonight.",
     "You saw a chance and took it."
    ],
    "C": [
-    "Everything in its place. Jyo approves.",
+    "Everything in its place.",
     "You like things careful and steady.",
     "You made it tidy and clear.",
     "A plan, then a done job.",
-    "Jyo likes how you keep order."
+    "You like to keep order. Jyo approves."
    ],
    "mix": [
     "Two choices. Both count.",
-    "Some of each. Jyo smiles.",
+    "Some of each.",
     "A little of both. That's fine.",
     "You split your oil. Fair enough.",
     "Two kinds of work. No wrong answer."

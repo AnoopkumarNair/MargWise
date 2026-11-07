@@ -16,7 +16,7 @@ const COLLECT = () => {
   const screen = best ? best.id : null; const on = document.querySelector('.screen.on');
   // text
   const out = []; const scope = best || document.body; const w = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
-  let n; while ((n = w.nextNode())) { const p = n.parentElement; if (!p || ['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(p.tagName)) continue; const t = n.textContent.replace(/\s+/g, ' ').trim(); if (!t) continue; if (!vis(p)) continue; out.push([t, p.closest('button,a,input,select,textarea,label,.obj,.fcard') ? 1 : 0, p]); }
+  let n; while ((n = w.nextNode())) { const p = n.parentElement; if (!p || ['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(p.tagName)) continue; const t = n.textContent.replace(/\s+/g, ' ').trim(); if (!t) continue; if (!vis(p)) continue; { const d = p.closest('details'); if (d && !d.open && !(p.closest('summary') && p.closest('summary').parentElement === d)) continue; } out.push([t, p.closest('button,a,input,select,textarea,label,.obj,.fcard') ? 1 : 0, p]); }
   // block-ish joining: new line when block ancestor changes
   const lines = []; let lastBlk = null;
   for (const [t, , p] of out) { let b = p; while (b && getComputedStyle(b).display.startsWith('inline')) b = b.parentElement; if (b === lastBlk && lines.length) lines[lines.length - 1] += ' ' + t; else lines.push(t); lastBlk = b; }
