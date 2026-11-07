@@ -13,6 +13,7 @@ while (guard++ < 400) {
   if (e.screen !== prev) { console.log(`#${e.n} ${e.screen} words=${e.words} ${e.text.slice(0, 70).replace(/\n/g, ' | ')}`); prev = e.screen; }
   if (e.screen === 'lock') puzzled = true;
   if (e.screen === 'dreams' && !ctxDone) { ctxDone = true; await call('click', '[data-k="cls"][data-v="10"]'); await call('click', '[data-k="board"][data-v="cbse"]'); continue; }
+  if (process.env.STOPAT && e.screen === process.env.STOPAT) break;   // e.g. STOPAT=reveal stops on that screen
   if (e.screen === 'doors' && !(PUZ && !puzzled)) break;
   if (e.screen === 'reveal' && PUZ && !puzzled) { if (has('#puzGo')) { await call('click', '#puzGo'); puzzled = true; continue; } }
   if (e.screen === 'draft') { await call('click', MODE !== 'draft' && has('#drSharpen') ? '#drSharpen' : '#drSee'); continue; }

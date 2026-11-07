@@ -147,6 +147,8 @@
   .xplain { background: rgba(255,255,255,.08); border-radius: 14px; padding: 10px 12px; margin: 0 0 12px; } .xplain summary { cursor: pointer; font-weight: 800; min-height: 40px; display: flex; align-items: center; }
   .xplain h4 { margin: 10px 0 4px; font-size: 14px; letter-spacing: .02em; color: #ffe08a; } .xplain ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; line-height: 1.4; } .xplain .q { font-style: italic; }
   .howto { margin: 0 16px 6px; font-size: 14px; font-weight: 700; color: #fff3d6; text-align: center; text-shadow: 0 1px 8px rgba(0,0,0,.8); }
+  /* the scene art is an absolute layer that paints over static text, so the oil rule needs its own layer (it was invisible in town 1) */
+  #stop .howto { position: relative; z-index: 2; align-self: center; max-width: 360px; margin: 0 auto 4px; padding: 6px 12px; border-radius: 12px; background: rgba(14,16,40,.72); }
   .crow { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; background: rgba(255,255,255,.08); border-radius: 14px; padding: 10px 12px; }
   .crow b { font-size: 16px; } .crow p { grid-column: 1 / -1; font-size: 14.5px; color: rgba(255,243,214,.88); font-weight: 600; }
   .tl { list-style: none; margin: 0; padding: 0 0 0 16px; border-left: 3px solid rgba(255,207,107,.5); display: grid; gap: 14px; }
@@ -294,8 +296,8 @@
   .sure { background: rgba(255,255,255,.07); border-radius: 14px; padding: 8px 12px; } .sure details summary { cursor: pointer; font-weight: 800; font-size: 14px; color: #ffe08a; min-height: 32px; display: flex; align-items: center; } .sure details p { font-size: 14px; font-weight: 600; margin: 2px 0 4px; }
   .sure .sureRow::before { content: 'How sure is this?'; font-size: 13.5px; font-weight: 700; opacity: .9; }
   #saveBtn { align-self: center; width: auto; min-width: 0; padding: 8px 18px; font-size: 15px; }
-  /* Sticky bottom bar: it sits at the very end of the content (no bottom margin trick), carries its own safe-area padding, so the last lines are never behind the button. */
-  #reveal.screen.pad.res { padding-bottom: 0; } #reveal .nextbar { position: sticky; bottom: 0; z-index: 3; margin: 0 calc(-1 * var(--padx, 14px)); padding: 26px var(--padx, 14px) calc(var(--safe-bot) + 12px); background: linear-gradient(180deg, rgba(20,26,58,0) 0, rgba(20,26,58,.97) 20px); }
+  /* Sticky bottom bar. Rules: (1) the bar is the LAST child of its screen and the screen has no bottom padding, so the end of the content always sits above the bar (the bar reserves its own height plus the safe area); (2) the bar is solid, so text scrolling under it is cut cleanly at its edge and never shows through. For a new sticky bar: put class "hasbar" on the screen and "nextbar" on the last child. */
+  .screen.pad.res.hasbar { padding-bottom: 0; } .screen.pad.res > .nextbar { position: sticky; bottom: 0; z-index: 3; margin: 0 calc(-1 * var(--padx, 14px)); padding: 10px var(--padx, 14px) calc(var(--safe-bot) + 12px); background: #141a3a; border-top: 1px solid rgba(255,243,214,.22); box-shadow: 0 -10px 18px rgba(8,10,30,.45); }
   .nexthint { text-align: center; font-size: 13px; font-weight: 800; color: var(--cream-2); }
   .fcard .why { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-top: 6px; } .fcard .why small { font-size: 13px; font-weight: 800; color: #4a3f5c; } .fcard .why .tc { color: var(--ink); background: #fff3d6; font-size: 13px; padding: 2px 9px; }
   .minor { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; } .minor .linkbtn { text-align: center; font-size: 14.5px; }
@@ -778,7 +780,7 @@
       <div class="bubblebar"><div class="bubble" id="bubble" aria-live="polite"></div><button class="iconbtn" id="listen" aria-label="Read this place and its choices aloud"><svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button></div>
     </div>
     <div class="objs" id="options"></div>
-    <p class="howto" id="howto" hidden>You have two flasks of oil. Spend them on what you would enjoy most: both on one choice, or one on each. Pick what you really like. No answer is wrong and nothing is marked.</p>
+    <p class="howto" id="howto" hidden>You have two flasks of oil: tap a choice to spend one on it, or put both on one choice. Spend them on what you'd really do.</p>
     <div class="actions"><button class="go" id="light" aria-label="Light the lamp"><span class="lbl">Light the lamp</span></button><button class="go" id="nextBtn" type="button" hidden><span class="lbl">Next</span></button><button class="go quiet" id="stopNow" type="button" hidden>Stop and see my result</button></div>
   </section>
 
@@ -793,11 +795,11 @@
     <div class="head"><h2>Two quick things first</h2><p>So the next screens fit your school. Skip any you like, or pick Not sure yet.</p></div>
     <div class="grp"><h3>Which class are you in?</h3><div class="chips" id="cClass"></div></div>
     <div class="grp"><h3>Which board?</h3><div class="chips" id="cBoard"></div></div>
-    <div class="grp"><h3>Where is your mind right now?</h3><div class="chips" id="cLean"></div></div>
+    <div class="grp"><h3>Which stream are you leaning towards?</h3><div class="chips" id="cLean"></div></div>
     <div class="actions" style="margin-top:auto"><button class="go" id="dreamGo">Show my interest shape</button></div>
   </section>
 
-  <section class="screen pad res" id="reveal">
+  <section class="screen pad res hasbar" id="reveal">
     <div class="stepbar" data-s="1"></div>
     <div class="head"><h2 id="revealHead">Your interest shape</h2><p id="revealLine"></p></div>
     <div class="radarwrap"><svg id="compass" viewBox="-10 0 340 290" role="img" aria-label="Radar chart of your six interest areas"></svg><p class="howto">Further from the middle means you enjoyed it more, compared with your own other choices. Tap an area to see what it means.</p><p class="rinfo" id="rInfo" aria-live="polite" hidden></p></div>
@@ -1478,7 +1480,7 @@
       }
       b.setAttribute('aria-label', b.querySelector('.tag').textContent + ', ' + n + (n === 1 ? ' flask' : ' flasks') + ' of oil');
     });
-    $('light').querySelector('.lbl').textContent = totalSpent() === 0 ? 'Light the lamp · keep my oil' : 'Light the lamp';
+    $('light').querySelector('.lbl').textContent = totalSpent() === 0 ? 'Light the lamp without oil' : 'Light the lamp';
     paintHud();
   }
   function sparks(btn) {
@@ -1843,7 +1845,7 @@
     var caution = state.result.cautious ? 'Your shape was not sharp, so treat this order as a rough guide. ' : '';
     if (LEAN_FIELDS[lean]) {
       var top3 = fits.slice(0, 3).map(function (x) { return x.f.id; }), hit = LEAN_FIELDS[lean].some(function (id) { return top3.indexOf(id) >= 0; });
-      ln.hidden = false; ln.textContent = caution + (hit ? 'You were leaning towards ' + LEAN_NAME[lean] + '. Your shape agrees: at least one of your closest fields is in that area.' : 'You were leaning towards ' + LEAN_NAME[lean] + '. Your shape points to ' + fits[0].f.name + ' first. Both are worth a look.');
+      ln.hidden = false; ln.textContent = caution + (hit ? 'You said you lean towards ' + LEAN_NAME[lean] + '. Your choices in the towns agree: one of your top three fields is in that area.' : 'You said you lean towards ' + LEAN_NAME[lean] + '. These fields come from what you chose in the towns, so they can differ from that. Your top match is ' + fits[0].f.name + '. ' + LEAN_NAME[lean] + ' fields are in the full list below.');
     } else if (lean === 'unsure') { ln.hidden = false; ln.textContent = caution + 'Not sure yet is a fine place to be. Start with the first field and see if it feels right.'; }
     if (ln.hidden && caution) { ln.hidden = false; ln.textContent = caution.trim(); }
     var code3 = state.result.code.code;

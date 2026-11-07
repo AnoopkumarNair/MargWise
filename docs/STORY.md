@@ -27,7 +27,7 @@ There are no chapters. The top bar reads "Town N of 8" while the student walks t
 | Towns 2, 4, 5 | A keeper remembers the lamplighter doing their work for a night or a day, then moving on |
 | After town 6 | **Ila** asks why a person would try so many kinds of work |
 | Town 7 | **Jyo** says where the lamplighter went: the lighthouse |
-| After town 8 (the only ending) | "At the lighthouse": the door is open, the lamp is dark. Then **the lamplighter's letter**: she put the light out so the student could light it, and tried every kind of work so the student could find theirs. "Everyone will tell you what to be. They told me too." |
+| After town 8 (the only ending) | "At the lighthouse": the door is open, the lamp is dark. Then **the lamplighter's letter**: she put the light out so the student could light it, and tried every kind of work so the student could find theirs. "People will tell you what to be. The road was never mine. Choose yours." |
 | Draft screen | The student sees a first result and chooses to see it or to sharpen it |
 | Sharpen | One **Jyo** card, then more towns with no extra story. There is no second ending |
 | Finale | The lighthouse is lit and the result appears. It does not retell the ending |

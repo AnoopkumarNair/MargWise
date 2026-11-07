@@ -43,8 +43,8 @@
    "place": "Orchard Village",
    "setup": "Apples are ripening faster than the village can press them.",
    "keeper": "Granny Pari",
-   "line": "Sweet juice, and now a lamp. A good evening's work.",
-   "lit": "The orchard is calm. Its lamp swings among the trees.",
+   "line": "Great juice, and the lamp is lit. Nice work.",
+   "lit": "The orchard is quiet. Its lamp swings among the trees.",
    "o": {
     "R": "Fix the juice press and run it all day, with aching arms",
     "I": "Test apple mixes to find why one tastes best, though most will taste bad",
@@ -82,7 +82,7 @@
    "place": "River Camp",
    "setup": "A wide river blocks the road. Tired lamp-bearers rest on the bank.",
    "keeper": "Ferryman Biju",
-   "line": "The river will carry your lamp's light to the sea.",
+   "line": "Your lamp's light will float all the way to the sea.",
    "lit": "The group is rested. The lamp's glow drifts downstream.",
    "o": {
     "R": "Lash a raft together from what you find, with wet feet and sore arms",
@@ -147,8 +147,8 @@
    "place": "Herbalists' Garden",
    "setup": "The garden of sweet lamp-herbs is overgrown, and the season is turning.",
    "keeper": "Gardener Noor",
-   "line": "The herbs will sleep well tonight.",
-   "lit": "The beds breathe. The lamp smells of rain and mint.",
+   "line": "The herbs look good. Thanks.",
+   "lit": "The garden is tidy. The lamp smells of rain and mint.",
    "o": {
     "I": "Test the soil with a sensor and pick better seeds, though results come slowly",
     "A": "Model a peaceful garden in a 3D app, even if it looks plain",
@@ -235,14 +235,14 @@
     },
     {
      "who": "The lamplighter",
-     "text": "I put this light out myself, so you could light it. A lamp I lit would only show my road. I took no oil, because the oil is yours to spend. I tried every kind of work so you could find yours. Everyone will tell you what to be. They told me too. The road was never mine. Choose yours."
+     "text": "I put this light out myself, so you could light it. A lamp I lit would only show my road. I took no oil, because the oil is yours to spend. I tried every kind of work so you could find yours. People will tell you what to be. The road was never mine. Choose yours."
     }
    ]
   },
   "react": {
    "R": [
     "You like hands-on work.",
-    "Oil on your fingers, and glad of it.",
+    "You like getting your hands dirty.",
     "Tools, wood, and a job done.",
     "You like to fix things. Noted.",
     "Hands first. Jyo's wings flicker."
@@ -279,14 +279,14 @@
     "Everything in its place.",
     "You like things careful and steady.",
     "You made it tidy and clear.",
-    "A plan, then a done job.",
+    "A plan, then it's done.",
     "You like to keep order. Jyo approves."
    ],
    "mix": [
     "Two choices. Both count.",
     "Some of each.",
     "A little of both. That's fine.",
-    "You split your oil. Fair enough.",
+    "You split your oil. Fair.",
     "Two kinds of work. No wrong answer."
    ]
   },
