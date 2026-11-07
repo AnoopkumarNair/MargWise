@@ -42,6 +42,19 @@ for f in sorted(glob.glob(os.path.join(A, 'art', 'bg-*.jpg'))):
 # 2b. optional opening audio: app/audio/*.mp3|ogg are copied next to the page and listed in it. No files, no list, and the page shows no sound button.
 AUD = os.path.join(A, 'audio'); aud = sorted(f for f in (os.listdir(AUD) if os.path.isdir(AUD) else []) if f.lower().endswith(('.mp3', '.ogg', '.opus', '.m4a')))
 s, n = re.subn(r'<script>window\.OP_AUDIO = \[[^\n]*?\];</script>', lambda m: '<script>window.OP_AUDIO = ' + json.dumps(['audio/' + f for f in aud]) + ';</script>', s, count=1); assert n == 1, 'OP_AUDIO marker not found'
+# 2c. optional video: app/video/*.mp4|webm are copied next to the page and listed (with sizes) in window.MW_VIDEO. No files, empty list, and the page makes no video request and shows no video UI.
+VID = os.path.join(A, 'video'); VNAME = re.compile(r'^(opening_[1-4]|town_s(0[1-9]|1[0-5])|ending|cover_loop|trailer)\.(mp4|webm)$')
+vfiles = sorted(f for f in (os.listdir(VID) if os.path.isdir(VID) else []) if f.lower().endswith(('.mp4', '.webm')))
+for f in vfiles:
+    if not VNAME.match(f): print('video: skipping %s (not a name the page knows; see docs/VIDEO.md)' % f)
+vfiles = [f for f in vfiles if VNAME.match(f)]; vman = {}
+for f in vfiles:
+    stem, ext = f.rsplit('.', 1); e = vman.setdefault(stem, {}); e[ext] = os.path.getsize(os.path.join(VID, f))
+for stem, e in vman.items():   # "v" changes when a file changes, so the long browser cache never serves an old clip
+    e['v'] = hashlib.sha1(b''.join(open(os.path.join(VID, stem + '.' + x), 'rb').read() for x in ('mp4', 'webm') if x in e)).hexdigest()[:8]
+s, n = re.subn(r'<script>window\.MW_VIDEO = \{[^\n]*?\};</script>', lambda m: '<script>window.MW_VIDEO = ' + json.dumps(vman, separators=(',', ':'), sort_keys=True) + ';</script>', s, count=1); assert n == 1, 'MW_VIDEO marker not found'
+vp = open(os.path.join(A, 'video_policy.js'), encoding='utf8').read(); assert s.count('<script>/*VIDEO_POLICY*/</script>') == 1, 'video policy marker missing'
+s = s.replace('<script>/*VIDEO_POLICY*/</script>', '<script>' + vp + '</script>')
 new = '<script>window.LAMP_ART = ' + json.dumps(art, separators=(',', ':')) + ';</script>'
 s, n = re.subn(r'<script>window\.LAMP_ART = \{[^\n]*?\};</script>', lambda m: new, s, count=1); assert n == 1, 'LAMP_ART marker not found'
 body = s[s.index('<body>') + 6: s.rindex('</body>')].lstrip('\n')
@@ -76,6 +89,9 @@ for tgt in (dist, H):
 for tgt in (dist, H):
     shutil.rmtree(os.path.join(tgt, 'audio'), ignore_errors=True)
     if aud: os.makedirs(os.path.join(tgt, 'audio')); [shutil.copy(os.path.join(AUD, f), os.path.join(tgt, 'audio', f)) for f in aud]
+for tgt in (dist, H):
+    shutil.rmtree(os.path.join(tgt, 'video'), ignore_errors=True)
+    if vfiles: os.makedirs(os.path.join(tgt, 'video')); [shutil.copy(os.path.join(VID, f), os.path.join(tgt, 'video', f)) for f in vfiles]
 shutil.rmtree(os.path.join(H, 'art'), ignore_errors=True); shutil.copytree(os.path.join(dist, 'art'), os.path.join(H, 'art'))
 os.makedirs(os.path.join(H, 'counsellor'), exist_ok=True)
 _c = json.load(open(os.path.join(D, 'content.json') if args.dev else os.path.join(REL, 'latest.json'), encoding='utf8'))

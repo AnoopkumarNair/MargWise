@@ -28,3 +28,5 @@ jobs:
         run: node --test engine/tests/engine.test.mjs engine/tests/design.test.mjs
       - name: Question map is current
         run: node engine/tools/question_map.mjs --check
+      - name: Video policy test
+        run: node --test app/tests/video.test.mjs
