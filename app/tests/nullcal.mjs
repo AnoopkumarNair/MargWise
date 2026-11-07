@@ -1,13 +1,13 @@
 import { chromium } from '/opt/node-tools/node_modules/playwright/index.mjs';
 import fs from 'fs';
-const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const b = await chromium.launch(process.env.CHROME?{executablePath:process.env.CHROME}:{});
 const pg = await b.newPage(); await pg.route('**/fonts.g*/**', r=>r.abort());
-await pg.goto('file:///tmp/claude-0/-home-user/f4b06d8a-580e-5b33-bacd-fb95950c9cc3/scratchpad/site/index.html'); await pg.waitForTimeout(1500);
+await pg.goto(process.env.PAGE || ('file://' + new URL('../dist/index.html', import.meta.url).pathname)); await pg.waitForTimeout(1500);
 const out = await pg.evaluate((K)=>{
   const M=Margwise, bank=M.JOURNEY_BANK, A=['R','I','A','S','E','C'], C=window.MW_CONTENT, CAR=C.careers, FIELDS=C.fields;
   function mk(seed0){let seed=seed0; return ()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}}
   function field(pr){ const ms=M.careerPaths(pr,CAR.map(c=>({careerId:c.id,values:c.values}))),by={}; ms.forEach(m=>by[m.careerId]=m.r); const o={}; FIELDS.forEach(f=>{const cs=CAR.filter(c=>c.field===f.id).map(c=>by[c.id]).sort((a,b)=>b-a).slice(0,K); o[f.id]=cs.reduce((a,c)=>a+c,0)/cs.length}); return o; }
-  function journey(rnd,mode){ let ch=[],g=0; while(g++<40){const s=M.step(bank,ch); if(s.done)break; const ids=s.scene.options.map(o=>o.id), sp={}; if(mode===0){const a=ids.slice().sort(()=>rnd()-.5); sp[a[0]]=1; sp[a[1]]=1} else {for(let k=0;k<2;k++){const i=ids[Math.floor(rnd()*ids.length)]; sp[i]=Math.min(2,(sp[i]||0)+1)}} ch.push(s.echo?{sceneId:s.scene.id+'~echo',echoOf:s.scene.id,spent:sp}:{sceneId:s.scene.id,spent:sp});} return M.journeyResult(bank,ch).profile; }
+  function journey(rnd,mode){ let ch=[],g=0; while(g++<40){const s=M.step(bank,ch); if(s.done)break; const ids=s.scene.options.map(o=>o.id), sp={}; if(mode===0){const a=ids.slice().sort(()=>rnd()-.5); sp[a[0]]=1; sp[a[1]]=1} else {for(let k=0;k<2;k++){const i=ids[Math.floor(rnd()*ids.length)]; sp[i]=Math.min(2,(sp[i]||0)+1)}} ch.push({sceneId:s.scene.id,spent:sp});} return M.journeyResult(bank,ch).profile; }
   const rnd=mk(5), vals={}; FIELDS.forEach(f=>vals[f.id]=[]);
   for(let i=0;i<1200;i++){ const s=field(journey(rnd,i%2)); FIELDS.forEach(f=>vals[f.id].push(s[f.id])); }
   const nf={}; FIELDS.forEach(f=>{const v=vals[f.id],m=v.reduce((a,b)=>a+b,0)/v.length,sd=Math.sqrt(v.reduce((a,b)=>a+(b-m)**2,0)/v.length)||1; nf[f.id]={m:+m.toFixed(4),sd:+sd.toFixed(4)}});

@@ -1,5 +1,5 @@
 import { chromium } from '/opt/node-tools/node_modules/playwright/index.mjs';
-const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const b = await chromium.launch(process.env.CHROME?{executablePath:process.env.CHROME}:{});
 const pg = await b.newPage(); await pg.route('**/fonts.g*/**', r=>r.abort());
 await pg.goto(process.env.PAGE || ('file://' + new URL('../dist/index.html', import.meta.url).pathname)); await pg.waitForTimeout(1500);
 const out = await pg.evaluate(()=>{
@@ -11,11 +11,11 @@ const out = await pg.evaluate(()=>{
       const s=M.step(bank,choices); if(s.done) break;
       const sc=s.scene, ids=sc.options.map(o=>o.id), spent={};
       strategy(ids,spent,sc,s,choices.length);
-      const ch = s.echo ? {sceneId:sc.id+'~echo',echoOf:sc.id,spent} : {sceneId:sc.id,spent};
+      const ch = {sceneId:sc.id,spent};
       choices.push(ch);
     }
     const r=M.journeyResult(bank,choices); const pr=r.profile, vs=A.map(a=>pr[a]), mu=vs.reduce((a,b)=>a+b,0)/6, sd=Math.sqrt(vs.reduce((a,b)=>a+(b-mu)**2,0)/6);
-    return {code:r.code.code.join(''),top1:r.code.code[0],conf:r.confidence,sd,noSignal:!(sd>=.2)||!!r.lowEngagement,stops:choices.filter(c=>!c.echoOf).length};
+    return {code:r.code.code.join(''),top1:r.code.code[0],conf:r.confidence,sd,noSignal:!(sd>=.2)||!!r.lowEngagement,stops:choices.length};
   }
   const strategies={
     random2distinct:(ids,sp)=>{const a=ids.slice().sort(()=>rnd()-.5); sp[a[0]]=1; sp[a[1]]=1},
@@ -36,7 +36,7 @@ const out = await pg.evaluate(()=>{
   const perm=[]; for(const x of A)for(const y of A)for(const z of A) if(x!==y&&y!==z&&x!==z) perm.push([x,y,z]);
   let exact=0,set3=0,top1ok=0, miss=[];
   for(const p of perm){ const lv={}; A.forEach(a=>lv[a]=.1); lv[p[0]]=1; lv[p[1]]=.8; lv[p[2]]=.6;
-    let e=0,s3=0,t1=0; const T=6; for(let k=0;k<T;k++){ const ch=M.playJourney(lv,100+k*13+perm.indexOf(p),bank,.8,lv), r=M.journeyResult(bank,ch); const c=r.code.code; if(c.join('')===p.join(''))e++; if(c.slice().sort().join('')===p.slice().sort().join(''))s3++; if(c[0]===p[0])t1++; }
+    let e=0,s3=0,t1=0; const T=6; for(let k=0;k<T;k++){ const ch=M.playJourney(lv,100+k*13+perm.indexOf(p),bank,.8), r=M.journeyResult(bank,ch); const c=r.code.code; if(c.join('')===p.join(''))e++; if(c.slice().sort().join('')===p.slice().sort().join(''))s3++; if(c[0]===p[0])t1++; }
     exact+=e/T; set3+=s3/T; top1ok+=t1/T; if(s3/T<.5) miss.push(p.join('')+':'+(s3/T).toFixed(2));
   }
   res.targets={exactOrderPct:+(100*exact/120).toFixed(1),sameSetPct:+(100*set3/120).toFixed(1),top1Pct:+(100*top1ok/120).toFixed(1),weakTargets:miss.slice(0,20),weakCount:miss.length};

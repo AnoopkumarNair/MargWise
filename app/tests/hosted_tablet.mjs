@@ -22,14 +22,14 @@ for(const [name,[w,h]] of Object.entries(VPS)){ if(only&&only!==name)continue;
   if(await pg.locator('#consentYes').isVisible().catch(()=>false)){await snap('consent');await pg.click('#consentYes');await pg.clock.fastForward(1500)}
   await snap('welcome');
   await pg.click('#begin'); await pg.clock.fastForward(900); await snap('intro1');
-  for(let i=0;i<3;i++){await pg.click('#introNext');await pg.clock.fastForward(700)} await snap('intro4'); await pg.click('#introNext'); await pg.clock.fastForward(2000);
+  await pg.click('#introNext');await pg.clock.fastForward(700); await snap('intro2'); await pg.click('#introNext'); await pg.clock.fastForward(2000);   // the intro has 2 slides
   const st=()=>pg.evaluate(()=>({v:document.querySelector('.screen.on')?.id,busy:document.body.classList.contains('busy'),beat:!document.getElementById('beat').hidden,next:!document.getElementById('nextBtn').hidden}));
-  let places=0,locks=0,shotBeat=false,shotStop=false,shotNext=false,shotLock=false;const t0=Date.now();
+  let places=0,shotBeat=false,shotStop=false,shotNext=false,shotDraft=false;   // the walk stops at the draft (8 towns): the optional puzzles come after the resultconst t0=Date.now();
   for(let i=0;i<5000&&Date.now()-t0<150000;i++){const s=await st();
     if(s.v==='dreams')break;
     if(s.beat){if(!shotBeat){await snap('beat');shotBeat=true}await pg.click('#beatGo');await pg.clock.fastForward(1500);continue}
     if(s.next){if(!shotNext){await snap('after-light');shotNext=true}await pg.click('#nextBtn');await pg.clock.fastForward(2500);continue}
-    if(s.v==='lock'){if(!shotLock){await snap('lock');shotLock=true}locks++;await pg.locator('#lkOpts button').nth(locks%4).click();await pg.clock.fastForward(300);await pg.click('#lkNext');await pg.clock.fastForward(1800);continue}
+    if(s.v==='draft'){if(!shotDraft){await snap('draft');shotDraft=true}await pg.click('#drSee');await pg.clock.fastForward(1500);continue}
     if(s.v==='stop'&&!s.busy){if(!shotStop){await snap('stop1');shotStop=true}places++;const ids=await pg.evaluate(()=>[...document.querySelectorAll('.obj')].map(o=>o.dataset.id));const pri='IRASEC';const pick=ids.slice().sort((a,b)=>pri.indexOf(a.split('-')[1])-pri.indexOf(b.split('-')[1])).slice(0,2);for(const id of pick)await pg.locator('.obj[data-id="'+id+'"]').click({force:true});if(places===1)await snap('stop1-picked');await pg.click('#light');await pg.clock.fastForward(1400);continue}
     await pg.clock.fastForward(500)}
   await snap('dreams'); await pg.click('#dreamGo'); await pg.clock.fastForward(1500); await pg.waitForTimeout(800); await snap('fieldnote'); await pg.click('#fnSkip'); await pg.clock.fastForward(1500); await pg.waitForTimeout(500); await pg.click('#fnGo'); await pg.clock.fastForward(4000); await snap('reveal');
@@ -39,5 +39,5 @@ for(const [name,[w,h]] of Object.entries(VPS)){ if(only&&only!==name)continue;
   await pg.click('#dHow').catch(()=>{}); await pg.clock.fastForward(800); await snap('how');
   await pg.click('#howBack').catch(()=>{}); await pg.clock.fastForward(800);
   await pg.click('#dParent').catch(()=>{}); await pg.clock.fastForward(800); await snap('parent');
-  out[name]={places,locks,issues,errs:errs.slice(0,5)}; await ctx.close(); }
+  out[name]={places,issues,errs:errs.slice(0,5)}; await ctx.close(); }
 fs.writeFileSync((process.env.OUT||'/tmp/tab')+'/result_'+(only||'all')+'.json',JSON.stringify(out,null,1)); console.log(JSON.stringify(out,null,1).slice(0,3500)); await b.close();
