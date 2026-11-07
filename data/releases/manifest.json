@@ -1,14 +1,15 @@
 {
- "accepted_at": "2026-10-22T10:16:16+00:00",
- "python": "3.13.16",
+ "accepted_at": "2026-11-07T08:46:29+00:00",
+ "python": "3.13.18",
  "files": {
   "latest.json": "5bfd29d362c5ac15e0c29878dce4f313fdca09600556427fd158f0dc6bf06ebc",
-  "abroad.json": "a5485147963325efd22c671c6d3a67f45e37ffde5636f7d79b2cf5b22f4db8a8",
-  "story2.json": "d521157a9e5708f4567ce6c33d614776609701dfba055b584bd3da905a80a4c4"
+  "abroad.json": "4ac2a0b8d7b97fd686b81548ed43802f6544b4727ec43786895e1990ba0b4de0",
+  "story2.json": "4122dd3a1412cf8ebee5f38284d56e25be8178722e222d0426c9a282c185818a"
  },
  "raw": {
   "ai/bls_ai_exposure.csv": "776ea35b72bdcc4e19659e1438983ad10d8cf5b213cad5383846008dc623f7b1",
   "ai/job_exposure.csv": "4f0a3adf5feeb2ec5f5d02ab18cc5e851a2a4b8470bde84c0c9335017be12d68",
+  "ai/retrieved.json": "18390fb9e47543593c8cd8dc3165e5546dd336fd74664fdcd937707652d07998",
   "ai/task_pen.csv": "85bee872db1d55d3e9a7f4e89da5ae4a5d59aa8ec875d728fbf4b7d820984616",
   "ai/tasks.json": "cdfb000cc5bf477888ffbe445a34a8da2c9217d96f2b3e2cc39c04634a103599",
   "onet/careers.json": "62d8e7f133fe08acafcf8913b2c7fe01d15dccc809cb513151dc1481be7e918f",
@@ -16,5 +17,5 @@
   "plfs_2025.json": "d6335933918ff303f667603f8f30d2245e90838b3f4c4fd967b1673b6cd0fcbc",
   "refcal.json": "f15741fdeed7e090a389dfa3f8090d7e80ee848e5780091153e1ec6c014c1de1"
  },
- "release_id": "afcf94ddd893"
+ "release_id": "afa405cff256"
 }
