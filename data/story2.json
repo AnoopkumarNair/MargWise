@@ -29,7 +29,7 @@
   "s03": {
    "place": "Clockmaker's Lane",
    "setup": "The tower clock that tells the lane when to light lamps is wrong.",
-   "keeper": "Dev, the clockmaker's apprentice",
+   "keeper": "Bhaskar, the clockmaker's apprentice",
    "line": "Right on dusk, and the whole lane is ready.",
    "lit": "The tower strikes dusk. Every window lights at once.",
    "o": {
@@ -197,109 +197,47 @@
   }
  },
  "meta": {
-  "chapters": [
-   {
-    "at": 0,
-    "roman": "Chapter I",
-    "title": "The Road Wakes",
-    "line": "Somewhere ahead, a girl is looking for the lamplighter too."
-   },
-   {
-    "at": 4,
-    "roman": "Chapter II",
-    "title": "Hills and Rivers",
-    "line": "The road climbs and bends. Keepers remember her in different ways."
-   }
-  ],
+  "chapters": [],
   "ila": {
-   "3": "Ila waves her ferry lantern. \"I am Ila, her student. She left three nights ago and took no oil. Will you help me?\"",
-   "6": "Ila catches up. \"Everyone says she was happy. Nobody says she was lost.\""
+   "1": "I'm Ila, the lamplighter's student. She left without a word, and I want to know why. I'll follow your road.",
+   "6": "Each keeper remembers her at a different job. Why would she try them all?"
   },
-  "note": [
-   "A lamp",
-   "burns best",
-   "for hands",
-   "that love",
-   "their work.",
-   "The road",
-   "was never mine.",
-   "Choose yours."
-  ],
-  "noteIntro": "Jyo finds a scrap of the lamplighter's note:",
-  "intro": [],
-  "premise": "The lighthouse is dark and the lamplighter is missing. Jyo, a firefly, needs you to carry the lantern.",
-  "mission": "",
-  "outro": "The lighthouse is lit. Every lamp you lit caught. This is the light you carry.",
+  "premise": "The lighthouse is dark and the lamplighter is missing. Jyo, a firefly, asks you to light a lamp in each town and find out why.",
+  "outro": "The lighthouse is lit. This is the light you carry.",
   "sharpen": {
-   "roman": "Chapter III",
-   "title": "The Salt Wind",
-   "line": "You can smell the sea. A few more lamps will sharpen your road."
+   "roman": "Jyo",
+   "title": "",
+   "line": "More lamps make your road clearer. Stop any time."
   },
   "clues": {
    "2": {
     "who": "keeper",
-    "text": "She stayed one night only. Then she went on."
+    "text": "She worked beside me for a night. Then she went on."
    },
    "4": {
     "who": "keeper",
-    "text": "Her lamp here is still warm. She is one night ahead."
+    "text": "She did my work here last night. She is close."
    },
    "5": {
     "who": "keeper",
-    "text": "She tried my work for a day. She was trying them all."
+    "text": "She tried my work for a day. She tried every kind."
    },
    "7": {
     "who": "Jyo",
-    "text": "I know where she went. I promised not to say."
+    "text": "I know where she went: the lighthouse. I promised to wait until you were ready."
    }
   },
   "draft": {
    "screens": [
     {
-     "who": "Ila",
-     "text": "The lighthouse door is open. The lamp is dark. A letter lies beside it."
+     "who": "At the lighthouse",
+     "text": "The door is open. The lamp is dark. A letter lies beside it."
     },
     {
      "who": "The lamplighter",
-     "text": "I put this light out myself. A lamp I lit would only show my road. I took no oil, because the oil is yours to spend. I walked ahead and tried every kind of work, so you could find yours. The road was never mine. Choose yours."
-    },
-    {
-     "who": "Ila",
-     "text": "She was never lost. She went ahead to make room for you. Here is your road so far."
+     "text": "I put this light out myself, so you could light it. A lamp I lit would only show my road. I took no oil, because the oil is yours to spend. I tried every kind of work so you could find yours. The road was never mine. Choose yours."
     }
-   ],
-   "sharpenOffer": "Want a sharper picture? Light up to seven more lamps. Stop whenever you like.",
-   "bonusOffer": "Want a puzzle break? Two short ones, just for fun."
-  },
-  "epilogue": {
-   "9": {
-    "who": "Ila",
-    "text": "Another lamp. She would have liked this town."
-   },
-   "10": {
-    "who": "Jyo",
-    "text": "Your road is getting clearer with every lamp."
-   },
-   "11": {
-    "who": "Ila",
-    "text": "Her footprints and yours, side by side."
-   },
-   "12": {
-    "who": "Jyo",
-    "text": "Each lamp makes your picture a little sharper."
-   },
-   "13": {
-    "who": "Ila",
-    "text": "Nearly there. The lighthouse keeps your light."
-   },
-   "14": {
-    "who": "Jyo",
-    "text": "One more, and your road is as clear as it gets."
-   },
-   "15": {
-    "who": "Ila",
-    "text": "Every lamp is lit. The road is yours to choose."
-   }
+   ]
   },
   "react": {
    "R": [
@@ -352,6 +290,6 @@
     "Two kinds of work. No wrong answer."
    ]
   },
-  "outroSharp": "The lighthouse is lit, and your road is as clear as we can make it. This is the light you carry."
+  "outroSharp": "The lighthouse is lit, and your road is clearer. This is the light you carry."
  }
 }

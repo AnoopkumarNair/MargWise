@@ -67,7 +67,7 @@ Three curated data files plus the built `content.json`. Contracts are in `data/s
   - `ai`: `tier` (BLS relative exposure: very high, high, moderate, low), `obs` (observed exposure from real Claude usage, Anthropic), `watch` (BLS very high and observed 0.10 or more), tasks where AI is used today, tasks with no AI use seen, and the number of tasks matched.
   - `us.growthPct`: BLS projected job change 2025 to 2035.
 - **abroad.json**: eight countries, with ranges for tuition, living cost and salary, each with a trust badge and a source link, plus visa and settling notes and the exchange rates used.
-- **story2.json**: the 15 places, their narration, keepers and the four activity cards each (one per trait).
+- **story2.json**: the 15 towns (the walk uses 8 to 15), their narration, keepers and the four activity cards each (one per trait).
 
 **The SOC code is the join key.** Adding a career means adding one line to the career list; every dataset keyed on SOC then attaches automatically, or is reported as `nodata`.
 
