@@ -36,7 +36,9 @@ engine_sha = hashlib.sha256(eng.encode()).hexdigest()
 dist = os.path.join(A, 'dist'); shutil.rmtree(dist, ignore_errors=True); os.makedirs(os.path.join(dist, 'art'))
 art = {'bg': {}, 'obj': {}, 'char': {}}; total = 0
 for f in sorted(glob.glob(os.path.join(A, 'art', 'bg-*.jpg'))):
-    key = os.path.basename(f)[3:-4]; im = Image.open(f).convert('RGB'); w, h = im.size; cw = int(h * 2 / 3); x = (w - cw) // 2
+    key = os.path.basename(f)[3:-4]
+    if key == 'ila': continue   # cut from the story; the file stays on disk
+    im = Image.open(f).convert('RGB'); w, h = im.size; cw = int(h * 2 / 3); x = (w - cw) // 2
     im = im.crop((x, 0, x + cw, h)).resize((540, 810), Image.LANCZOS); p = os.path.join(dist, 'art', 'bg-%s.webp' % key); im.save(p, 'WEBP', quality=80, method=6)
     art['bg'][key] = 'art/bg-%s.webp' % key; total += os.path.getsize(p)
 # 2b. optional opening audio: app/audio/*.mp3|ogg are copied next to the page and listed in it. No files, no list, and the page shows no sound button.

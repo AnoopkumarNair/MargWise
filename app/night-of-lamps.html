@@ -90,6 +90,7 @@
   .place-tag { justify-self: start; background: rgba(14,16,40,.72); border: 1.5px solid rgba(255,243,214,.4); border-radius: 999px; padding: 4px 14px 5px; font-family: var(--hand); font-weight: 800; font-size: 16px; line-height: 1.2; letter-spacing: .01em; }
   .bubblebar { display: flex; gap: 8px; align-items: stretch; }
   .bubblebar .bubble { flex: 1; }
+  .sharpbox { display: grid; gap: 6px; justify-items: center; text-align: center; margin: 4px 0; } .sharpbox small { display: block; font-size: 13px; font-weight: 500; line-height: 1.35; opacity: .85; margin-top: 2px; }
   .bubblebar .iconbtn { height: 44px; align-self: flex-start; }
   .bubble { position: relative; background: rgba(255,243,214,.96); color: var(--ink); border-radius: 18px; padding: 8px 12px 9px 44px; font-weight: 700; font-size: 15px; line-height: 1.3; min-height: 50px; display: grid; gap: 2px; align-content: center; box-shadow: 0 6px 18px rgba(0,0,0,.3); animation: pop .35s cubic-bezier(.2,1.4,.4,1) both; }
   .bubble::before { content: ''; position: absolute; left: 13px; top: 50%; width: 20px; height: 20px; margin-top: -10px; border-radius: 50%; background: radial-gradient(circle, #fff7c0 0 30%, var(--glow) 31% 60%, rgba(255,207,107,0) 70%); animation: tw 1.6s ease-in-out infinite; }
@@ -807,6 +808,7 @@
     <div class="sure" id="sure" hidden></div>
     <p class="note" id="notes" hidden></p>
     <div id="selfq" hidden><b>Does this shape sound like you?</b><div class="rate" data-k="self"></div><div class="rl"><span>Not me</span><span>Very me</span></div><button class="go quiet" id="chkOpen" type="button">Rate each area yourself</button></div>
+    <div class="sharpbox" id="rSharpBox" hidden><button class="go quiet" id="rSharpen" type="button">Sharpen my result<small id="rSharpHint"></small></button></div>
     <button class="go quiet" id="saveBtn">Save your lighthouse</button>
     <div class="retcard" id="retLine" hidden></div>
     <div class="actions nextbar" style="margin-top:auto"><small class="nexthint">Next: the fields that fit this shape</small><button class="go" id="openDoors">See where this can lead</button></div>
@@ -1332,6 +1334,7 @@
   // ---------- views
   function veilGo() { if (state.reduce) return; try { var v = $('veil'); v.getAnimations().forEach(function (a) { a.cancel(); }); v.animate([{ opacity: 1 }, { opacity: 1, offset: .18 }, { opacity: 0 }], { duration: 560, easing: 'ease-out' }); } catch (e) { /* no animation support */ } }
   function show(view) {
+    Voice.stop();
     var prev = state.view; if (prev && prev !== view) veilGo();
     state.view = view; document.body.dataset.view = view; if (view !== 'stop') MWV.stopTown();
     ['welcome', 'stop', 'draft', 'dreams', 'reveal', 'doors', 'field', 'abroad', 'parent', 'how', 'lock'].forEach(function (v) { $(v).classList.toggle('on', v === view); });
@@ -1358,26 +1361,26 @@
 
   var beatCb = null;
   function showBeat(who, title, text, cb, label) {
-    var ba = $('beatArt'), iu = ART.bg && ART.bg[who === 'Ila' ? 'ila' : (who === 'At the lighthouse' || who === 'The lamplighter') ? 'lighthouse' : ''];   /* Ila has her portrait; the lighthouse and the letter show the lighthouse */ ba.hidden = !iu; if (iu) ba.style.backgroundImage = 'url(' + iu + ')';
+    var ba = $('beatArt'), iu = ART.bg && ART.bg[(who === 'At the lighthouse' || who === 'The lamplighter') ? 'lighthouse' : ''];   /* the lighthouse and the letter show the lighthouse */ ba.hidden = !iu; if (iu) ba.style.backgroundImage = 'url(' + iu + ')';
     $('beatWho').textContent = who; $('beatTitle').textContent = title || ''; $('beatText').textContent = text; $('beatGo').textContent = label || 'Walk on'; beatCb = cb || null;
     $('beat').hidden = false; $('beatGo').focus();
   }
-  $('beatGo').addEventListener('click', function () { track('beat', { who: $('beatWho').textContent }); $('beat').hidden = true; var f = beatCb; beatCb = null; if (f) f(); });
+  $('beatGo').addEventListener('click', function () { Voice.stop(); track('beat', { who: $('beatWho').textContent }); $('beat').hidden = true; var f = beatCb; beatCb = null; if (f) f(); });
   // ---------- resume: the walk is a list of choices, so it is saved after every step and can be replayed after a refresh or a dropped connection
   var WALK_KEY = 'margwise.walk', SRVWALK = null;   // SRVWALK: unfinished walk saved on the server (another device or a cleared browser)
-  function saveWalk() { if (!TK) return; try { localStorage.setItem(WALK_KEY, JSON.stringify({ tid: TK.id, seed: SEED, choices: state.choices, slots: state.slots, apt: state.apt, hinted: state.hinted || {}, ended: state.ended || '', at: Date.now() })); } catch (e) { /* storage blocked */ }
+  function saveWalk() { if (!TK) return; try { localStorage.setItem(WALK_KEY, JSON.stringify({ tid: TK.id, seed: SEED, choices: state.choices, slots: state.slots, apt: state.apt, hinted: state.hinted || {}, ended: state.ended || '', sharpen: !!state.sharpen, at: Date.now() })); } catch (e) { /* storage blocked */ }
     var ap = {}; APT.forEach(function (d) { ap[d] = state.apt[d].map(function (x) { return [x.l || 0, x.ok ? 1 : 0, x.skip ? 1 : 0]; }); }); track('progress', { ended: state.ended || '', choices: state.choices, apt: ap, seed: SEED, slots: state.slots, ctx: state.ctx }); }
   function clearWalk() { SRVWALK = null; try { localStorage.removeItem(WALK_KEY); } catch (e) { /* storage blocked */ } }
   function readWalk() { try { var w = JSON.parse(localStorage.getItem(WALK_KEY) || 'null'); return w && TK && w.tid === TK.id && w.choices && w.choices.length && Date.now() - w.at < 7200000 ? w : null; } catch (e) { return null; } }
   // old saved walks may hold "second look" entries; they are dropped, so the count of lamps stays right
   function cleanWalk(ch) { return (ch || []).filter(function (c) { return c && !c.echoOf && !/~echo/.test(String(c.sceneId)); }); }
   function resumeWalk(w) {
-    trapBack(); SEED = w.seed; state.choices = cleanWalk(w.choices); state.sharpen = state.choices.length > WS0.draftAt; state.draftSeen = state.sharpen; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.hinted = w.hinted || {}; state.ended = w.ended === 'stop' || w.ended === 'draft' ? w.ended : '';
+    trapBack(); SEED = w.seed; state.choices = cleanWalk(w.choices); state.sharpen = !!w.sharpen || state.choices.length > WS0.draftAt; state.draftSeen = state.sharpen; state.again = false; state.slots = w.slots || [0, 0, 0, 0]; state.apt = w.apt || { N: [], V: [], S: [], P: [] }; state.hinted = w.hinted || {}; state.ended = w.ended === 'stop' || w.ended === 'draft' ? w.ended : '';
     track('walk_resume', { n: litCount() });
     if (state.ended && state.choices.length >= WS0.draftAt) { state.draftSeen = true; state.endVia = state.ended; return toDreams(); }   // they had already chosen to see the result: show it, not the next town
     state.ended = ''; advance(false);
   }
-  function startWalk() { trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.sharpen = false; state.draftSeen = false; state.endVia = ''; state.ended = ''; state.lastReact = ''; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.puzDone = false; state.hinted = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); }   // the first town opens at once: no chapter card before it (cuts words before the first choice)
+  function startWalk() { state.again = false; trapBack(); if (!/[?&]seed=\d+/.test(location.search)) SEED = Math.floor(Math.random() * 1e6); state.choices = []; state.sharpen = false; state.draftSeen = false; state.endVia = ''; state.ended = ''; state.lastReact = ''; state.slots = [0, 0, 0, 0]; state.apt = { N: [], V: [], S: [], P: [] }; state.puzDone = false; state.hinted = {}; track('walk_start', { seed: SEED, vw: innerWidth, vh: innerHeight }); advance(true); }   // the first town opens at once: no chapter card before it (cuts words before the first choice)
 
   var advTimer = null;
   function idle() { state.busy = false; document.body.classList.remove('busy'); }
@@ -1422,10 +1425,13 @@
     if (state.draftTracked !== ws.played) { state.draftTracked = ws.played; track('draft', { n: ws.played, more: more }); }
   }
   $('drSee').addEventListener('click', function () { track('draft', { choice: 'see', n: litCount() }); state.endVia = 'draft'; state.ended = 'draft'; saveWalk(); toDreams(); });
-  $('drSharpen').addEventListener('click', function () {
-    track('draft', { choice: 'sharpen', n: litCount() }); state.sharpen = true; state.ended = ''; saveWalk(); var c = META.sharpen;
+  function startSharpen(choice) {
+    track('draft', { choice: choice, n: litCount() }); state.sharpen = true; state.draftSeen = true; state.ended = ''; saveWalk(); var c = META.sharpen;
     if (c) showBeat(c.roman, c.title, c.line, function () { advance(false); }, 'Walk on'); else advance(false);
-  });
+  }
+  $('drSharpen').addEventListener('click', function () { startSharpen('sharpen'); });
+  // From the result page: the same walk goes on from the next town, and the result is shown again when they stop or the towns run out.
+  $('rSharpen').addEventListener('click', function () { state.again = true; state.endVia = 'stop'; startSharpen('rsharpen'); });
   $('stopNow').addEventListener('click', function () {
     clearTimeout(advTimer); Voice.stop(); state.cont = null; $('nextBtn').hidden = true; document.body.classList.remove('awaiting'); idle();
     track('sharpen_stop', { n: litCount() }); state.endVia = 'stop'; state.ended = 'stop'; saveWalk(); toDreams();
@@ -1493,6 +1499,7 @@
     }
   }
   function tapOption(id, btn) {
+    Voice.stop();
     if (state.busy) return;
     var n = state.spent[id] || 0, used = totalSpent();
     if (used < FLASKS && n < FLASKS) { state.spent[id] = n + 1; var sl = Array.prototype.indexOf.call($('options').children, btn); if (sl >= 0) state.slots[sl]++; sparks(btn); oilDrop(btn, false); jyoVisit(btn); Snd.spend(); }
@@ -1566,15 +1573,14 @@
     if (!state.reduce) litSequence(n);
     clearTimeout(advTimer);
     var beat = null;
-    if (META.ila && META.ila[n]) beat = ['Ila', '', META.ila[n]];
-    var hint = beat ? null : oilHint(); if (hint) beat = ['Jyo', '', hint.msg];
+    var hint = oilHint(); if (hint) beat = ['Jyo', '', hint.msg];
     // No timer: the student reads at their own pace and taps Next.
     state.cont = beat ? function () { if (hint) { state.hinted[hint.kind] = 1; saveWalk(); track('oil_hint', { kind: hint.kind, n: hint.n }); } showBeat(beat[0], beat[1], beat[2], function () { advance(false); }); } : function () { advance(false); };
     advTimer = setTimeout(function () { document.body.classList.add('awaiting'); $('nextBtn').hidden = false; $('nextBtn').focus(); }, state.reduce ? 0 : 1100);
     if (n === 4 || n === 8 || n === 12) setTimeout(beamSweep, 500);
   }
-  $('light').addEventListener('click', function () { doLight(); });
-  $('nextBtn').addEventListener('click', function () { var f = state.cont; if (!f) return; state.cont = null; $('nextBtn').hidden = true; document.body.classList.remove('awaiting'); f(); });
+  $('light').addEventListener('click', function () { Voice.stop(); doLight(); });
+  $('nextBtn').addEventListener('click', function () { Voice.stop(); var f = state.cont; if (!f) return; state.cont = null; $('nextBtn').hidden = true; document.body.classList.remove('awaiting'); f(); });
   var trapped = false;
   function trapBack() { if (trapped) return; trapped = true; try { history.pushState({ mw: 1 }, ''); } catch (e) { /* no history */ } }
   addEventListener('popstate', function () { if (state.view !== 'welcome') { try { history.pushState({ mw: 1 }, ''); } catch (e) { /* no history */ } $('back').click(); } else { trapped = false; } });
@@ -1613,6 +1619,7 @@
   };
   state.ctx = { cls: '', board: '', lean: '' }; state.slots = [0, 0, 0, 0];
   function toDreams() {
+    if (state.again) { state.again = false; state.endVia = 'stop'; toReveal(); paintApt(); if (!state.result.noSignal) playFinale(); return; }   // sharpening from the result: the questions were already answered
     show('dreams'); paintHud();
     [['cClass', 'cls'], ['cBoard', 'board'], ['cLean', 'lean']].forEach(function (g) {
       $(g[0]).innerHTML = CTX[g[1]].map(function (o) { return '<button type="button" class="chip" data-k="' + g[1] + '" data-v="' + o[0] + '" aria-pressed="' + (state.ctx[g[1]] === o[0]) + '">' + o[1] + '</button>'; }).join('');
@@ -1720,6 +1727,7 @@
     }).join('') + '</div><p class="subjline"><span aria-hidden="true">\ud83d\udcda</span> In school this often shows up in: ' + esc(subj.slice(0, 6).join(', ')) + '.</p>'
       + '<div class="rest"><small>Less strong for now</small>' + order.filter(function (a) { return code.indexOf(a) < 0; }).map(function (a) { return '<button type="button" class="rc" data-a="' + a + '" aria-pressed="false"><span aria-hidden="true">' + AREA_ICON[a] + '</span> ' + NAME[a] + '</button>'; }).join('') + '</div>';
     var notes = [r.cautious && r.confidence === 'clear' ? 'Your top area stood out, but treat the rest of the order as a rough guide.' : r.confidence === 'clear' ? 'Your top three stood out clearly.' : r.confidence === 'close' ? 'Some areas were close, so the order could swap on another day.' : 'You liked many kinds of things, so these are close calls. Nothing is wrong, and another walk on another day will sharpen it.'];
+    var sl = M.walkStatus(bank, state.choices, SHARPCFG).sharpenLeft; $('rSharpBox').hidden = !(sl > 0); $('rSharpHint').textContent = sl > 0 ? 'Up to ' + sl + ' more town' + (sl === 1 ? '' : 's') + ', about 1 to 2 minutes each' : '';
     var isDraft = litCount() <= WS0.draftAt; if (isDraft) notes.push('This comes from ' + litCount() + ' towns. Walking more towns can sharpen it.');
     if (r.lowEngagement) notes.push('Not much caught your eye on this walk. Try again when you feel like it.');
     if (r.oneNote) notes.unshift('Most of your oil went to one kind of activity, so only your top area is a reliable signal. Try another walk and spread your oil over what you would enjoy most.');
@@ -2180,7 +2188,7 @@
     $('opDots').innerHTML = shots.map(function () { return '<b></b>'; }).join('');
     try { OPA.on = localStorage.getItem(OP_SND_KEY) === '1'; } catch (e) { OPA.on = false; } opPaintSnd(); $('opening').hidden = false; opShow(0);
   }
-  $('opening').addEventListener('click', function () { opNext(); });
+  $('opening').addEventListener('click', function () { Voice.stop(); opNext(); });
   $('opSkip').addEventListener('click', function (e) { e.stopPropagation(); opClose(true); });
   $('opGo').addEventListener('click', function (e) { e.stopPropagation(); opClose(false); });
   $('opSnd').addEventListener('click', function (e) { e.stopPropagation(); OPA.on = !OPA.on; try { localStorage.setItem(OP_SND_KEY, OPA.on ? '1' : '0'); } catch (x) { /* storage blocked */ } opPaintSnd(); opAudioStart(OP.i, (Date.now() - OP.at) / 1000); });
@@ -2327,14 +2335,39 @@
     };
   })();
   window.__snd = Snd;
+  // Read aloud: one tap starts, the next tap stops. It never repeats by itself and stops whenever the player moves on.
   var Voice = {
-    ok: 'speechSynthesis' in window,
-    say: function (parts) {
-      if (!this.ok) return; speechSynthesis.cancel();
-      parts.forEach(function (p) { var u = new SpeechSynthesisUtterance(p); u.lang = 'en-IN'; u.rate = .95; speechSynthesis.speak(u); });
+    ok: 'speechSynthesis' in window, on: false, gen: 0, left: 0, kick: 0,
+    paint: function () {
+      var b = $('listen'); if (!b) return; b.setAttribute('aria-pressed', String(this.on));
+      b.setAttribute('aria-label', this.on ? 'Stop reading aloud' : 'Read this place and its choices aloud'); b.title = this.on ? 'Stop reading' : 'Read aloud';
+      b.innerHTML = this.on ? '<svg viewBox="0 0 24 24" fill="#fff3d6" stroke="#fff3d6" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="#fff3d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg>';
     },
-    stop: function () { if (this.ok) speechSynthesis.cancel(); }
+    done: function (g) { if (g !== this.gen) return; if (--this.left <= 0) { this.on = false; this.paint(); } },
+    say: function (parts) {
+      if (!this.ok) return;
+      var g = ++this.gen, self = this; clearTimeout(this.kick);
+      try { speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+      this.on = true; this.left = parts.length; this.paint();
+      // Chrome on Android drops a speak() that follows cancel() at once, so it waits a moment.
+      this.kick = setTimeout(function () {
+        if (g !== self.gen) return;
+        parts.forEach(function (p) {
+          var u = new SpeechSynthesisUtterance(p); u.lang = 'en-IN'; u.rate = .95;
+          u.onend = u.onerror = function () { self.done(g); };
+          try { speechSynthesis.speak(u); } catch (e) { self.done(g); }
+        });
+      }, 80);
+    },
+    stop: function () {
+      this.gen++; clearTimeout(this.kick); this.left = 0;
+      if (this.ok) { try { speechSynthesis.cancel(); } catch (e) { /* ignore */ } }
+      if (this.on) { this.on = false; this.paint(); }
+    }
   };
+  addEventListener('pagehide', function () { Voice.stop(); });
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') { Voice.stop(); opAudioStop(); } else if (!$('opening').hidden) { opAudioStart(OP.i, (Date.now() - OP.at) / 1000); } });
   function paintSound() {
     var on = Snd.isOn();
     $('snd').setAttribute('aria-pressed', String(on));
@@ -2344,6 +2377,7 @@
   $('snd').addEventListener('click', toggleSound);
   $('soundChoice').addEventListener('click', toggleSound);
   $('listen').addEventListener('click', function () {
+    if (Voice.on) { Voice.stop(); return; }
     if (!state.scene) return;
     var shown = M.displayOptions(state.scene, SEED);
     Voice.say([state.scene.place + '. ' + threadFor(), state.scene.setup].concat(shown.map(function (o, i) { return 'Choice ' + (i + 1) + '. ' + o.text + '.'; })));
@@ -2356,7 +2390,7 @@
   // Honest time. Source: app/tests/playtest/autoplay.mjs on a 390x844 phone, 8-town path, cover to result (2026-11-07, story v3: no chapters, one ending).
   // Words seen (closed folds not counted): about 1,780 across every distinct screen from cover to the last screen before the result (about 1,070 if a line already seen on the previous screen is not read again), plus 165 on the result screen.
   // Reading at 150 words a minute = 8 to 13 minutes, plus about 5 seconds for each of the 16 oil choices (1.3 minutes) = 10 to 14 minutes, so the cover says "10 to 14".
-  // Opening (added 2026-11-07, shown once, skippable): 68 words, one line at a time, about 25 seconds. The cover premise went from 22 words to 7, Ila card 1 from 21 to 15, the letter grew by 11. Net about +55 words before the first town and about +0.4 minutes; the range still fits "10 to 14" (8.8 to 13.6 minutes).
+  // Opening (added 2026-11-07, shown once, skippable): 68 words, one line at a time, about 25 seconds. The cover premise went from 22 words to 7 and the letter grew by 11. Net about +55 words before the first town and about +0.4 minutes; the range still fits "10 to 14" (8.8 to 13.6 minutes).
   // Sharpening adds about 1,300 words and 7 more towns: the draft screen says 1 to 2 minutes a town.
   // Update this when the screens change: re-run the driver and redo the sum.
   var TIME_TXT = 'About 10 to 14 minutes.';
