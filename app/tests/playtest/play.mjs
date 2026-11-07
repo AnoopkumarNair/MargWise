@@ -6,7 +6,7 @@ import http from 'http'; import fs from 'fs'; import path from 'path'; import cr
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 const SCRATCH = process.env.PLAYTEST_OUT || path.join(HERE, 'out');
 const URL_ = process.env.URL_ || 'http://localhost:8788/';
-const VPS = { phone: [390, 844, true], tablet: [820, 1180, true], laptop: [1366, 768, false] };
+const VPS = { phone: [390, 844, true], small: [360, 640, true], tablet: [820, 1180, true], laptop: [1366, 768, false] };
 
 const COLLECT = () => {
   const vis = e => { for (let p = e; p && p !== document.documentElement; p = p.parentElement) { const cs = getComputedStyle(p); if (cs.display === 'none' || cs.visibility === 'hidden' || +cs.opacity < 0.05 || p.hidden) return false; } const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
@@ -71,6 +71,7 @@ async function serve(port) {
     async wait([ms]) { await pg.waitForTimeout(+ms || 1000); actions++; await settle(100); return look(`wait ${ms}`); },
     async scroll([s, px]) { const r = await pg.evaluate(([s, px]) => { let el = s === 'page' ? (document.querySelector('.screen.on') || document.scrollingElement) : document.querySelector(s); if (!el) return 'no such element'; const sc = (e => { for (let p = e; p; p = p.parentElement) { if (p.scrollHeight > p.clientHeight + 2 && /auto|scroll/.test(getComputedStyle(p).overflowY)) return p; } return document.scrollingElement; })(el); const b = sc.scrollTop; sc.scrollBy(0, +px); return 'scrolled ' + (sc.id || sc.tagName) + ' from ' + b + ' to ' + sc.scrollTop; }, [s, px || 400]); actions++; await settle(400); return look(`scroll ${s} ${px}`, r); },
     async eval([...js]) { const r = await pg.evaluate(js.join(' ')).catch(e => 'ERR ' + e.message); actions++; await settle(300); return look('eval', 'result: ' + JSON.stringify(r)); },
+    async resize([w, h]) { await pg.setViewportSize({ width: +w, height: +h }); actions++; await settle(500); return look(`resize ${w}x${h}`); },
     async stop() { save(); setTimeout(() => process.exit(0), 100); return 'stopped. log at ' + path.join(dir, 'log.json'); },
   };
   let busyQ = Promise.resolve();
@@ -82,4 +83,4 @@ if (a1 === 'serve') await serve(+rest[0]);
 else if (/^\d+$/.test(a1)) {
   const [cmd, ...args] = rest; const req = http.request({ host: '127.0.0.1', port: +a1, method: 'POST', timeout: 120000 }, r => { let d = ''; r.on('data', c => d += c); r.on('end', () => console.log(d)); });
   req.on('error', e => { console.error('cannot reach daemon: ' + e.message); process.exit(1); }); req.end(JSON.stringify({ cmd: cmd || 'look', args }));
-} else console.log('usage: play.mjs serve <port>   |   play.mjs <port> look|click <sel|n>|fill <sel> <text>|check <sel>|wait <ms>|scroll <sel|page> <px>|eval <js>|stop');
+} else console.log('usage: play.mjs serve <port>   |   play.mjs <port> look|click <sel|n>|fill <sel> <text>|check <sel>|wait <ms>|scroll <sel|page> <px>|eval <js>|resize <w> <h>|stop');

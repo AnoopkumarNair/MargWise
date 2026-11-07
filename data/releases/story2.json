@@ -43,8 +43,8 @@
    "place": "Orchard Village",
    "setup": "Apples are ripening faster than the village can press them.",
    "keeper": "Granny Pari",
-   "line": "Sweet juice, and now a lamp. A good evening's work.",
-   "lit": "The orchard is calm. Its lamp swings among the trees.",
+   "line": "Great juice, and the lamp is lit. Nice work.",
+   "lit": "The orchard is quiet. Its lamp swings among the trees.",
    "o": {
     "R": "Fix the juice press and run it all day, with aching arms",
     "I": "Test apple mixes to find why one tastes best, though most will taste bad",
@@ -82,7 +82,7 @@
    "place": "River Camp",
    "setup": "A wide river blocks the road. Tired lamp-bearers rest on the bank.",
    "keeper": "Ferryman Biju",
-   "line": "The river will carry your lamp's light to the sea.",
+   "line": "Your lamp's light will float all the way to the sea.",
    "lit": "The group is rested. The lamp's glow drifts downstream.",
    "o": {
     "R": "Lash a raft together from what you find, with wet feet and sore arms",
@@ -147,8 +147,8 @@
    "place": "Herbalists' Garden",
    "setup": "The garden of sweet lamp-herbs is overgrown, and the season is turning.",
    "keeper": "Gardener Noor",
-   "line": "The herbs will sleep well tonight.",
-   "lit": "The beds breathe. The lamp smells of rain and mint.",
+   "line": "The herbs look good. Thanks.",
+   "lit": "The garden is tidy. The lamp smells of rain and mint.",
    "o": {
     "I": "Test the soil with a sensor and pick better seeds, though results come slowly",
     "A": "Model a peaceful garden in a 3D app, even if it looks plain",
@@ -199,10 +199,10 @@
  "meta": {
   "chapters": [],
   "ila": {
-   "1": "I'm Ila, the lamplighter's student. She left without a word, and I want to know why. I'll follow your road.",
+   "1": "Everyone said I'd take her place. I never chose it. I need to ask her why.",
    "6": "Each keeper remembers her at a different job. Why would she try them all?"
   },
-  "premise": "The lighthouse is dark and the lamplighter is missing. Jyo, a firefly, asks you to light a lamp in each town and find out why.",
+  "premise": "The lighthouse is dark. Find out why.",
   "outro": "The lighthouse is lit. This is the light you carry.",
   "sharpen": {
    "roman": "Jyo",
@@ -235,14 +235,14 @@
     },
     {
      "who": "The lamplighter",
-     "text": "I put this light out myself, so you could light it. A lamp I lit would only show my road. I took no oil, because the oil is yours to spend. I tried every kind of work so you could find yours. The road was never mine. Choose yours."
+     "text": "I put this light out myself, so you could light it. A lamp I lit would only show my road. I took no oil, because the oil is yours to spend. I tried every kind of work so you could find yours. People will tell you what to be. The road was never mine. Choose yours."
     }
    ]
   },
   "react": {
    "R": [
     "You like hands-on work.",
-    "Oil on your fingers, and glad of it.",
+    "You like getting your hands dirty.",
     "Tools, wood, and a job done.",
     "You like to fix things. Noted.",
     "Hands first. Jyo's wings flicker."
@@ -279,17 +279,205 @@
     "Everything in its place.",
     "You like things careful and steady.",
     "You made it tidy and clear.",
-    "A plan, then a done job.",
+    "A plan, then it's done.",
     "You like to keep order. Jyo approves."
    ],
    "mix": [
     "Two choices. Both count.",
     "Some of each.",
     "A little of both. That's fine.",
-    "You split your oil. Fair enough.",
+    "You split your oil. Fair.",
     "Two kinds of work. No wrong answer."
    ]
   },
-  "outroSharp": "The lighthouse is lit, and your road is clearer. This is the light you carry."
+  "outroSharp": "The lighthouse is lit, and your road is clearer. This is the light you carry.",
+  "opening": [
+   {
+    "art": "intro1",
+    "motion": "pan",
+    "lines": [
+     "Aunty says doctor.",
+     "Cousin says engineering.",
+     "Sir says science.",
+     "Everyone has your road ready."
+    ],
+    "audio": [
+     {
+      "id": "op_amb_night",
+      "file": "audio/op_amb_night.mp3",
+      "at": 0,
+      "speaker": "Night ambience: crickets, soft wind, far-off festival hum",
+      "line": "",
+      "loop": true,
+      "vol": 0.35,
+      "max": 60
+     },
+     {
+      "id": "op1_family",
+      "file": "audio/op1_family.mp3",
+      "at": 0.1,
+      "speaker": "Family murmurs",
+      "line": "",
+      "vol": 0.35,
+      "max": 5
+     },
+     {
+      "id": "op1_l1",
+      "file": "audio/op1_l1.mp3",
+      "at": 0.15,
+      "speaker": "Narrator",
+      "line": "Aunty says doctor.",
+      "max": 1.2
+     },
+     {
+      "id": "op1_l2",
+      "file": "audio/op1_l2.mp3",
+      "at": 1.54,
+      "speaker": "Narrator",
+      "line": "Cousin says engineering.",
+      "max": 1.2
+     },
+     {
+      "id": "op1_l3",
+      "file": "audio/op1_l3.mp3",
+      "at": 2.93,
+      "speaker": "Narrator",
+      "line": "Sir says science.",
+      "max": 1.2
+     },
+     {
+      "id": "op1_l4",
+      "file": "audio/op1_l4.mp3",
+      "at": 4.32,
+      "speaker": "Narrator",
+      "line": "Everyone has your road ready.",
+      "max": 1.7
+     }
+    ]
+   },
+   {
+    "art": "intro2",
+    "motion": "dim",
+    "lines": [
+     "The lighthouse went dark.",
+     "Her door open. Her oil untouched."
+    ],
+    "audio": [
+     {
+      "id": "op2_lamp_out",
+      "file": "audio/op2_lamp_out.mp3",
+      "at": 0.4,
+      "speaker": "Lamp going out: a warm hum fading to cold sea wind",
+      "line": "",
+      "vol": 0.6,
+      "max": 6
+     },
+     {
+      "id": "op2_l1",
+      "file": "audio/op2_l1.mp3",
+      "at": 0.15,
+      "speaker": "Narrator",
+      "line": "The lighthouse went dark.",
+      "max": 1.4
+     },
+     {
+      "id": "op2_l2",
+      "file": "audio/op2_l2.mp3",
+      "at": 1.77,
+      "speaker": "Narrator",
+      "line": "Her door open. Her oil untouched.",
+      "max": 1.9
+     }
+    ]
+   },
+   {
+    "art": "intro3",
+    "motion": "firefly",
+    "lines": [
+     "I'm Jyo. She left by choice.",
+     "Light a lamp in each town.",
+     "Two flasks each. Spend them on what you'd really do."
+    ],
+    "audio": [
+     {
+      "id": "op3_firefly",
+      "file": "audio/op3_firefly.mp3",
+      "at": 0.3,
+      "speaker": "Firefly wings: a soft, bright buzz that settles",
+      "line": "",
+      "vol": 0.4,
+      "max": 5
+     },
+     {
+      "id": "op3_l1",
+      "file": "audio/op3_l1.mp3",
+      "at": 0.15,
+      "speaker": "Jyo",
+      "line": "I'm Jyo. She left by choice.",
+      "max": 1.9
+     },
+     {
+      "id": "op3_l2",
+      "file": "audio/op3_l2.mp3",
+      "at": 2.23,
+      "speaker": "Jyo",
+      "line": "Light a lamp in each town.",
+      "max": 1.9
+     },
+     {
+      "id": "op3_l3",
+      "file": "audio/op3_l3.mp3",
+      "at": 4.31,
+      "speaker": "Jyo",
+      "line": "Two flasks each. Spend them on what you'd really do.",
+      "max": 2.8
+     }
+    ]
+   },
+   {
+    "art": "intro4",
+    "motion": "glow",
+    "lines": [
+     "An interest guide, not a test. No marks.",
+     "About 10 to 14 minutes.",
+     "You get kinds of work, and a school path."
+    ],
+    "audio": [
+     {
+      "id": "op4_flasks",
+      "file": "audio/op4_flasks.mp3",
+      "at": 0.3,
+      "speaker": "Glass flasks touching and a lantern flame flicker",
+      "line": "",
+      "vol": 0.5,
+      "max": 5
+     },
+     {
+      "id": "op4_l1",
+      "file": "audio/op4_l1.mp3",
+      "at": 0.15,
+      "speaker": "Narrator",
+      "line": "An interest guide, not a test. No marks.",
+      "max": 2.3
+     },
+     {
+      "id": "op4_l2",
+      "file": "audio/op4_l2.mp3",
+      "at": 2.69,
+      "speaker": "Narrator",
+      "line": "About 10 to 14 minutes.",
+      "max": 1.7
+     },
+     {
+      "id": "op4_l3",
+      "file": "audio/op4_l3.mp3",
+      "at": 4.54,
+      "speaker": "Narrator",
+      "line": "You get kinds of work, and a school path.",
+      "max": 2.6
+     }
+    ]
+   }
+  ]
  }
 }
