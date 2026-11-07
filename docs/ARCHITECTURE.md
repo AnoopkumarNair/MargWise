@@ -161,7 +161,7 @@ Running offline needs no network: it rebuilds `content.json` from the committed 
 | Update an exam rule | Edit the field in `content.py`, run the pipeline, put the new statement through a fact-check batch. |
 | Add a country to the abroad view | Add an entry to `data/abroad.json` with sources and badges; the validator enforces the shape. |
 | Add a language | Not supported yet. Strings live in the page and `content.py`; extracting them is the first step. |
-| Release | Review `CHANGES.md`, `--accept`, `python3 app/build.py`, `npx wrangler pages deploy hosting/public --project-name margwise`. |
+| Release | Review `CHANGES.md`, `--accept`, `python3 app/build.py`, `cd hosting && npx wrangler pages deploy public --project-name margwise`. |
 
 ## 11. Scalability and what is deliberately not done
 

@@ -62,7 +62,8 @@ python3 pipeline/run.py --fetch
 python3 app/build.py
 
 # deploy the hosted test build (needs Cloudflare credentials)
-npx wrangler pages deploy hosting/public --project-name margwise
+# run from hosting/ so the API functions are uploaded
+cd hosting && npx wrangler pages deploy public --project-name margwise
 ```
 
 ## Repository map
