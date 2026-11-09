@@ -46,14 +46,23 @@ def load_cues(story):
     return cues
 
 
-def make_takes(cues, voices, takes, outdir):
-    import torch, soundfile as sf
+def make_takes(cues, voices, takes, outdir, threads=0, fast=False):
+    import time, torch, soundfile as sf
     from parler_tts import ParlerTTSForConditionalGeneration
     from transformers import AutoTokenizer
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
-    print('Loading model on', device, '(first run downloads about 3.5 GB)...')
+    if device == 'cpu':
+        torch.set_num_threads(threads or os.cpu_count() or 4)
+    # bfloat16 is about 1.5-2x faster on CPUs that support it (Ryzen 7000/8000); the sound can differ slightly.
+    dtype = torch.bfloat16 if fast else torch.float32
+    print('Loading model on %s, %s, %d threads (first run downloads about 3.5 GB)...'
+          % (device, 'bfloat16' if fast else 'float32', torch.get_num_threads()))
     name = 'ai4bharat/indic-parler-tts'
-    model = ParlerTTSForConditionalGeneration.from_pretrained(name).to(device)
+    try:
+        model = ParlerTTSForConditionalGeneration.from_pretrained(name, attn_implementation='sdpa', torch_dtype=dtype).to(device)
+    except (TypeError, ValueError):
+        model = ParlerTTSForConditionalGeneration.from_pretrained(name, torch_dtype=dtype).to(device)
+    t0 = time.time()
     tok = AutoTokenizer.from_pretrained(name)
     desc_tok = AutoTokenizer.from_pretrained(model.config.text_encoder._name_or_path)
     os.makedirs(outdir, exist_ok=True)
@@ -67,13 +76,13 @@ def make_takes(cues, voices, takes, outdir):
             torch.manual_seed(1000 * t + len(c['id']))
             gen = model.generate(input_ids=d.input_ids, attention_mask=d.attention_mask,
                                  prompt_input_ids=p.input_ids, prompt_attention_mask=p.attention_mask)
-            audio = gen.cpu().numpy().squeeze()
+            audio = gen.to(torch.float32).cpu().numpy().squeeze()
             path = os.path.join(outdir, '%s_take%d.wav' % (c['id'], t))
             sf.write(path, audio, model.config.sampling_rate)
             secs = len(audio) / model.config.sampling_rate
             flag = 'OK' if secs <= c['max'] + 0.3 else 'LONG'
             report.append('%-8s take %d  %4.1fs (limit %.1fs) %s  %s' % (c['id'], t, secs, c['max'], flag, c['line']))
-            print(report[-1])
+            print(report[-1], ' [%.0fs elapsed]' % (time.time() - t0))
     open(os.path.join(outdir, 'report.txt'), 'w', encoding='utf-8').write('\n'.join(report) + '\n')
     print('\nListen to the takes in', outdir, 'and pick one per line. LONG takes get sped up a little at finalize.')
 
@@ -110,6 +119,8 @@ def main():
     ap.add_argument('--takes-dir', default=os.path.join(ROOT, 'app', 'audio_takes'))
     ap.add_argument('--audio-dir', default=os.path.join(ROOT, 'app', 'audio'))
     ap.add_argument('--only', nargs='*', help='cue ids to make, e.g. op3_l1 op3_l2')
+    ap.add_argument('--threads', type=int, default=0, help='CPU threads (default: all)')
+    ap.add_argument('--fast', action='store_true', help='bfloat16 on CPU: about 1.5-2x faster on Ryzen 7000/8000, sound can differ slightly')
     ap.add_argument('--dry-run', action='store_true')
     ap.add_argument('--finalize', action='store_true')
     ap.add_argument('--pick', nargs='*', default=[], help='cue_id=take, e.g. op1_l1=2')
@@ -125,7 +136,7 @@ def main():
     if a.finalize:
         picks = dict((k, int(v)) for k, v in (p.split('=') for p in a.pick))
         return finalize(cues, picks, a.takes_dir, a.audio_dir)
-    make_takes(cues, {'Narrator': a.narrator, 'Jyo': a.jyo}, a.takes, a.takes_dir)
+    make_takes(cues, {'Narrator': a.narrator, 'Jyo': a.jyo}, a.takes, a.takes_dir, a.threads, a.fast)
 
 
 if __name__ == '__main__':
