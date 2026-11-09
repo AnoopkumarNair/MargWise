@@ -16,6 +16,8 @@ Each file may also have a `.webm` sibling with the same name. The page uses the 
 
 Captions stay as page text. The clips are silent, apart from the trailer. Make them 2:3 (portrait) like the stills, 720p at most.
 
+To make the clips, see `docs/VIDEO_PRODUCTION_PACK.md` (full prompts and ffmpeg steps) and `docs/PROMPTS_QUICK.md` (one checklist for a phone). Opening voice and sound files are in `docs/VOICE_SCRIPT.md`.
+
 ## How video is chosen
 
 One small function decides: `mwVideoPolicy` in `app/video_policy.js` (tests in `app/tests/video.test.mjs`). Video is used only if all of these hold:
