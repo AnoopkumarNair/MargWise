@@ -7,9 +7,12 @@ import { achievementLines, suggest } from '../../intake/tier2.js';
 export const TIER2_DIR = fileURLToPath(new URL('../fixtures/tier2/', import.meta.url));
 export const NOW_YEAR = 2026;
 
-export function tier2Fixtures() {
-  return readdirSync(TIER2_DIR).filter(d => existsSync(TIER2_DIR + d + '/expected.json')).sort().map(id => ({
-    id, text: readFileSync(TIER2_DIR + id + '/resume.txt', 'utf8'), expected: JSON.parse(readFileSync(TIER2_DIR + id + '/expected.json', 'utf8')),
+// The three fixtures with Achievements, Awards, Volunteering and a rich Summary (S5 review S6). Kept apart: the threshold was tuned on the first eight.
+export const SECTIONS_DIR = fileURLToPath(new URL('../fixtures/tier2_sections/', import.meta.url));
+
+export function tier2Fixtures(dir = TIER2_DIR) {
+  return readdirSync(dir).filter(d => existsSync(dir + d + '/expected.json')).sort().map(id => ({
+    id, text: readFileSync(dir + id + '/resume.txt', 'utf8'), expected: JSON.parse(readFileSync(dir + id + '/expected.json', 'utf8')),
   }));
 }
 
@@ -56,12 +59,12 @@ export function summarise(fixtures, perFixture) {
   return r;
 }
 
-// opts: { embed, vecs, threshold, perLine, cap, fixtures }. Runs tier 2 on each fixture and returns summarise()'s totals.
+// opts: { embed, vecs, threshold, perLine, cap, fixtures, skipSections (see achievementLines), maxLines }. Runs tier 2 on each fixture and returns summarise()'s totals.
 export async function evaluate(opts) {
   const fixtures = opts.fixtures || tier2Fixtures();
   const per = {};
   for (const f of fixtures) {
-    const lines = achievementLines(f.text, { nowYear: NOW_YEAR });
+    const lines = achievementLines(f.text, { nowYear: NOW_YEAR, skipSections: opts.skipSections, maxLines: opts.maxLines });
     per[f.id] = await suggest(lines, { embed: opts.embed, vecs: opts.vecs, threshold: opts.threshold, perLine: opts.perLine, cap: opts.cap || 1000, exclude: opts.exclude });
   }
   return summarise(fixtures, per);

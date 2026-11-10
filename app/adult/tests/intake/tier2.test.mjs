@@ -192,3 +192,15 @@ test('with more sentences than maxLines, the newest jobs are kept first, the res
 });
 
 test('the default cap keeps the scan short on a phone (120 sentences)', () => { assert.equal(DEFAULTS.maxLines, 120); });
+
+test('Achievements, Awards and Volunteering are read; the summary, education, skills and personal details are not (S5 review S6, D55)', () => {
+  const text = ['SUMMARY', 'I coach people and negotiate hard for my team across the whole company.', '',
+    'ACHIEVEMENTS', '- Coached five junior colleagues through their first quarter of work.', '',
+    'AWARDS', 'Best team award 2024 for planning the weekly schedule of the whole floor.', '',
+    'VOLUNTEERING', '- Managed the budget of the village school library for three years.', '',
+    'EDUCATION', 'B.Com, where I learned to coach other students for their exams', ''].join('\n');
+  const got = achievementLines(text, { nowYear: 2026 }).map(l => l.text);
+  assert.deepEqual(got, ['Coached five junior colleagues through their first quarter of work.', 'Best team award 2024 for planning the weekly schedule of the whole floor.', 'Managed the budget of the village school library for three years.']);
+  // the section list can be changed by a caller (the evaluation compares both ways)
+  assert.equal(achievementLines(text, { nowYear: 2026, skipSections: ['education', 'skills', 'certs', 'personal', 'other'] }).length, 1, 'with "other" skipped only the summary line is left');
+});

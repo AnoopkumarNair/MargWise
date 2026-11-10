@@ -231,9 +231,10 @@ if (!ready) {
     const r = summarise(T2FIX, out.res);
     const times = Object.values(out.times);
     console.log(`  browser: first resume incl. model load ${times[0]} ms, the rest ${times.slice(1).join(', ')} ms; all 8 in ${total} ms`);
-    console.log(`  browser tier 2: ${r.perResume.toFixed(1)} a resume, line recall ${r.lineRecall.toFixed(2)} (${r.linesHit}/${r.impliedLines}), fair precision ${r.precisionFair.toFixed(2)} (${r.tp + r.ok}/${r.suggested}), strict ${r.precision.toFixed(2)}`);
-    assert.ok(r.lineRecall >= 0.15 && r.precisionFair >= 0.65 && r.precision >= 0.15, JSON.stringify({ lineRecall: r.lineRecall, precisionFair: r.precisionFair, precision: r.precision }));
-    assert.ok(r.perResume >= 1 && r.perResume <= 4, 'a resume: ' + r.perResume);
+    console.log(`  browser tier 2: strict precision ${r.precision.toFixed(2)} (${r.tp}/${r.suggested}), strict recall ${r.recall.toFixed(2)} (${r.found}/${r.mustPairs}); fair precision ${r.precisionFair.toFixed(2)} (${r.tp + r.ok}/${r.suggested}), line recall ${r.lineRecall.toFixed(2)} (${r.linesHit}/${r.impliedLines}); ${r.perResume.toFixed(1)} a resume`);
+    // the same floors as tier2_model.test.mjs (the browser and Node give the same numbers)
+    assert.ok(r.recall >= 0.06 && r.lineRecall >= 0.18 && r.precisionFair >= 0.65 && r.precision >= 0.16, JSON.stringify({ recall: r.recall, lineRecall: r.lineRecall, precisionFair: r.precisionFair, precision: r.precision }));
+    assert.ok(r.perResume >= 1.5 && r.perResume <= 3.5, 'a resume: ' + r.perResume);
     assert.deepEqual(w.failed, []); assert.deepEqual(pageErrors(w), []);
     await ctx.close();
   });

@@ -17,7 +17,7 @@ import { parseDateRange, joinWrappedDates } from './roles.js';
 // the other sentences in its batch (a cosine of about 0.99). One at a time, a sentence gets the same vector in every resume, and the skill vectors
 // are made the same way (embed_skills.mjs).
 export const EMBED_BATCH = 1;
-export const VERSION = 1;   // bump with any change to the line rules or the scoring below
+export const VERSION = 2;   // bump with any change to the line rules or the scoring below (2: Achievements, Awards, Volunteering and the like are read)
 // Tuned on the synthetic tier 2 fixtures (app/adult/tests/fixtures/tier2, docs/adult/deviations.md D47). A sentence is much shorter than
 // an O*NET description, so cosine scores are lower than the 0.55 the plan guessed.
 export const DEFAULTS = Object.freeze({ threshold: 0.4, perLine: 2, cap: 12, maxLines: 120 });
@@ -26,13 +26,15 @@ export const DEFAULTS = Object.freeze({ threshold: 0.4, perLine: 2, cap: 12, max
 export class Tier2Cancelled extends Error {}
 
 const CONTACT = /[\w.+-]+@[\w-]+\.[\w.-]+|(?:\+?\d[\d\s().-]{8,}\d)|https?:\/\/|www\./i;
-const SKIP_SECTIONS = new Set(['education', 'skills', 'certs', 'personal', 'other', 'summary']);
+// Sections left out: education, skills lists, certificates, personal details, and the summary. "other" (Achievements, Awards, Volunteering, Interests, ...) IS read:
+// on the fixtures it adds suggestions without lowering precision, and the summary does lower it (docs/adult/deviations.md D55).
+const SKIP_SECTIONS = new Set(['education', 'skills', 'certs', 'personal', 'summary']);
 const MIN_WORDS = 5, MIN_LETTERS = 20, MAX_SENTENCE = 300;
 
 // The sentences of a resume that describe what the person did. Headings, contact lines, skill lists, date lines, education, personal
 // details and lines that read like instructions to an AI are left out. A long line is cut into sentences.
 // Returns [{ text, sourceLine, line (index of the line in the text), roleIndex (index into opts.roles, or -1) }], at most opts.maxLines.
-// opts: { nowYear (required), roles (optional, from readResume: used to say which job a sentence is in), maxLines }
+// opts: { nowYear (required), roles (optional, from readResume: used to say which job a sentence is in), maxLines, skipSections (optional list of section kinds to leave out; default SKIP_SECTIONS) }
 export function achievementLines(text, opts) {
   const o = opts || {};
   const nowYear = Number.isInteger(o.nowYear) ? o.nowYear : new Date().getFullYear();
@@ -40,10 +42,11 @@ export function achievementLines(text, opts) {
   const lines = joinWrappedDates(splitLines(String(text == null ? '' : text).normalize('NFKC').slice(0, 300000)));   // the same lines tier 1 reads
   const sections = sectionMap(lines);
   const bad = injectionLines(lines);
+  const skip = o.skipSections ? new Set(o.skipSections) : SKIP_SECTIONS;
   const out = [], seen = new Set();
   for (let i = 0; i < lines.length; i++) {
     const s = sections[i];
-    if (s.heading || s.skillList || SKIP_SECTIONS.has(s.kind) || bad.has(i)) continue;
+    if (s.heading || s.skillList || skip.has(s.kind) || bad.has(i)) continue;
     const raw = lines[i].replace(/^[\s•*\-–—·▪●○◦>]+/, '').replace(/\s+/g, ' ').trim();
     if (!raw || CONTACT.test(raw) || parseDateRange(raw, nowYear)) continue;
     for (const part of splitSentences(raw)) {
