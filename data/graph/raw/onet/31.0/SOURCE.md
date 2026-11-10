@@ -29,6 +29,7 @@ Only the files the graph reads (SPEC 5.1). Total 30.9 MB, under the 40 MB limit,
 | Tasks to DWAs.txt | 1150747 | 8667a918008973103390072da720a09db02812faf93610df659f653750e2769d |
 | Essential Skills to Work Activities.txt | 8416 | 2e7971cc98af2cb53927359255b5116c8f95bf6c36158e5d59a6390f048d9f9d |
 | Transferable Skills to Work Activities.txt | 9981 | 899412fddce5899cde948d394e43cab5ac14c69f83faad35135609a1a184b136 |
+| Content Model Reference.txt | 242007 | f7105e22c282736566a2d4e31859b688a5781d309c1569a0b06aea15b4fcd86e |
 
 ## Differences from the file names in SPEC 5.1
 
@@ -40,6 +41,7 @@ O*NET 31.0 renamed some files. The content model is the same.
 - `Interests.txt` is now `Career Interest Types.txt`. The graph does not use it yet; it is kept because SPEC 5.1 lists it.
 
 - Three files are **added to the SPEC 5.1 list**: `Tasks to DWAs.txt`, `Essential Skills to Work Activities.txt` and `Transferable Skills to Work Activities.txt`. SPEC 5.5 asks for the share of a skill's tasks that have AI use, and these files are the only link from tasks to skills (task, to detailed work activity, to general work activity, to skill). Together they are 1.2 MB.
+- `Content Model Reference.txt` is **added for S5** (T4.5, tier 2 reading on the device; fetched 2026-11-10 from the same zip, whose SHA-256 is unchanged). Its `Description` column is the O*NET text for each skill, knowledge and work activity element. The tier 2 reader embeds it (see `data/graph/vec_texts.py`). 0.24 MB.
 
 ## Data age
 

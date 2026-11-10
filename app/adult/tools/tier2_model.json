@@ -1,0 +1,56 @@
+{
+ "_doc": "The on-device reading model for tier 2 (BUILD_PLAN T4.5). python3 app/adult/tools/fetch_model.py downloads it into the git-ignored model_cache/ and checks these hashes; app/adult/build.py copies it into hosting/public/work/models/. The files are never committed.",
+ "model_id": "Xenova/all-MiniLM-L6-v2",
+ "source": "https://huggingface.co/Xenova/all-MiniLM-L6-v2",
+ "revision": "751bff37182d3f1213fa05d7196b954e230abad9",
+ "revision_date": "2025-07-22",
+ "retrieved": "2026-11-10",
+ "licence": "Apache-2.0",
+ "licence_evidence": "README.md at this revision (front matter: license: apache-2.0). It is the ONNX export of sentence-transformers/all-MiniLM-L6-v2, which is also Apache-2.0. The licence text is app/adult/tools/LICENSE-Apache-2.0.txt; build.py copies it next to the model.",
+ "dtype": "int8",
+ "dims": 384,
+ "pooling": "mean",
+ "normalize": true,
+ "per_file_limit_bytes": 26214400,
+ "files": [
+  {
+   "path": "config.json",
+   "bytes": 650,
+   "sha256": "7135149f7cffa1a573466c6e4d8423ed73b62fd2332c575bf738a0d033f70df7",
+   "load": true
+  },
+  {
+   "path": "tokenizer.json",
+   "bytes": 711661,
+   "sha256": "da0e79933b9ed51798a3ae27893d3c5fa4a201126cef75586296df9b4d2c62a0",
+   "load": true
+  },
+  {
+   "path": "tokenizer_config.json",
+   "bytes": 366,
+   "sha256": "9261e7d79b44c8195c1cada2b453e55b00aeb81e907a6664974b4d7776172ab3",
+   "load": true
+  },
+  {
+   "path": "special_tokens_map.json",
+   "bytes": 125,
+   "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+   "load": false
+  },
+  {
+   "path": "README.md",
+   "bytes": 1767,
+   "sha256": "63ea99bf681a2e9eda4f6a537d5ed8fda95d1677111656da37e9cfd080c3af02",
+   "load": false
+  },
+  {
+   "path": "onnx/model_int8.onnx",
+   "bytes": 22972370,
+   "sha256": "afdb6f1a0e45b715d0bb9b11772f032c399babd23bfc31fed1c170afc848bdb1",
+   "load": true
+  }
+ ],
+ "licence_files": [
+  "LICENSE-Apache-2.0.txt"
+ ]
+}

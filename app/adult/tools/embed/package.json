@@ -1,0 +1,9 @@
+{
+  "name": "margwise-embed-skills",
+  "private": true,
+  "description": "Offline tool: embeds the skill texts with the pinned model (see ../README note in docs/adult/deviations.md D44). Not part of the app.",
+  "type": "module",
+  "dependencies": {
+    "@huggingface/transformers": "4.3.2"
+  }
+}

@@ -26,6 +26,8 @@ WANTED = [
     ['Job Zones.txt'], ['Essential Skills.txt', 'Skills.txt'], ['Transferable Skills.txt'],
     ['Software Skills.txt', 'Technology Skills.txt'], ['Job Titles.txt', 'Alternate Titles.txt'],
     ['Career Interest Types.txt', 'Interests.txt'], ['Read Me.txt'],
+    # Added in S5 (T4.5): the O*NET description of each skill, knowledge and work activity element. The tier 2 reader embeds this text.
+    ['Content Model Reference.txt'],
     # Not in the SPEC 5.1 list, added for the skill AI labels (SPEC 5.5): they link a task to a work activity and a skill to the same work activities.
     ['Tasks to DWAs.txt'], ['Essential Skills to Work Activities.txt'], ['Transferable Skills to Work Activities.txt'],
 ]
@@ -91,6 +93,7 @@ def main():
         '- `Alternate Titles.txt` is now `Job Titles.txt` (Job Title, Short Title, Source(s)).',
         '- `Interests.txt` is now `Career Interest Types.txt`. The graph does not use it yet; it is kept because SPEC 5.1 lists it.', '',
         '- Three files are **added to the SPEC 5.1 list**: `Tasks to DWAs.txt`, `Essential Skills to Work Activities.txt` and `Transferable Skills to Work Activities.txt`. SPEC 5.5 asks for the share of a skill\'s tasks that have AI use, and these files are the only link from tasks to skills (task, to detailed work activity, to general work activity, to skill). Together they are 1.2 MB.', '',
+        '- `Content Model Reference.txt` is **added for S5** (T4.5, tier 2 reading on the device). Its `Description` column is the O*NET text for each skill, knowledge and work activity element. The tier 2 reader embeds it (see `data/graph/vec_texts.py`). 0.24 MB.', '',
         '## Data age',
         '',
         'The `Date` column (MM/YYYY) on each rating row is when O*NET collected that rating. The graph stores it as the edge date. The release date above is when the file was published, which is a different thing.', '',

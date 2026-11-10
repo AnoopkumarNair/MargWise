@@ -163,6 +163,10 @@ def check_exports(db_nodes, exp_dir, rep):
             k = norm_title(t) or t.casefold()   # norm_title is Latin-only: a Hindi term would normalise to '' and clash with every other one
             if k in term and term[k] != e['id'] and t not in e.get('ambiguous', []): rep.fail('no term points at two ids unless it is marked ambiguous', '%r: %s and %s' % (t, term[k], e['id']))
             term.setdefault(k, e['id'])
+    # skill_vecs (T4.5): the tier 2 vectors still match the skills index and the texts they were made from. Never recomputed here.
+    sys.path.insert(0, GRAPH_DIR)
+    import vec_texts
+    for pr in vec_texts.check(exp_dir): rep.fail('skill_vecs are current (python3 data/graph/vec_texts.py --check)', pr)
     # titles
     with open(os.path.join(exp_dir, 'titles.json'), encoding='utf8') as fh: tj = json.load(fh)
     with_slice = {'occ:' + f[:-5] for f in files}

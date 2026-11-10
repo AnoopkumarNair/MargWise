@@ -4,6 +4,7 @@ accept_graph(root, man) writes data/releases/graph/<release_id>/ with:
   slices.jsonl.xz      every slice from data/graph/slices/, one per line in file-name order, exactly the bytes of the slice file,
                        xz-compressed (about 1.3 MB instead of about 190 MB of raw JSON; deviations D15). read_pack() unpacks it.
   skills_index.json, titles.json   copied as they are
+  skill_vecs.json, skill_vecs.bin  the tier 2 vectors (T4.5), copied as they are when they exist and still match the skills index
   manifest.json        release id, O*NET version, hashes (the pack file, and the slices as a folder hash), every id a profile can hold
 and data/releases/graph/latest.json, and puts the hashes in `man['graph']` (the caller writes data/releases/manifest.json).
 app/adult/build.py (release build) unpacks the slices into hosting/public/work/graph/<release_id>/slices/ and checks the hashes.
@@ -14,6 +15,7 @@ It refuses to run when the exports are older than the graph, or when an id is mi
 import datetime, hashlib, json, lzma, os, shutil
 
 PACK = 'slices.jsonl.xz'
+VECS = ('skill_vecs.json', 'skill_vecs.bin')   # optional: the tier 2 vectors (BUILD_PLAN T4.5)
 
 
 def sha(b):
@@ -76,6 +78,11 @@ def accept_graph(root, man, now=None):
     n_slices = write_pack(os.path.join(g, 'slices'), os.path.join(dest, PACK))
     for n in ('skills_index.json', 'titles.json'): shutil.copy(os.path.join(g, n), os.path.join(dest, n))
     files = {'skills_index.json': None, 'titles.json': None, PACK: None}
+    if os.path.exists(os.path.join(g, 'skill_vecs.json')) and os.path.exists(os.path.join(g, 'skill_vecs.bin')):
+        import vec_texts   # the vectors are carried only while they still match the index and their texts (never recomputed here)
+        stale = vec_texts.check(g)
+        if stale: raise SystemExit('skill_vecs are stale, so they cannot go into the release: ' + '; '.join(stale))
+        for n in VECS: shutil.copy(os.path.join(g, n), os.path.join(dest, n)); files[n] = None
     for n in files:
         with open(os.path.join(dest, n), 'rb') as fh: files[n] = sha(fh.read())
     files['slices (folder)'] = tree_sha(os.path.join(g, 'slices'))
