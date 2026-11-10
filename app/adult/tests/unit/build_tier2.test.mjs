@@ -54,7 +54,7 @@ function renameVecs(r) {
 }
 
 test('with the model and the vectors, the build copies the model and writes the real download size', () => {
-  const { r, files } = makeRepo();
+  const { r, files, m } = makeRepo();
   try {
     renameVecs(r);
     const b = build(r); assert.equal(b.status, 0, b.stderr + b.stdout);
@@ -71,8 +71,9 @@ test('with the model and the vectors, the build copies the model and writes the 
     assert.equal(t.total_bytes, sum);
     // the page downloads the library, the model files it loads (not the model card) and the two vector files
     assert.deepEqual(t.files.map(f => f.url.split('/').pop()), ['transformers.min.js', 'ort-wasm-simd-threaded.mjs', 'ort-wasm-simd-threaded.wasm', 'config.json', 'tokenizer.json', 'model_int8.onnx', 'skill_vecs.json', 'skill_vecs.bin']);
-    for (const n of Object.keys(files)) assert.ok(existsSync(join(out, 'work', 'models', MODEL, n)), n + ' is served');
-    assert.ok(existsSync(join(out, 'work', 'models', MODEL, 'LICENSE-Apache-2.0.txt')), 'the licence travels with the model');
+    const md = join(out, 'work', 'models', m.revision.slice(0, 12), MODEL);
+    for (const n of Object.keys(files)) assert.ok(existsSync(join(md, n)), n + ' is served');
+    assert.ok(existsSync(join(md, 'LICENSE-Apache-2.0.txt')), 'the licence travels with the model');
     assert.match(b.stdout, /tier 2: on/);
     assert.ok(existsSync(join(out, 'work', 'tiers.html')) && existsSync(join(out, 'work', 'tiers.js')), 'a --dev build has the developer page');
   } finally { rmSync(r, { recursive: true, force: true }); }
@@ -124,5 +125,28 @@ test('vectors made with another model than the pinned one stop the build', () =>
   try {   // (not renamed: skill_vecs.json still names the real model, the manifest pins the fake one)
     const b = build(r); assert.notEqual(b.status, 0);
     assert.match(b.stderr, /skill_vecs\.json was made with Xenova\/all-MiniLM-L6-v2 .* but the pinned model is Test\/tiny-model/);
+  } finally { rmSync(r, { recursive: true, force: true }); }
+});
+
+test('vectors whose bin was altered at the same length stop the build (bin_sha256)', () => {
+  const { r } = makeRepo();
+  try {
+    renameVecs(r);
+    const bp = join(r, 'data', 'graph', 'skill_vecs.bin'); const b0 = readFileSync(bp); b0[100] = (b0[100] + 1) & 255; writeFileSync(bp, b0);
+    const b = build(r); assert.notEqual(b.status, 0);
+    assert.match(b.stderr, /skill_vecs\.bin does not match the bin_sha256/);
+  } finally { rmSync(r, { recursive: true, force: true }); }
+});
+
+test('the model is served from a path that holds the revision, so a new revision is a new address', () => {
+  const { r, m } = makeRepo();
+  try {
+    renameVecs(r);
+    const b = build(r); assert.equal(b.status, 0, b.stderr + b.stdout);
+    const t = manifest(r).tier2; const rev12 = m.revision.slice(0, 12);
+    assert.equal(t.model_path, 'models/' + rev12 + '/');
+    for (const f of t.files.filter(f => !f.url.startsWith('/') && f.url.startsWith('models/'))) assert.ok(f.url.startsWith('models/' + rev12 + '/' + MODEL + '/'), f.url);
+    assert.ok(existsSync(join(r, 'hosting', 'public', 'work', 'models', rev12, MODEL, 'config.json')));
+    assert.ok(!existsSync(join(r, 'hosting', 'public', 'work', 'models', MODEL)), 'no copy at the old, unrevisioned path');
   } finally { rmSync(r, { recursive: true, force: true }); }
 });

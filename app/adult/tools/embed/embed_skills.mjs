@@ -7,6 +7,7 @@
 // It embeds the texts from data/graph/vec_texts.py (recipe in that file) with the pinned model, scales each unit vector by 127 and
 // writes it as int8, row by row. The browser loads the same model, so a sentence and a skill are compared with the same numbers.
 // The offline pipeline (pipeline/run.py) never runs this: it only checks that the files still match the texts (pipeline/validate_graph.py).
+import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -37,7 +38,7 @@ try {
     model: MANIFEST.model_id, revision: MANIFEST.revision, dtype: MANIFEST.dtype, library: '@huggingface/transformers ' + embed.version + ' (onnxruntime-node), as pinned in app/adult/tools/embed/package-lock.json',
     dims, scale, pooling: MANIFEST.pooling, normalized: true, row_format: 'int8, row-major, unit vector times scale', recipe: t.recipe,
     text: '"<label>: <O*NET description>" for each skill, knowledge and work activity (technologies are not embedded); see data/graph/vec_texts.py',
-    texts_sha256: t.texts_sha256, built: dateArg, ids: t.texts.map(x => x.id),
+    texts_sha256: t.texts_sha256, bin_sha256: createHash('sha256').update(data).digest('hex'), built: dateArg, ids: t.texts.map(x => x.id),
   };
   writeFileSync(join(GRAPH, 'skill_vecs.json'), JSON.stringify(meta) + '\n');
   console.log('wrote data/graph/skill_vecs.bin (' + data.length + ' bytes) and skill_vecs.json (' + meta.ids.length + ' ids, model ' + meta.model + ' @ ' + meta.revision.slice(0, 12) + ')');

@@ -165,7 +165,12 @@ def tier2_setup(gdata, gsrc, release_id, is_fixture, is_release):
     problems = []
     if is_fixture: why = 'this build uses the test fixtures, which have no skill vectors'
     elif not all(n in gdata for n in graph_release.VECS): why = 'the graph has no skill_vecs.json and skill_vecs.bin (python3 app/adult/tools/embed/embed_skills.mjs makes them)'
-    elif not is_release and vec_texts.check(gsrc): why = 'skill_vecs are stale: ' + vec_texts.check(gsrc)[0]
+    else:
+        vm = json.loads(gdata['skill_vecs.json'])
+        # the vectors must be the ones the pinned model made, and the bin must be the file the json describes (same length is not enough)
+        if vm.get('model') != m['model_id'] or vm.get('revision') != m['revision']: die('skill_vecs.json was made with %s @ %s, but the pinned model is %s @ %s. Re-run embed_skills.mjs.' % (vm.get('model'), vm.get('revision'), m['model_id'], m['revision']))
+        if hashlib.sha256(gdata['skill_vecs.bin']).hexdigest() != vm.get('bin_sha256'): die('skill_vecs.bin does not match the bin_sha256 in skill_vecs.json. Do not build from altered vectors; re-run embed_skills.mjs.')
+        if not is_release and vec_texts.check(gsrc): why = 'skill_vecs are stale: ' + vec_texts.check(gsrc)[0]
     if not why:
         problems = fetch_model.verify(m)
         if problems: why = 'the model is not in app/adult/tools/model_cache/ or differs from tier2_model.json (run python3 app/adult/tools/fetch_model.py): ' + problems[0]
@@ -178,18 +183,19 @@ def tier2_setup(gdata, gsrc, release_id, is_fixture, is_release):
     files = []   # what the page downloads when a person agrees, in the order it asks
     for rel in TIER2_LIB:
         files.append({'url': '/vendor/' + rel, 'bytes': os.path.getsize(os.path.join(VENDOR, rel))})
-    mdir = os.path.join(OUT, 'models', m['model_id'])
+    # The model is served from a path that holds the first 12 characters of its revision, so a new revision is a new address: no cache (the browser's,
+    # the library's own, or a proxy's) can ever hand back the old files for it, and hosting/public/_headers can mark /work/models/* as never changing.
+    mbase = 'models/%s/' % m['revision'][:12]
+    mdir = os.path.join(OUT, 'models', m['revision'][:12], m['model_id'])
     for e in m['files']:
         src = os.path.join(fetch_model.CACHE, m['model_id'], *e['path'].split('/'))
         dst = os.path.join(mdir, *e['path'].split('/'))
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         shutil.copyfile(src, dst)
-        if e.get('load'): files.append({'url': 'models/%s/%s' % (m['model_id'], e['path']), 'bytes': e['bytes']})
+        if e.get('load'): files.append({'url': mbase + '%s/%s' % (m['model_id'], e['path']), 'bytes': e['bytes']})
     for n in m.get('licence_files', []): shutil.copyfile(os.path.join(APP, 'tools', n), os.path.join(mdir, n))
     for n in graph_release.VECS: files.append({'url': 'graph/%s/%s' % (release_id, n), 'bytes': len(gdata[n])})
-    vm = json.loads(gdata['skill_vecs.json'])
-    if vm.get('model') != m['model_id'] or vm.get('revision') != m['revision']: die('skill_vecs.json was made with %s @ %s, but the pinned model is %s @ %s. Re-run embed_skills.mjs.' % (vm.get('model'), vm.get('revision'), m['model_id'], m['revision']))
-    return {'available': True, 'model': m['model_id'], 'revision': m['revision'], 'licence': m['licence'], 'dtype': m['dtype'], 'pooling': m['pooling'], 'dims': m['dims'],
+    return {'available': True, 'model': m['model_id'], 'revision': m['revision'], 'model_path': mbase, 'licence': m['licence'], 'dtype': m['dtype'], 'pooling': m['pooling'], 'dims': m['dims'],
             'recipe': vm.get('recipe'), 'files': files, 'total_bytes': sum(f['bytes'] for f in files)}
 
 
@@ -230,7 +236,7 @@ def main():
 
     # 1. the app: everything at the top of app/adult/ that the browser needs, and screens/
     for name in ('styles.css', 'notice.md', 'app.js', 'dom.js', 'lookup.js', 'matcher_adapter.js', 'state.js', 'data.js', 'footer.js',
-                 'intake_file.js', 'intake_embed.js', 'intake_profile.js', 'intake_read.js', 'constraints_model.js', 'today_model.js'):
+                 'intake_file.js', 'intake_embed.js', 'announce.js', 'intake_profile.js', 'intake_read.js', 'constraints_model.js', 'today_model.js'):
         put(name, os.path.join(APP, name))
     for p in sorted(glob.glob(os.path.join(APP, 'screens', '*.js'))):
         put('screens/' + os.path.basename(p), p)

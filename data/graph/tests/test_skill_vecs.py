@@ -35,6 +35,25 @@ class SkillVecs(unittest.TestCase):
         with open(os.path.join(self.d, 'skill_vecs.bin'), 'ab') as f: f.write(b'\x00')
         self.assertTrue(any('bytes but' in p for p in vec_texts.check(self.d)))
 
+    def test_a_bin_altered_at_the_same_length_is_caught(self):
+        bp = os.path.join(self.d, 'skill_vecs.bin'); b = bytearray(open(bp, 'rb').read()); b[100] = (b[100] + 1) % 256; open(bp, 'wb').write(bytes(b))
+        self.assertEqual(os.path.getsize(bp), 109 * 384)   # same length: only the hash can tell
+        self.assertTrue(any('bin_sha256' in p for p in vec_texts.check(self.d)))
+
+    def test_a_missing_bin_hash_is_caught(self):
+        m = self.meta(); del m['bin_sha256']; self.save(m)
+        self.assertTrue(any('no bin_sha256' in p for p in vec_texts.check(self.d)))
+
+    def test_the_hash_in_the_json_is_the_hash_of_the_committed_bin(self):
+        self.assertEqual(self.meta()['bin_sha256'], vec_texts.bin_sha256(os.path.join(G, 'skill_vecs.bin')))
+
+    def test_a_model_or_revision_that_differs_from_the_pin_is_caught(self):
+        pin = json.load(open(vec_texts.MODEL_PIN, encoding='utf8')); pf = os.path.join(self.d, 'pin.json')
+        for key, val in (('revision', '0' * 40), ('model_id', 'Other/model')):
+            p2 = dict(pin); p2[key] = val; json.dump(p2, open(pf, 'w'))
+            self.assertTrue(any('pinned model' in p for p in vec_texts.check(self.d, model_pin=pf)), key)
+        json.dump(pin, open(pf, 'w')); self.assertEqual(vec_texts.check(self.d, model_pin=pf), [])
+
     def test_changed_texts_are_caught(self):
         m = self.meta(); m['texts_sha256'] = '0' * 64; self.save(m)
         self.assertTrue(any('texts changed' in p for p in vec_texts.check(self.d)))

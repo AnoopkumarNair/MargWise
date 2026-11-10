@@ -18,12 +18,18 @@ import csv, hashlib, json, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RECIPE = 'v1-label-onet-description'
+MODEL_PIN = os.path.join(HERE, '..', '..', 'app', 'adult', 'tools', 'tier2_model.json')   # the pinned model (id and revision the vectors must have been made with)
 ONET_DIR = os.path.join(HERE, 'raw', 'onet', '31.0')   # the pinned O*NET version (fetch_onet.py ONET_VERSION)
 
 
 def texts_sha(rows):
     """Hash of the ordered (id, text) pairs: one line 'id<TAB>text' each."""
     return hashlib.sha256('\n'.join('%s\t%s' % (i, t) for i, t in rows).encode('utf8')).hexdigest()
+
+
+def bin_sha256(path):
+    """SHA-256 of skill_vecs.bin: skill_vecs.json records it, so a bin altered at the same length (or made by another model) is caught."""
+    with open(path, 'rb') as f: return hashlib.sha256(f.read()).hexdigest()
 
 
 def skill_texts(graph_dir=HERE, onet_dir=ONET_DIR):
@@ -41,7 +47,7 @@ def skill_texts(graph_dir=HERE, onet_dir=ONET_DIR):
     return rows
 
 
-def check(graph_dir=HERE):
+def check(graph_dir=HERE, model_pin=MODEL_PIN):
     """Returns a list of problems with skill_vecs.json / skill_vecs.bin (empty when they are current). Never recomputes a vector."""
     jp, bp = os.path.join(graph_dir, 'skill_vecs.json'), os.path.join(graph_dir, 'skill_vecs.bin')
     if not os.path.exists(jp) and not os.path.exists(bp): return ['skill_vecs.json and skill_vecs.bin are missing: run app/adult/tools/embed/embed_skills.mjs (needs the model)']
@@ -56,6 +62,13 @@ def check(graph_dir=HERE):
     dims = meta.get('dims')
     if not isinstance(dims, int) or dims < 1: problems.append('skill_vecs.json has no valid dims')
     elif os.path.getsize(bp) != len(ids) * dims: problems.append('skill_vecs.bin is %d bytes but %d ids x %d dims need %d' % (os.path.getsize(bp), len(ids), dims, len(ids) * dims))
+    want = meta.get('bin_sha256')
+    if not want: problems.append('skill_vecs.json has no bin_sha256 (the SHA-256 of skill_vecs.bin)')
+    elif bin_sha256(bp) != want: problems.append('skill_vecs.bin does not match the bin_sha256 in skill_vecs.json (the file changed, or was made by another run)')
+    if os.path.exists(model_pin):
+        with open(model_pin, encoding='utf8') as f: pin = json.load(f)
+        if meta.get('model') != pin.get('model_id') or meta.get('revision') != pin.get('revision'):
+            problems.append('skill_vecs.json was made with %s @ %s, but the pinned model in tier2_model.json is %s @ %s (re-run the embed tool)' % (meta.get('model'), meta.get('revision'), pin.get('model_id'), pin.get('revision')))
     if meta.get('recipe') != RECIPE: problems.append('skill_vecs.json was made with recipe %r, the current recipe is %r' % (meta.get('recipe'), RECIPE))
     else:
         rows = skill_texts(graph_dir)
