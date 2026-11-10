@@ -1,0 +1,504 @@
+{
+ "slice_v": 1,
+ "release": "fixture-s1",
+ "occ": {
+  "id": "occ:13-2011.00",
+  "label": "Accountants and Auditors",
+  "job_zone": 4,
+  "as_of": "2026-10",
+  "src": "fixture"
+ },
+ "needs": [
+  {
+   "id": "skl:2.C.1.c",
+   "label": "Economics and Accounting",
+   "kind": "knowledge",
+   "w": 0.8,
+   "ai": "ai_does_much",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:excel",
+   "label": "Microsoft Excel",
+   "kind": "technology",
+   "w": 0.8,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.2.a",
+   "label": "Critical Thinking",
+   "kind": "skill",
+   "w": 0.6,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:tally",
+   "label": "Tally ERP",
+   "kind": "technology",
+   "w": 0.6,
+   "ai": "ai_does_much",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.A.1.e",
+   "label": "Mathematics",
+   "kind": "skill",
+   "w": 0.5,
+   "ai": "ai_does_much",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.8.b",
+   "label": "Law and Government",
+   "kind": "knowledge",
+   "w": 0.4,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  }
+ ],
+ "tasks": [],
+ "signals": [
+  {
+   "kind": "ai_obs",
+   "period": "2026Q1",
+   "value": 0.42,
+   "as_of": "2026-10",
+   "src": "fixture"
+  }
+ ],
+ "targets": [
+  {
+   "occ": {
+    "id": "occ:13-2051.00",
+    "label": "Financial and Investment Analysts",
+    "job_zone": 4,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.c",
+     "label": "Economics and Accounting",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:power-bi",
+     "label": "Microsoft Power BI",
+     "kind": "technology",
+     "w": 0.5,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.e",
+     "label": "Mathematics",
+     "kind": "skill",
+     "w": 0.5,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.45,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:13-2031.00",
+    "label": "Budget Analysts",
+    "job_zone": 4,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.c",
+     "label": "Economics and Accounting",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.b",
+     "label": "Management of Financial Resources",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.8.b",
+     "label": "Law and Government",
+     "kind": "knowledge",
+     "w": 0.4,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.38,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:13-2041.00",
+    "label": "Credit Analysts",
+    "job_zone": 4,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.c",
+     "label": "Economics and Accounting",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.8.b",
+     "label": "Law and Government",
+     "kind": "knowledge",
+     "w": 0.3,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.4,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:43-3031.00",
+    "label": "Bookkeeping, Accounting, and Auditing Clerks",
+    "job_zone": 3,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "same_cluster"
+   ],
+   "needs": [
+    {
+     "id": "tec:tally",
+     "label": "Tally ERP",
+     "kind": "technology",
+     "w": 0.8,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:excel",
+     "label": "Microsoft Excel",
+     "kind": "technology",
+     "w": 0.7,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.b",
+     "label": "Administrative",
+     "kind": "knowledge",
+     "w": 0.6,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.c",
+     "label": "Economics and Accounting",
+     "kind": "knowledge",
+     "w": 0.5,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.61,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:15-2051.00",
+    "label": "Data Scientists",
+    "job_zone": 5,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "two_step"
+   ],
+   "needs": [
+    {
+     "id": "tec:python",
+     "label": "Python",
+     "kind": "technology",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.3.e",
+     "label": "Programming",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:sql",
+     "label": "SQL",
+     "kind": "technology",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.4.a",
+     "label": "Mathematics",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.2.i",
+     "label": "Complex Problem Solving",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.35,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:11-3031.01",
+    "label": "Treasurers and Controllers",
+    "job_zone": 5,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.c",
+     "label": "Economics and Accounting",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.1.a",
+     "label": "Administration and Management",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.b",
+     "label": "Management of Financial Resources",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.d",
+     "label": "Management of Personnel Resources",
+     "kind": "skill",
+     "w": 0.5,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.22,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "fixture",
+   "name": "Hand-built matcher test fixture. Not real data: weights, labels and AI shares are made up for tests.",
+   "trust": "estimate",
+   "as_of": "2026-10"
+  }
+ ]
+}

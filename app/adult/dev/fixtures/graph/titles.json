@@ -1,0 +1,39 @@
+{
+ "accountant": [
+  "occ:13-2011.00"
+ ],
+ "chartered accountant": [
+  "occ:13-2011.00"
+ ],
+ "auditor": [
+  "occ:13-2011.00"
+ ],
+ "tax accountant": [
+  "occ:13-2011.00"
+ ],
+ "staff accountant": [
+  "occ:13-2011.00"
+ ],
+ "software engineer": [
+  "occ:15-1252.00"
+ ],
+ "software developer": [
+  "occ:15-1252.00"
+ ],
+ "programmer": [
+  "occ:15-1252.00"
+ ],
+ "full stack developer": [
+  "occ:15-1252.00"
+ ],
+ "financial analyst": [
+  "occ:13-2051.00"
+ ],
+ "data analyst": [
+  "occ:15-2051.00",
+  "occ:15-2051.01"
+ ],
+ "mis executive": [
+  "occ:15-2051.01"
+ ]
+}

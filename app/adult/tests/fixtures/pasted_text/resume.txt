@@ -1,0 +1,16 @@
+Ravindran Canarypally
+canary.mail.7731@example.com  +91 98765 43210
+PAN ABCDE1234F  Aadhaar 2345 6789 0123
+
+Product Support Engineer, Canaryworks Pvt Ltd (Dec 2022 - Present)
+Second-line support for a SaaS billing product. I debug customer issues using SQL queries on MySQL, read logs on Linux servers, and write Python scripts to replay failed webhooks. I raise bugs in Jira and write the fix notes in Confluence. I also talk to customers on Zoom calls and explain what went wrong.
+
+Technical Support Executive, Brightloom Systems (2019 - 2022)
+First-line support, ticket handling in ServiceNow, answered about 40 tickets a day. Wrote knowledge base articles. Learned SQL here.
+
+Customer Care Associate, Kestrel Telecom (Jun 2016 - Mar 2019)
+Calls and emails for a mobile network. Used MS Excel for daily reports.
+
+Studied B.Sc. Computer Science at Canary Institute of Technology, 2013-2016.
+
+Good with: SQL, Python, Linux, Jira, ServiceNow

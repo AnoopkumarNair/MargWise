@@ -1,0 +1,368 @@
+RAVINDRAN CANARYPALLY
+Head of Data and Analytics
+Bengaluru, Karnataka | canary.mail.7731@example.com | +91 98765 43210
+PAN: ABCDE1234F | Aadhaar: 2345 6789 0123
+
+SUMMARY
+Analytics leader with twenty years in data, reporting and decision support across retail, logistics and lending. I build small teams, simple dashboards and careful processes. This is the long version of my resume, with full detail for each role, my projects, talks, training and community work.
+
+EXPERIENCE
+
+Head of Data and Analytics
+Canaryworks Pvt Ltd, Bengaluru
+Jan 2022 - Present
+- Built the weekly management report in Python, which cut the effort by half.
+- Designed a pricing study using SQL and PostgreSQL, saving about two days each month.
+- Automated the budget model for the year using Tableau and Jira, so managers could decide faster.
+- Improved the data quality rules in Power BI, and the review took one hour instead of a day.
+- Reviewed an audit of delivery delays using PostgreSQL and Docker, and it was adopted by two other teams.
+- Planned the forecasting process using Docker and Python, and the team used it every week.
+- Led the sales target tracker in Git, and leadership asked for it every quarter.
+- Documented a supplier scorecard using Jira and Git, and errors fell sharply.
+- Migrated a training programme for new analysts using Python and SQL, which cut the effort by half.
+- Tested the month-end checks in SQL, saving about two days each month.
+- Simplified the monthly MIS pack using Tableau and Jira, so managers could decide faster.
+- Reported on the customer churn model using Power BI and Tableau, and the review took one hour instead of a day.
+- Built a routing cost model in PostgreSQL, and it was adopted by two other teams.
+- Designed a stock and sales dashboard using Docker and Python, and the team used it every week.
+- Automated the return and refund analysis using Git and Power BI, and leadership asked for it every quarter.
+- Improved the weekly management report in Jira, and errors fell sharply.
+- Reviewed a pricing study using Python and SQL, which cut the effort by half.
+- Planned the budget model for the year using SQL and PostgreSQL, saving about two days each month.
+- Led the data quality rules in Tableau, so managers could decide faster.
+- Documented an audit of delivery delays using Power BI and Tableau, and the review took one hour instead of a day.
+- Migrated the forecasting process using PostgreSQL and Docker, and it was adopted by two other teams.
+- Tested the sales target tracker in Docker, and the team used it every week.
+- Simplified a supplier scorecard using Git and Power BI, and leadership asked for it every quarter.
+- Reported on a training programme for new analysts using Jira and Git, and errors fell sharply.
+- Built the month-end checks in Python, which cut the effort by half.
+- Designed the monthly MIS pack using SQL and PostgreSQL, saving about two days each month.
+- Automated the customer churn model using Tableau and Jira, so managers could decide faster.
+- Improved a routing cost model in Power BI, and the review took one hour instead of a day.
+- Reviewed a stock and sales dashboard using PostgreSQL and Docker, and it was adopted by two other teams.
+- Planned the return and refund analysis using Docker and Python, and the team used it every week.
+- Led the weekly management report in Git, and leadership asked for it every quarter.
+- Documented a pricing study using Jira and Git, and errors fell sharply.
+- Migrated the budget model for the year using Python and SQL, which cut the effort by half.
+- Tested the data quality rules in SQL, saving about two days each month.
+- Tools: Python, SQL, Tableau, Power BI, PostgreSQL, Docker, Git, Jira.
+
+Analytics Manager
+Brightloom Analytics, Pune
+Jun 2018 - Dec 2021
+- Planned the month-end checks in SQL, and the team used it every week.
+- Led the monthly MIS pack using Tableau and Microsoft Excel, and leadership asked for it every quarter.
+- Documented the customer churn model using MySQL and Python, and errors fell sharply.
+- Migrated a routing cost model in Hadoop, which cut the effort by half.
+- Tested a stock and sales dashboard using Microsoft Excel and pandas, saving about two days each month.
+- Simplified the return and refund analysis using pandas and SQL, so managers could decide faster.
+- Reported on the weekly management report in scikit-learn, and the review took one hour instead of a day.
+- Built a pricing study using Python and scikit-learn, and it was adopted by two other teams.
+- Designed the budget model for the year using SQL and Tableau, and the team used it every week.
+- Automated the data quality rules in Tableau, and leadership asked for it every quarter.
+- Improved an audit of delivery delays using MySQL and Python, and errors fell sharply.
+- Reviewed the forecasting process using Hadoop and MySQL, which cut the effort by half.
+- Planned the sales target tracker in Microsoft Excel, saving about two days each month.
+- Led a supplier scorecard using pandas and SQL, so managers could decide faster.
+- Documented a training programme for new analysts using scikit-learn and Hadoop, and the review took one hour instead of a day.
+- Migrated the month-end checks in Python, and it was adopted by two other teams.
+- Tested the monthly MIS pack using SQL and Tableau, and the team used it every week.
+- Simplified the customer churn model using Tableau and Microsoft Excel, and leadership asked for it every quarter.
+- Reported on a routing cost model in MySQL, and errors fell sharply.
+- Built a stock and sales dashboard using Hadoop and MySQL, which cut the effort by half.
+- Designed the return and refund analysis using Microsoft Excel and pandas, saving about two days each month.
+- Automated the weekly management report in pandas, so managers could decide faster.
+- Improved a pricing study using scikit-learn and Hadoop, and the review took one hour instead of a day.
+- Reviewed the budget model for the year using Python and scikit-learn, and it was adopted by two other teams.
+- Planned the data quality rules in SQL, and the team used it every week.
+- Led an audit of delivery delays using Tableau and Microsoft Excel, and leadership asked for it every quarter.
+- Documented the forecasting process using MySQL and Python, and errors fell sharply.
+- Migrated the sales target tracker in Hadoop, which cut the effort by half.
+- Tested a supplier scorecard using Microsoft Excel and pandas, saving about two days each month.
+- Simplified a training programme for new analysts using pandas and SQL, so managers could decide faster.
+- Reported on the month-end checks in scikit-learn, and the review took one hour instead of a day.
+- Built the monthly MIS pack using Python and scikit-learn, and it was adopted by two other teams.
+- Tools: Python, SQL, Tableau, MySQL, Hadoop, Microsoft Excel, pandas, scikit-learn.
+
+Senior Business Analyst
+Kestrel Logistics, Mumbai
+Jul 2014 - May 2018
+- Simplified the data quality rules in SAS, so managers could decide faster.
+- Reported on an audit of delivery delays using Minitab and Linux, and the review took one hour instead of a day.
+- Built the forecasting process using Tableau and SAS, and it was adopted by two other teams.
+- Designed the sales target tracker in Microsoft Project, and the team used it every week.
+- Automated a supplier scorecard using Linux and Microsoft Excel, and leadership asked for it every quarter.
+- Improved a training programme for new analysts using SQL and Tableau, and errors fell sharply.
+- Reviewed the month-end checks in Microsoft Excel, which cut the effort by half.
+- Planned the monthly MIS pack using SAS and Minitab, saving about two days each month.
+- Led the customer churn model using Minitab and Linux, so managers could decide faster.
+- Documented a routing cost model in Tableau, and the review took one hour instead of a day.
+- Migrated a stock and sales dashboard using Microsoft Project and Microsoft Project, and it was adopted by two other teams.
+- Tested the return and refund analysis using Linux and Microsoft Excel, and the team used it every week.
+- Simplified the weekly management report in SQL, and leadership asked for it every quarter.
+- Reported on a pricing study using Microsoft Excel and SQL, and errors fell sharply.
+- Built the budget model for the year using SAS and Minitab, which cut the effort by half.
+- Designed the data quality rules in Minitab, saving about two days each month.
+- Automated an audit of delivery delays using Tableau and SAS, so managers could decide faster.
+- Improved the forecasting process using Microsoft Project and Microsoft Project, and the review took one hour instead of a day.
+- Reviewed the sales target tracker in Linux, and it was adopted by two other teams.
+- Planned a supplier scorecard using SQL and Tableau, and the team used it every week.
+- Led a training programme for new analysts using Microsoft Excel and SQL, and leadership asked for it every quarter.
+- Documented the month-end checks in SAS, and errors fell sharply.
+- Migrated the monthly MIS pack using Minitab and Linux, which cut the effort by half.
+- Tested the customer churn model using Tableau and SAS, saving about two days each month.
+- Simplified a routing cost model in Microsoft Project, so managers could decide faster.
+- Reported on a stock and sales dashboard using Linux and Microsoft Excel, and the review took one hour instead of a day.
+- Built the return and refund analysis using SQL and Tableau, and it was adopted by two other teams.
+- Designed the weekly management report in Microsoft Excel, and the team used it every week.
+- Automated a pricing study using SAS and Minitab, and leadership asked for it every quarter.
+- Improved the budget model for the year using Minitab and Linux, and errors fell sharply.
+- Tools: SQL, Microsoft Excel, SAS, Minitab, Tableau, Microsoft Project, Linux.
+
+Business Analyst
+Hilltop Retail, Hyderabad
+2011-2014
+- Improved a routing cost model in SAS, and errors fell sharply.
+- Reviewed a stock and sales dashboard using Oracle Database and Microsoft Access, which cut the effort by half.
+- Planned the return and refund analysis using SQL and SQL, saving about two days each month.
+- Led the weekly management report in Microsoft Excel, so managers could decide faster.
+- Documented a pricing study using Microsoft Access and Microsoft Excel, and the review took one hour instead of a day.
+- Migrated the budget model for the year using SAS and Oracle Database, and it was adopted by two other teams.
+- Tested the data quality rules in Oracle Database, and the team used it every week.
+- Simplified an audit of delivery delays using SQL and SQL, and leadership asked for it every quarter.
+- Reported on the forecasting process using Microsoft Excel and SAS, and errors fell sharply.
+- Built the sales target tracker in Microsoft Access, which cut the effort by half.
+- Designed a supplier scorecard using SAS and Oracle Database, saving about two days each month.
+- Automated a training programme for new analysts using Oracle Database and Microsoft Access, so managers could decide faster.
+- Improved the month-end checks in SQL, and the review took one hour instead of a day.
+- Reviewed the monthly MIS pack using Microsoft Excel and SAS, and it was adopted by two other teams.
+- Planned the customer churn model using Microsoft Access and Microsoft Excel, and the team used it every week.
+- Led a routing cost model in SAS, and leadership asked for it every quarter.
+- Documented a stock and sales dashboard using Oracle Database and Microsoft Access, and errors fell sharply.
+- Migrated the return and refund analysis using SQL and SQL, which cut the effort by half.
+- Tested the weekly management report in Microsoft Excel, saving about two days each month.
+- Simplified a pricing study using Microsoft Access and Microsoft Excel, so managers could decide faster.
+- Reported on the budget model for the year using SAS and Oracle Database, and the review took one hour instead of a day.
+- Built the data quality rules in Oracle Database, and it was adopted by two other teams.
+- Designed an audit of delivery delays using SQL and SQL, and the team used it every week.
+- Automated the forecasting process using Microsoft Excel and SAS, and leadership asked for it every quarter.
+- Improved the sales target tracker in Microsoft Access, and errors fell sharply.
+- Reviewed a supplier scorecard using SAS and Oracle Database, which cut the effort by half.
+- Planned a training programme for new analysts using Oracle Database and Microsoft Access, saving about two days each month.
+- Led the month-end checks in SQL, so managers could decide faster.
+- Tools: SQL, Microsoft Excel, Microsoft Access, SAS, Oracle Database.
+
+MIS Executive
+Eastwind Traders, Chennai
+2008 - 2011
+- Migrated the sales target tracker in Microsoft Access, and it was adopted by two other teams.
+- Tested a supplier scorecard using SQL and SQL, and the team used it every week.
+- Simplified a training programme for new analysts using Microsoft Excel and SQL, and leadership asked for it every quarter.
+- Reported on the month-end checks in Microsoft Access, and errors fell sharply.
+- Built the monthly MIS pack using SQL and SQL, which cut the effort by half.
+- Designed the customer churn model using Microsoft Excel and SQL, saving about two days each month.
+- Automated a routing cost model in Microsoft Access, so managers could decide faster.
+- Improved a stock and sales dashboard using SQL and SQL, and the review took one hour instead of a day.
+- Reviewed the return and refund analysis using Microsoft Excel and SQL, and it was adopted by two other teams.
+- Planned the weekly management report in Microsoft Access, and the team used it every week.
+- Led a pricing study using SQL and SQL, and leadership asked for it every quarter.
+- Documented the budget model for the year using Microsoft Excel and SQL, and errors fell sharply.
+- Migrated the data quality rules in Microsoft Access, which cut the effort by half.
+- Tested an audit of delivery delays using SQL and SQL, saving about two days each month.
+- Simplified the forecasting process using Microsoft Excel and SQL, so managers could decide faster.
+- Reported on the sales target tracker in Microsoft Access, and the review took one hour instead of a day.
+- Built a supplier scorecard using SQL and SQL, and it was adopted by two other teams.
+- Designed a training programme for new analysts using Microsoft Excel and SQL, and the team used it every week.
+- Automated the month-end checks in Microsoft Access, and leadership asked for it every quarter.
+- Improved the monthly MIS pack using SQL and SQL, and errors fell sharply.
+- Reviewed the customer churn model using Microsoft Excel and SQL, which cut the effort by half.
+- Planned a routing cost model in Microsoft Access, saving about two days each month.
+- Led a stock and sales dashboard using SQL and SQL, so managers could decide faster.
+- Documented the return and refund analysis using Microsoft Excel and SQL, and the review took one hour instead of a day.
+- Migrated the weekly management report in Microsoft Access, and it was adopted by two other teams.
+- Tested a pricing study using SQL and SQL, and the team used it every week.
+- Tools: Microsoft Excel, Microsoft Access, SQL.
+
+Systems Executive
+Northgate Stores, Coimbatore
+Jan 2006 - Dec 2007
+- Designed the weekly management report in Linux, saving about two days each month.
+- Automated a pricing study using Microsoft Excel and Microsoft Excel, so managers could decide faster.
+- Improved the budget model for the year using Microsoft Access and Microsoft Excel, and the review took one hour instead of a day.
+- Reviewed the data quality rules in Linux, and it was adopted by two other teams.
+- Planned an audit of delivery delays using Microsoft Excel and Microsoft Excel, and the team used it every week.
+- Led the forecasting process using Microsoft Access and Microsoft Excel, and leadership asked for it every quarter.
+- Documented the sales target tracker in Linux, and errors fell sharply.
+- Migrated a supplier scorecard using Microsoft Excel and Microsoft Excel, which cut the effort by half.
+- Tested a training programme for new analysts using Microsoft Access and Microsoft Excel, saving about two days each month.
+- Simplified the month-end checks in Linux, so managers could decide faster.
+- Reported on the monthly MIS pack using Microsoft Excel and Microsoft Excel, and the review took one hour instead of a day.
+- Built the customer churn model using Microsoft Access and Microsoft Excel, and it was adopted by two other teams.
+- Designed a routing cost model in Linux, and the team used it every week.
+- Automated a stock and sales dashboard using Microsoft Excel and Microsoft Excel, and leadership asked for it every quarter.
+- Improved the return and refund analysis using Microsoft Access and Microsoft Excel, and errors fell sharply.
+- Reviewed the weekly management report in Linux, which cut the effort by half.
+- Planned a pricing study using Microsoft Excel and Microsoft Excel, saving about two days each month.
+- Led the budget model for the year using Microsoft Access and Microsoft Excel, so managers could decide faster.
+- Documented the data quality rules in Linux, and the review took one hour instead of a day.
+- Migrated an audit of delivery delays using Microsoft Excel and Microsoft Excel, and it was adopted by two other teams.
+- Tested the forecasting process using Microsoft Access and Microsoft Excel, and the team used it every week.
+- Simplified the sales target tracker in Linux, and leadership asked for it every quarter.
+- Reported on a supplier scorecard using Microsoft Excel and Microsoft Excel, and errors fell sharply.
+- Built a training programme for new analysts using Microsoft Access and Microsoft Excel, which cut the effort by half.
+- Tools: Microsoft Excel, Microsoft Access, Linux.
+
+Trainee Programmer
+Orchard Software Services, Madurai
+2004 – 2005
+- Led the month-end checks in Java, and leadership asked for it every quarter.
+- Documented the monthly MIS pack using C++ and C++, and errors fell sharply.
+- Migrated the customer churn model using MySQL and C++, which cut the effort by half.
+- Tested a routing cost model in Java, saving about two days each month.
+- Simplified a stock and sales dashboard using C++ and C++, so managers could decide faster.
+- Reported on the return and refund analysis using MySQL and C++, and the review took one hour instead of a day.
+- Built the weekly management report in Java, and it was adopted by two other teams.
+- Designed a pricing study using C++ and C++, and the team used it every week.
+- Automated the budget model for the year using MySQL and C++, and leadership asked for it every quarter.
+- Improved the data quality rules in Java, and errors fell sharply.
+- Reviewed an audit of delivery delays using C++ and C++, which cut the effort by half.
+- Planned the forecasting process using MySQL and C++, saving about two days each month.
+- Led the sales target tracker in Java, so managers could decide faster.
+- Documented a supplier scorecard using C++ and C++, and the review took one hour instead of a day.
+- Migrated a training programme for new analysts using MySQL and C++, and it was adopted by two other teams.
+- Tested the month-end checks in Java, and the team used it every week.
+- Simplified the monthly MIS pack using C++ and C++, and leadership asked for it every quarter.
+- Reported on the customer churn model using MySQL and C++, and errors fell sharply.
+- Built a routing cost model in Java, which cut the effort by half.
+- Designed a stock and sales dashboard using C++ and C++, saving about two days each month.
+- Automated the return and refund analysis using MySQL and C++, so managers could decide faster.
+- Improved the weekly management report in Java, and the review took one hour instead of a day.
+- Tools: Java, C++, MySQL.
+
+EDUCATION
+MBA, Analytics, Canary Institute of Technology, Chennai
+2002 - 2004
+B.Sc., Mathematics, Madurai Kamaraj University
+1999 - 2002
+
+PROJECTS
+Project 1: a supplier scorecard
+- Planned the scope with the business owner, built the first version in a week and iterated for 3 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 2: the return and refund analysis
+- Planned the scope with the business owner, built the first version in a week and iterated for 4 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 3: the sales target tracker
+- Planned the scope with the business owner, built the first version in a week and iterated for 5 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 4: a stock and sales dashboard
+- Planned the scope with the business owner, built the first version in a week and iterated for 6 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 5: the forecasting process
+- Planned the scope with the business owner, built the first version in a week and iterated for 7 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 6: a routing cost model
+- Planned the scope with the business owner, built the first version in a week and iterated for 8 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 7: an audit of delivery delays
+- Planned the scope with the business owner, built the first version in a week and iterated for 9 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 8: the customer churn model
+- Planned the scope with the business owner, built the first version in a week and iterated for 10 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 9: the data quality rules
+- Planned the scope with the business owner, built the first version in a week and iterated for 11 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 10: the monthly MIS pack
+- Planned the scope with the business owner, built the first version in a week and iterated for 12 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 11: the budget model for the year
+- Planned the scope with the business owner, built the first version in a week and iterated for 13 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 12: the month-end checks
+- Planned the scope with the business owner, built the first version in a week and iterated for 14 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 13: a pricing study
+- Planned the scope with the business owner, built the first version in a week and iterated for 15 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 14: a training programme for new analysts
+- Planned the scope with the business owner, built the first version in a week and iterated for 16 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 15: the weekly management report
+- Planned the scope with the business owner, built the first version in a week and iterated for 17 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 16: a supplier scorecard
+- Planned the scope with the business owner, built the first version in a week and iterated for 18 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 17: the return and refund analysis
+- Planned the scope with the business owner, built the first version in a week and iterated for 19 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 18: the sales target tracker
+- Planned the scope with the business owner, built the first version in a week and iterated for 20 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 19: a stock and sales dashboard
+- Planned the scope with the business owner, built the first version in a week and iterated for 21 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 20: the forecasting process
+- Planned the scope with the business owner, built the first version in a week and iterated for 22 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 21: a routing cost model
+- Planned the scope with the business owner, built the first version in a week and iterated for 23 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+Project 22: an audit of delivery delays
+- Planned the scope with the business owner, built the first version in a week and iterated for 24 weeks.
+- Wrote a one-page guide so that anyone on the team could run it. Presented the results to the leadership team.
+- Lessons: start small, ask what decision the number will change, and check the data with the people who made it.
+
+TALKS AND TRAINING
+- 2005 talk or course 1: practical reporting for non-technical teams; attended by 23 people.
+- 2006 talk or course 2: practical reporting for non-technical teams; attended by 26 people.
+- 2007 talk or course 3: practical reporting for non-technical teams; attended by 29 people.
+- 2008 talk or course 4: practical reporting for non-technical teams; attended by 32 people.
+- 2009 talk or course 5: practical reporting for non-technical teams; attended by 35 people.
+- 2010 talk or course 6: practical reporting for non-technical teams; attended by 38 people.
+- 2011 talk or course 7: practical reporting for non-technical teams; attended by 41 people.
+- 2012 talk or course 8: practical reporting for non-technical teams; attended by 44 people.
+- 2013 talk or course 9: practical reporting for non-technical teams; attended by 47 people.
+- 2014 talk or course 10: practical reporting for non-technical teams; attended by 50 people.
+- 2015 talk or course 11: practical reporting for non-technical teams; attended by 53 people.
+- 2016 talk or course 12: practical reporting for non-technical teams; attended by 56 people.
+- 2017 talk or course 13: practical reporting for non-technical teams; attended by 59 people.
+- 2018 talk or course 14: practical reporting for non-technical teams; attended by 62 people.
+- 2019 talk or course 15: practical reporting for non-technical teams; attended by 65 people.
+- 2020 talk or course 16: practical reporting for non-technical teams; attended by 68 people.
+- 2021 talk or course 17: practical reporting for non-technical teams; attended by 71 people.
+- 2022 talk or course 18: practical reporting for non-technical teams; attended by 74 people.
+- 2023 talk or course 19: practical reporting for non-technical teams; attended by 77 people.
+- 2024 talk or course 20: practical reporting for non-technical teams; attended by 80 people.
+- 2025 talk or course 21: practical reporting for non-technical teams; attended by 83 people.
+- 2026 talk or course 22: practical reporting for non-technical teams; attended by 86 people.
+- 2027 talk or course 23: practical reporting for non-technical teams; attended by 89 people.
+- 2028 talk or course 24: practical reporting for non-technical teams; attended by 92 people.
+
+SKILLS
+Python, SQL, Tableau, Power BI, PostgreSQL, MySQL, Docker, Git, Jira, Microsoft Excel, SAS, Minitab, Linux, Java, C++ , Microsoft Access, pandas, scikit-learn
+
+LANGUAGES
+English, Hindi, Tamil, Telugu

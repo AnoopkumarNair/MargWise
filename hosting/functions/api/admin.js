@@ -25,7 +25,7 @@ export async function onRequest({ request, env }) {
     const r = await readJson(request, 2000); if (r.err) return json({ error: r.err }, r.status); const b = r.b;
     if (m === 'POST') {
       const name = clean(b.name, 40), inv = Number(b.invite_id); if (!name || !Number.isInteger(inv)) return json({ error: 'Add the counsellor name and choose a school.' }, 400);
-      if (!(await env.DB.prepare('SELECT 1 AS x FROM invites WHERE id = ?').bind(inv).first())) return json({ error: 'Unknown school.' }, 400);
+      if (!(await env.DB.prepare("SELECT 1 AS x FROM invites WHERE id = ? AND (track IS NULL OR track = 'student')").bind(inv).first())) return json({ error: 'Unknown school.' }, 400);   // a counsellor works for a student invite, never an adult one
       const ab = new Uint8Array(15); crypto.getRandomValues(ab); const key = [0, 1, 2].map(g => [...ab.slice(g * 5, g * 5 + 5)].map(x => ALPHA[x % ALPHA.length]).join('')).join('-');
       const h = [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(key)))].map(x => x.toString(16).padStart(2, '0')).join('');
       await env.DB.prepare('INSERT INTO counsellors (name, invite_id, key_hash, active, created_at) VALUES (?, ?, ?, 1, ?)').bind(name, inv, h, now).run();
@@ -43,14 +43,14 @@ export async function onRequest({ request, env }) {
     return json({ error: 'Method not allowed.' }, 405);
   }
   if (q.get('itemstats') && m === 'GET') {   // pilot item analysis: how often each card is picked and whether screen position matters (a flat spread is expected)
-    const ev = (await env.DB.prepare("SELECT data FROM events WHERE type = 'place_done'").all()).results, pos = [0, 0, 0, 0], card = {}, shown = {}; let n = 0;
+    const ev = (await env.DB.prepare("SELECT data FROM events WHERE type = 'place_done' AND tester_id NOT IN (SELECT id FROM testers WHERE track = 'adult')").all()).results, pos = [0, 0, 0, 0], card = {}, shown = {}; let n = 0;
     for (const e of ev) { let d; try { d = JSON.parse(e.data); } catch { continue; } if (d.echo || !Array.isArray(d.order) || d.order.length !== 4) continue; n++;
       d.order.forEach((id, i) => { shown[id] = (shown[id] || 0) + 1; const sp = (d.spent || {})[id] || 0; pos[i] += sp; card[id] = (card[id] || 0) + sp; }); }
     const tot = pos.reduce((a, b) => a + b, 0);
     return json({ stops: n, oilByPosition: pos.map(v => tot ? +(v / tot).toFixed(3) : null), expectedPerPosition: .25, cards: Object.keys(shown).sort().map(id => ({ id, shown: shown[id], oilPerShowing: +(card[id] / shown[id]).toFixed(2) })) });
   }
   if (q.get('reviews') && m === 'GET') {
-    const rows = (await env.DB.prepare('SELECT r.code, t.name, i.label AS school, r.counsellor, r.baseline, r.blind, r.sure, r.sections, r.view_after, r.career_note, r.app_top, r.overlap, r.overlap6, r.missed, r.wrong, r.wrong_field, r.use_it, r.notes, r.baseline_at, r.reviewed_at FROM reviews r JOIN testers t ON t.id = r.tester_id LEFT JOIN invites i ON i.id = t.invite_id ORDER BY r.baseline_at DESC').all()).results;
+    const rows = (await env.DB.prepare('SELECT r.code, t.name, i.label AS school, r.counsellor, r.baseline, r.blind, r.sure, r.sections, r.view_after, r.career_note, r.app_top, r.overlap, r.overlap6, r.missed, r.wrong, r.wrong_field, r.use_it, r.notes, r.baseline_at, r.reviewed_at FROM reviews r JOIN testers t ON t.id = r.tester_id LEFT JOIN invites i ON i.id = t.invite_id WHERE (t.track IS NULL OR t.track = \'student\') ORDER BY r.baseline_at DESC').all()).results;
     if (q.get('reviews') === 'csv') return csvResp('counsellor-reviews.csv', [['student_code', 'student', 'school', 'counsellor', 'own_top3', 'blind', 'sure', 'career_in_mind', 'app_top6', 'top3_overlap', 'own_in_app_top6', 'app_missed', 'fact_wrong', 'fact_wrong_field', 'would_use', 'view_after_chat', 'section_feedback', 'notes', 'reviewed_at']].concat(rows.map(r => [r.code, r.name, r.school || 'master', r.counsellor, r.baseline, r.blind === 1 ? 'yes' : 'no', r.sure || '', r.career_note || '', r.app_top || '', r.overlap ?? '', r.overlap6 ?? '', r.missed || '', r.wrong || '', r.wrong_field || '', r.use_it || '', r.view_after || '', r.sections || '', r.notes || '', r.reviewed_at ? new Date(r.reviewed_at).toISOString() : ''])));
     const done = rows.filter(r => r.reviewed_at), n = done.length, sum = k => done.reduce((a, r) => a + (r[k] || 0), 0), missed = {};
     for (const r of done) { const top = JSON.parse(r.app_top || '[]').slice(0, 3); for (const p of JSON.parse(r.baseline)) if (!top.includes(p)) missed[p] = (missed[p] || 0) + 1; }
@@ -59,15 +59,17 @@ export async function onRequest({ request, env }) {
   if (q.get('audit') && m === 'GET') return json({ audit: (await env.DB.prepare('SELECT ts, action, detail FROM audit ORDER BY id DESC LIMIT 100').all()).results });
   // ---- invite codes
   if (q.get('invites')) {
-    if (m === 'GET') return json({ master: !!String(env.INVITE_CODE || '').trim(), invites: (await env.DB.prepare('SELECT id, code, label, max_uses, uses, expires_at, active, created_at FROM invites ORDER BY id DESC').all()).results });
+    if (m === 'GET') return json({ master: !!String(env.INVITE_CODE || '').trim(), invites: (await env.DB.prepare('SELECT id, code, label, max_uses, uses, expires_at, active, created_at, track FROM invites ORDER BY id DESC').all()).results.map(i => ({ ...i, track: i.track === 'adult' ? 'adult' : 'student' })) });   // the list shows which product each code is for (BACKEND ADR-15)
     const r = await readJson(request, 4000); if (r.err) return json({ error: r.err }, r.status); const b = r.b;
     if (m === 'POST') {
       const label = clean(b.label, 40); if (!label) return json({ error: 'Add a label, for example the school or group name.' }, 400);
+      if (b.track !== undefined && b.track !== 'student' && b.track !== 'adult') return json({ error: 'Choose student or adult.' }, 400);
+      const track = b.track === 'adult' ? 'adult' : null;   // NULL means student, like every row made before 0001_adult.sql
       let code = String(b.code || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 24) || genCode(); if (code.length < 4) return json({ error: 'A code needs at least 4 letters or digits.' }, 400);
       const mx = b.max_uses === '' || b.max_uses == null ? null : Number(b.max_uses), ex = b.expires_at ? Number(b.expires_at) : null;
       if (mx !== null && !(Number.isInteger(mx) && mx > 0 && mx < 100000)) return json({ error: 'Use limit must be a whole number above 0.' }, 400);
-      try { await env.DB.prepare('INSERT INTO invites (code, label, max_uses, uses, expires_at, active, created_at) VALUES (?, ?, ?, 0, ?, 1, ?)').bind(code, label, mx, Number.isFinite(ex) ? ex : null, now).run(); } catch { return json({ error: 'That code already exists. Try another.' }, 409); }
-      return json({ ok: true, code });
+      try { await env.DB.prepare('INSERT INTO invites (code, label, max_uses, uses, expires_at, active, created_at, track) VALUES (?, ?, ?, 0, ?, 1, ?, ?)').bind(code, label, mx, Number.isFinite(ex) ? ex : null, now, track).run(); } catch { return json({ error: 'That code already exists. Try another.' }, 409); }
+      return json({ ok: true, code, track: track || 'student' });
     }
     if (m === 'PATCH') {
       const id = Number(b.id); if (!Number.isInteger(id)) return json({ error: 'id required' }, 400);
@@ -137,7 +139,7 @@ export async function onRequest({ request, env }) {
   }
   // ---- testers
   if (q.get('newcode') && m === 'POST') {   // a tester lost their login code: only its hash is stored, so issue a new one (the old one stops working)
-    const id = clean(q.get('newcode'), 40), row = await env.DB.prepare("SELECT id FROM testers WHERE id = ? AND COALESCE(source, '') != 'counsellor'").bind(id).first();
+    const id = clean(q.get('newcode'), 40), row = await env.DB.prepare("SELECT id FROM testers WHERE id = ? AND COALESCE(source, '') != 'counsellor' AND (track IS NULL OR track = 'student')").bind(id).first();
     if (!row) return json({ error: 'No self sign-up tester with that id.' }, 404);
     const code = newRetCode();
     await env.DB.batch([env.DB.prepare('UPDATE testers SET ret_hash = ? WHERE id = ?').bind(await retHash(code, env.SIGN_KEY), id), env.DB.prepare('INSERT INTO audit (ts, action, detail) VALUES (?, ?, ?)').bind(now, 'login_code_reissued', JSON.stringify({ id }))]);
@@ -148,7 +150,7 @@ export async function onRequest({ request, env }) {
     const from = clean(r.b.from, 40), into = clean(r.b.into, 40);
     if (!from || !into || from === into) return json({ error: 'Choose two different testers.' }, 400);
     const cols = 'id, name, source, invite_id, ret_hash, counsellor_id, klass, consent_on, followup_ok';
-    const a = await env.DB.prepare('SELECT ' + cols + ' FROM testers WHERE id = ?').bind(from).first(), k = await env.DB.prepare('SELECT ' + cols + ' FROM testers WHERE id = ?').bind(into).first();
+    const a = await env.DB.prepare('SELECT ' + cols + " FROM testers WHERE id = ? AND (track IS NULL OR track = 'student')").bind(from).first(), k = await env.DB.prepare('SELECT ' + cols + " FROM testers WHERE id = ? AND (track IS NULL OR track = 'student')").bind(into).first();
     if (!a || !k) return json({ error: 'One of these testers no longer exists. Press Load again.' }, 404);
     if ((a.source || '') !== (k.source || '')) return json({ error: 'One was added by a counsellor and the other signed up alone, so they are not merged.' }, 409);
     if ((a.invite_id || null) !== (k.invite_id || null)) return json({ error: 'They joined with different invite codes, so they are not merged.' }, 409);
@@ -172,12 +174,13 @@ export async function onRequest({ request, env }) {
   }
   if (m === 'DELETE') {
     if (!t) return json({ error: 'tester required' }, 400);
+    const adult = await env.DB.prepare("SELECT 1 AS x FROM testers WHERE id = ? AND track = 'adult'").bind(t).first(); if (adult) return json({ error: 'No tester with that id.' }, 404);   // adults delete themselves (me/delete); this page is for students
     await env.DB.batch([env.DB.prepare('DELETE FROM events WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM reviews WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM followups WHERE tester_id = ?').bind(t), env.DB.prepare('DELETE FROM testers WHERE id = ?').bind(t)]);
     return json({ ok: true });
   }
-  if (t) { const r = await env.DB.prepare('SELECT ts, type, data, session_id FROM events WHERE tester_id = ? ORDER BY id').bind(t).all(); return json({ events: r.results }); }
-  const tes = (await env.DB.prepare('SELECT t.id, t.name, t.created_at, i.label AS source, t.invite_id, t.source AS kind FROM testers t LEFT JOIN invites i ON i.id = t.invite_id ORDER BY t.created_at DESC').all()).results;
-  const ev = (await env.DB.prepare("SELECT tester_id, type, data, ts FROM events WHERE type IN ('result','self','areas','feedback','walk_start','place_done','fields','apt','context') ORDER BY id").all()).results;
+  if (t) { const r = await env.DB.prepare("SELECT ts, type, data, session_id FROM events WHERE tester_id = ? AND tester_id NOT IN (SELECT id FROM testers WHERE track = 'adult') ORDER BY id").bind(t).all(); return json({ events: r.results }); }
+  const tes = (await env.DB.prepare('SELECT t.id, t.name, t.created_at, i.label AS source, t.invite_id, t.source AS kind FROM testers t LEFT JOIN invites i ON i.id = t.invite_id WHERE (t.track IS NULL OR t.track = \'student\') ORDER BY t.created_at DESC').all()).results;
+  const ev = (await env.DB.prepare("SELECT tester_id, type, data, ts FROM events WHERE type IN ('result','self','areas','feedback','walk_start','place_done','fields','apt','context') AND tester_id NOT IN (SELECT id FROM testers WHERE track = 'adult') ORDER BY id").all()).results;
   const by = {}; for (const e of ev) { (by[e.tester_id] ||= []).push(e); }
   const out = tes.map(x => {
     const es = by[x.id] || [], last = ty => { const f = es.filter(e => e.type === ty); return f.length ? safe(f[f.length - 1].data) : null; };

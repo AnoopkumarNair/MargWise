@@ -13,6 +13,8 @@ The old 2023 theoretical estimate (Eloundou et al.) is no longer shown on its ow
 Usage: python3 ai_exposure.py [--content content.json] [--cache ai] [--refresh]
 BLS blocks scripted downloads (HTTP 403). With --refresh we try, and otherwise fall back to the committed copy. To update by hand, download
 https://www.bls.gov/emp/ind-occ-matrix/ai-exposure-categories.xlsx into <cache>/bls_ai_exposure.xlsx and re-run; it is parsed into the CSV.
+aiMeta.retrieved is the date the sources were last read. It is kept in <cache>/retrieved.json and only moves with --refresh, so an offline
+rebuild gives the same bytes every day (CI fails if a rebuild changes committed data).
 """
 import argparse, csv, json, os, re, time, urllib.request, datetime
 ap = argparse.ArgumentParser(); ap.add_argument('--content', default='content.json'); ap.add_argument('--cache', default='ai'); ap.add_argument('--refresh', action='store_true')
@@ -87,7 +89,8 @@ for x in c['careers']:
 rp = os.path.join(a.cache, 'retrieved.json')
 prev = json.load(open(rp)).get('retrieved') if os.path.exists(rp) else None
 # The date moves only when every source was re-read: BLS often blocks scripts, and then the old date stays true.
-if (a.refresh and BLS_FRESH) or not prev: prev = datetime.date.today().isoformat(); json.dump({'retrieved': prev}, open(rp, 'w'))
+if a.refresh and BLS_FRESH: prev = datetime.date.today().isoformat(); json.dump({'retrieved': prev}, open(rp, 'w'))
+elif not prev: raise SystemExit('%s is missing: run with --refresh (network) to record when the AI sources were read' % rp)   # never invent a date offline
 elif a.refresh: print('NOTE: BLS was not re-read, so aiMeta.retrieved stays %s' % prev)
 c.pop('aiMeta', None)
 c['aiMeta'] = {'retrieved': prev,

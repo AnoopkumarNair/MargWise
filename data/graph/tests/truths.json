@@ -1,0 +1,33 @@
+{
+  "about": "Facts checked by hand against the O*NET 31.0 files, the Anthropic and BLS AI files and data/content.json. They catch silent parsing errors that structure checks miss. Only keep a fact that is true in the data and that the build could get wrong. If an O*NET update changes one, check the new O*NET value before editing the fact.",
+  "checked_against": "O*NET 31.0 (August 2026 release)",
+  "truths": [
+    {"id": "software-developers-label", "type": "label", "node": "occ:15-1252.00", "equals": "Software Developers"},
+    {"id": "software-developers-need-programming", "type": "need", "occ": "occ:15-1252.00", "skill": "skl:2.B.3.e", "min_w": 0.4, "max_w": 0.5, "as_of": "2025-08", "why": "Programming: IM 4.00, LV 4.12 gives 0.4414. O*NET flags the LV as low precision; the edge is kept"},
+    {"id": "software-developers-need-python", "type": "need", "occ": "occ:15-1252.00", "skill": "tec:python", "w": 0.8, "why": "Python is a Hot Technology for this occupation"},
+    {"id": "data-scientists-need-sql", "type": "need", "occ": "occ:15-2051.00", "skill": "tec:structured-query-language-sql", "w": 0.8},
+    {"id": "ceo-need-administration-weight-by-hand", "type": "need", "occ": "occ:11-1011.00", "skill": "skl:2.C.1.a", "w": 0.8775, "as_of": "2023-08", "why": "IM 4.78 and LV 6.50 in Knowledge.txt: (4.78-1)/4 * 6.5/7 = 0.8775, dated 08/2023"},
+    {"id": "nurses-need-caring", "type": "need", "occ": "occ:29-1141.00", "skill": "skl:4.A.4.a.5", "min_w": 0.7, "why": "Assisting and Caring for Others"},
+    {"id": "customer-service-need-customer-service-knowledge", "type": "need", "occ": "occ:43-4051.00", "skill": "skl:2.C.1.e", "min_w": 0.6, "as_of": "2022-08"},
+    {"id": "accountants-close-to-financial-analysts", "type": "edge", "src": "occ:13-2011.00", "dst": "occ:13-2051.00", "kind": "close_to", "weight": 0.7, "why": "O*NET 31.0 has one occupation, Accountants and Auditors, so auditors are the same node. Financial and Investment Analysts is a related occupation (long tier)"},
+    {"id": "accountants-close-to-financial-examiners", "type": "edge", "src": "occ:13-2011.00", "dst": "occ:13-2061.00", "kind": "close_to", "weight": 1.0},
+    {"id": "software-developers-close-to-testers", "type": "edge", "src": "occ:15-1252.00", "dst": "occ:15-1253.00", "kind": "close_to", "weight": 1.0},
+    {"id": "software-developers-close-to-programmers", "type": "edge", "src": "occ:15-1252.00", "dst": "occ:15-1251.00", "kind": "close_to", "weight": 1.0},
+    {"id": "reading-near-writing", "type": "edge", "src": "skl:2.A.1.a", "dst": "skl:2.A.1.c", "kind": "skill_near", "min_weight": 0.5},
+    {"id": "title-accountant", "type": "edge", "src": "ttl:accountant", "dst": "occ:13-2011.00", "kind": "is_title_of"},
+    {"id": "title-software-engineer", "type": "edge", "src": "ttl:software engineer", "dst": "occ:15-1252.00", "kind": "is_title_of"},
+    {"id": "title-nurse", "type": "edge", "src": "ttl:nurse", "dst": "occ:29-1141.00", "kind": "is_title_of"},
+    {"id": "physicians-job-zone-5", "type": "attr", "node": "occ:29-1215.00", "key": "job_zone", "equals": 5},
+    {"id": "cooks-job-zone-2", "type": "attr", "node": "occ:35-2014.00", "key": "job_zone", "equals": 2},
+    {"id": "financial-analysts-have-no-skill-ratings-in-31-0", "type": "attr", "node": "occ:13-2051.00", "key": "no_skill_ratings", "equals": true, "why": "Known O*NET 31.0 gap: tasks and software are listed but no skill, knowledge or activity ratings. Remove this fact when O*NET adds them"},
+    {"id": "data-entry-ai-tier", "type": "signal", "node": "occ:43-9021.00", "kind": "ai_tier", "equals": "veryhigh"},
+    {"id": "dentists-ai-obs", "type": "signal", "node": "occ:29-1021.00", "kind": "ai_obs", "equals": "0.031"},
+    {"id": "task-with-ai-use-is-used-mode", "type": "signal", "node": "tsk:20699", "kind": "ai_task_mode", "equals": "used", "why": "General and operations managers: 'Review financial statements...' has penetration 0.9284 in task_pen.csv. The data has no automation or augmentation split, so the mode is used (slice contract amendment A1), not automation or augmentation"},
+    {"id": "task-without-ai-use-is-none", "type": "signal", "node": "tsk:20701", "kind": "ai_task_mode", "equals": "none", "why": "'Prepare staff work schedules and assign specific duties.' has penetration 0.0"},
+    {"id": "health-occupations-have-tasks", "type": "every_in_cluster_has_edge", "cluster": "fld:health", "edge": "has_task"},
+    {"id": "all-student-careers-in-a-field", "type": "count_edges", "kind": "in_cluster", "equals": 83},
+    {"id": "sixteen-fields", "type": "count_nodes", "prefix": "fld:", "equals": 16},
+    {"id": "enough-occupations", "type": "count_nodes", "prefix": "occ:", "min": 900},
+    {"id": "student-ai-obs-matches-graph", "type": "ai_obs_matches_content"}
+  ]
+}

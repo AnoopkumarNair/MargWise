@@ -1,0 +1,17 @@
+{
+  "id": "two_col",
+  "shape": "Two-column PDF (left column read first, then right)",
+  "binary": "resume.pdf",
+  "looksLikeResume": true,
+  "roles": [
+    { "titleContains": "Digital Marketing Executive", "startYear": 2023, "endYear": 2026, "current": true },
+    { "titleContains": "Marketing Executive", "startYear": 2019, "endYear": 2023, "current": false },
+    { "titleContains": "Marketing Intern", "startYear": 2018, "endYear": 2019, "current": false }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": ["tec:google-analytics", "tec:hootsuite", "tec:mailchimp", "tec:wordpress", "tec:canva", "tec:adobe-photoshop", "tec:microsoft-excel"],
+  "mustNotFind": ["tec:r", "tec:go", "tec:linkedin"],
+  "mustFindYears": { "tec:mailchimp": 2026, "tec:adobe-photoshop": 2023, "tec:microsoft-excel": 2023 },
+  "outOfDictionary": ["Content planning", "Email campaigns"],
+  "notes": "Education years (MBA 2016-2018) are in the left column and must not become roles. Skills listed in the left column have no role, so their last year comes from the role text where they appear."
+}

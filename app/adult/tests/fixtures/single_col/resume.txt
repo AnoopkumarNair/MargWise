@@ -1,0 +1,72 @@
+RAVINDRAN CANARYPALLY
+Senior Data Analyst
+Bengaluru, Karnataka | canary.mail.7731@example.com | +91 98765 43210
+Aadhaar: 2345 6789 0123 | PAN: ABCDE1234F
+
+SUMMARY
+Data analyst with ten years of experience turning messy business data into decisions. I build dashboards, write SQL and Python, and explain the numbers to people who do not like numbers. I am the go-to person for reporting questions on my team.
+
+EXPERIENCE
+
+Senior Data Analyst
+Canaryworks Pvt Ltd, Bengaluru
+Mar 2021 - Present
+- Own the weekly sales and churn dashboards in Tableau and Microsoft Power BI, read by 60 managers.
+- Wrote Python (pandas, NumPy) jobs that replaced 14 hand-made Excel reports. Runs on a schedule and mails a summary.
+- Designed star-schema tables in PostgreSQL; cut the slowest report from 40 minutes to 3 minutes.
+- Mentored two junior analysts; ran a monthly SQL clinic.
+- Worked with the R&D team on a pricing test and reported the results to the leadership team.
+- Wrote the data dictionary for 120 tables and kept it current in Confluence, so new joiners could find things without asking.
+- Set up data quality checks that run every night and post failures to a Slack channel before the managers log in.
+- Presented the quarterly business review to the leadership team and answered questions on the method behind every number.
+- Reviewed the work of the finance analysts and agreed one definition of revenue across the sales and finance teams.
+- Tools: Git, Jira, Confluence, Slack.
+
+Data Analyst
+Brightloom Analytics, Pune
+Jun 2017 - Feb 2021
+- Built the first customer segmentation using SQL and Python; adopted by marketing in 2018.
+- Created Tableau dashboards for the retail clients and trained their staff to use them.
+- Cleaned and joined data from MySQL and Microsoft Excel files, about 2 million rows a month.
+- Reported to Dr. R. Menon, head of analytics.
+- Moved reports from Word and PowerPoint packs to self-service dashboards.
+- Ran a weekly review with the client leads to decide which reports to keep, change or retire; the list of reports fell by a third.
+- Documented every dashboard with its source tables, filters and owner, so that a change request took a day, not a week.
+- Handled a data migration for the largest client with no downtime and a full reconciliation of totals before and after.
+- Taught a two-day course on reading charts honestly to the account managers.
+
+Junior Analyst
+Kestrel Logistics, Mumbai
+Jul 2015 - May 2017
+- Tracked delivery delays in Excel and wrote macros (VBA) to flag late routes.
+- Prepared the monthly MIS pack for the operations head.
+- Learned SQL on the job and moved the team off shared spreadsheets.
+- Built a simple tracker for vehicle breakdowns that showed which routes lost the most hours each month.
+- Worked with the warehouse leads to count stock every Saturday and fix the differences before Monday.
+- Wrote short notes on how each report was made, so that anyone could repeat the steps.
+
+PROJECTS
+Churn early-warning model, 2022
+- Built a simple model from billing and support data that flags customers likely to leave within 60 days. Sales used the list every Monday and saved about one in five of them.
+Self-service pricing dashboard, 2020
+- Put price changes, discounts and win rates on one page for the retail clients, with a one-page guide for first-time users.
+Delivery delay tracker, 2016
+- A shared sheet and a short macro that showed late routes by hour of the day; the operations head used it in the daily call.
+
+ACHIEVEMENTS
+Analyst of the year at Brightloom Analytics, 2019. Best new idea award at Canaryworks Pvt Ltd, 2022. Speaker at a regional data meetup, 2023.
+
+EDUCATION
+B.Tech, Computer Science, Canary Institute of Technology, Chennai
+2011 - 2015
+
+SKILLS
+Python, SQL, Tableau, Power BI, Excel, PostgreSQL, MySQL, pandas, NumPy, Git, Jira, Confluence
+Statistics, dashboards, stakeholder reporting, mentoring
+
+CERTIFICATIONS
+Tableau Desktop Specialist, 2019
+Google Data Analytics Certificate, 2020
+
+LANGUAGES
+English, Hindi, Tamil, Kannada

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/email_start.response.schema.json",
+  "title": "email_start response",
+  "description": "Always the same answer, whether or not the address can sign in (ADR-04).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok", "message"],
+  "properties": {
+    "ok": {
+      "enum": [true]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    }
+  }
+}

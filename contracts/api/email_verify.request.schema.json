@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/email_verify.request.schema.json",
+  "title": "email_verify request",
+  "description": "POST /api/v1/email/verify (SPEC 9). Send either email and code, or link (the token from the emailed link). This subset of JSON Schema cannot say \"one of\", so the top level only lists the allowed fields. The handler checks the body in two steps: against this whole schema, then against exactly one form: #/$defs/by_link when the body has link, otherwise #/$defs/by_code. Each form requires its fields and allows no others, so a body with both forms, or with neither, fails.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [],
+  "properties": {
+    "email": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 254,
+      "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+    },
+    "code": {
+      "type": "string",
+      "pattern": "^[0-9]{6}$"
+    },
+    "link": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{32,128}$"
+    }
+  },
+  "$defs": {
+    "by_code": {
+      "description": "Email and the six-digit code.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["email", "code"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 254,
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[0-9]{6}$"
+        }
+      }
+    },
+    "by_link": {
+      "description": "The token from the emailed link.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["link"],
+      "properties": {
+        "link": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{32,128}$"
+        }
+      }
+    }
+  }
+}

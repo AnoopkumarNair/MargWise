@@ -1,0 +1,2000 @@
+{
+ "_doc": "Hand-built golden cases for the adult matcher (SPEC 7.5, TEST_PLAN layer 2). Each case names a fixture slice and the skill_near, credential (teaches) and credential catalogue data it uses (paths relative to matcher/tests/). expect holds the person level, then the roads in order with reach, coverage to 2 decimals, kind, target level (the typical entry level), experience fit, flags and bridges (credential ids; null when no catalogue is passed). The expectations are written by python3 matcher/reference.py --expect, and match.js is checked against them. Fixtures are made up for tests, not real data. A change to any expected output needs a MATCHER_VERSION bump (tests/version_guard.mjs).",
+ "matcher_version": "1.2.0",
+ "cases": [
+  {
+   "id": "acc-core",
+   "family": "Business and financial (13-)",
+   "summary": "Accountant, 5-8 years in BFSI, strong in accounting, Excel and Tally",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:13-2011.00",
+      "level": 3,
+      "industry": "bfsi",
+      "years": "5-8",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.c",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:excel",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.2.a",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:tally",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.e",
+      "strength": "used",
+      "last": 2025
+     },
+     {
+      "id": "skl:2.C.8.b",
+      "strength": "used",
+      "last": 2025
+     }
+    ],
+    "lead": {
+     "people": "1-5",
+     "budget": false,
+     "expert": true
+    },
+    "constraints": {
+     "city": "city:bom",
+     "open_to": [
+      "city:bom"
+     ],
+     "pay_floor_pct": 0,
+     "hours_month": "0-5"
+    }
+   },
+   "slice": "fixtures/slice_accountant.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "note": "Constraints are set (Mumbai only, no pay cut, under 5 study hours) but flags stay empty: the slices carry no city, pay or hours data yet.",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:13-2031.00",
+      "reach": "adjacent",
+      "coverage": 0.76,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-2041.00",
+      "reach": "adjacent",
+      "coverage": 0.73,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-3031.00",
+      "reach": "adjacent",
+      "coverage": 0.77,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-2051.00",
+      "reach": "stretch",
+      "coverage": 0.67,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:11-3031.01",
+      "reach": "leap",
+      "coverage": 0.24,
+      "kind": "fork",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "leap",
+      "coverage": 0.19,
+      "kind": "diagonal",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "acc-rusty",
+   "family": "Business and financial (13-)",
+   "summary": "Accountant, 8-12 years, leads 6-20; most skills last used 2018-2019 (rusty)",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:13-2011.00",
+      "level": 4,
+      "industry": "bfsi",
+      "years": "8-12",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.c",
+      "strength": "used",
+      "last": 2019
+     },
+     {
+      "id": "tec:excel",
+      "strength": "strong",
+      "last": 2018
+     },
+     {
+      "id": "tec:tally",
+      "strength": "rusty"
+     },
+     {
+      "id": "skl:2.A.2.a",
+      "strength": "used",
+      "last": 2025
+     },
+     {
+      "id": "skl:2.A.1.e",
+      "strength": "used",
+      "last": 2019
+     }
+    ],
+    "lead": {
+     "people": "6-20",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_accountant.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "note": "Used skills last used more than 3 years before 2026 count as rusty (0.4). Excel is strong, so it keeps 1.0.",
+   "expect": {
+    "person_level": 5,
+    "roads": [
+     {
+      "id": "occ:13-2031.00",
+      "reach": "stretch",
+      "coverage": 0.49,
+      "kind": "reset",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-2041.00",
+      "reach": "stretch",
+      "coverage": 0.49,
+      "kind": "reset",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-2051.00",
+      "reach": "stretch",
+      "coverage": 0.49,
+      "kind": "reset",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-3031.00",
+      "reach": "stretch",
+      "coverage": 0.47,
+      "kind": "reset",
+      "target": 2,
+      "fit": "above",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "leap",
+      "coverage": 0.16,
+      "kind": "across",
+      "target": 4,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:11-3031.01",
+      "reach": "leap",
+      "coverage": 0.1,
+      "kind": "fork",
+      "target": 4,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "swdev-data",
+   "family": "Computer and mathematical (15-)",
+   "summary": "Software developer, 2-5 years in IT, Java and Python",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:15-1252.00",
+      "level": 2,
+      "industry": "it",
+      "years": "2-5",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.B.3.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:java",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:sql",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:git",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:python",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.3.a",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.2.i",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_software_developer.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "expect": {
+    "person_level": 2,
+    "roads": [
+     {
+      "id": "occ:15-1242.00",
+      "reach": "adjacent",
+      "coverage": 0.72,
+      "kind": "up",
+      "target": 3,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "stretch",
+      "coverage": 0.61,
+      "kind": "diagonal",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-1211.00",
+      "reach": "stretch",
+      "coverage": 0.52,
+      "kind": "up",
+      "target": 3,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:11-3021.00",
+      "reach": "leap",
+      "coverage": 0.2,
+      "kind": "fork",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-1253.00",
+      "reach": "leap",
+      "coverage": 0.38,
+      "kind": "up",
+      "target": 3,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:ai-llm-evaluator",
+      "reach": "leap",
+      "coverage": 0.15,
+      "kind": null,
+      "target": null,
+      "fit": null,
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "swdev-qa-near",
+   "family": "Computer and mathematical (15-)",
+   "summary": "Tester on a developer slice: strong quality control and Selenium, no LLM evaluation",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:15-1252.00",
+      "level": 3,
+      "industry": "it",
+      "years": "5-8",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.B.3.m",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:selenium",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:jira",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.3.e",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.2.a",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_software_developer.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "note": "near() matters: LLM evaluation is credited 0.5 x 0.92 x 1.0 = 0.46 through quality control analysis (its closest neighbour, at 0.92, over the 0.90 floor), which lifts the LLM Evaluation Specialist road from a leap (0.37) to a stretch (0.49). The Selenium pair (0.6) no longer counts.",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:15-1253.00",
+      "reach": "adjacent",
+      "coverage": 0.76,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:ai-llm-evaluator",
+      "reach": "stretch",
+      "coverage": 0.49,
+      "kind": null,
+      "target": null,
+      "fit": null,
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "leap",
+      "coverage": 0.27,
+      "kind": "diagonal",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-1211.00",
+      "reach": "leap",
+      "coverage": 0.27,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:11-3021.00",
+      "reach": "leap",
+      "coverage": 0.0,
+      "kind": "fork",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-1242.00",
+      "reach": "leap",
+      "coverage": 0.13,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "csr-voice",
+   "family": "Office and administrative support (43-)",
+   "summary": "Customer service, voice process, 2-5 years in BPM",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:43-4051.00",
+      "level": 2,
+      "industry": "bpm",
+      "years": "2-5",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.f",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.b",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:zendesk",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:salesforce",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.b",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:excel",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_customer_service.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "expect": {
+    "person_level": 2,
+    "roads": [
+     {
+      "id": "occ:41-3091.00",
+      "reach": "stretch",
+      "coverage": 0.58,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-9061.00",
+      "reach": "adjacent",
+      "coverage": 0.7,
+      "kind": "across",
+      "target": 1,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-1011.00",
+      "reach": "leap",
+      "coverage": 0.34,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-1232.00",
+      "reach": "leap",
+      "coverage": 0.39,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-1151.00",
+      "reach": "leap",
+      "coverage": 0.21,
+      "kind": "diagonal",
+      "target": 3,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "csr-creds",
+   "family": "Office and administrative support (43-)",
+   "summary": "Customer service, 5-8 years, ITIL 4 (valid) and COPC (expired 2023)",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:43-4051.00",
+      "level": 3,
+      "industry": "bpm",
+      "years": "5-8",
+      "current": true
+     },
+     {
+      "occ": "occ:41-3091.00",
+      "level": 1,
+      "industry": "bpm",
+      "years": "0-2",
+      "current": false
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.f",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.b",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:zendesk",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.b",
+      "strength": "strong",
+      "last": 2026
+     }
+    ],
+    "creds": [
+     {
+      "id": "cred:itil4",
+      "year": 2025,
+      "expires": 2028
+     },
+     {
+      "id": "cred:copc",
+      "year": 2020,
+      "expires": 2023
+     }
+    ],
+    "lead": {
+     "people": "1-5",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_customer_service.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json",
+    "teaches": "fixtures/teaches.json"
+   },
+   "note": "ITIL 4 credits ServiceNow, computers and problem solving at the used level, 0.85. COPC has expired, so monitoring and managing people count 0.4. Coordination is rated strong by the person, and their own rating wins over the expired credential.",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:15-1232.00",
+      "reach": "adjacent",
+      "coverage": 0.88,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-1011.00",
+      "reach": "stretch",
+      "coverage": 0.59,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:41-3091.00",
+      "reach": "stretch",
+      "coverage": 0.42,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-1151.00",
+      "reach": "leap",
+      "coverage": 0.21,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-9061.00",
+      "reach": "leap",
+      "coverage": 0.21,
+      "kind": "reset",
+      "target": 1,
+      "fit": "above",
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "nurse-core",
+   "family": "Healthcare practitioners (29-)",
+   "summary": "Registered nurse, 8-12 years",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:29-1141.00",
+      "level": 4,
+      "industry": "other",
+      "years": "8-12",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.5.a",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.a",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.2.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.b",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.4.e",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:epic-ehr",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": false
+    }
+   },
+   "slice": "fixtures/slice_registered_nurse.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "expect": {
+    "person_level": 4,
+    "roads": [
+     {
+      "id": "occ:29-1171.00",
+      "reach": "adjacent",
+      "coverage": 0.76,
+      "kind": "fork",
+      "target": 4,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:25-1072.00",
+      "reach": "stretch",
+      "coverage": 0.4,
+      "kind": "across",
+      "target": 4,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:21-1091.00",
+      "reach": "leap",
+      "coverage": 0.33,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:29-9021.00",
+      "reach": "stretch",
+      "coverage": 0.43,
+      "kind": "reset",
+      "target": 2,
+      "fit": "above",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:11-9111.00",
+      "reach": "leap",
+      "coverage": 0.18,
+      "kind": "fork",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "nurse-lead-short",
+   "family": "Healthcare practitioners (29-)",
+   "summary": "Senior nurse, 14+ years, leads 6-20; cares only about a short move",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:29-1141.00",
+      "level": 5,
+      "industry": "other",
+      "years": "12-18",
+      "current": true
+     },
+     {
+      "occ": "occ:29-1141.00",
+      "level": 2,
+      "industry": "other",
+      "years": "2-5",
+      "current": false
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.5.a",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.6",
+      "strength": "used",
+      "last": 2020
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.a",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.5.d",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.a",
+      "strength": "strong",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "6-20",
+     "budget": true,
+     "expert": false
+    },
+    "priorities": {
+     "pay": 0,
+     "ai_safe": 0,
+     "short_move": 5,
+     "demand": 0,
+     "enjoy": 3
+    }
+   },
+   "slice": "fixtures/slice_registered_nurse.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json"
+   },
+   "note": "Only the short-move slider is set, so roads are in coverage order. The enjoy slider is ignored because the interest walk was not taken. Level: 14 years gives 5, leading people adds 1.",
+   "expect": {
+    "person_level": 6,
+    "roads": [
+     {
+      "id": "occ:25-1072.00",
+      "reach": "adjacent",
+      "coverage": 0.88,
+      "kind": "across",
+      "target": 4,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:21-1091.00",
+      "reach": "adjacent",
+      "coverage": 0.85,
+      "kind": "across",
+      "target": 3,
+      "fit": "above",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:11-9111.00",
+      "reach": "stretch",
+      "coverage": 0.59,
+      "kind": "fork",
+      "target": 3,
+      "fit": "above",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:29-1171.00",
+      "reach": "stretch",
+      "coverage": 0.44,
+      "kind": "reset",
+      "target": 4,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:29-9021.00",
+      "reach": "leap",
+      "coverage": 0.2,
+      "kind": "reset",
+      "target": 2,
+      "fit": "above",
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "csr-real-near",
+   "family": "Office and administrative support (43-), real-shape slice",
+   "summary": "Customer service representative, 2-5 years in BPM, 12 skills ticked from the real O*NET 31.0 slice; skill_near comes from the slice itself (amendment A1), not from opts. Matcher 1.1.0 on the re-exported slice (tool weights capped, only near pairs that can count): Credit Authorizers is a stretch at 0.41, the rest are leaps",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:43-4051.00",
+      "level": 2,
+      "industry": "bpm",
+      "years": "2-5",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.b",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.f",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.7.a",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.4.a.8",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.4.a.3",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.3.b.1",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-excel",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-outlook",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.2.a.2",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.1.a.1",
+      "strength": "used",
+      "last": 2026
+     }
+    ]
+   },
+   "slice": "fixtures/slice_csr_real.json",
+   "opts": {
+    "now": 2026
+   },
+   "expect": {
+    "person_level": 2,
+    "roads": [
+     {
+      "id": "occ:43-4041.00",
+      "reach": "stretch",
+      "coverage": 0.41,
+      "kind": "across",
+      "target": 1,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-4081.00",
+      "reach": "leap",
+      "coverage": 0.39,
+      "kind": "across",
+      "target": 1,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:41-9041.00",
+      "reach": "leap",
+      "coverage": 0.35,
+      "kind": "across",
+      "target": 1,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-1011.00",
+      "reach": "leap",
+      "coverage": 0.33,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:41-3091.00",
+      "reach": "leap",
+      "coverage": 0.34,
+      "kind": "across",
+      "target": 1,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "near-rank",
+   "family": "Computer and mathematical (15-)",
+   "summary": "Software developer, 2-5 years, strong in programming, SQL and complex problem solving, uses Java and Git; near data built to test the near rule",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:15-1252.00",
+      "level": 2,
+      "industry": "it",
+      "years": "2-5",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.B.3.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:java",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:sql",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.2.i",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:git",
+      "strength": "used",
+      "last": 2026
+     }
+    ]
+   },
+   "slice": "fixtures/slice_software_developer.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near_rank.json"
+   },
+   "note": "Owner decision O2 (matcher 1.1.0). Systems analysis is credited from Java (third closest, 0.95), not from SQL (fourth, 0.94), though SQL is rated strong. Computers and electronics gets nothing from complex problem solving (0.89, under 0.90). Quality control is credited from programming at exactly 0.90.",
+   "expect": {
+    "person_level": 2,
+    "roads": [
+     {
+      "id": "occ:15-1242.00",
+      "reach": "stretch",
+      "coverage": 0.59,
+      "kind": "up",
+      "target": 3,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "stretch",
+      "coverage": 0.49,
+      "kind": "diagonal",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-1211.00",
+      "reach": "stretch",
+      "coverage": 0.43,
+      "kind": "up",
+      "target": 3,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:15-1253.00",
+      "reach": "leap",
+      "coverage": 0.3,
+      "kind": "up",
+      "target": 3,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:11-3021.00",
+      "reach": "leap",
+      "coverage": 0.0,
+      "kind": "fork",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:ai-llm-evaluator",
+      "reach": "leap",
+      "coverage": 0.1,
+      "kind": null,
+      "target": null,
+      "fit": null,
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "acc-real-tools",
+   "family": "Business and financial (13-), real-shape slice",
+   "summary": "Accountant, 5-8 years, ticks all 10 tools of the real slice and 5 core skills; near pairs from the slice itself",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:13-2011.00",
+      "level": 3,
+      "industry": "bfsi",
+      "years": "5-8",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "tec:fund-accounting-software",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:intuit-quickbooks",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:intuit-turbotax",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:lexisnexis",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-excel",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-office-software",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-outlook",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:microsoft-powerpoint",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:sap-software",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:tax-software",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.c",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.1.a.1",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.2.a.4",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:4.A.2.a.2",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.4.a",
+      "strength": "used",
+      "last": 2026
+     }
+    ]
+   },
+   "slice": "fixtures/slice_acc_real.json",
+   "opts": {
+    "now": 2026
+   },
+   "note": "Owner decision O3: the slice was exported with each tool weight capped at the median weight of the other needs in its list, so ticking every tool lifts coverage less than it would with the graph weights (0.8 and 0.6). See GOLDEN_TABLE.md.",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:13-2031.00",
+      "reach": "leap",
+      "coverage": 0.35,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-2082.00",
+      "reach": "leap",
+      "coverage": 0.31,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-3031.00",
+      "reach": "leap",
+      "coverage": 0.3,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-2061.00",
+      "reach": "leap",
+      "coverage": 0.29,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     },
+     {
+      "id": "occ:11-3031.01",
+      "reach": "leap",
+      "coverage": 0.3,
+      "kind": "fork",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "qa-llm-adjacent",
+   "family": "Computer and mathematical (15-)",
+   "summary": "QA analyst, 5-8 years in IT, has done some LLM evaluation work; a reviewed credential catalogue is passed for bridges",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:15-1253.00",
+      "level": 3,
+      "industry": "it",
+      "years": "5-8",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.B.3.m",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:selenium",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.2.a",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:jira",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.3.e",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:ai-llm-evaluation",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.c",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:python",
+      "strength": "rusty",
+      "last": 2021
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": true
+    },
+    "constraints": {
+     "hours_month": "5-10"
+    }
+   },
+   "slice": "fixtures/slice_qa_analyst.json",
+   "opts": {
+    "now": 2026,
+    "credentials": "fixtures/credentials.json"
+   },
+   "note": "A road into a new AI-era role (TEST_PLAN layer 2): LLM Evaluation Specialist is a close move. Its level comes from the role's own typical_level (2 to 4), not a job zone, so it is a sideways move for a level-3 person. Quality Control Systems Managers is a management fork; Research Scientists is a step up in the same minor group (15-12); Data Scientists a diagonal step (15-20). Bridges come from the made-up catalogue.",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:ai-llm-evaluator",
+      "reach": "adjacent",
+      "coverage": 0.83,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": [
+       "cred:demo-python"
+      ]
+     },
+     {
+      "id": "occ:15-1221.00",
+      "reach": "stretch",
+      "coverage": 0.63,
+      "kind": "up",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": [
+       "cred:demo-python"
+      ]
+     },
+     {
+      "id": "occ:15-2051.00",
+      "reach": "stretch",
+      "coverage": 0.43,
+      "kind": "diagonal",
+      "target": 4,
+      "fit": "below",
+      "flags": [],
+      "bridges": [
+       "cred:demo-python"
+      ]
+     },
+     {
+      "id": "occ:11-3051.01",
+      "reach": "leap",
+      "coverage": 0.25,
+      "kind": "fork",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": [
+       "cred:demo-people-lead"
+      ]
+     },
+     {
+      "id": "occ:15-1252.00",
+      "reach": "leap",
+      "coverage": 0.23,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [],
+      "bridges": [
+       "cred:demo-python"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "bpm-lead-reset",
+   "family": "Office and administrative support (43-)",
+   "summary": "BPM team lead, 14 years (12-18 as lead, 2-5 in customer service), leads 21+; COPC expired in 2022; under 5 study hours a month",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:43-1011.00",
+      "level": 5,
+      "industry": "bpm",
+      "years": "12-18",
+      "current": true
+     },
+     {
+      "occ": "occ:43-4051.00",
+      "level": 2,
+      "industry": "bpm",
+      "years": "2-5",
+      "current": false
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.B.5.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.b",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.b",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:excel",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.f",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.b",
+      "strength": "strong",
+      "last": 2026
+     }
+    ],
+    "creds": [
+     {
+      "id": "cred:copc",
+      "year": 2019,
+      "expires": 2022
+     }
+    ],
+    "lead": {
+     "people": "21+",
+     "budget": false,
+     "expert": false
+    },
+    "constraints": {
+     "hours_month": "0-5"
+    }
+   },
+   "slice": "fixtures/slice_bpm_lead.json",
+   "opts": {
+    "now": 2026,
+    "credentials": "fixtures/credentials.json"
+   },
+   "note": "A reset into a new AI-era role (TEST_PLAN layer 2): AI Trainer starts at level 1, five below this level-6 person, and they cover under half of it. The expired COPC credits monitoring at 0.4 only, so it comes back as a bridge marked renew. The two bridges need 120 hours, more than 12 months at 5 hours a month: outside_time. Customer Service is a step down with high coverage: no rule in SPEC 7.2 fits, so it is \"across\" (an open question for the owner).",
+   "expect": {
+    "person_level": 6,
+    "roads": [
+     {
+      "id": "occ:43-4051.00",
+      "reach": "adjacent",
+      "coverage": 0.83,
+      "kind": "across",
+      "target": 1,
+      "fit": "above",
+      "flags": [],
+      "bridges": [
+       "cred:demo-sales"
+      ]
+     },
+     {
+      "id": "occ:11-3012.00",
+      "reach": "stretch",
+      "coverage": 0.58,
+      "kind": "fork",
+      "target": 2,
+      "fit": "above",
+      "flags": [
+       "outside_time"
+      ],
+      "bridges": [
+       "cred:demo-people-lead"
+      ]
+     },
+     {
+      "id": "occ:15-1232.00",
+      "reach": "leap",
+      "coverage": 0.37,
+      "kind": "reset",
+      "target": 2,
+      "fit": "above",
+      "flags": [],
+      "bridges": [
+       "cred:demo-servicenow"
+      ]
+     },
+     {
+      "id": "occ:13-1151.00",
+      "reach": "leap",
+      "coverage": 0.21,
+      "kind": "reset",
+      "target": 3,
+      "fit": "above",
+      "flags": [
+       "outside_time"
+      ],
+      "bridges": [
+       "cred:demo-training",
+       "cred:demo-llm-eval"
+      ]
+     },
+     {
+      "id": "occ:ai-data-trainer",
+      "reach": "leap",
+      "coverage": 0.2,
+      "kind": "reset",
+      "target": 1,
+      "fit": "above",
+      "flags": [
+       "outside_time"
+      ],
+      "bridges": [
+       "cred:demo-data-labeling",
+       "cred:copc",
+       "cred:demo-llm-eval"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "bfsi-pay-floor",
+   "family": "Sales and related (41-)",
+   "summary": "Financial services sales agent, 5-8 years in BFSI, in Pune and only open to Pune, no pay cut accepted",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:41-3031.00",
+      "level": 3,
+      "industry": "bfsi",
+      "years": "5-8",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.B.1.c",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.c",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:salesforce",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.C.8.b",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:excel",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "lead": {
+     "people": "1-5",
+     "budget": false,
+     "expert": false
+    },
+    "constraints": {
+     "city": "city:pnq",
+     "open_to": [
+      "city:pnq"
+     ],
+     "pay_floor_pct": 0,
+     "hours_month": "10-20"
+    }
+   },
+   "slice": "fixtures/slice_bfsi_sales.json",
+   "opts": {
+    "now": 2026
+   },
+   "note": "Every road pays less than today (made-up pay_band_in numbers on the slice), so every road carries below_pay_floor and none is hidden. Pay is measured here, so it changes the order. Personal Financial Advisors openings are mostly in Mumbai, Delhi NCR and Bengaluru (made-up, provisional city_share encoding): needs_relocation. Insurance Sales has 45 percent in Pune plus 10 percent remote: no flag.",
+   "expect": {
+    "person_level": 3,
+    "roads": [
+     {
+      "id": "occ:41-3021.00",
+      "reach": "adjacent",
+      "coverage": 0.93,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [
+       "below_pay_floor"
+      ],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-2052.00",
+      "reach": "adjacent",
+      "coverage": 0.8,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [
+       "below_pay_floor",
+       "needs_relocation"
+      ],
+      "bridges": null
+     },
+     {
+      "id": "occ:13-2072.00",
+      "reach": "adjacent",
+      "coverage": 0.74,
+      "kind": "across",
+      "target": 3,
+      "fit": "in",
+      "flags": [
+       "below_pay_floor"
+      ],
+      "bridges": null
+     },
+     {
+      "id": "occ:41-3091.00",
+      "reach": "adjacent",
+      "coverage": 0.79,
+      "kind": "across",
+      "target": 1,
+      "fit": "above",
+      "flags": [
+       "below_pay_floor"
+      ],
+      "bridges": null
+     },
+     {
+      "id": "occ:43-4011.00",
+      "reach": "stretch",
+      "coverage": 0.66,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [
+       "below_pay_floor"
+      ],
+      "bridges": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "csr-cert-bridge",
+   "family": "Office and administrative support (43-)",
+   "summary": "Customer service, 2-5 years in BPM, holds a valid ServiceNow course certificate; under 5 study hours a month",
+   "profile": {
+    "v": 1,
+    "roles": [
+     {
+      "occ": "occ:43-4051.00",
+      "level": 2,
+      "industry": "bpm",
+      "years": "2-5",
+      "current": true
+     }
+    ],
+    "skills": [
+     {
+      "id": "skl:2.C.1.e",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.1.f",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.b",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.A.1.d",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "tec:zendesk",
+      "strength": "strong",
+      "last": 2026
+     },
+     {
+      "id": "tec:salesforce",
+      "strength": "used",
+      "last": 2026
+     },
+     {
+      "id": "skl:2.B.2.i",
+      "strength": "used",
+      "last": 2026
+     }
+    ],
+    "creds": [
+     {
+      "id": "cred:demo-servicenow",
+      "year": 2025,
+      "expires": 2027
+     }
+    ],
+    "lead": {
+     "people": "0",
+     "budget": false,
+     "expert": false
+    },
+    "constraints": {
+     "hours_month": "0-5"
+    }
+   },
+   "slice": "fixtures/slice_customer_service.json",
+   "opts": {
+    "now": 2026,
+    "near": "fixtures/near.json",
+    "credentials": "fixtures/credentials.json"
+   },
+   "note": "A certification closes a gap (BUILD_PLAN T1.8): the valid ServiceNow certificate credits ServiceNow and computers at 0.85, which makes Computer User Support a close move. It is never offered as a bridge, because the person holds it. Bridges for the other roads come from the made-up catalogue; Training and Development needs 150 hours, more than 12 months at 5 hours a month: outside_time.",
+   "expect": {
+    "person_level": 2,
+    "roads": [
+     {
+      "id": "occ:15-1232.00",
+      "reach": "adjacent",
+      "coverage": 0.91,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": []
+     },
+     {
+      "id": "occ:41-3091.00",
+      "reach": "stretch",
+      "coverage": 0.55,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [],
+      "bridges": [
+       "cred:demo-sales"
+      ]
+     },
+     {
+      "id": "occ:43-1011.00",
+      "reach": "leap",
+      "coverage": 0.21,
+      "kind": "across",
+      "target": 2,
+      "fit": "in",
+      "flags": [
+       "outside_time"
+      ],
+      "bridges": [
+       "cred:copc"
+      ]
+     },
+     {
+      "id": "occ:13-1151.00",
+      "reach": "leap",
+      "coverage": 0.18,
+      "kind": "diagonal",
+      "target": 3,
+      "fit": "below",
+      "flags": [
+       "outside_time"
+      ],
+      "bridges": [
+       "cred:demo-training",
+       "cred:demo-llm-eval"
+      ]
+     },
+     {
+      "id": "occ:43-9061.00",
+      "reach": "leap",
+      "coverage": 0.21,
+      "kind": "across",
+      "target": 1,
+      "fit": "in",
+      "flags": [],
+      "bridges": []
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/event/roads_viewed.request.schema.json",
+  "title": "event roads_viewed request",
+  "description": "POST /api/v1/event with type \"roads_viewed\" (SPEC 9, ADR-08, deviations D6). Strict: type must be \"roads_viewed\" and data allows only the roads_viewed fields, so a body that mixes fields of two types fails. The handler picks this schema by the body's type with schemaForType(type) from contracts/event_schemas.js; an unknown type is bad_request. Generated from events.schema.json by contracts/sync.mjs: do not edit by hand.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "eid", "data"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["roads_viewed"]
+    },
+    "eid": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{8,40}$"
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "roads", "job_release", "matcher_version"],
+      "properties": {
+        "from": {
+          "type": "string",
+          "maxLength": 80,
+          "pattern": "^occ:([0-9]{2}-[0-9]{4}\\.[0-9]{2}|(ai|in)-[a-z0-9]+(-[a-z0-9]+)*)$"
+        },
+        "roads": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "maxLength": 80,
+            "pattern": "^occ:([0-9]{2}-[0-9]{4}\\.[0-9]{2}|(ai|in)-[a-z0-9]+(-[a-z0-9]+)*)$"
+          }
+        },
+        "n_leaps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "leaps_shown": {
+          "type": "boolean"
+        },
+        "job_release": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        },
+        "matcher_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    }
+  }
+}

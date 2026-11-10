@@ -1,0 +1,192 @@
+// Consistency between the contract files themselves. Run: node --test contracts/tests/
+import test from 'node:test'; import assert from 'node:assert/strict';
+import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
+import { checkSchema } from '../validate_lib.js';
+import { plan } from '../sync.mjs';
+import { PROFILE_V } from '../profile_migrations.js';
+import { validate } from '../validate_lib.js';
+import { EVENT_TYPES, schemaForType, checkEvent } from '../event_schemas.js';
+
+const DIR = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const read = f => JSON.parse(fs.readFileSync(path.join(DIR, f), 'utf8'));
+const B = read('bands.json'), V = read('versions.json');
+const SCHEMAS = fs.readdirSync(DIR, { recursive: true }).map(f => f.split(path.sep).join('/')).filter(f => f.endsWith('.schema.json') && !f.startsWith('examples/')).sort();
+const profile = read('profile.schema.json'), slice = read('slice.schema.json'), events = read('events.schema.json');
+
+// Every object-shaped schema inside a schema, with its path.
+function* walk(s, at = '#') {
+  if (!s || typeof s !== 'object') return;
+  yield [at, s];
+  for (const [k, v] of Object.entries(s.properties || {})) yield* walk(v, `${at}/properties/${k}`);
+  if (s.items) yield* walk(s.items, `${at}/items`);
+  for (const [k, v] of Object.entries(s.$defs || {})) yield* walk(v, `${at}/$defs/${k}`);
+}
+
+test('every schema is inside the validator subset and has a title, $id and description', () => {
+  assert.ok(SCHEMAS.length >= 28, `found ${SCHEMAS.length} schemas`);
+  for (const f of SCHEMAS) {
+    const s = read(f); checkSchema(s);
+    assert.equal(s.$id, 'contracts/' + f, f); assert.ok(s.title && s.description, f);
+  }
+});
+test('every object schema closes its properties (additionalProperties: false)', () => {
+  for (const f of SCHEMAS) for (const [at, s] of walk(read(f)))
+    if (s.type === 'object' || s.properties) assert.equal(s.additionalProperties, false, `${f} ${at}`);
+});
+test('versions.json has the four versions with the right shapes', () => {
+  assert.match(V.MATCHER_VERSION, /^\d+\.\d+\.\d+$/);
+  for (const k of ['PROFILE_V', 'SLICE_V', 'API_V']) assert.ok(Number.isInteger(V[k]) && V[k] >= 1, k);
+  assert.deepEqual(Object.keys(V).filter(k => k !== '_doc').sort(), ['API_V', 'MATCHER_VERSION', 'PROFILE_V', 'SLICE_V']);
+});
+test('schema versions match versions.json', () => {
+  assert.deepEqual(profile.properties.v.enum, [V.PROFILE_V]);
+  assert.equal(PROFILE_V, V.PROFILE_V, 'profile_migrations.js PROFILE_V');
+  assert.deepEqual(slice.properties.slice_v.enum, [V.SLICE_V]);
+});
+test('bands.json: every list is documented, non-empty and has no repeats', () => {
+  assert.ok(B._doc);
+  for (const [k, b] of Object.entries(B)) {
+    if (k === '_doc') continue;
+    assert.ok(b._doc && Array.isArray(b.values) && b.values.length, k);
+    assert.equal(new Set(b.values).size, b.values.length, `${k} repeats a value`);
+  }
+  for (const c of B.city_cluster.values) assert.ok(B.open_to.values.includes(c), `open_to lacks city ${c}`);
+});
+test('schema enums are exactly the bands.json lists', () => {
+  const p = profile.properties, role = p.roles.items.properties, c = p.constraints.properties, d = slice.$defs, ev = events.$defs;
+  const pairs = [
+    [role.level.enum, 'level'], [role.industry.enum, 'industry'], [role.years.enum, 'years'],
+    [p.skills.items.properties.strength.enum, 'strength'], [p.lead.properties.people.enum, 'lead_people'],
+    [c.hours_month.enum, 'hours_month'], [c.course_budget.enum, 'course_budget'], [c.city.enum, 'city_cluster'],
+    [c.open_to.items.enum, 'open_to'], [c.pay_floor_pct.enum, 'pay_floor_pct'], [c.mode.enum, 'mode'],
+    [Object.keys(p.priorities.properties), 'priority_keys'], [p.priorities.required, 'priority_keys'],
+    [d.need.properties.kind.enum, 'need_kind'], [d.need.properties.ai.enum, 'skill_ai_label'],
+    [d.task.properties.ai_mode.enum, 'ai_task_mode'], [d.source.properties.trust.enum, 'trust'],
+    [d.occupation.properties.maturity.enum, 'maturity'], [read('skills_index.schema.json').items.properties.kind.enum, 'need_kind'],
+    [events.properties.type.enum, 'event_type'], [Object.keys(events.$defs), 'event_type'],
+    [ev.intake.properties.source.enum, 'intake_source'], [ev.intake.properties.mode.enum, 'intake_mode'],
+    [ev.feedback.properties.about.enum, 'feedback_about'], [ev.road_added.properties.kind.enum, 'road_kind'],
+    [ev.road_added.properties.reach.enum, 'road_reach'], [ev.road_added.properties.flags.items.enum, 'road_flag'],
+    [read('api/error.schema.json').properties.error.properties.code.enum, 'error_code']
+  ];
+  for (const [got, band] of pairs) assert.deepEqual(got, B[band].values, band);
+  for (const w of Object.values(p.priorities.properties)) assert.deepEqual(w.enum, B.priority_weight.values, 'priority_weight');
+});
+test('ADR-16: the profile has no demographic or commercial field anywhere', () => {
+  const banned = /age|birth|dob|gender|sex|relig|caste|marital|father|mother|name|email|phone|address|pin|salary_now|commission|referr|affiliat|sponsor|partner|price|paid|ad_|vendor|provider/i;
+  for (const [at, s] of walk(profile)) for (const k of Object.keys(s.properties || {})) assert.doesNotMatch(k, banned, `profile ${at}/properties/${k}`);
+});
+test('the profile stores no free text: every string is an id, a band or a version', () => {
+  for (const [at, s] of walk(profile)) if (s.type === 'string') assert.ok(s.enum || s.pattern, `free text at profile ${at}`);
+});
+test('events: the envelope closes data to the union of every type, with the same field schemas', () => {
+  const union = events.properties.data.properties, seen = {};
+  for (const d of Object.values(events.$defs)) for (const [k, v] of Object.entries(d.properties)) {
+    assert.deepEqual(union[k], v, `data.${k}`); seen[k] = 1;
+  }
+  assert.deepEqual(Object.keys(union).sort(), Object.keys(seen).sort());
+  for (const t of ['profile_saved', 'roads_viewed', 'road_opened', 'road_added'])
+    for (const k of ['job_release', 'matcher_version']) assert.ok(events.$defs[t].required.includes(k), `${t} must require ${k} (invariant 7)`);
+});
+test('events: only feedback carries text, capped at 1,500 characters and with no @', () => {
+  let n = 0;
+  for (const [at, s] of walk(events)) if (s.type === 'string' && !s.enum && (!s.pattern || /\/text$/.test(at))) {
+    assert.match(at, /\/text$/, at); assert.equal(s.maxLength, 1500, at); assert.equal(s.pattern, '^[^@]*$', at); n++;
+  }
+  assert.ok(n >= 2, 'the feedback text field (in data and in $defs.feedback)');
+});
+test('events: every other string pattern refuses spaces and @, so the invariant checker can tell ids from free text', () => {
+  for (const [at, s] of walk(events)) if (s.type === 'string' && s.pattern && !/\/text$/.test(at)) {
+    const rx = new RegExp(s.pattern, 'u'); assert.ok(!rx.test('a b') && !rx.test('a@b'), at);
+  }
+});
+test('the nickname refuses @, so an email address cannot be stored as a name', () => {
+  const nick = read('api/email_complete.request.schema.json').properties.nickname, rx = new RegExp(nick.pattern, 'u');
+  assert.ok(rx.test('Asha')); assert.ok(!rx.test('asha@example.com'));
+});
+test('embedded copies in api/ match their sources (fix with: node contracts/sync.mjs)', () => {
+  for (const p of plan()) assert.ok(p.same, `${p.file} ${p.at} differs from ${p.source}`);
+});
+test('no request schema accepts a tester id: it always comes from the token', () => {
+  for (const f of SCHEMAS.filter(f => f.endsWith('.request.schema.json'))) for (const [at, s] of walk(read(f)))
+    for (const k of Object.keys(s.properties || {})) assert.doesNotMatch(k, /tester/i, `${f} ${at}/${k}`);
+});
+test('versions.js (what code imports) equals versions.json (what other readers use)', async () => {
+  const { versions } = await import('../versions.js');
+  const { _doc, ...json } = V;
+  assert.deepEqual({ ...versions }, json);
+  assert.ok(Object.isFrozen(versions));
+});
+test('every pattern is anchored at both ends, so it checks the whole value', () => {
+  for (const f of SCHEMAS) for (const [at, s] of walk(read(f))) if (s.pattern) {
+    assert.ok(s.pattern.startsWith('^') && s.pattern.endsWith('$') && !s.pattern.endsWith('\\$'), `${f} ${at}: ${s.pattern}`);
+  }
+});
+test('slice source urls: https only, the whole value, no spaces', () => {
+  const rx = new RegExp(slice.$defs.source.properties.url.pattern, 'u');
+  for (const ok of ['https://www.onetonline.org/link/details/15-1252.00', 'https://bls.gov', 'https://a.example.org:8443/x?y=1#z']) assert.ok(rx.test(ok), ok);
+  for (const bad of ['http://bls.gov', 'https://', 'https://bls.gov/a b', 'https://bls.gov\njavascript:x', 'javascript:alert(1)//https://x.org', 'https://localhost']) assert.ok(!rx.test(bad), bad);
+});
+
+// Owner decisions D2 to D4 and D6 (docs/adult/deviations.md), S0 freeze.
+test('D2: role year bands are the SPEC 7.2 level thresholds, in order', () => {
+  const spec = fs.readFileSync(path.join(path.dirname(DIR), 'docs', 'adult', 'SPEC.md'), 'utf8');
+  const m = spec.match(/### 7\.2[\s\S]*?start from total years[^\n]*?`((?:[0-9+-]+:\d, )+[0-9+-]+:\d)`/); assert.ok(m, 'SPEC 7.2 thresholds not found');
+  const bands = m[1].split(',').map(x => x.trim().split(':'));
+  assert.deepEqual(bands.map(b => b[0]), B.years.values); assert.deepEqual(bands.map(b => Number(b[1])), B.level.values);
+});
+test('D3: city clusters are city: ids; open_to adds only the open: choices', () => {
+  assert.ok(!('city' in B), 'the band is city_cluster');
+  for (const c of B.city_cluster.values) assert.match(c, /^city:[a-z]+$/);
+  assert.deepEqual(B.open_to.values.filter(v => !B.city_cluster.values.includes(v)), ['open:india', 'open:remote', 'open:abroad']);
+  assert.equal(profile.properties.constraints.properties.open_to.maxItems, B.open_to.values.length);
+});
+test('D4: rev is not in the stored profile document, only in the API wrapper', () => {
+  assert.ok(!('rev' in profile.properties), 'profile.schema.json must not have rev');
+  for (const f of ['api/me_profile_put.request.schema.json', 'api/me_profile_get.response.schema.json']) assert.ok('rev' in read(f).properties, f);
+  assert.ok('rev' in read('api/error.schema.json').properties.current.properties);
+});
+test('D6: one strict event request schema per type, picked by type', () => {
+  assert.deepEqual([...EVENT_TYPES], B.event_type.values);
+  assert.ok(!fs.existsSync(path.join(DIR, 'api', 'event.request.schema.json')), 'the union request schema is gone');
+  for (const t of EVENT_TYPES) {
+    const file = read(`api/event/${t}.request.schema.json`), s = schemaForType(t);
+    assert.deepEqual(s, file, `event_schemas.js ${t} equals the JSON file`);
+    assert.deepEqual(s.properties.type.enum, [t]); assert.deepEqual(s.properties.data, events.$defs[t]);
+    assert.ok(Object.isFrozen(s) && Object.isFrozen(s.properties.data), t);
+  }
+  for (const t of ['nope', '', 'constructor', '__proto__', 'toString', 'hasOwnProperty', null, undefined, 1, ['intake'], { type: 'intake' }]) assert.equal(schemaForType(t), null, String(t));
+  for (const t of ['profile_saved', 'roads_viewed', 'road_opened', 'road_added'])
+    for (const k of ['job_release', 'matcher_version']) assert.ok(schemaForType(t).properties.data.required.includes(k), `${t} must require ${k} (invariant 7)`);
+});
+test('D6: a body that mixes the fields of two event types is refused for every type', () => {
+  const rel = { job_release: 'abc123', matcher_version: '1.0.0' };
+  const good = {
+    intake: { source: 'paste', mode: 'on_device' }, profile_saved: { rev: 1, ...rel }, roads_viewed: { from: 'occ:13-2011.00', roads: [], ...rel },
+    road_opened: { from: 'occ:13-2011.00', to: 'occ:13-2051.00', ...rel }, road_added: { from: 'occ:13-2011.00', to: 'occ:13-2051.00', ...rel }, feedback: { about: 'general' },
+  };
+  // A field that belongs to another type and not to this one.
+  const foreign = { intake: { rev: 1 }, profile_saved: { source: 'paste' }, roads_viewed: { to: 'occ:13-2051.00' }, road_opened: { roads: [] }, road_added: { text: 'x' }, feedback: { roads: [] } };
+  for (const t of EVENT_TYPES) {
+    const body = { type: t, eid: 'e-test-0001', data: good[t] };
+    assert.ok(checkEvent(body).ok, `${t}: ${JSON.stringify(checkEvent(body).errors)}`);
+    assert.ok(validate(events, body).ok && validate(events, body.data, '#/$defs/' + t).ok, `${t} is also a valid stored event`);
+    assert.equal(checkEvent({ ...body, data: { ...good[t], ...foreign[t] } }).ok, false, `${t} accepted a foreign field`);
+    for (const u of EVENT_TYPES) if (u !== t) assert.equal(validate(schemaForType(u), body).ok, false, `${u} schema accepted a ${t} body`);
+    assert.equal(checkEvent({ ...body, extra: 1 }).ok, false); assert.equal(checkEvent({ type: t, data: good[t] }).ok, false, 'eid is required');
+  }
+  for (const b of [null, [], 'intake', {}, { type: 'nope', eid: 'e-test-0001', data: {} }, { type: '__proto__', eid: 'e-test-0001', data: {} }]) assert.equal(checkEvent(b).ok, false, JSON.stringify(b));
+});
+test('D1: session and pending tokens have the ADR-20 shapes and cannot stand in for each other', () => {
+  const tok = read('api/email_complete.response.schema.json').properties.token, pend = read('api/email_complete.request.schema.json').properties.pending;
+  assert.deepEqual(read('api/email_verify.response.schema.json').properties.token, tok); assert.deepEqual(read('api/email_verify.response.schema.json').properties.pending, pend);
+  const T = new RegExp(tok.pattern, 'u'), P = new RegExp(pend.pattern, 'u'), h = 'a'.repeat(64);
+  const session = `v1.8b1f4c2e-5d6a-4f3b-9c7d-2e1a0b9c8d7f.1761609600000.${h}`, pending = `p1.${h}.42.25-34.1761609600000.${h}`;
+  assert.ok(T.test(session) && !P.test(session)); assert.ok(P.test(pending) && !T.test(pending));
+  assert.ok(P.test(`p2.${h}.7.65+.1761609600000.${h}`));
+  for (const bad of [`v1.1761609600000.${h}`, `v0.8b1f4c2e-5d6a-4f3b-9c7d-2e1a0b9c8d7f.1761609600000.${h}`, session.toUpperCase(), session + '.x', `p1.${h}.42.17-18.1761609600000.${h}`, `p1.${h}.0.25-34.1761609600000.${h}`])
+    assert.ok(!T.test(bad) && !P.test(bad), bad);
+  for (const s of [session, pending]) assert.ok(s.length >= Math.min(tok.minLength, pend.minLength) && s.length <= Math.max(tok.maxLength, pend.maxLength));
+  assert.ok(session.length >= tok.minLength && session.length <= tok.maxLength && pending.length >= pend.minLength && pending.length <= pend.maxLength);
+  assert.deepEqual(pend.pattern.match(/\(([^)]*)\)/)[1].split('|').map(x => x.replace('\\+', '+')), B.age_band.values, 'pending age bands are bands.json age_band');
+});

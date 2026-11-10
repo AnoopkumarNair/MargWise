@@ -10,7 +10,7 @@ export async function onRequestPost({ request, env }) {
   if (glob && glob.n >= 300) return json({ error: 'Too many attempts. Please try again later.' }, 429);
   const bad = await env.DB.prepare('SELECT COUNT(*) AS n FROM joins WHERE ip = ? AND ts > ?').bind(ip, now - 3600000).first();
   if (bad && bad.n >= 40) return json({ error: 'Too many attempts from this connection. Please try again later.' }, 429);
-  const row = raw.length === 8 ? await env.DB.prepare("SELECT id, name FROM testers WHERE ret_hash = ? AND COALESCE(source, '') != 'counsellor'").bind(await retHash(raw, env.SIGN_KEY)).first() : null;
+  const row = raw.length === 8 ? await env.DB.prepare("SELECT id, name FROM testers WHERE ret_hash = ? AND COALESCE(source, '') != 'counsellor' AND (track IS NULL OR track = 'student')").bind(await retHash(raw, env.SIGN_KEY)).first() : null;
   if (!row) { await env.DB.batch([env.DB.prepare('INSERT INTO joins (ip, ts) VALUES (?, ?)').bind(ip, now), env.DB.prepare('INSERT INTO joins (ip, ts) VALUES (?, ?)').bind('rGLOBAL', now)]); return json({ error: 'That login code is not right. It looks like ABCD-2345.' }, 403); }
   return json({ testerId: row.id, token: await mintToken(row.id, env.SIGN_KEY), name: row.name });
 }

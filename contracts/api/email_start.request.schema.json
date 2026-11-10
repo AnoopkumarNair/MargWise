@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/email_start.request.schema.json",
+  "title": "email_start request",
+  "description": "POST /api/v1/email/start (SPEC 9). The server checks the age again; under 18 returns error code refused_age and stores nothing personal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["invite", "birthYear", "email", "turnstile"],
+  "properties": {
+    "invite": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 24,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "birthYear": {
+      "type": "integer",
+      "minimum": 1900,
+      "maximum": 2100
+    },
+    "email": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 254,
+      "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+    },
+    "turnstile": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    }
+  }
+}

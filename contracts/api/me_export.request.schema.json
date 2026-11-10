@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/me_export.request.schema.json",
+  "title": "me_export request",
+  "description": "POST /api/v1/me/export has an empty body; the tester comes from the token.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [],
+  "properties": {}
+}

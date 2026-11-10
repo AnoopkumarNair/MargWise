@@ -1,0 +1,30 @@
+{
+ "_doc": "Hand-built skill_near similarities for tests (SPEC 5.2: cosine). Not real data. Format {skill id: {skill id: similarity}}; the matcher reads it both ways. Matcher 1.1.0 (owner decision O2) counts a pair only at 0.90 or more and only among the 3 closest neighbours of the skill it credits, so most pairs here no longer count; quality control to LLM evaluation was raised from 0.7 to 0.92 so swdev-qa-near still shows near at work.",
+ "skl:2.B.3.m": {
+  "skl:ai-llm-evaluation": 0.92
+ },
+ "tec:selenium": {
+  "skl:2.B.3.m": 0.6
+ },
+ "tec:excel": {
+  "tec:power-bi": 0.6
+ },
+ "tec:tally": {
+  "tec:sap-fico": 0.6
+ },
+ "tec:java": {
+  "tec:python": 0.55
+ },
+ "skl:2.B.1.f": {
+  "skl:2.C.1.e": 0.8
+ },
+ "skl:2.B.1.e": {
+  "skl:2.C.6": 0.8
+ },
+ "skl:2.A.1.e": {
+  "skl:2.C.4.a": 0.9
+ },
+ "tec:zendesk": {
+  "tec:servicenow": 0.65
+ }
+}

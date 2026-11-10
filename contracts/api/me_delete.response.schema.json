@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/me_delete.response.schema.json",
+  "title": "me_delete response",
+  "description": "The account and its data are gone.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok"],
+  "properties": {
+    "ok": {
+      "enum": [true]
+    }
+  }
+}

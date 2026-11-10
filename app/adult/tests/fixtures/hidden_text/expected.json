@@ -1,0 +1,44 @@
+{
+  "id": "hidden_text",
+  "shape": "Hidden white text with an instruction to the reader (the extractor sees it, a person does not)",
+  "binary": "resume.pdf",
+  "looksLikeResume": true,
+  "roles": [
+    {
+      "titleContains": "QA Engineer",
+      "startYear": 2022,
+      "endYear": 2026,
+      "current": true
+    },
+    {
+      "titleContains": "Test Analyst",
+      "startYear": 2018,
+      "endYear": 2021,
+      "current": false
+    }
+  ],
+  "currentRoleIndex": 0,
+  "mustFind": [
+    "tec:selenium",
+    "tec:junit",
+    "tec:postman",
+    "tec:atlassian-jira",
+    "tec:structured-query-language-sql",
+    "tec:git",
+    "tec:microsoft-excel"
+  ],
+  "mustNotFind": [
+    "tec:kubernetes",
+    "tec:docker",
+    "tec:apache-kafka",
+    "tec:ibm-terraform"
+  ],
+  "mustFindYears": {
+    "tec:selenium": 2026
+  },
+  "outOfDictionary": [],
+  "warnings": [
+    "instruction_like_text"
+  ],
+  "notes": "The hidden paragraph is plain text: it is never run, and skills named in it are not read. The reader warns the person."
+}

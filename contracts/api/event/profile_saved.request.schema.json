@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/event/profile_saved.request.schema.json",
+  "title": "event profile_saved request",
+  "description": "POST /api/v1/event with type \"profile_saved\" (SPEC 9, ADR-08, deviations D6). Strict: type must be \"profile_saved\" and data allows only the profile_saved fields, so a body that mixes fields of two types fails. The handler picks this schema by the body's type with schemaForType(type) from contracts/event_schemas.js; an unknown type is bad_request. Generated from events.schema.json by contracts/sync.mjs: do not edit by hand.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "eid", "data"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["profile_saved"]
+    },
+    "eid": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{8,40}$"
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rev", "job_release", "matcher_version"],
+      "properties": {
+        "rev": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000000
+        },
+        "n_roles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 50
+        },
+        "n_skills": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "n_creds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "job_release": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        },
+        "matcher_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    }
+  }
+}

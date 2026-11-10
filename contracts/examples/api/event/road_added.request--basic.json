@@ -1,0 +1,15 @@
+{
+  "type": "road_added",
+  "eid": "e-roadadded-0001",
+  "data": {
+    "from": "occ:13-2011.00",
+    "to": "occ:13-2051.00",
+    "rank": 1,
+    "coverage": 0.74,
+    "kind": "across",
+    "reach": "adjacent",
+    "flags": ["needs_relocation"],
+    "job_release": "abc123",
+    "matcher_version": "1.0.0"
+  }
+}

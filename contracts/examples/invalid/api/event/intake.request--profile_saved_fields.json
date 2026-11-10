@@ -1,0 +1,10 @@
+{
+  "type": "intake",
+  "eid": "e-intake-0002",
+  "data": {
+    "source": "paste",
+    "mode": "on_device",
+    "rev": 3,
+    "n_skills": 24
+  }
+}

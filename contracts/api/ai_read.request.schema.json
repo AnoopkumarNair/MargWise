@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/api/ai_read.request.schema.json",
+  "title": "ai_read request",
+  "description": "POST /api/v1/ai/read (SPEC 9). Login required. text is the redacted resume, at most 20,000 characters, never logged.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["text", "turnstile"],
+  "properties": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20000
+    },
+    "turnstile": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    }
+  }
+}

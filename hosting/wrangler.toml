@@ -6,3 +6,9 @@ compatibility_date = "2025-01-01"
 binding = "DB"
 database_name = "margwise-test"
 database_id = "638e0a4f-cfbc-495d-b1a5-ffa3559efcd9"
+# Migrations (BACKEND ADR-03): `wrangler d1 migrations apply DB`, run from this folder (hosting/).
+# migrations_dir is read relative to THIS file, so "migrations" means hosting/migrations. The baseline (0000) must never be
+# applied to the production database: mark it as applied instead (see the runbook). Owner runs migrations; agents never do.
+migrations_dir = "migrations"
+# Branch previews use the separate empty database `margwise-preview` (BACKEND ADR-02), created 2026-10-29. No SQL has been applied to it yet.
+preview_database_id = "fdd227d1-a201-49bc-ae78-6911a978877f"

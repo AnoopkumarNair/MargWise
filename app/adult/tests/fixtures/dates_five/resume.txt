@@ -1,0 +1,33 @@
+RAVINDRAN CANARYPALLY
+Operations and supply chain professional
+canary.mail.7731@example.com | +91 98765 43210 | PAN ABCDE1234F | Aadhaar 2345 6789 0123
+
+SUMMARY
+Supply chain and operations professional. I plan routes, count stock and keep the lights on in busy warehouses.
+
+EXPERIENCE
+
+Senior Operations Analyst | Canaryworks Pvt Ltd, Bengaluru | 06/2023 - present
+Plan inbound freight and track it in SAP and Microsoft Excel. Built the first control tower dashboard in Microsoft Power BI.
+
+Operations Analyst | Brightloom Retail, Pune | Jan 2019 - Mar 2023
+Handled replenishment for 120 stores. Wrote SQL queries to find stock-outs. Worked in Excel every day.
+
+Visiting Lecturer (part-time) | Canary Institute of Technology, Chennai | 2019 – Till date
+Teach a weekend course on supply chain basics and spreadsheets.
+
+Freelance Data Consultant | Self-employed | Since 2021
+Small projects for local traders: Python scripts, Google Sheets reports.
+
+Supply Chain Trainee | Kestrel Logistics, Mumbai | 2016-2018
+Route planning and carrier follow-up.
+
+Apprentice | Hilltop Mart, Hyderabad | 2012-15
+Stock counts and shelf planning.
+
+EDUCATION
+B.Com, Osmania University, 2009 - 2012
+MBA (Operations), Canary Institute of Technology, 2014 - 2016
+
+SKILLS
+SAP, Microsoft Excel, SQL, Python, Google Sheets, Power BI

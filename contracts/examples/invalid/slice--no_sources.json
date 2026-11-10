@@ -1,0 +1,26 @@
+{
+  "slice_v": 1,
+  "release": "abc123",
+  "occ": {
+    "id": "occ:13-2011.00",
+    "label": "Accountants",
+    "job_zone": 4,
+    "as_of": "2025-08",
+    "src": "onet"
+  },
+  "needs": [
+    {
+      "id": "skl:2.A.2.a",
+      "label": "Critical Thinking",
+      "kind": "skill",
+      "w": 0.6,
+      "ai": "mixed",
+      "as_of": "2023-06",
+      "src": "onet"
+    }
+  ],
+  "tasks": [],
+  "signals": [],
+  "targets": [],
+  "sources": []
+}

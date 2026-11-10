@@ -1,0 +1,22 @@
+SATURDAY WORKSHOP: DATA SKILLS FOR BEGINNERS
+Registration confirmation and receipt
+
+Workshop fee receipt no. WS-2026-0417
+Issued to: Ravindran Canarypally
+Email: canary.mail.7731@example.com
+Phone: +91 98765 43210
+PAN for the invoice: ABCDE1234F
+ID proof (Aadhaar): 2345 6789 0123
+Company: Canaryworks Pvt Ltd
+Hosted at: Canary Institute of Technology, seminar hall B
+
+About the workshop
+This one-day workshop introduces spreadsheets, Python and SQL to complete beginners. We will use Microsoft Excel for the first session, Python for the second, and Tableau for a short demo at the end. Bring a laptop with the free software installed. Lunch and tea are included.
+
+What to bring
+A laptop, a charger, and a notebook. Install Python and a text editor before you come. Wear comfortable clothes. Parking is available in the campus lot.
+
+Fee and refund
+The fee of 1,500 rupees has been received in full. Refunds are possible up to three days before the workshop. Write to the address above to ask for a refund.
+
+Thank you for registering. We look forward to seeing you.

@@ -1,0 +1,14 @@
+{
+  "id": "scanned",
+  "shape": "Scanned PDF: one page that is only a picture, no text layer",
+  "binary": "resume.pdf",
+  "looksLikeResume": false,
+  "roles": [],
+  "currentRoleIndex": -1,
+  "mustFind": [],
+  "mustNotFind": [],
+  "mustFindYears": {},
+  "outOfDictionary": [],
+  "warnings": ["too_little_text"],
+  "notes": "Text extraction gives almost nothing, so the reader reports 'too_little_text' and the screen shows the paste fallback. The picture itself holds the canaries listed in visible.txt; nothing reads them. resume.txt is empty on purpose."
+}

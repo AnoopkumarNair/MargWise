@@ -1,0 +1,14 @@
+{
+  "id": "non_resume",
+  "shape": "Non-resume PDF: a workshop receipt that mentions tools, a name, email, phone, PAN and Aadhaar",
+  "binary": "resume.pdf",
+  "looksLikeResume": false,
+  "roles": [],
+  "currentRoleIndex": -1,
+  "mustFind": [],
+  "mustNotFind": [],
+  "mustFindYears": {},
+  "outOfDictionary": [],
+  "warnings": ["not_a_resume"],
+  "notes": "Mentions Excel, Python, SQL and Tableau, but has no jobs, no dates and no resume headings. The screen shows 'This doesn't look like a resume' and offers paste."
+}

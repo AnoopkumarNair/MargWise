@@ -95,7 +95,7 @@ One key per purpose means a leak or a rotation affects only that purpose.
 
 **Key versions.**
 
-- New adult tokens are `v1.<issued-at>.<mac>`. A new key version is added beside the old one, both are accepted for an overlap of 31 days, then the old one is removed.
+- New adult tokens are `v1.<issued-at>.<mac>`. A new key version is added beside the old one, both are accepted for an overlap of 31 days, then the old one is removed. (Token format superseded by ADR-20.)
 - `email_hash` can be recomputed during a rotation, because the email address is stored (it is needed to send codes).
 
 **Email normalisation.** Trim, apply Unicode NFKC, and lower-case the whole address. **No provider-specific tricks** such as removing Gmail dots or `+tags`: they are lossy and differ between providers.
@@ -155,6 +155,8 @@ One key per purpose means a leak or a rotation affects only that purpose.
 
 **Why one document.** A person edits their profile as a whole. Splitting it over many tables adds joins and partial-write states with no benefit at this scale.
 
+**Note (owner decision D4, 2026-10-29).** `rev` lives only in the `profiles.rev` column and in the API wrapper: `{rev, data}` on `PUT` and `GET /api/v1/me/profile`, and in `current` on a `409`. It is not a field of the `data` document, so the two can never disagree. `contracts/profile.schema.json` refuses it, and the server sets `rev` itself on every write.
+
 ### ADR-07. Contracts first, in one place
 
 **Contents.** `contracts/` holds:
@@ -177,6 +179,8 @@ It has its own tests. The Python pipeline calls it through `node contracts/valid
 **Rule.** A change to any contract file changes its version in `versions.json` and needs the architect hat's review (DELIVERY.md).
 
 **Why.** Different shapes on the client, the server and the pipeline are the classic slow-burn bug.
+
+**Note (S0 freeze, 2026-10-29).** The contracts were frozen at the end of S0 (`contracts/FROZEN.md`). `contracts/freeze.lock.json` holds a hash of every contract file, and `contracts/tests/freeze.test.mjs` fails when a file changes without its version changing.
 
 ### ADR-08. Matching happens in the browser; client data is untrusted
 
@@ -296,6 +300,7 @@ The matcher's inputs never include age band, gender, city of birth, or any demog
 - **Prompt files.** The AI extraction prompt lives in `contracts/prompts/extract_v<N>.md`, and its version is recorded with every `ai_calls` row and in the result event.
 - **Re-evaluate on any change.** Changing the prompt, the model or the provider re-runs the fixture tests (TEST_PLAN layer 6). The owner re-runs the 30-resume evaluation before the change reaches users.
 - **Model choice.** The provider's model id is pinned, never "latest".
+- **Note (owner decision D5, 2026-10-29).** `ai_calls` has a `prompt_version TEXT` column (SPEC 10). It holds the prompt file's name, such as `extract_v1`, for the latest call that day. Each call's version also goes in the `intake` event (`prompt_v`) and the `ai/read` response.
 
 ### ADR-18. Feature switches
 
@@ -317,6 +322,52 @@ Each switch has one owner and appears in `/api/v1/health`. Turning a feature off
 - **Branch protection on `main`:** CI must pass, and pull requests need one review. Agents cannot push to `main`.
 - **Secrets:** secret scanning on, and secrets kept only in Cloudflare and GitHub Actions secrets.
 - **Who holds production access:** the owner alone holds production deploy and database rights. Agent sessions get none.
+
+### ADR-20. Adult session and pending tokens
+
+Owner decision D1, 2026-10-29. Replaces the token format line in ADR-04. Everything else in ADR-04 (keys, rotation overlap, `tok_after`, the `Authorization` header) still applies.
+
+- **Context.** ADR-04 named adult tokens `v1.<issued-at>.<mac>`. That format carries no tester id and does not bind the token to the adult track. SPEC 9 names a signed 30-minute `pending` token without a format.
+- **Session token:** `v<keyver>.<tester_id>.<iat>.<mac>`.
+
+  | Part | Value |
+  | --- | --- |
+  | `keyver` | The `SIGN_KEY` version that signed it: 1 to 999, no leading zero |
+  | `tester_id` | `testers.id`, a lower-case UUID |
+  | `iat` | Issue time in Unix milliseconds, 13 digits |
+  | `mac` | HMAC-SHA256 with `SIGN_KEY` version `keyver`, over `adult\|<tester_id>\|<iat>\|<keyver>`, as 64 lower-case hex characters |
+
+  - The MAC covers the track (`adult`), so a student token, or a token made for any other purpose, never checks out as an adult token. The scope to `track=adult` is in the cryptography, not only in a database look-up.
+  - The MAC covers `keyver`, so a token cannot be moved to another key version.
+  - The server checks, in this order: the shape (the contract pattern); that `keyver` is a key it holds (the current one, or the previous one during the 31-day overlap); the MAC, in constant time; that `iat` is at most 60 seconds in the future and at most 31 days old; that the tester exists with `track = 'adult'`; and that `iat` is not before `tok_after`. Any failure is `401 unauthorized`, with the same message.
+  - The sliding refresh (at most once a day) issues a new token with a new `iat`. `testers.key_v` records the key version of the latest token issued.
+- **Pending token:** `p<keyver>.<email_hash>.<invite_id>.<age_band>.<iat>.<mac>`, valid for 30 minutes.
+
+  | Part | Value |
+  | --- | --- |
+  | `keyver` | The `SIGN_KEY` version its key was derived from |
+  | `email_hash` | The keyed email hash of SPEC 10, as 64 lower-case hex characters |
+  | `invite_id` | `invites.id`, a positive whole number |
+  | `age_band` | One of `age_band` in `contracts/bands.json` (`18-24` to `65+`) |
+  | `iat` | Issue time in Unix milliseconds, 13 digits |
+  | `mac` | HMAC-SHA256 with the pending key, over `pending\|<email_hash>\|<invite_id>\|<age_band>\|<iat>\|<keyver>`, as 64 lower-case hex characters |
+
+  - **A key for this purpose only.** The pending key is derived from the signing key: `HMAC-SHA256(SIGN_KEY version keyver, "margwise/pending-key/v1")`, used as raw bytes. It needs no new secret and rotates with `SIGN_KEY`. Because both the key and the first field differ, a pending token never checks out as a session token, and the reverse.
+  - `email/complete` (amendment A2, D29) also takes the address in its body. After the token checks it compares the keyed hash of that address with the hash in the token, in constant time, and refuses a mismatch with `bad_request`. The token never holds the address. The normalised address is then stored in `testers.email`, as ADR-04 says. It is never logged or put in an error.
+  - `email/complete` checks the shape, the key version, the MAC (in constant time), that `iat` is at most 60 seconds in the future, and the age. Past 30 minutes the answer is `expired`; a bad MAC is `unauthorized`. It then checks again that the invite is active and has `track = 'adult'`.
+  - It holds no email address and no birth year. The email hash it carries is a keyed hash, which cannot be reversed without `EMAIL_KEY`. It need not be single use: completion is idempotent on `email_hash`.
+- **For both.** Fields are separated by dots, and no field can contain one. Hex matches the existing student token helper. Tokens travel only in a request body or the `Authorization` header, never in a URL, and are never logged.
+- **Enforced by.** The patterns in `contracts/api/email_verify.response`, `email_complete.request` and `email_complete.response` check the shapes. `hosting/core/keys.js` (T3.3) makes and checks the tokens; it is not built yet.
+- **Why.** The tester id in the token lets the server check the MAC before it reads the database. The track and the key version inside the MAC stop a token from being reused for another track or moved to another key.
+
+### ADR-21. Existing accounts log in without an invite; the email goes out after the reply
+
+Owner decision D36, 2026-11-01 (S4 review). No contract change: `email/start` still takes `invite`.
+
+- **Rule.** An address that already has an account gets a code whatever the state of the invite. A new address needs an active adult invite. Without one it is treated as a stranger: a decoy `email_codes` row, nothing sent, and the same answer.
+- **Why.** Closing a cohort's invite must not lock its people out of their saved data. A different answer for "new address, bad invite" would tell a caller which addresses have accounts (ADR-13), so there is none.
+- **Timing.** The email is sent with `waitUntil` after the reply, so the reply never waits for the provider and never shows a provider error. Both paths run the same look-ups and writes before the reply. A failed send is counted in `email_errors`.
+- **Pending tokens (ADR-20 addendum).** `email/complete` refuses a pending token issued at or before the account's `tok_after`, or at or before a delete of that address (a `del:<hash>` row in `meta`, purged after one hour).
 
 ## Invariants (machine-checked)
 

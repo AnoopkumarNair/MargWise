@@ -1,0 +1,50 @@
+Contact
+www.linkedin.com/in/ravindran-canarypally-7731 (LinkedIn)
+canary.mail.7731@example.com (Home)
++91 98765 43210 (Mobile)
+
+Top Skills
+Data Analysis
+Python (Programming Language)
+Tableau
+
+Languages
+English (Full Professional)
+Hindi (Native or Bilingual)
+
+Certifications
+Google Data Analytics
+Tableau Desktop Specialist
+
+Ravindran Canarypally
+Senior Data Analyst at Canaryworks Pvt Ltd
+Bengaluru, Karnataka, India
+
+Summary
+I help retail and fintech teams understand their customers. Ten years in analytics, most of it with SQL, Python and Tableau. PAN ABCDE1234F, Aadhaar 2345 6789 0123 are on file with HR, not here.
+
+Experience
+
+Canaryworks Pvt Ltd
+Senior Data Analyst
+January 2021 - Present (5 years 10 months)
+Bengaluru, Karnataka, India
+Lead analytics for the lending product. Built churn and collections dashboards in Tableau and Looker, and automated the monthly risk report with Python and SQL on PostgreSQL.
+
+Brightloom Analytics
+Data Analyst
+June 2017 - December 2020 (3 years 7 months)
+Pune, Maharashtra, India
+Customer segmentation and A/B tests for retail clients using Python (pandas, scikit-learn) and Microsoft Excel.
+
+Kestrel Logistics
+Junior Analyst
+July 2015 - May 2017 (1 year 11 months)
+Mumbai, Maharashtra, India
+Delivery performance reporting in Excel and SQL Server.
+
+Education
+
+Canary Institute of Technology
+Bachelor of Technology (B.Tech.), Computer Science
+2011 - 2015

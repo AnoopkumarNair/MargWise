@@ -10,19 +10,20 @@ export async function onRequestPost({ request, env }) {
   try { await purgeOld(env, now); } catch (e) { /* retention must never block sign-up; failure shows as a missing audit row */ }
   const mine = await env.DB.prepare('SELECT COUNT(*) AS n FROM joins WHERE ip = ? AND ts > ?').bind(ip, now - 3600000).first();
   if (mine && mine.n >= 40) return json({ error: 'Too many attempts from this connection. Please try again later.' }, 429);
-  const act = await env.DB.prepare('SELECT COUNT(*) AS n FROM invites WHERE active = 1').first();
+  const act = await env.DB.prepare("SELECT COUNT(*) AS n FROM invites WHERE active = 1 AND (track IS NULL OR track = 'student')").first();   // adult invites never open the student sign-up (BACKEND ADR-15)
   let inviteId = null;
   {   // fail closed: a code is always required; with no master code and no active invite, sign-ups are shut
     let ok = !!need && safeEq(code, need.toLowerCase());
     if (!ok && code) {
-      const row = await env.DB.prepare('SELECT id FROM invites WHERE code = ?').bind(code).first();
+      const row = await env.DB.prepare('SELECT id, track FROM invites WHERE code = ?').bind(code).first();
+      if (row && row.track === 'adult') return json({ error: 'Use the link for working adults: /work/' }, 403);   // an adult code is not a student code; nothing is claimed or counted
       // atomic claim: the limit, expiry and switch are all checked inside the UPDATE, so concurrent sign-ups cannot overshoot max_uses
       if (row) { const c = await env.DB.prepare('UPDATE invites SET uses = uses + 1 WHERE id = ? AND active = 1 AND (expires_at IS NULL OR expires_at > ?) AND (max_uses IS NULL OR uses < max_uses)').bind(row.id, now).run(); if (c.meta && c.meta.changes === 1) { ok = true; inviteId = row.id; } }
     }
     if (!need && !(act && act.n > 0)) return json({ error: 'Sign-ups are closed right now.' }, 403);
     if (!ok) { await env.DB.prepare('INSERT INTO joins (ip, ts) VALUES (?, ?)').bind(ip, now).run(); return json({ error: 'That invite code is not right, or it is no longer active.' }, 403); }
   }
-  const recent = await env.DB.prepare('SELECT COUNT(*) AS n FROM testers WHERE created_at > ?').bind(now - 3600000).first();
+  const recent = await env.DB.prepare("SELECT COUNT(*) AS n FROM testers WHERE created_at > ? AND (track IS NULL OR track = 'student')").bind(now - 3600000).first();
   if (recent && recent.n >= 80) return json({ error: 'Too many sign-ups right now. Please try again later.' }, 429);
   const id = crypto.randomUUID();
   const ret = newRetCode();

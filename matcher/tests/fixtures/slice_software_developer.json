@@ -1,0 +1,489 @@
+{
+ "slice_v": 1,
+ "release": "fixture-s1",
+ "occ": {
+  "id": "occ:15-1252.00",
+  "label": "Software Developers",
+  "job_zone": 4,
+  "as_of": "2026-10",
+  "src": "fixture"
+ },
+ "needs": [
+  {
+   "id": "skl:2.B.3.e",
+   "label": "Programming",
+   "kind": "skill",
+   "w": 0.9,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:java",
+   "label": "Java",
+   "kind": "technology",
+   "w": 0.7,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:git",
+   "label": "Git",
+   "kind": "technology",
+   "w": 0.6,
+   "ai": "ai_does_much",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "tec:sql",
+   "label": "SQL",
+   "kind": "technology",
+   "w": 0.6,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.B.2.i",
+   "label": "Complex Problem Solving",
+   "kind": "skill",
+   "w": 0.6,
+   "ai": "people_do",
+   "as_of": "2026-10",
+   "src": "fixture"
+  },
+  {
+   "id": "skl:2.C.3.a",
+   "label": "Computers and Electronics",
+   "kind": "knowledge",
+   "w": 0.7,
+   "ai": "mixed",
+   "as_of": "2026-10",
+   "src": "fixture"
+  }
+ ],
+ "tasks": [],
+ "signals": [
+  {
+   "kind": "ai_obs",
+   "period": "2026Q1",
+   "value": 0.55,
+   "as_of": "2026-10",
+   "src": "fixture"
+  }
+ ],
+ "targets": [
+  {
+   "occ": {
+    "id": "occ:15-1253.00",
+    "label": "Software Quality Assurance Analysts and Testers",
+    "job_zone": 4,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.B.3.m",
+     "label": "Quality Control Analysis",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:selenium",
+     "label": "Selenium",
+     "kind": "technology",
+     "w": 0.7,
+     "ai": "ai_does_much",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.3.e",
+     "label": "Programming",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:jira",
+     "label": "Atlassian JIRA",
+     "kind": "technology",
+     "w": 0.5,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.52,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:15-2051.00",
+    "label": "Data Scientists",
+    "job_zone": 5,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "tec:python",
+     "label": "Python",
+     "kind": "technology",
+     "w": 0.8,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.3.e",
+     "label": "Programming",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:sql",
+     "label": "SQL",
+     "kind": "technology",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.4.a",
+     "label": "Mathematics",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.2.i",
+     "label": "Complex Problem Solving",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.35,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:15-1242.00",
+    "label": "Database Administrators",
+    "job_zone": 4,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "tec:sql",
+     "label": "SQL",
+     "kind": "technology",
+     "w": 0.9,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.g",
+     "label": "Systems Analysis",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.3.e",
+     "label": "Programming",
+     "kind": "skill",
+     "w": 0.4,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.48,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:15-1211.00",
+    "label": "Computer Systems Analysts",
+    "job_zone": 4,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "close_to"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.B.4.g",
+     "label": "Systems Analysis",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.2.i",
+     "label": "Complex Problem Solving",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.3.e",
+     "label": "Programming",
+     "kind": "skill",
+     "w": 0.4,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.41,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  },
+  {
+   "occ": {
+    "id": "occ:ai-llm-evaluator",
+    "label": "LLM Evaluation Specialist",
+    "job_zone": null,
+    "as_of": "2026-10",
+    "src": "fixture",
+    "new_role": true,
+    "maturity": "settling"
+   },
+   "via": [
+    "entry_from"
+   ],
+   "needs": [
+    {
+     "id": "skl:ai-llm-evaluation",
+     "label": "Evaluating large language model output",
+     "kind": "skill",
+     "w": 0.9,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.3.m",
+     "label": "Quality Control Analysis",
+     "kind": "skill",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.1.c",
+     "label": "Writing",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "tec:python",
+     "label": "Python",
+     "kind": "technology",
+     "w": 0.6,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.A.2.a",
+     "label": "Critical Thinking",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": []
+  },
+  {
+   "occ": {
+    "id": "occ:11-3021.00",
+    "label": "Computer and Information Systems Managers",
+    "job_zone": 5,
+    "as_of": "2026-10",
+    "src": "fixture"
+   },
+   "via": [
+    "two_step"
+   ],
+   "needs": [
+    {
+     "id": "skl:2.C.1.a",
+     "label": "Administration and Management",
+     "kind": "knowledge",
+     "w": 0.8,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.5.d",
+     "label": "Management of Personnel Resources",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.C.3.a",
+     "label": "Computers and Electronics",
+     "kind": "knowledge",
+     "w": 0.7,
+     "ai": "mixed",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.4.e",
+     "label": "Judgment and Decision Making",
+     "kind": "skill",
+     "w": 0.7,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    },
+    {
+     "id": "skl:2.B.1.b",
+     "label": "Coordination",
+     "kind": "skill",
+     "w": 0.6,
+     "ai": "people_do",
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ],
+   "signals": [
+    {
+     "kind": "ai_obs",
+     "period": "2026Q1",
+     "value": 0.25,
+     "as_of": "2026-10",
+     "src": "fixture"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "fixture",
+   "name": "Hand-built matcher test fixture. Not real data: weights, labels and AI shares are made up for tests.",
+   "trust": "estimate",
+   "as_of": "2026-10"
+  }
+ ]
+}
