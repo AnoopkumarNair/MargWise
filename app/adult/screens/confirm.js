@@ -7,7 +7,9 @@ import { loadSkillsIndex, loadTitles, loadOccupations, loadSlice } from '../data
 import { findOccupations, findSkills } from '../lookup.js';
 import { YEARS, INDUSTRIES, LEAD_PEOPLE, confirmedProfile } from '../intake_profile.js';
 import { YEARS_LABEL } from '../state.js';
-import { chipsFor } from '../intake_read.js';
+import { chipsFor, currentYear } from '../intake_read.js';
+import { tier2Info } from '../intake_embed.js';
+import { moreSkillsBox } from './confirm_more.js';
 
 export function title() { return 'Check what we found'; }
 
@@ -17,8 +19,8 @@ let uid = 0;
 
 export async function render() {
   const m = state.reading;
-  let titles, occs, index;
-  try { [titles, occs, index] = await Promise.all([loadTitles(), loadOccupations(), loadSkillsIndex()]); } catch (e) {
+  let titles, occs, index, info;
+  try { [titles, occs, index] = await Promise.all([loadTitles(), loadOccupations(), loadSkillsIndex()]); info = await tier2Info().catch(() => ({ available: false })); } catch (e) {
     return h('section', { class: 'screen' }, h('h1', { tabindex: '-1' }, 'Check what we found'),
       h('p', { class: 'error', role: 'alert' }, 'We could not load the job list. Check your connection and reload.'), h('p', null, h('a', { href: '#/intake' }, 'Back')));
   }
@@ -49,7 +51,7 @@ export async function render() {
     cb.addEventListener('change', () => { s.include = cb.checked; strength.hidden = !cb.checked; updateCount(); refreshChips(); });
     const src = s.sourceLine ? h('p', { class: 'src' }, h('span', { class: 'src-tag' }, 'From your resume: '), '“' + clip(s.sourceLine, 220) + '”') :
       (s.added ? h('p', { class: 'src' }, 'You added this.') : null);
-    const li = h('li', { class: 'skill', 'data-skill': s.id },
+    const li = h('li', { class: 'skill' + (s.suggested ? ' suggested' : ''), 'data-skill': s.id },
       h('div', { class: 'skill-main' }, cb, h('label', { for: cb.id }, s.label), s.lastYear ? h('span', { class: 'tag' }, 'last used ' + s.lastYear) : null),
       src, strength);
     skillRows.set(s, li);
@@ -136,7 +138,7 @@ export async function render() {
     cur.addEventListener('change', () => { r.current = cur.checked; refreshChips(); });
 
     const skillsUl = h('ul', { class: 'skills' });
-    const mine = m.skills.filter(s => s.roleKey === r.key);
+    const mine = m.skills.filter(s => s.roleKey === r.key && !s.suggested);
     for (const s of mine) skillsUl.appendChild(skillRow(s));
     const body = h('div', { class: 'role-body' },
       r.titleText ? h('p', { class: 'src' }, h('span', { class: 'src-tag' }, 'In your resume: '), '“' + clip(r.titleText, 120) + '”') : null,
@@ -161,7 +163,7 @@ export async function render() {
   // ---- added skills and search --------------------------------------------------------------------------------------------
   const addedList = h('ul', { class: 'skills', id: 'added-skills' }, m.skills.filter(s => s.added).map(skillRow));
   const addedBox = h('div', { id: 'added-box', hidden: !m.skills.some(s => s.added) }, h('h3', null, 'Skills you added'), addedList);
-  const orphan = m.skills.filter(s => !s.roleKey && !s.added);
+  const orphan = m.skills.filter(s => !s.roleKey && !s.added && !s.suggested);
   const orphanList = h('ul', { class: 'skills' }, orphan.map(skillRow));
   const orphanBox = orphan.length ? h('div', { id: 'other-skills' }, h('h3', null, 'Other skills in your resume (' + orphan.length + ')'),
     h('p', { class: 'hint' }, 'These are not under one job, for example in a skills list.'), orphanList) : null;
@@ -241,6 +243,7 @@ export async function render() {
     h('h2', null, m.roles.length === 1 ? 'Your job' : 'Your jobs (' + m.roles.length + ')'),
     m.roles.length ? h('div', { class: 'roles' }, m.roles.map(roleCard)) : h('p', null, 'We found no jobs with dates in your resume. The skills we found are listed below. Go back and type your job title to start from a job.'),
     orphanBox, addedBox,
+    info.available && (m.achievements || []).length ? moreSkillsBox({ m, info, index, skillRow, updateCount, refreshChips, nowYear: currentYear() }) : null,
     h('h2', null, 'Add a skill'),
     h('div', { class: 'field' }, h('label', { for: 'skill-search' }, 'Search for a skill we missed'), sInput, sStatus, sResults),
     h('h2', null, 'People in your role usually have…'),

@@ -1,0 +1,75 @@
+{
+ "id": "sales_lead",
+ "shape": "Regional sales lead; plain lines; one decoy",
+ "lines": [
+  {
+   "contains": "Convinced a hesitant hospital group to s",
+   "must": [
+    "skl:4.A.4.a.6"
+   ],
+   "ok": [
+    "skl:2.B.1.c",
+    "skl:2.B.1.d",
+    "skl:2.C.1.d"
+   ]
+  },
+  {
+   "contains": "Visited 15 distributors every month and ",
+   "must": [
+    "skl:4.A.4.a.4"
+   ],
+   "ok": [
+    "skl:2.C.1.d",
+    "skl:4.A.4.a.3"
+   ]
+  },
+  {
+   "contains": "Set the quarterly targets for a team of ",
+   "must": [
+    "skl:4.A.4.b.4"
+   ],
+   "ok": [
+    "skl:4.A.2.b.4",
+    "skl:2.B.5.d",
+    "skl:4.A.4.b.1",
+    "skl:4.A.4.c.3"
+   ]
+  },
+  {
+   "contains": "Studied which products sold in which cit",
+   "must": [
+    "skl:4.A.2.a.4"
+   ],
+   "ok": [
+    "skl:2.B.5.c",
+    "skl:4.A.2.b.1",
+    "skl:2.C.1.d"
+   ]
+  },
+  {
+   "contains": "Built a pitch for each big client around",
+   "must": [
+    "skl:4.A.4.a.3"
+   ],
+   "ok": [
+    "skl:4.A.4.a.6",
+    "skl:4.A.2.b.2"
+   ]
+  },
+  {
+   "contains": "Gave honest advice to clients, even when",
+   "must": [
+    "skl:4.A.4.b.6"
+   ],
+   "ok": [
+    "skl:2.B.1.f",
+    "skl:2.C.1.e"
+   ]
+  },
+  {
+   "contains": "Won the regional star award in 2023.",
+   "must": [],
+   "ok": []
+  }
+ ]
+}

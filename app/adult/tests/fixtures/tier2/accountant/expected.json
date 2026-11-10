@@ -1,0 +1,75 @@
+{
+ "id": "accountant",
+ "shape": "Accountant; Indian tax terms; one decoy",
+ "lines": [
+  {
+   "contains": "Reconciled 14 bank accounts every month ",
+   "must": [
+    "skl:4.A.2.a.2"
+   ],
+   "ok": [
+    "skl:2.C.1.c",
+    "skl:2.C.4.a",
+    "skl:4.A.2.a.3"
+   ]
+  },
+  {
+   "contains": "Closed the books in five working days in",
+   "must": [
+    "skl:4.A.2.b.6"
+   ],
+   "ok": [
+    "skl:2.B.5.a",
+    "skl:4.A.2.b.5"
+   ]
+  },
+  {
+   "contains": "Prepared the annual budget with the plan",
+   "must": [
+    "skl:2.B.5.b"
+   ],
+   "ok": [
+    "skl:2.C.1.c",
+    "skl:4.A.4.c.3",
+    "skl:4.A.2.b.4"
+   ]
+  },
+  {
+   "contains": "Checked supplier invoices against purcha",
+   "must": [
+    "skl:4.A.2.a.3"
+   ],
+   "ok": [
+    "skl:4.A.2.a.2",
+    "skl:4.A.1.b.1"
+   ]
+  },
+  {
+   "contains": "Helped the auditors with their requests ",
+   "must": [
+    "skl:4.A.3.b.6"
+   ],
+   "ok": [
+    "skl:4.A.4.a.3",
+    "skl:4.A.4.c.1",
+    "skl:4.A.2.a.3"
+   ]
+  },
+  {
+   "contains": "Worked out the GST and TDS due each mont",
+   "must": [
+    "skl:2.C.1.c"
+   ],
+   "ok": [
+    "skl:2.C.8.b",
+    "skl:4.A.2.a.2",
+    "skl:4.A.2.a.3"
+   ]
+  },
+  {
+   "contains": "Attended the finance team offsite every ",
+   "must": [],
+   "ok": []
+  }
+ ]
+}

@@ -1,0 +1,76 @@
+{
+ "id": "eng_lead",
+ "shape": "Software team lead; engineering lines; one decoy",
+ "lines": [
+  {
+   "contains": "Led a team of seven engineers through a ",
+   "must": [
+    "skl:4.A.4.b.4"
+   ],
+   "ok": [
+    "skl:4.A.4.b.1",
+    "skl:4.A.4.b.2",
+    "skl:2.B.5.d"
+   ]
+  },
+  {
+   "contains": "Tracked down a memory leak that crashed ",
+   "must": [
+    "skl:2.B.3.k"
+   ],
+   "ok": [
+    "skl:2.B.2.i",
+    "skl:4.A.2.b.1"
+   ]
+  },
+  {
+   "contains": "Reviewed every pull request from the jun",
+   "must": [
+    "skl:4.A.4.b.5"
+   ],
+   "ok": [
+    "skl:4.A.4.b.3",
+    "skl:2.B.1.e",
+    "skl:4.A.4.b.6"
+   ]
+  },
+  {
+   "contains": "Hired four engineers after reading 200 C",
+   "must": [
+    "skl:4.A.4.c.2"
+   ],
+   "ok": [
+    "skl:2.C.1.f",
+    "skl:4.A.2.a.1"
+   ]
+  },
+  {
+   "contains": "Got product, design and QA to agree one ",
+   "must": [
+    "skl:4.A.4.b.1"
+   ],
+   "ok": [
+    "skl:2.B.1.b",
+    "skl:2.B.1.d",
+    "skl:4.A.4.a.4",
+    "skl:4.A.2.b.5"
+   ]
+  },
+  {
+   "contains": "Wrote the runbook for on-call so that ne",
+   "must": [
+    "skl:4.A.3.b.6"
+   ],
+   "ok": [
+    "skl:2.A.1.c",
+    "skl:2.B.1.e",
+    "skl:4.A.4.b.3"
+   ]
+  },
+  {
+   "contains": "Part of the internal hackathon team.",
+   "must": [],
+   "ok": []
+  }
+ ]
+}

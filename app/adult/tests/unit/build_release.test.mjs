@@ -16,11 +16,12 @@ const REL = 'fixture-rel-1';
 
 function makeRepo() {
   const r = mkdtempSync(join(tmpdir(), 'mw-adult-build-'));
-  cpSync(join(ROOT, 'app', 'adult'), join(r, 'app', 'adult'), { recursive: true, filter: s => !s.includes(join('adult', 'tests')) });
+  cpSync(join(ROOT, 'app', 'adult'), join(r, 'app', 'adult'), { recursive: true, filter: s => !s.includes(join('adult', 'tests')) && !s.includes('node_modules') && !s.includes('model_cache') });   // (the tier 2 model cache is 23 MB and the tool's packages 700 MB)
   cpSync(join(ROOT, 'matcher'), join(r, 'matcher'), { recursive: true, filter: s => !s.includes(join('matcher', 'tests')) });
   cpSync(join(ROOT, 'contracts'), join(r, 'contracts'), { recursive: true, filter: s => !s.includes('node_modules') });
   const g = join(r, 'data', 'graph'); mkdirSync(join(g, 'slices'), { recursive: true });
   cpSync(join(ROOT, 'data', 'graph', 'graph_release.py'), join(g, 'graph_release.py'));
+  cpSync(join(ROOT, 'data', 'graph', 'vec_texts.py'), join(g, 'vec_texts.py'));
   const ids = [];
   for (const f of readdirSync(join(FIX, 'slices'))) {
     const s = JSON.parse(readFileSync(join(FIX, 'slices', f), 'utf8'));
@@ -56,6 +57,10 @@ test('a release build unpacks the accepted slice pack into raw .json files and s
     assert.equal(man.release_id, REL); assert.equal(man.dev_build, false); assert.equal(man.graph.slices, 2);
     assert.ok(!Object.keys(man.graph.files).some(k => k.startsWith('slices/')), 'one folder hash, not one hash per slice');
     assert.ok(!existsSync(join(out, '.gitignore')), 'the git-ignore rule for work/ lives in hosting/.gitignore');
+    // S5: this graph has no skill vectors, so the build says tier 2 is off and the page does not offer it; the build itself still works
+    assert.equal(man.tier2.available, false); assert.match(man.tier2.reason, /skill_vecs/); assert.match(b.stdout, /tier 2 .* is NOT in this build/);
+    assert.ok(!existsSync(join(out, 'models')), 'no model files without tier 2');
+    assert.ok(!existsSync(join(out, 'tiers.html')), 'a release never carries the developer page');
   } finally { rmSync(r, { recursive: true, force: true }); }
 });
 

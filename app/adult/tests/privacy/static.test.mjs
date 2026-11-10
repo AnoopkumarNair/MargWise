@@ -32,7 +32,7 @@ test('the only network calls: a GET for a static file in data.js, and the accoun
   for (const [f, s] of src) {
     assert.doesNotMatch(s, /\b(XMLHttpRequest|sendBeacon|WebSocket|EventSource|RTCPeerConnection|importScripts)\b/, f + ' can send');
     assert.doesNotMatch(s, /navigator\.share|new Request\(|FormData|\.postMessage\(/, f + ' can send or post');
-    if (f !== 'data.js' && f !== 'account/api.js') assert.doesNotMatch(s, /\bfetch\s*\(/, f + ' calls fetch');
+    if (!['data.js', 'account/api.js', 'intake_embed.js'].includes(f)) assert.doesNotMatch(s, /\bfetch\s*\(/, f + ' calls fetch');
   }
   const a = src.get('account/api.js');
   assert.equal((a.match(/\bfetch\b/g) || []).length, 1, 'api.js has one fetch');
@@ -61,8 +61,34 @@ test('imports and script loads are same-origin: no CDN, no remote URL, no eval',
 test('the resume text is passed only to the reader, and the file only to intake_file.js', () => {
   const readers = [...src].filter(([, s]) => /readResume\s*\(/.test(s)).map(([f]) => f).filter(f => !f.startsWith('intake/'));
   assert.deepEqual(readers, ['intake_read.js']);
-  const arr = [...src].filter(([, s]) => /arrayBuffer\s*\(|FileReader|\.files\b/.test(s)).map(([f]) => f).sort();
+  // (intake_embed.js reads the bytes of the model and the runtime from this site, not a person's file: see the tier 2 test below)
+  const arr = [...src].filter(([f, s]) => f !== 'intake_embed.js' && /arrayBuffer\s*\(|FileReader|\.files\b/.test(s)).map(([f]) => f).sort();
   assert.deepEqual(arr, ['intake_file.js', 'screens/intake.js']);
+});
+
+// S5 (T4.5, tier 2): the on-device model. The sentences of the resume go into the model in the page; no request is built from them.
+test('tier 2: one file loads the library, every request is a plain GET of a fixed URL, and the pure part cannot reach out', () => {
+  const embed = src.get('intake_embed.js');
+  const importers = [...src].filter(([, s]) => /vendor\/transformers/.test(s)).map(([f]) => f);
+  assert.deepEqual(importers, ['intake_embed.js'], 'only intake_embed.js names the vendored library');
+  // every fetch in it: a GET with credentials omitted, and a URL made only from constants, the build's manifest and the graph base
+  const calls = [...embed.matchAll(/\bfetch\(([^;]*?)\)(?=[.;,\s])/g)].map(m => m[1]);
+  assert.ok(calls.length >= 3, 'fetch calls: ' + calls.length);
+  for (const c of calls) assert.doesNotMatch(c, /lines|text|sourceLine|\.line\b|exclude/, 'a fetch URL must not be built from the resume: ' + c);
+  assert.doesNotMatch(embed, /\b(method|body)\s*:/, 'no fetch in intake_embed.js has a method or a body');
+  assert.match(embed, /credentials: 'omit'/);
+  assert.match(embed, /env\.allowRemoteModels = false/, 'the library may not read a remote model');
+  assert.match(embed, /ort\.numThreads = 1; ort\.proxy = false/, 'one thread, no worker');
+  assert.match(embed, /env\.useWasmCache = false/, 'no blob: copy of the runtime');
+  // the dictionary-free logic can only compute: no network, no storage, no DOM, no import of anything else
+  const t2 = src.get('intake/tier2.js');
+  assert.doesNotMatch(t2, /\b(fetch|XMLHttpRequest|localStorage|sessionStorage|indexedDB|document|window|navigator|import\()/);
+  assert.deepEqual([...t2.matchAll(/from '([^']+)'/g)].map(m => m[1]).sort(), ['./lines.js', './roles.js']);
+  // the confirm screen loads the model only through the button's handler
+  assert.doesNotMatch(src.get('screens/confirm.js'), /findMoreSkills|vendor\/transformers/);
+  const more = src.get('screens/confirm_more.js');
+  assert.equal((more.match(/findMoreSkills\(/g) || []).length, 1);
+  assert.ok(more.indexOf('findMoreSkills(') > more.indexOf("btn.addEventListener('click'"), 'findMoreSkills is called only inside the click handler');
 });
 
 test('the profile is built from ids and bands: buildProfile never reads titles or source lines', () => {

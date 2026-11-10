@@ -1,0 +1,79 @@
+{
+ "id": "site_coordinator",
+ "shape": "Construction project coordinator; site work; one decoy",
+ "lines": [
+  {
+   "contains": "Kept a 24-month tower project on schedul",
+   "must": [
+    "skl:4.A.2.b.5"
+   ],
+   "ok": [
+    "skl:4.A.2.b.6",
+    "skl:2.B.5.a",
+    "skl:2.C.3.d"
+   ]
+  },
+  {
+   "contains": "Inspected rebar and shuttering before ev",
+   "must": [
+    "skl:4.A.1.b.2"
+   ],
+   "ok": [
+    "skl:2.B.3.m",
+    "skl:2.C.3.d",
+    "skl:4.A.2.a.3"
+   ]
+  },
+  {
+   "contains": "Read the structural drawings and told th",
+   "must": [
+    "skl:4.A.4.a.1"
+   ],
+   "ok": [
+    "skl:2.C.3.d",
+    "skl:2.C.3.b",
+    "skl:2.B.1.e",
+    "skl:4.A.4.b.4"
+   ]
+  },
+  {
+   "contains": "Agreed rates with the steel supplier and",
+   "must": [
+    "skl:2.B.1.d"
+   ],
+   "ok": [
+    "skl:2.B.5.b",
+    "skl:4.A.4.a.3",
+    "skl:2.B.5.c"
+   ]
+  },
+  {
+   "contains": "Counted cement, steel and sand on site e",
+   "must": [
+    "skl:2.B.5.c"
+   ],
+   "ok": [
+    "skl:4.A.4.c.3",
+    "skl:4.A.2.b.6",
+    "skl:4.A.1.b.3"
+   ]
+  },
+  {
+   "contains": "Kept the safety register and ran the Mon",
+   "must": [
+    "skl:2.C.8.a"
+   ],
+   "ok": [
+    "skl:4.A.3.b.6",
+    "skl:2.B.1.e",
+    "skl:4.A.4.b.3",
+    "skl:2.C.6"
+   ]
+  },
+  {
+   "contains": "Based on site in Hyderabad.",
+   "must": [],
+   "ok": []
+  }
+ ]
+}

@@ -19,6 +19,10 @@ Accounts (S4): the page needs the public Turnstile site key. Set it when buildin
 (the key is public; the secret stays on the server). Without it a --dev build has no human check and the server's test setting must be on;
 a release build without it shows "sign-up is not open yet". The build also publishes ids.json (every id the profile may hold) and a copy of
 data/graph/id_registry.json beside the graph files, because the server reads them to check and to map saved ids (deviations D32).
+Tier 2 (S5, T4.5): when the pinned model is in the git-ignored cache (python3 app/adult/tools/fetch_model.py) and the graph has skill_vecs.json and
+skill_vecs.bin, the build copies the model into work/models/, checks that no file is over the 25 MiB Cloudflare Pages limit, and writes the real
+download size into manifest.json (`tier2`). The page shows that size before it loads anything. Without the model or the vectors the build still
+works, says so, and the page does not offer tier 2.
 Uses only the Python standard library.
 """
 import argparse, glob, hashlib, json, os, re, shutil, sys
@@ -32,7 +36,14 @@ FIXTURES = os.path.join(APP, 'dev', 'fixtures')
 RELEASE_RE = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')
 ONET_RE = re.compile(r'^onet-([0-9]+)-([0-9]+)-[0-9a-f]+$')   # a slice's release id, such as onet-31-0-6148d5ec
 sys.path.insert(0, os.path.join(ROOT, 'data', 'graph'))
+sys.path.insert(0, os.path.join(APP, 'tools'))
 import graph_release  # noqa: E402  (PACK, read_pack, slices_sha: the release pack format)
+import fetch_model  # noqa: E402  (the pinned model: its manifest and the check of the cache)
+import vec_texts  # noqa: E402  (check that skill_vecs are current)
+VENDOR = os.path.join(ROOT, 'hosting', 'public', 'vendor')
+FILE_LIMIT = 25 * 1024 * 1024   # Cloudflare Pages: at most 25 MiB per file
+# What the page downloads when a person agrees to tier 2, besides the model files: the library, its WebAssembly runtime and the skill vectors.
+TIER2_LIB = ['transformers/transformers.min.js', 'transformers/ort-wasm-simd-threaded.mjs', 'transformers/ort-wasm-simd-threaded.wasm']
 
 
 def sha(path):
@@ -86,9 +97,13 @@ def graph_files(gsrc, is_release):
     """{relative path: bytes} for the graph files: slices/<soc>.json, skills_index.json, titles.json. A release unpacks its slice pack and
     checks the unpacked slices against the folder hash in its manifest."""
     out = {}
-    for name in ('skills_index.json', 'titles.json'):
+    for name in ('skills_index.json', 'titles.json') + graph_release.VECS:
         if os.path.exists(os.path.join(gsrc, name)):
             out[name] = open(os.path.join(gsrc, name), 'rb').read()
+    if is_release:   # the vectors are optional in a release; when its manifest lists them they must match
+        want = json.load(open(os.path.join(gsrc, 'manifest.json'), encoding='utf8'))['files']
+        for name in graph_release.VECS:
+            if name in want and (name not in out or shab(out[name]) != want[name]): die('graph file %s does not match its recorded hash. Re-accept the release.' % name)
     if is_release:
         packed = graph_release.read_pack(os.path.join(gsrc, graph_release.PACK))
         want = json.load(open(os.path.join(gsrc, 'manifest.json'), encoding='utf8'))['files'].get('slices (folder)')
@@ -141,6 +156,52 @@ def collect_intake(dev):
     return {'intake/read.js': os.path.join(FIXTURES, 'intake_stub', 'read.js')}, 'app/adult/dev/fixtures/intake_stub/read.js (STUB)'
 
 
+def tier2_setup(gdata, gsrc, release_id, is_fixture, is_release):
+    """Tier 2 (T4.5). Copies the pinned model into OUT/models/ and returns the `tier2` entry of manifest.json: what the page needs to offer it
+    and to show its real download size first. When anything is missing, returns {'available': False, 'reason': ...} and the page does not offer
+    tier 2; the build itself still succeeds. The size is the sum of the real files the page downloads, so the screen cannot say something else."""
+    why = None
+    m = fetch_model.load_manifest()
+    problems = []
+    if is_fixture: why = 'this build uses the test fixtures, which have no skill vectors'
+    elif not all(n in gdata for n in graph_release.VECS): why = 'the graph has no skill_vecs.json and skill_vecs.bin (python3 app/adult/tools/embed/embed_skills.mjs makes them)'
+    elif not is_release and vec_texts.check(gsrc): why = 'skill_vecs are stale: ' + vec_texts.check(gsrc)[0]
+    if not why:
+        problems = fetch_model.verify(m)
+        if problems: why = 'the model is not in app/adult/tools/model_cache/ or differs from tier2_model.json (run python3 app/adult/tools/fetch_model.py): ' + problems[0]
+    if not why:
+        for rel in TIER2_LIB:
+            if not os.path.exists(os.path.join(VENDOR, rel)): why = 'the vendored library file hosting/public/vendor/%s is missing' % rel
+    if why:
+        print('note: tier 2 (reading with the on-device model) is NOT in this build: ' + why)
+        return {'available': False, 'reason': why}
+    files = []   # what the page downloads when a person agrees, in the order it asks
+    for rel in TIER2_LIB:
+        files.append({'url': '/vendor/' + rel, 'bytes': os.path.getsize(os.path.join(VENDOR, rel))})
+    mdir = os.path.join(OUT, 'models', m['model_id'])
+    for e in m['files']:
+        src = os.path.join(fetch_model.CACHE, m['model_id'], *e['path'].split('/'))
+        dst = os.path.join(mdir, *e['path'].split('/'))
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copyfile(src, dst)
+        if e.get('load'): files.append({'url': 'models/%s/%s' % (m['model_id'], e['path']), 'bytes': e['bytes']})
+    for n in m.get('licence_files', []): shutil.copyfile(os.path.join(APP, 'tools', n), os.path.join(mdir, n))
+    for n in graph_release.VECS: files.append({'url': 'graph/%s/%s' % (release_id, n), 'bytes': len(gdata[n])})
+    vm = json.loads(gdata['skill_vecs.json'])
+    if vm.get('model') != m['model_id'] or vm.get('revision') != m['revision']: die('skill_vecs.json was made with %s @ %s, but the pinned model is %s @ %s. Re-run embed_skills.mjs.' % (vm.get('model'), vm.get('revision'), m['model_id'], m['revision']))
+    return {'available': True, 'model': m['model_id'], 'revision': m['revision'], 'licence': m['licence'], 'dtype': m['dtype'], 'pooling': m['pooling'], 'dims': m['dims'],
+            'recipe': vm.get('recipe'), 'files': files, 'total_bytes': sum(f['bytes'] for f in files)}
+
+
+def check_file_sizes():
+    """No file the site serves may be over the Cloudflare Pages limit of 25 MiB: the built app, its models, and the vendored libraries."""
+    for base in (OUT, VENDOR):
+        for r, _, fs in os.walk(base):
+            for f in fs:
+                p = os.path.join(r, f)
+                if os.path.getsize(p) > FILE_LIMIT: die('%s is %d bytes, over the 25 MiB limit of Cloudflare Pages' % (os.path.relpath(p, ROOT), os.path.getsize(p)))
+
+
 def main():
     ap = argparse.ArgumentParser(description='Build the adult app into hosting/public/work/')
     ap.add_argument('--dev', action='store_true', help="build from the working data files (never deploy this); stamps 'dev-unaccepted'")
@@ -169,7 +230,7 @@ def main():
 
     # 1. the app: everything at the top of app/adult/ that the browser needs, and screens/
     for name in ('styles.css', 'notice.md', 'app.js', 'dom.js', 'lookup.js', 'matcher_adapter.js', 'state.js', 'data.js', 'footer.js',
-                 'intake_file.js', 'intake_profile.js', 'intake_read.js', 'constraints_model.js', 'today_model.js'):
+                 'intake_file.js', 'intake_embed.js', 'intake_profile.js', 'intake_read.js', 'constraints_model.js', 'today_model.js'):
         put(name, os.path.join(APP, name))
     for p in sorted(glob.glob(os.path.join(APP, 'screens', '*.js'))):
         put('screens/' + os.path.basename(p), p)
@@ -190,6 +251,12 @@ def main():
     # 1b. the resume reader (S3): app/adult/intake/*.js, or the stand-in reader in a dev build while the real one does not exist
     for rel, src in sorted(mfiles_intake.items()):
         put(rel, src)
+
+    # 1c. the developer page that shows tier 1 and tier 2 side by side (T4.5): /work/tiers.html. Only in a --dev build: a release never carries it.
+    if args.dev:
+        for name in ('tiers.html', 'tiers.js'):
+            src = open(os.path.join(APP, 'dev', name), encoding='utf8').read().replace('__RELEASE__', release_id)
+            open(os.path.join(OUT, name), 'w', encoding='utf8').write(src)   # at the top of work/, so manifest.json and the modules are one folder away
 
     # 2. contracts the page uses (profile check) and the matcher
     for name in ('validate_lib.js', 'profile.schema.json'):
@@ -240,8 +307,9 @@ def main():
         shutil.copyfile(reg, rp)
         gout['id_registry.json'] = sha(rp)
 
+    tier2 = tier2_setup(gdata, gsrc, release_id, is_fixture, not args.dev)
     manifest = {
-        'app': 'adult', 'slice': 'S4', 'release_id': release_id, 'dev_build': args.dev, 'fixture_data': is_fixture,
+        'app': 'adult', 'slice': 'S5', 'release_id': release_id, 'dev_build': args.dev, 'fixture_data': is_fixture,
         'built_at': None,  # no clock, so a rebuild of the same inputs gives the same bytes
         'sources': [srcs[k] for k in sorted(srcs)],
         # the O*NET version the slices were built from (their release id 'onet-31-0-<hash>'), so a dev build's footer can show it too
@@ -252,13 +320,16 @@ def main():
                                 **{'slices (folder)': graph_release.slices_sha({k[7:]: gdata[k] for k in slice_names})})},
         'matcher': {'source': mlabel, 'sha256': app_files['matcher/match.js']},
         'intake': {'source': ilabel, 'sha256': app_files['intake/read.js']},
+        'tier2': tier2,
         'app_files': app_files,
     }
     json.dump(manifest, open(os.path.join(OUT, 'manifest.json'), 'w', encoding='utf8'), indent=1, sort_keys=True)
+    check_file_sizes()
     if args.dev:
         open(os.path.join(OUT, '.gitignore'), 'w').write('# dev build output: never commit. A release build (no --dev) does not write this file.\n*\n')
     size = sum(os.path.getsize(os.path.join(OUT, f)) for f in app_files)
     print('built hosting/public/work/  release=%s  graph=%s  matcher=%s  intake=%s  app=%d files, %d KB' % (release_id, glabel, mlabel, ilabel, len(app_files), size // 1024))
+    if tier2['available']: print('tier 2: on (model %s, download %.1f MB: library, runtime, model and vectors)' % (tier2['model'], tier2['total_bytes'] / 1e6))
 
 
 if __name__ == '__main__':

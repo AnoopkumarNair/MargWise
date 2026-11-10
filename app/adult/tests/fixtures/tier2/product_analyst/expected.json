@@ -1,0 +1,79 @@
+{
+ "id": "product_analyst",
+ "shape": "Product analyst at a start-up; one decoy",
+ "lines": [
+  {
+   "contains": "Found why trial users dropped out in the",
+   "must": [
+    "skl:4.A.2.a.4"
+   ],
+   "ok": [
+    "skl:2.A.2.a",
+    "skl:2.B.2.i",
+    "skl:4.A.1.a.1"
+   ]
+  },
+  {
+   "contains": "Proposed a new onboarding flow, and the ",
+   "must": [
+    "skl:4.A.2.b.2"
+   ],
+   "ok": [
+    "skl:4.A.2.b.1",
+    "skl:2.B.3.b",
+    "skl:4.A.2.b.4",
+    "skl:2.B.2.i"
+   ]
+  },
+  {
+   "contains": "Explained to the founders why the Diwali",
+   "must": [
+    "skl:4.A.4.a.1"
+   ],
+   "ok": [
+    "skl:4.A.4.b.6",
+    "skl:2.A.1.d",
+    "skl:4.A.4.a.2"
+   ]
+  },
+  {
+   "contains": "Weighed three vendor options on cost, ri",
+   "must": [
+    "skl:2.B.4.e"
+   ],
+   "ok": [
+    "skl:4.A.2.b.1",
+    "skl:4.A.2.a.1",
+    "skl:2.A.2.a",
+    "skl:4.A.4.b.6"
+   ]
+  },
+  {
+   "contains": "Wrote the product requirement documents ",
+   "must": [
+    "skl:2.A.1.c"
+   ],
+   "ok": [
+    "skl:4.A.3.b.6",
+    "skl:2.B.3.a"
+   ]
+  },
+  {
+   "contains": "Learned a new analytics tool in a weeken",
+   "must": [
+    "skl:2.A.2.b"
+   ],
+   "ok": [
+    "skl:2.A.2.c",
+    "skl:4.A.2.b.3",
+    "skl:4.A.4.b.3",
+    "skl:2.B.1.e"
+   ]
+  },
+  {
+   "contains": "Reports to the Head of Product.",
+   "must": [],
+   "ok": []
+  }
+ ]
+}

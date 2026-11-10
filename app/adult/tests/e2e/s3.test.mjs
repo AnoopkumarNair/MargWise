@@ -217,10 +217,12 @@ test('the CSP allows the PDF worker from this site only, and still blocks inline
   const ctx = await browser.newContext(); const page = await ctx.newPage();
   const res = await page.goto(base + '/work/');
   const csp = res.headers()['content-security-policy'].split(', ').find(p => p.includes("object-src 'none'"));
-  assert.match(csp, /worker-src 'self'/); assert.match(csp, /script-src 'self' https:\/\/challenges\.cloudflare\.com;/); assert.match(csp, /connect-src 'self' https:\/\/challenges\.cloudflare\.com;/);
+  assert.match(csp, /worker-src 'self'/); assert.match(csp, /script-src 'self' 'wasm-unsafe-eval' https:\/\/challenges\.cloudflare\.com;/); assert.match(csp, /connect-src 'self' https:\/\/challenges\.cloudflare\.com;/);
   // S4 (D37): Turnstile's host is the only remote source, for scripts, connections and frames
   assert.deepEqual([...new Set(csp.match(/https?:\/\/[^\s;]+/g))], ['https://challenges.cloudflare.com']);
-  assert.ok(!/unsafe-inline|unsafe-eval|wasm-unsafe-eval|blob:/.test(csp), 'no inline, eval or blob sources: ' + csp);
+  // S5 (D45): 'wasm-unsafe-eval' is allowed so the on-device model can run WebAssembly. It is not 'unsafe-eval': eval() and new Function() stay blocked.
+  assert.ok(!/unsafe-inline|blob:/.test(csp) && !/'unsafe-eval'/.test(csp), 'no inline, eval or blob sources: ' + csp);
+  assert.deepEqual(csp.match(/'(?:wasm-)?unsafe-[a-z-]+'/g), ["'wasm-unsafe-eval'"], 'the only unsafe keyword is wasm-unsafe-eval');
   await ctx.close();
 });
 

@@ -1,0 +1,79 @@
+{
+ "id": "ops_manager",
+ "shape": "Call-centre operations manager; bullet lines; one decoy",
+ "lines": [
+  {
+   "contains": "Trained 30 new hires every quarter on ca",
+   "must": [
+    "skl:4.A.4.b.3"
+   ],
+   "ok": [
+    "skl:2.B.1.e",
+    "skl:2.C.6"
+   ]
+  },
+  {
+   "contains": "Planned the weekly shift roster for 60 a",
+   "must": [
+    "skl:4.A.2.b.5"
+   ],
+   "ok": [
+    "skl:2.B.5.d",
+    "skl:4.A.4.b.1",
+    "skl:4.A.2.b.6",
+    "skl:2.B.5.a"
+   ]
+  },
+  {
+   "contains": "Handled escalated customer complaints an",
+   "must": [
+    "skl:4.A.4.a.7"
+   ],
+   "ok": [
+    "skl:2.C.1.e",
+    "skl:2.B.1.f",
+    "skl:2.B.1.d"
+   ]
+  },
+  {
+   "contains": "Coached team leads on how to give feedba",
+   "must": [
+    "skl:4.A.4.b.5"
+   ],
+   "ok": [
+    "skl:4.A.4.b.4",
+    "skl:2.B.5.d",
+    "skl:4.A.4.b.3"
+   ]
+  },
+  {
+   "contains": "Cut average handling time from nine minu",
+   "must": [
+    "skl:2.B.4.h"
+   ],
+   "ok": [
+    "skl:2.B.4.g",
+    "skl:4.A.2.a.4",
+    "skl:2.B.2.i",
+    "skl:4.A.2.b.1"
+   ]
+  },
+  {
+   "contains": "Negotiated a new service contract with t",
+   "must": [
+    "skl:2.B.1.d"
+   ],
+   "ok": [
+    "skl:4.A.4.a.7",
+    "skl:4.A.4.a.3",
+    "skl:2.B.5.b",
+    "skl:4.A.2.b.1"
+   ]
+  },
+  {
+   "contains": "Responsible for the day-to-day running o",
+   "must": [],
+   "ok": []
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "id": "teacher",
+ "shape": "School teacher; education sector; one decoy",
+ "lines": [
+  {
+   "contains": "Taught Class 10 mathematics to 120 stude",
+   "must": [
+    "skl:2.C.6"
+   ],
+   "ok": [
+    "skl:4.A.4.b.3",
+    "skl:2.B.1.e",
+    "skl:2.C.4.a"
+   ]
+  },
+  {
+   "contains": "Wrote a new set of weekly worksheets tha",
+   "must": [
+    "skl:2.C.6"
+   ],
+   "ok": [
+    "skl:2.A.1.c",
+    "skl:4.A.2.b.2",
+    "skl:4.A.3.b.6"
+   ]
+  },
+  {
+   "contains": "Sat with parents of struggling students ",
+   "must": [
+    "skl:4.A.4.a.3"
+   ],
+   "ok": [
+    "skl:4.A.4.a.4",
+    "skl:2.B.1.a",
+    "skl:2.B.1.b",
+    "skl:4.A.4.b.5"
+   ]
+  },
+  {
+   "contains": "Spotted two students who were being bull",
+   "must": [
+    "skl:2.B.1.a"
+   ],
+   "ok": [
+    "skl:4.A.4.a.5",
+    "skl:2.C.4.e",
+    "skl:2.B.1.f"
+   ]
+  },
+  {
+   "contains": "Organised the school science fair with 4",
+   "must": [
+    "skl:4.A.4.b.1"
+   ],
+   "ok": [
+    "skl:4.A.2.b.6",
+    "skl:4.A.2.b.5",
+    "skl:2.B.1.b"
+   ]
+  },
+  {
+   "contains": "Guided five new teachers through their f",
+   "must": [
+    "skl:4.A.4.b.5"
+   ],
+   "ok": [
+    "skl:4.A.4.b.3",
+    "skl:2.B.1.e"
+   ]
+  },
+  {
+   "contains": "Hobbies include cricket and trekking.",
+   "must": [],
+   "ok": []
+  }
+ ]
+}

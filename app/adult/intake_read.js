@@ -4,7 +4,8 @@
 //     occCandidates: [{ occ, label }], startYear, endYear, current, sourceLine, ... }], skills: [{ id, label, sourceLine, roleIndex, lastYear, count }],
 //     creds: [{ name, sourceLine }], warnings: [{ code, message }] }
 //   suggestChips(occSlice, presentIds) -> [{ id, label, kind, w }]: the occupation's usual skills the person has not got yet
-// If the reader changes shape, change this file only. The resume text goes into readResume() and nowhere else.
+// If the reader changes shape, change this file only. The resume text goes into readResume() and, when this build offers tier 2,
+// into achievementLines() (intake/tier2.js), and nowhere else.
 import { loadSkillsIndex, loadTitles, loadOccupations } from './data.js';
 import { toConfirmModel } from './intake_profile.js';
 
@@ -35,7 +36,20 @@ export async function readResumeText(text) {
   const t0 = performance.now();
   const found = mod.readResume(text, { skillsIndex, titles, now: currentYear(), occupations: occs.map(o => ({ id: o.id, label: o.label })) });
   READ.ms = Math.round((performance.now() - t0) * 10) / 10;
-  return toConfirmModel(found, occs, currentYear());
+  const model = toConfirmModel(found, occs, currentYear());
+  model.achievements = await achievementLines(text, found);
+  return model;
+}
+
+// The sentences tier 2 would compare, kept in memory with the confirm model (like the source lines) and only when this build offers tier 2.
+// They are the resume's own lines (each cut to 300 characters); they are never stored or sent, and the model never sees them before the person agrees.
+async function achievementLines(text, found) {
+  try {
+    const em = await import('./intake_embed.js');
+    if (!(await em.tier2Info()).available) return [];
+    const t2 = await import('./intake/tier2.js');
+    return t2.achievementLines(text, { nowYear: currentYear(), roles: found.roles });
+  } catch (e) { return []; }   // tier 2 is optional: tier 1 is the same without it
 }
 
 // "People in your role usually have…": the occupation's top 12 needs not yet in the list. Items are { id, label }.

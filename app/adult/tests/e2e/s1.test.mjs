@@ -255,7 +255,7 @@ test('the CSP header on /work/ blocks inline script and inline style', async () 
   assert.match(csp, /default-src 'self'/); assert.match(csp, /frame-ancestors 'none'/); assert.match(csp, /connect-src 'self'/); assert.match(csp, /style-src 'self'(;|,)/);
   const policies = csp.split(', ');
   const work = policies.find(p => p.includes("object-src 'none'"));
-  assert.ok(work && !work.includes('unsafe-inline') && !work.includes('unsafe-eval'));
+  assert.ok(work && !work.includes('unsafe-inline') && !/'unsafe-eval'/.test(work), 'no inline script or style, and no eval (S5: the one addition is wasm-unsafe-eval, for the on-device model; it allows WebAssembly and not eval)');
   await page.locator('h1').waitFor();
   const r = await page.evaluate(() => new Promise(done => {
     const seen = [];

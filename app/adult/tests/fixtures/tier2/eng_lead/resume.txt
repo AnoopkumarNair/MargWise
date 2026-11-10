@@ -1,0 +1,26 @@
+RAHUL SUBRAMANYAN-DEMO
+Engineering Lead
+Hyderabad | rahul.demo.test@example.com | +91 90000 00008
+
+SUMMARY
+Engineering lead for a payments platform, fourteen years in software.
+
+EXPERIENCE
+
+Engineering Lead
+Quillstone Payments, Hyderabad
+May 2019 - Present
+- Led a team of seven engineers through a rewrite of the payments service with zero downtime.
+- Tracked down a memory leak that crashed the app every Friday and fixed it in two days.
+- Reviewed every pull request from the juniors and walked them through better ways to structure the code.
+- Hired four engineers after reading 200 CVs and running the technical rounds.
+- Got product, design and QA to agree one release date and kept to it.
+- Wrote the runbook for on-call so that new engineers could handle incidents alone.
+- Part of the internal hackathon team.
+
+Senior Software Engineer
+Quillstone Payments, Hyderabad
+Jul 2013 - Apr 2019
+
+EDUCATION
+B.E. Computer Science, JNTU Hyderabad, 2012

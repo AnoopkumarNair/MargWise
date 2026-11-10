@@ -13,7 +13,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadNodeEmbedder, MANIFEST } from './node_embedder.mjs';
-import { quantise } from '../../intake/tier2.js';
+import { quantise, EMBED_BATCH } from '../../intake/tier2.js';
 
 const ROOT = fileURLToPath(new URL('../../../../', import.meta.url));
 const GRAPH = join(ROOT, 'data', 'graph');
@@ -27,8 +27,8 @@ try {
   const embed = await loadNodeEmbedder();
   const dims = MANIFEST.dims, scale = 127;
   const data = new Int8Array(t.texts.length * dims);
-  for (let i = 0; i < t.texts.length; i += 16) {
-    const part = t.texts.slice(i, i + 16);
+  for (let i = 0; i < t.texts.length; i += EMBED_BATCH) {   // one text at a time, as the app does (see EMBED_BATCH in intake/tier2.js)
+    const part = t.texts.slice(i, i + EMBED_BATCH);
     const vecs = await embed(part.map(x => x.text));
     vecs.forEach((v, k) => { if (v.length !== dims) throw new Error('the model gave ' + v.length + ' numbers, expected ' + dims); data.set(quantise(v, scale), (i + k) * dims); });
   }

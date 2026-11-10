@@ -1,0 +1,78 @@
+{
+ "id": "hr_exec",
+ "shape": "HR executive; headings in capitals; contact line; one decoy",
+ "lines": [
+  {
+   "contains": "Interviewed about 40 candidates a month ",
+   "must": [
+    "skl:4.A.4.c.2"
+   ],
+   "ok": [
+    "skl:2.C.1.f",
+    "skl:4.A.2.a.1",
+    "skl:2.B.4.e"
+   ]
+  },
+  {
+   "contains": "Ran the induction programme for 120 new ",
+   "must": [
+    "skl:2.C.1.f"
+   ],
+   "ok": [
+    "skl:4.A.4.b.3",
+    "skl:2.C.6",
+    "skl:4.A.4.c.2",
+    "skl:4.A.4.c.1"
+   ]
+  },
+  {
+   "contains": "Mediated between two managers who were n",
+   "must": [
+    "skl:4.A.4.a.7"
+   ],
+   "ok": [
+    "skl:2.B.1.d",
+    "skl:2.B.1.a",
+    "skl:4.A.4.a.4"
+   ]
+  },
+  {
+   "contains": "Prepared the monthly payroll inputs for ",
+   "must": [
+    "skl:4.A.2.a.2"
+   ],
+   "ok": [
+    "skl:2.B.5.b",
+    "skl:2.C.1.c",
+    "skl:4.A.4.c.1",
+    "skl:4.A.2.a.3"
+   ]
+  },
+  {
+   "contains": "Explained the new leave policy to staff ",
+   "must": [
+    "skl:4.A.4.a.1"
+   ],
+   "ok": [
+    "skl:2.B.1.e",
+    "skl:4.A.4.a.2",
+    "skl:2.A.1.d",
+    "skl:4.A.4.b.3"
+   ]
+  },
+  {
+   "contains": "Checked our offer letters and notice-per",
+   "must": [
+    "skl:2.C.8.b"
+   ],
+   "ok": [
+    "skl:4.A.2.a.3"
+   ]
+  },
+  {
+   "contains": "Member of the college cultural committee",
+   "must": [],
+   "ok": []
+  }
+ ]
+}

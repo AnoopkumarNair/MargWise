@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="mw-release" content="__RELEASE__">
+<title>Tiers (dev only)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="wrap" id="main">
+<h1>Tier 1 and tier 2, side by side</h1>
+<p class="hint">A developer page. It is only in a <code>--dev</code> build and is never deployed. Paste resume text. Tier 1 is the dictionary. Tier 2 is the on-device model: it downloads the model only when you press its button.</p>
+<p><label for="text">Resume text</label></p>
+<textarea id="text" rows="14" spellcheck="false" autocomplete="off"></textarea>
+<p>
+<label for="threshold">Tier 2 threshold</label> <input id="threshold" type="number" min="0" max="1" step="0.01" value="0.40" size="5">
+<label for="cap">at most</label> <input id="cap" type="number" min="1" max="100" step="1" value="12" size="3">
+<button type="button" class="btn primary" id="run1">Run tier 1</button>
+<button type="button" class="btn" id="run2" disabled>Run tier 2</button>
+</p>
+<p id="status" class="status" role="status" aria-live="polite"></p>
+<progress id="bar" max="100" value="0" hidden></progress>
+<div class="two" id="cols">
+<section aria-labelledby="h1a"><h2 id="h1a">Tier 1 (dictionary)</h2><p id="t1meta" class="hint"></p><table id="t1"></table></section>
+<section aria-labelledby="h2a"><h2 id="h2a">Tier 2 (suggestions)</h2><p id="t2meta" class="hint"></p><table id="t2"></table></section>
+</div>
+</main>
+<script type="module" src="tiers.js"></script>
+</body>
+</html>
