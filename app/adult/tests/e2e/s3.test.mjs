@@ -223,6 +223,11 @@ test('the CSP allows the PDF worker from this site only, and still blocks inline
   // S5 (D45): 'wasm-unsafe-eval' is allowed so the on-device model can run WebAssembly. It is not 'unsafe-eval': eval() and new Function() stay blocked.
   assert.ok(!/unsafe-inline|blob:/.test(csp) && !/'unsafe-eval'/.test(csp), 'no inline, eval or blob sources: ' + csp);
   assert.deepEqual(csp.match(/'(?:wasm-)?unsafe-[a-z-]+'/g), ["'wasm-unsafe-eval'"], 'the only unsafe keyword is wasm-unsafe-eval');
+  // N10: look at the tokens themselves, so a bare scheme (https:), a wildcard (*, *.example.com) or an extra host in script-src cannot slip past the patterns above
+  const directives = Object.fromEntries(csp.split(';').map(x => x.trim()).filter(Boolean).map(x => { const [name, ...tokens] = x.split(/\s+/); return [name, tokens]; }));
+  assert.deepEqual(directives['script-src'], ["'self'", "'wasm-unsafe-eval'", 'https://challenges.cloudflare.com'], 'script-src is exactly these three sources');
+  for (const [name, tokens] of Object.entries(directives)) for (const t of tokens) assert.ok(!/^(\*|https?:|wss?:|ws:|\*\.\S+)$/.test(t), `${name} has a scheme-only or wildcard source: ${t}`);
+  for (const name of ['script-src', 'worker-src', 'connect-src', 'frame-src']) for (const t of directives[name] || []) assert.ok(t.startsWith("'") || t === 'https://challenges.cloudflare.com', `${name} source ${t} is not this site or Turnstile`);
   await ctx.close();
 });
 

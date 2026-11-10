@@ -11,7 +11,6 @@
  "dims": 384,
  "pooling": "mean",
  "normalize": true,
- "per_file_limit_bytes": 26214400,
  "files": [
   {
    "path": "config.json",

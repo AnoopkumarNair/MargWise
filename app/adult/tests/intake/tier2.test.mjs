@@ -116,12 +116,15 @@ test('suggest: the cap, the per-sentence limit and the order', async () => {
   for (let i = 1; i < a.length; i++) assert.ok(a[i - 1].score > a[i].score || (a[i - 1].score === a[i].score && a[i - 1].id < a[i].id));
 });
 
-test('suggest: a skill with several rows scores as its best row, and only ids from the vectors can come out', async () => {
-  const rows = mkVecs([['skl:x', vecOf('nothing')], ['skl:x', vecOf('negotiat')], ['skl:y', vecOf('budget')]]);
-  const got = await suggest([{ text: 'Negotiated a better price with the supplier.', sourceLine: 's', line: 3 }], { embed, vecs: rows, threshold: 0.9 });
-  assert.deepEqual(got.map(g => [g.id, g.line]), [['skl:x', 3]]);
+test('suggest: only ids from the vectors can come out', async () => {
   const ids = new Set(vecs.ids);
   for (const g of await suggest(achievementLines(RESUME, { nowYear: 2026 }), { embed, vecs, threshold: 0 })) assert.ok(ids.has(g.id));
+});
+
+test('decodeVectors refuses an id that appears twice, as data/graph/vec_texts.py does (N3)', () => {
+  const data = new Int8Array(2 * DIMS);
+  assert.throws(() => decodeVectors(data, { ids: ['skl:x', 'skl:x'], dims: DIMS, scale: 127 }), /lists an id twice/);
+  assert.ok(decodeVectors(data, { ids: ['skl:x', 'skl:y'], dims: DIMS, scale: 127 }));
 });
 
 test('suggest: a skill keeps the best of its sentences and is listed once', async () => {

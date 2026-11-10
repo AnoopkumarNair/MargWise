@@ -147,7 +147,9 @@ jobs:
         run: python3 app/adult/tools/fetch_model.py
       - name: Install the offline embed tool's packages (onnxruntime-node, for the real-model test only)
         working-directory: app/adult/tools/embed
-        run: npm ci
+        # --ignore-scripts: no package may run an install script in CI. onnxruntime-node ships its binding inside the package, and the real-model test
+        # (tier2_model.test.mjs) passes without them (S5 review N12).
+        run: npm ci --ignore-scripts
       - name: Intake and privacy unit tests
         run: |
           dirs=""

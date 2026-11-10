@@ -79,8 +79,8 @@ function worthy(s) {
 }
 
 // ---- vectors --------------------------------------------------------------------------------------------------------------------
-// skill_vecs.bin holds one row of `dims` int8 numbers per entry of skill_vecs.json `ids`, in that order. An id may appear on more than one row
-// (its O*NET description and example phrases); its score is the best of its rows. Each row is the unit vector times `scale`.
+// skill_vecs.bin holds one row of `dims` int8 numbers per entry of skill_vecs.json `ids`, in that order, one row for each id (data/graph/vec_texts.py check()
+// refuses a repeated id, and so does decodeVectors below). Each row is the unit vector times `scale`.
 
 // A unit vector as a row of int8 (what the offline tool writes, and what the tests use for fake vectors).
 export function quantise(vec, scale = 127) {
@@ -95,6 +95,7 @@ export function quantise(vec, scale = 127) {
 export function decodeVectors(bin, meta) {
   if (!meta || !Array.isArray(meta.ids) || !Number.isInteger(meta.dims) || meta.dims < 1 || !(meta.scale > 0)) throw new Error('skill_vecs.json is not valid');
   const bytes = bin instanceof Int8Array ? bin : new Int8Array(bin.buffer ? bin.buffer.slice(bin.byteOffset, bin.byteOffset + bin.byteLength) : bin);
+  if (new Set(meta.ids).size !== meta.ids.length) throw new Error('skill_vecs.json lists an id twice');
   if (bytes.length !== meta.ids.length * meta.dims) throw new Error('skill_vecs.bin has ' + bytes.length + ' bytes, but ' + meta.ids.length + ' ids of ' + meta.dims + ' numbers need ' + meta.ids.length * meta.dims);
   return { ids: meta.ids.slice(), dims: meta.dims, scale: meta.scale, data: bytes };
 }
@@ -144,10 +145,8 @@ export async function suggest(lines, opts) {
     if (!got || got.length !== part.length) throw new Error('tier2: embed returned ' + (got ? got.length : 0) + ' vectors for ' + part.length + ' sentences');
     part.forEach((l, k) => {
       const sims = similarities(unit(got[k]), vecs);
-      // a skill may have several rows (its description and example phrases): its score for this sentence is the best row
-      const top = new Map();
-      for (let r = 0; r < sims.length; r++) if (sims[r] >= threshold && !skip.has(vecs.ids[r]) && !(top.get(vecs.ids[r]) >= sims[r])) top.set(vecs.ids[r], sims[r]);
-      const hits = [...top].map(([id, sc]) => [sc, id]);
+      const hits = [];
+      for (let r = 0; r < sims.length; r++) if (sims[r] >= threshold && !skip.has(vecs.ids[r])) hits.push([sims[r], vecs.ids[r]]);
       hits.sort((a, b) => (b[0] - a[0]) || (a[1] < b[1] ? -1 : 1));
       for (const [score, id] of hits.slice(0, perLine)) {
         const cur = best.get(id);
