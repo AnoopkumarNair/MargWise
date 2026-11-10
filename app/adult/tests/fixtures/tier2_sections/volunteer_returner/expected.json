@@ -1,0 +1,14 @@
+{
+ "id": "volunteer_returner",
+ "shape": "Returning after a career break; the summary and the volunteering section carry the recent work; one decoy interests line",
+ "lines": [
+  { "contains": "Former accounts executive returning to", "must": ["skl:2.B.5.b"], "ok": ["skl:2.C.1.c", "skl:4.A.4.c.3", "skl:4.A.3.b.6"] },
+  { "contains": "Matched supplier invoices with purchas", "must": ["skl:2.C.1.c"], "ok": ["skl:4.A.3.b.6", "skl:4.A.4.c.1", "skl:4.A.4.a.3", "skl:2.C.1.b", "skl:4.A.2.a.3"] },
+  { "contains": "Trained two new clerks to use the acco", "must": ["skl:4.A.4.b.3"], "ok": ["skl:2.B.1.e", "skl:2.C.6", "skl:4.A.4.b.5"] },
+  { "contains": "Taught reading to forty children in th", "must": ["skl:4.A.4.b.3"], "ok": ["skl:2.B.1.e", "skl:2.C.6", "skl:2.C.7.a"] },
+  { "contains": "Settled a long running dispute between", "must": ["skl:4.A.4.a.7"], "ok": ["skl:2.B.1.d", "skl:2.A.1.b", "skl:2.B.1.a"] },
+  { "contains": "Organised monthly health camps with th", "must": ["skl:4.A.4.b.1"], "ok": ["skl:2.B.1.b", "skl:4.A.2.b.6", "skl:4.A.2.b.5"] },
+  { "contains": "Kept a notebook of every member's savi", "must": ["skl:4.A.3.b.6"], "ok": ["skl:2.B.5.b", "skl:2.C.1.c", "skl:4.A.4.c.3"] },
+  { "contains": "Enjoys gardening and long walks with t", "must": [], "ok": [] }
+ ]
+}

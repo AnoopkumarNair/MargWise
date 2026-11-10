@@ -1,0 +1,15 @@
+{
+ "id": "fresher_achievements",
+ "shape": "Fresh graduate; the substance is under Achievements and Awards; one decoy summary line and one decoy interests line",
+ "lines": [
+  { "contains": "Recent B.Sc mathematics graduate looking", "must": [], "ok": [] },
+  { "contains": "Led a team of six students to organise", "must": ["skl:4.A.4.b.1"], "ok": ["skl:4.A.4.b.4", "skl:2.B.1.b", "skl:4.A.2.b.6", "skl:4.A.4.b.2"] },
+  { "contains": "Won the state level mathematics quiz a", "must": ["skl:4.A.4.b.3"], "ok": ["skl:2.B.1.e", "skl:2.C.6", "skl:2.C.4.a"] },
+  { "contains": "Wrote the monthly newsletter for the s", "must": ["skl:2.A.1.c"], "ok": ["skl:2.C.7.a", "skl:2.C.9.b"] },
+  { "contains": "Raised 85,000 rupees for flood relief", "must": ["skl:2.B.1.c"], "ok": ["skl:4.A.4.a.6", "skl:4.A.4.a.3", "skl:4.A.4.a.4"] },
+  { "contains": "Kept the accounts of the college crick", "must": ["skl:2.B.5.b"], "ok": ["skl:2.C.1.c", "skl:4.A.3.b.6", "skl:4.A.4.c.3"] },
+  { "contains": "Best Volunteer Award 2024 for running", "must": ["skl:4.A.4.a.5"], "ok": ["skl:2.B.1.f", "skl:4.A.4.a.8", "skl:4.A.4.b.1"] },
+  { "contains": "Checked 200 delivery records every day", "must": ["skl:4.A.2.a.3"], "ok": ["skl:4.A.3.b.6", "skl:2.C.1.b", "skl:4.A.4.c.1", "skl:4.A.2.a.4"] },
+  { "contains": "Enjoys cricket, travel and cooking for", "must": [], "ok": [] }
+ ]
+}

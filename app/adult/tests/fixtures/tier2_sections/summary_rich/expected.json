@@ -1,0 +1,13 @@
+{
+ "id": "summary_rich",
+ "shape": "Experienced operations head whose summary is three sentences about what he did; one award and one achievement line",
+ "lines": [
+  { "contains": "Built and trained a team of twelve cus", "must": ["skl:4.A.4.b.2"], "ok": ["skl:4.A.4.b.3", "skl:4.A.4.b.4", "skl:2.B.5.d", "skl:4.A.4.c.2"] },
+  { "contains": "Negotiated the annual rates with six c", "must": ["skl:2.B.1.d"], "ok": ["skl:4.A.4.a.7", "skl:2.B.5.b", "skl:4.A.4.a.3"] },
+  { "contains": "Explained the quarterly numbers to the", "must": ["skl:4.A.4.a.1"], "ok": ["skl:2.A.1.d", "skl:4.A.2.a.4", "skl:2.A.1.c"] },
+  { "contains": "Visited each of the nine depots every", "must": ["skl:4.A.1.b.2"], "ok": ["skl:4.A.2.a.3", "skl:2.B.3.g", "skl:4.A.1.a.2"] },
+  { "contains": "Chose the new route planning software", "must": ["skl:2.B.3.c"], "ok": ["skl:4.A.2.b.1", "skl:2.B.4.h", "skl:2.B.4.e"] },
+  { "contains": "Received the company's Customer First", "must": ["skl:2.B.1.f"], "ok": ["skl:4.A.4.a.7", "skl:4.A.2.b.1", "skl:4.A.4.a.3"] },
+  { "contains": "Wrote the safety handbook that every d", "must": ["skl:2.A.1.c"], "ok": ["skl:4.A.3.b.6", "skl:4.A.4.b.3", "skl:2.C.8.a"] }
+ ]
+}
