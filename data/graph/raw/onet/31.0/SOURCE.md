@@ -10,7 +10,7 @@
 
 ## What was kept
 
-Only the files the graph reads (SPEC 5.1). Total 30.9 MB, under the 40 MB limit, so the files are committed **unfiltered**: every column and every row is as O*NET published it.
+Only the files the graph reads (SPEC 5.1). Total 31.1 MB (31,096,286 bytes, with `Content Model Reference.txt` added for S5), under the 40 MB limit, so the files are committed **unfiltered**: every column and every row is as O*NET published it.
 
 | File | Bytes | SHA-256 |
 | --- | ---: | --- |
