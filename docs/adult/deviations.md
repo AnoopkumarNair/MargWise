@@ -569,3 +569,97 @@ Written while fixing `S4_REVIEW.md`. Nothing here changed a contract or a versio
 - **N9** the under-18 path is not IP-limited, so the `under18` count can be inflated (low risk).
 - **N10** an orphan profile row is possible if `me/delete` commits between `authenticate` and the profile INSERT (invariant 6 would catch it).
 - **N11** after it loads, Cloudflare's Turnstile script can read the token in localStorage. Accepted with D37.
+
+## S5 (tier 2: reading with a model on the device), 2026-11-10
+
+Written by the S5 implementation lane for BUILD_PLAN T4.5. Each entry is a proposal the owner approves. Nothing here changed a frozen contract, a version number, the matcher or the engine. Tier 1 is unchanged: tier 2 only adds an offer on the confirm screen, and the person must press it.
+
+### D43. The library: `@huggingface/transformers` 4.3.2, vendored as three files, set to read only this site
+- Slice and ticket: S5, T4.5
+- Date: 2026-11-10
+- Author: S5 implementation lane
+- Plan said: "Vendor `@huggingface/transformers` (pinned version)". Vendored libraries go in `hosting/public/vendor/` with exact versions in `VERSIONS.md` (BUILD_PLAN ground rules). No CDNs.
+- We did: pinned 4.3.2 (Apache-2.0; npm integrity `sha512-V3+dqf3i...`, checked). We vendor `transformers/transformers.min.js` (587,917 bytes: the library's self-contained browser bundle, which already holds onnxruntime-web 1.31.0-dev.20260914-8d85527a0, the version 4.3.2 pins), `transformers/ort-wasm-simd-threaded.wasm` (14,264,838 bytes) and `transformers/ort-wasm-simd-threaded.mjs` (24,381 bytes), plus `LICENSE`, `LICENSE-onnxruntime` (MIT, from the onnxruntime commit named in the npm package, because the package ships no licence file) and `THIRD_PARTY_NOTICES-onnxruntime.txt`. Rows with SHA-256 are in `VERSIONS.md`, and `.github/scripts/check_vendor_hashes.mjs` already covers them, because it walks the whole folder. `app/adult/intake_embed.js` is the only file that names the library, and it loads it with `import()` only after the person agrees (a static test checks this). It sets `env.allowRemoteModels = false`, a local model path on this site, `numThreads = 1`, `proxy = false` and `useWasmCache = false`, so the library reads nothing from another origin, starts no worker and makes no `blob:` URL (D45).
+- Why this runtime: the library's default is the `.asyncify` runtime, which is 26,861,777 bytes. Cloudflare Pages allows 26,214,400 (25 MiB) per file, so it cannot be served. The plain runtime (14.3 MB, 3.7 MB gzipped) does everything the CPU path needs. The other build files (`transformers.web.js` and others) import `onnxruntime-web` by name, which needs a bundler we do not have, so they were not used.
+- Why this version: 4.3.2 is the `latest` tag; the earlier 4.3.1 is older. 4.3.2 was published on npm on 2026-10-27, which is a little under two weeks before this work (2026-11-10). The two-week rule in `VERSIONS.md` is a habit, not a CI check. Owner: say if you want 4.3.1, or want to wait; the file names and the code do not change.
+- Effect: 15 vendored files in the repository, 14.9 MB of them the runtime. The page loads none of it until a person presses the tier 2 button.
+- Decision: proposed (owner approves)
+
+### D44. What is embedded: the 109 skills, knowledge areas and work activities, as "label: O*NET description"; technology names are not
+- Slice and ticket: S5, T4.5 (and T1.5, where the plan puts the embedding)
+- Date: 2026-11-10
+- Author: S5 implementation lane
+- Plan said: "Skill descriptions are embedded at export time in T1.5: add `skill_vecs.bin` (int8) and `skill_vecs.json` (ids) to the export." The plan does not say which text. `skills_index.json` has no description field.
+- Found: the O*NET files in `data/graph/raw/onet/31.0/` hold no descriptions of elements. The pinned zip (SHA-256 unchanged, `6883548a...`) has `Content Model Reference.txt` with a `Description` for every element, and all 109 non-technology nodes (35 skills, 33 knowledge areas, 41 work activities) have one. We added that file (242,007 bytes, CC BY 4.0, as published) to `data/graph/raw/onet/31.0/`, to `fetch_onet.py`'s list and to `SOURCE.md`. `graph_hash` does not depend on raw files, so nothing else changed.
+- We did: recipe `v1-label-onet-description`, in `data/graph/vec_texts.py`: the text of each non-technology entry is "<label>: <O*NET description>". Nothing is invented. The 8,733 technology names are not embedded.
+- Evidence for leaving technologies out: embedded as "name (O*NET category)", an everyday sentence matched obscure products: "Wrote queries to pull weekly sales data from the company database" gave Salary.com, Corporatek EnAct Platinum and DaySmart Software 123Pet at 0.49 to 0.51. "Prepared the monthly payroll..." gave payroll products. That would tell a person they use a named product the resume never names. Tier 1 already finds technology names by exact match. Embedding them also costs 3.4 MB.
+- Recipes compared on the 8 synthetic fixtures (D47), before the one-sentence-at-a-time change (numbers can be off by about 0.02): label only, label plus alternative names, label plus O*NET description, label plus description plus alternative names. At the best threshold of each, line recall and "fair" precision gave F1 0.40 to 0.46 (for example label only 0.44 recall and 0.44 precision at 0.30; label plus description 0.38 and 0.48 at 0.30, 0.21 and 0.71 at 0.40). The differences are inside the noise of 48 implied lines, so we kept the plan's choice, label plus O*NET description: it is real source text and the easiest to explain. Description alone was also tried and was weaker (measured by id recall only: 0.17 against 0.23 at 0.20). We also tried real O*NET phrases as extra rows (the detailed work activities under each of the 41 activities: id recall 0.23 but fair precision 0.28, against 0.17 and 0.48 for label plus description at 0.30; and, through the skill-to-activity links, also under the 2.A and 2.B skills: id recall 0.04, fair precision 0.13). They find more of the wrong skills, so they were dropped.
+- Files: `data/graph/skill_vecs.bin` (41,856 bytes: 109 rows x 384 int8 numbers; each row is the unit vector times 127) and `skill_vecs.json` (2,236 bytes: ids in row order, model, revision, dtype, library version, dims, scale, recipe, the SHA-256 of the texts, date). Made by `app/adult/tools/embed/embed_skills.mjs`, which has its own `package.json` and lock file (onnxruntime-node, for the offline tool and the real-model test only; the app has no npm dependency). Each text is embedded alone (batch of 1), because the model is int8 and a padded batch changed a vector by about 1 percent (cosine 0.993); embedded alone, the browser and Node give the same numbers.
+- Offline pipeline: `pipeline/run.py` does not recompute vectors. `pipeline/validate_graph.py --exports` and `python3 data/graph/vec_texts.py --check` (also a CI step) fail when an id is not in `skills_index.json`, when the byte length is not ids x dims, when the recipe is not the current one, or when the texts changed since the vectors were made. Tests: `data/graph/tests/test_skill_vecs.py`.
+- Release: `graph_release.accept_graph` copies the two files into `data/releases/graph/<release>/` and lists their hashes in the release manifest, but only when they are current; stale vectors stop `--accept`. `app/adult/build.py` verifies those hashes in a release build. The release manifest is not a frozen contract and `skills_index.schema.json` is untouched, so no amendment is needed. The owner has not run `--accept`, and this lane did not.
+- Effect: none for people. The vector tool stops if a description is ever missing.
+- Decision: proposed (owner approves)
+
+### D45. CSP for `/work/*` gains `'wasm-unsafe-eval'` (needs the owner's or security sign-off)
+- Slice and ticket: S5, T4.5. Test layer 4 and the S3 CSP test.
+- Date: 2026-11-10
+- Author: S5 implementation lane
+- Plan said: `/work/*` has a strict policy with no `unsafe-eval` (S1, S3 tests assert it).
+- We did: one token added to `script-src` in the `/work/*` block of `hosting/public/_headers`: `script-src 'self' 'wasm-unsafe-eval' https://challenges.cloudflare.com`. Nothing else changed: no `unsafe-eval`, no `unsafe-inline`, no `blob:`, no new origin, no change to `worker-src`, `connect-src`, `style-src` or the other blocks (admin, counsellor, the site-wide block).
+- Why: onnxruntime-web runs the model as WebAssembly, and Chrome, Firefox and Safari refuse `WebAssembly.compile` and `instantiate` under a policy that has neither `'unsafe-eval'` nor `'wasm-unsafe-eval'`. `'wasm-unsafe-eval'` allows compiling WebAssembly only. `eval()`, `new Function()` and string timers stay blocked (the browser test checks no violation is reported while the model runs, and the CSP test still forbids `'unsafe-eval'` as its own token).
+- What it allows, in plain words: a script from this site may compile WebAssembly. Scripts still come only from this site and Turnstile's host. A page-injection bug could therefore run WebAssembly it could not run before, which is a small step up from running JavaScript it already could not run. There is no new way to load code.
+- Alternatives considered: (1) No CSP change, and run the model on a server: not allowed (nothing personal leaves the device in this mode). (2) A separate page for tier 2 with its own policy: possible (for example `/work/tier2/` with the relaxed policy only there), but the confirm screen is where the person is, so it would need an iframe or a page change; more code for the same exposure, and `frame-src` would have to open. (3) JavaScript-only model code (no WebAssembly): the library does not offer it. (4) Letting the library use a worker or `blob:` URLs: worse (needs `blob:` in `script-src` and `worker-src`), so we avoided it with one thread, no proxy worker and `useWasmCache = false` (otherwise the library wraps the runtime's JavaScript in a `blob:` URL when the browser is not Chrome). If a browser later refuses the one-thread setup, the fallback is to leave tier 2 off in that browser, not to add `blob:`.
+- Tests changed: `s1.test.mjs` and `s3.test.mjs` no longer search for the substring `unsafe-eval` (which `'wasm-unsafe-eval'` contains). They check that the token `'unsafe-eval'` is absent, that `unsafe-inline` and `blob:` are absent, that the only `unsafe` keyword in the policy is `'wasm-unsafe-eval'`, and that Turnstile's host is still the only remote origin.
+- Effect: needs the owner's or the security reviewer's yes before deploy. Without it, the `_headers` line goes back and the tier 2 button simply fails with its "could not look" message (the person keeps tier 1).
+- Decision: proposed (owner approves)
+
+### D46. The model: `Xenova/all-MiniLM-L6-v2`, int8, pinned by revision and hash, fetched at build time, not committed
+- Slice and ticket: S5, T4.5
+- Date: 2026-11-10
+- Author: S5 implementation lane
+- Plan said: "the quantised `all-MiniLM-L6-v2` model files under `hosting/public/work/models/`. Check the file sizes: Cloudflare Pages limits each file to 25 MiB."
+- We did: `Xenova/all-MiniLM-L6-v2` at revision `751bff37182d3f1213fa05d7196b954e230abad9` (2025-07-22) from huggingface.co. Licence Apache-2.0: the model card at that revision says `license: apache-2.0`, and it is the ONNX export of `sentence-transformers/all-MiniLM-L6-v2` (also Apache-2.0). The licence text travels with the model files. `app/adult/tools/tier2_model.json` pins the revision, the licence, the source, the retrieval date and the size and SHA-256 of each file: `config.json` 650, `tokenizer.json` 711,661, `tokenizer_config.json` 366, `special_tokens_map.json` 125, `README.md` (the card, 1,767) and `onnx/model_int8.onnx` 22,972,370 bytes (under 26,214,400). `python3 app/adult/tools/fetch_model.py` downloads them into the git-ignored `app/adult/tools/model_cache/` and checks every hash (`--check` is offline); CI caches and fetches it. `python3 app/adult/build.py` copies the checked files into `hosting/public/work/models/` (a build output), stops if any file the site serves is over 25 MiB, and writes the model, revision, licence, the list of files the page downloads and their real total into `manifest.json` (`tier2`). The page shows that total.
+- If the model is not in the cache, or a file differs, or the vectors are missing or stale, the build still succeeds, prints "tier 2 ... is NOT in this build: <reason>", and the page does not offer tier 2 (`tier2.available` is false). Tests: `build_tier2.test.mjs` (a tiny fake model, six cases) and `s5_off.test.mjs`.
+- The int8 file works and was not replaced: no other variant was tried.
+- Sizes: the page downloads 38,606,275 bytes (38.6 MB, shown as "39 MB"): library 587,917 + runtime 14,289,219 (wasm and its loader) = 14,877,136; model files it asks for 23,685,047; vectors 44,092. Gzipped (level 9) the same files are about 20.3 MB (the runtime 3.7 MB, the model 16.2 MB); the number shown is the uncompressed one, which is what a person's data plan counts at worst.
+- Why not committed: 23 MB of model weights in git history for ever, and the owner approves what is served.
+- Decision: proposed (owner approves)
+
+### D47. The threshold is 0.40, not 0.55; what the fixtures show
+- Slice and ticket: S5, T4.5. TEST_PLAN layer 3 (extended).
+- Date: 2026-11-10
+- Author: S5 implementation lane
+- Plan said: "matches above a threshold (start at 0.55, tune on test data) are suggested".
+- We did: threshold 0.40, at most 2 suggestions per sentence and 12 in all, in `app/adult/intake/tier2.js` (`DEFAULTS`). Sentences go to the model one at a time. Tuned on 8 synthetic resumes written for this (`app/adult/tests/fixtures/tier2/`, 56 lines, 48 of them implying a skill the line does not name, invented people). Every line lists the ids it must give and the ids that are also fair (`must` and `ok`); the expectations were written from the O*NET descriptions before the model first ran. A sentence is much shorter than an O*NET description, so scores are low: the best match is usually 0.3 to 0.5, and 0.55 gives nothing.
+- Table (browser and Node give identical numbers; "line recall" is the share of the 48 implied lines that got at least one fair suggestion; "fair precision" counts `must` and `ok` ids as right; "strict" counts `must` only):
+
+| Threshold | Suggestions a resume | Line recall | Fair precision | Strict precision |
+| --- | --- | --- | --- | --- |
+| 0.30 | 5.9 | 0.35 (17/48) | 0.47 (22/47) | 0.17 |
+| 0.35 | 3.5 | 0.27 (13/48) | 0.57 (16/28) | 0.18 |
+| **0.40** | **2.3** | **0.21 (10/48)** | **0.72 (13/18)** | **0.22** |
+| 0.45 | 1.0 | 0.10 (5/48) | 0.75 (6/8) | 0.13 |
+| 0.50 | 0.5 | 0.04 (2/48) | 0.75 (3/4) | 0.25 |
+| 0.55 | 0.0 | 0.00 (0/48) | no suggestions | n/a |
+
+- Honest reading: tier 2 finds about one implied line in five and is right (fairly) about three times in four. It will help a little and miss most. Suggestions are never ticked for the person, so a wrong one costs a tap, not a wrong profile. Chosen 0.40 because it keeps fair precision above 0.7 with a few suggestions a resume; 0.30 finds more (0.35) but is wrong about half the time. The fixtures are small and the threshold was chosen on them, so these numbers are optimistic for real resumes. T7.3 (the owner's 30-resume evaluation) is the real measure; the entry points it needs are in the S5 report.
+- Floors in the tests (`tier2_model.test.mjs`, and the browser run in `s5.test.mjs`): line recall at least 0.15, fair precision at least 0.65, strict precision at least 0.15, 1 to 4 suggestions a resume. Measured: 0.21, 0.72, 0.22, 2.3. With the real model in CI the test fails when the model is missing (`CI=true`); on a developer machine it prints a notice.
+- Timing, in headless Chromium on this sandbox, files served from localhost: start the model and run the first resume 1.0 to 1.4 s (the download over a network adds to this); each further resume of 6 to 7 sentences 85 to 150 ms. Tier 1 is unchanged (about 170 ms on the dev page sample).
+- Decision: proposed (owner approves)
+
+### D48. Where the tier 2 offer sits on the confirm screen, and what it says
+- Slice and ticket: S5, T4.5 and T4.6 (SPEC screen 6 defines no place for it)
+- Date: 2026-11-10
+- Author: S5 implementation lane
+- Plan said: nothing. SPEC 3 says the on-device mode is "dictionary plus browser embeddings"; SPEC 8 screen 6 lists roles, skills, chips, credentials and leadership.
+- We did: after the jobs and the skills found, before "Add a skill", one section "Look for more skills": "Your resume may hint at skills it does not name. We can look for them." and one button, "Look for more skills in your resume (downloads 39 MB once, runs on this device)". The size is the real total from the build (D46). Nothing loads until the person presses it. Then a progress bar and "Downloading... 12 MB of 39 MB", then "Reading your resume... 3 of 7 lines". The answer is a group "You may also have": each skill is not ticked, shows the line of the resume it came from (always visible, unlike the tier 1 lines that sit behind "Where did this come from?", because here the line is the only reason the skill is offered), and when ticked it asks "Used, Strong or Rusty" like any other skill. If the model finds nothing, or a download fails, the screen says "We found nothing more. Your list is as it was." or "We could not look for more skills. Your list is as it was. You can try again." and the tier 1 list and flow are as they were. A person who never presses the button sees no change except the section. Choice is kept for this visit only (the group stays while the confirm model is in memory); nothing is stored. The words follow D28: nothing about how data is collected beyond the download and "runs on this device". A build without tier 2 shows no section.
+- The sentences are kept in memory with the confirm model, like the source lines (cut to 300 characters, at most 250), only when the build offers tier 2. No fact comes from the model: it can only name ids that already exist in the graph, and each must be ticked.
+- Decision: proposed (owner approves)
+
+### D49. The developer page, and smaller choices
+- Slice and ticket: S5, T4.5
+- Date: 2026-11-10
+- Author: S5 implementation lane
+- We did: `app/adult/dev/tiers.html` and `tiers.js` show tier 1 (dictionary skills with their lines) and tier 2 (suggestions with scores) side by side for pasted text, with a threshold and a cap, and a tier 2 button that says it downloads 39 MB. `build.py --dev` writes them to `/work/tiers.html` (at the top of `work/`, because the page reads `manifest.json` and the modules from its own folder, and the policy forbids a `<base>`). A release build does not write them, and a unit test checks that. Tier 1 and tier 2 stay callable from Node for the evaluation harness: `readResume()` in `intake/read.js`, and `achievementLines()`, `suggest()` and `suggestFromText()` in `intake/tier2.js` (with `loadNodeEmbedder()` in `tools/embed/node_embedder.mjs`, and `tests/lib/tier2_eval.mjs` for scoring).
+- We also: the library swallows a failed download and waits for ever, so `intake_embed.js` reports a failed or aborted file itself. The `.wasm`, `.onnx` and `.bin` types were added to the e2e static server. `build.py` now also stamps `manifest.json` with `slice: 'S5'`. The confirm screen's "only this visit" choice stores nothing, so no persistence pattern was needed.
+- Decision: proposed (owner approves)
