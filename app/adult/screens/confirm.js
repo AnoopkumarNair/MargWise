@@ -49,7 +49,7 @@ export async function render() {
         return h('span', { class: 'seg' }, r, h('label', { for: r.id }, t));
       }));
     cb.addEventListener('change', () => { s.include = cb.checked; strength.hidden = !cb.checked; updateCount(); refreshChips(); });
-    const src = s.sourceLine ? h('p', { class: 'src' }, h('span', { class: 'src-tag' }, 'From your resume: '), '“' + clip(s.sourceLine, 220) + '”') :
+    const src = s.sourceLine ? h('p', { class: 'src' }, h('span', { class: 'src-tag' }, s.suggested ? 'Because of this line in your resume: ' : 'From your resume: '), '“' + clip(s.sourceLine, 220) + '”') :
       (s.added ? h('p', { class: 'src' }, 'You added this.') : null);
     const li = h('li', { class: 'skill' + (s.suggested ? ' suggested' : ''), 'data-skill': s.id },
       h('div', { class: 'skill-main' }, cb, h('label', { for: cb.id }, s.label), s.lastYear ? h('span', { class: 'tag' }, 'last used ' + s.lastYear) : null),

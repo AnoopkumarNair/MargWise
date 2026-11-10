@@ -1,7 +1,7 @@
 // Tier 2 logic (BUILD_PLAN T4.5) with fake vectors: no model, no network. TEST_PLAN layer 3 (extended).
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { achievementLines, quantise, decodeVectors, similarities, suggest, suggestFromText, DEFAULTS } from '../../intake/tier2.js';
+import { achievementLines, quantise, decodeVectors, similarities, suggest, suggestFromText, DEFAULTS, Tier2Cancelled } from '../../intake/tier2.js';
 
 // A tiny fake model: each topic word is one axis, so a sentence containing "coach" points at axis 0, and so on.
 const AXES = ['coach', 'negotiat', 'schedul', 'budget'];
@@ -147,3 +147,48 @@ test('suggestFromText is the entry point for a harness: text and an embedder in,
   const got = await suggestFromText(RESUME, { nowYear: 2026, embed, vecs, threshold: 0.9, exclude: ['skl:budget'] });
   assert.deepEqual(got.map(g => g.id).sort(), ['skl:coaching', 'skl:negotiation', 'skl:scheduling']);
 });
+
+// ---- S5 review fixes: yield between sentences, cancel, newest jobs first ---------------------------------------------------------
+
+test('suggest awaits yieldToUi after every sentence, so a page can repaint (the hook is injected: tier2.js stays pure)', async () => {
+  const lines = ['Coached five team leads on feedback every week.', 'Negotiated a new vendor contract that saved money.', 'Planned the weekly schedule for sixty agents.'].map((text, i) => ({ text, sourceLine: text, line: i, roleIndex: -1 }));
+  const order = [];
+  const base = embed;
+  await suggest(lines, { embed: async t => { order.push('embed'); return base(t); }, vecs, yieldToUi: async () => { order.push('yield'); } });
+  assert.deepEqual(order, ['embed', 'yield', 'embed', 'yield', 'embed', 'yield']);
+});
+
+test('suggest stops with Tier2Cancelled when cancelled() says so, before the next sentence and not later', async () => {
+  const lines = Array.from({ length: 10 }, (_, i) => ({ text: 'Coached team ' + i + ' on how to give good feedback.', sourceLine: 'x' + i, line: i, roleIndex: -1 }));
+  let embedded = 0, stop = false;
+  await assert.rejects(suggest(lines, { embed: async t => { embedded++; if (embedded === 3) stop = true; return t.map(vecOf); }, vecs, cancelled: () => stop }), e => e instanceof Tier2Cancelled);
+  assert.equal(embedded, 3, 'no sentence is read after the cancel');
+  // not cancelled: it finishes
+  assert.ok(Array.isArray(await suggest(lines, { embed, vecs, cancelled: () => false })));
+});
+
+test('cancelling during the yield also stops (the person pressed Cancel while the page was repainting)', async () => {
+  const lines = Array.from({ length: 5 }, (_, i) => ({ text: 'Coached team ' + i + ' on how to give good feedback.', sourceLine: 'x' + i, line: i, roleIndex: -1 }));
+  let stop = false, embedded = 0;
+  await assert.rejects(suggest(lines, { embed: async t => { embedded++; return t.map(vecOf); }, vecs, yieldToUi: async () => { stop = true; }, cancelled: () => stop }), e => e instanceof Tier2Cancelled);
+  assert.equal(embedded, 1);
+});
+
+test('with more sentences than maxLines, the newest jobs are kept first, the rest go in the order of the resume, and nothing changes below the cap', () => {
+  const sent = (role, n) => Array.from({ length: n }, (_, i) => '- Coached the ' + role + ' group number ' + i + ' on giving good feedback.');
+  const text = ['Old Job', 'Apr 2010 - Mar 2014', ...sent('oldest', 5), 'Middle Job', 'Apr 2014 - Mar 2020', ...sent('middle', 5), 'New Job', 'Apr 2020 - Present', ...sent('newest', 5)].join('\n');
+  const roles = [{ endYear: 2014, current: false, lines: { from: 2, to: 6 } }, { endYear: 2020, current: false, lines: { from: 9, to: 13 } }, { endYear: 2026, current: true, lines: { from: 16, to: 20 } }];
+  const all = achievementLines(text, { nowYear: 2026, roles, maxLines: 100 });
+  assert.equal(all.length, 15);
+  const kept = achievementLines(text, { nowYear: 2026, roles, maxLines: 8 });
+  assert.equal(kept.length, 8);
+  assert.equal(kept.filter(l => l.roleIndex === 2).length, 5, 'all of the current job');
+  assert.equal(kept.filter(l => l.roleIndex === 1).length, 3, 'then the job before it');
+  assert.equal(kept.filter(l => l.roleIndex === 0).length, 0, 'the oldest job is the one left out');
+  assert.deepEqual(kept.map(l => l.line), [...kept.map(l => l.line)].sort((a, b) => a - b), 'in the order of the resume');
+  // no dated jobs at all: the first lines are kept (the order of the resume)
+  const flat = sent('x', 12).join('\n');
+  assert.deepEqual(achievementLines(flat, { nowYear: 2026, maxLines: 5 }).map(l => l.line), [0, 1, 2, 3, 4]);
+});
+
+test('the default cap keeps the scan short on a phone (120 sentences)', () => { assert.equal(DEFAULTS.maxLines, 120); });

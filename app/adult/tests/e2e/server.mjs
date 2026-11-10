@@ -28,7 +28,8 @@ export function headersFor(blocks, path) {
   return out;
 }
 
-export function startServer(publicDir, { log } = {}) {
+// opts.log(line) is called for every request; opts.delay(path) may return milliseconds to hold that response back (tests that need a slow download).
+export function startServer(publicDir, { log, delay } = {}) {
   const blocks = parseHeaders(readFileSync(join(publicDir, '_headers'), 'utf8'));
   const server = http.createServer((req, res) => {
     const url = new URL(req.url, 'http://x');
@@ -40,7 +41,9 @@ export function startServer(publicDir, { log } = {}) {
     if (!existsSync(file) || file.endsWith('_headers')) { res.writeHead(404, { 'content-type': 'text/plain' }).end('not found'); return; }
     const h = { 'content-type': MIME[extname(file)] || 'application/octet-stream' };
     for (const [k, v] of headersFor(blocks, path)) h[k] = v;
-    res.writeHead(200, h).end(readFileSync(file));
+    const send = () => { if (!res.destroyed) res.writeHead(200, h).end(readFileSync(file)); };
+    const ms = delay ? delay(path) : 0;
+    if (ms > 0) setTimeout(send, ms); else send();
   });
   return new Promise(ok => server.listen(0, '127.0.0.1', () => ok({ server, port: server.address().port, close: () => new Promise(r => server.close(r)) })));
 }

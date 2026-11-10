@@ -20,7 +20,10 @@ export const EMBED_BATCH = 1;
 export const VERSION = 1;   // bump with any change to the line rules or the scoring below
 // Tuned on the synthetic tier 2 fixtures (app/adult/tests/fixtures/tier2, docs/adult/deviations.md D47). A sentence is much shorter than
 // an O*NET description, so cosine scores are lower than the 0.55 the plan guessed.
-export const DEFAULTS = Object.freeze({ threshold: 0.4, perLine: 2, cap: 12, maxLines: 250 });
+export const DEFAULTS = Object.freeze({ threshold: 0.4, perLine: 2, cap: 12, maxLines: 120 });
+
+// Thrown by suggest() when opts.cancelled() says so. Not a failure: the person pressed Cancel.
+export class Tier2Cancelled extends Error {}
 
 const CONTACT = /[\w.+-]+@[\w-]+\.[\w.-]+|(?:\+?\d[\d\s().-]{8,}\d)|https?:\/\/|www\./i;
 const SKIP_SECTIONS = new Set(['education', 'skills', 'certs', 'personal', 'other', 'summary']);
@@ -38,7 +41,7 @@ export function achievementLines(text, opts) {
   const sections = sectionMap(lines);
   const bad = injectionLines(lines);
   const out = [], seen = new Set();
-  for (let i = 0; i < lines.length && out.length < max; i++) {
+  for (let i = 0; i < lines.length; i++) {
     const s = sections[i];
     if (s.heading || s.skillList || SKIP_SECTIONS.has(s.kind) || bad.has(i)) continue;
     const raw = lines[i].replace(/^[\s•*\-–—·▪●○◦>]+/, '').replace(/\s+/g, ' ').trim();
@@ -50,12 +53,15 @@ export function achievementLines(text, opts) {
       let roleIndex = -1;
       (o.roles || []).forEach((r, k) => { if (r && r.lines && i >= r.lines.from && i <= r.lines.to) roleIndex = k; });
       out.push({ text: part.slice(0, MAX_SENTENCE), sourceLine: sourceLine(part), line: i, roleIndex });
-      if (out.length >= max) break;
     }
   }
-  return out;
+  if (out.length <= max) return out;
+  // Too many to read on a phone in good time: keep the newest jobs first (a job that is current or ended most recently), then the order of the
+  // resume. Sentences outside any dated job come after the dated ones. The kept sentences stay in the order they have in the resume.
+  const recency = l => { const r = l.roleIndex >= 0 ? (o.roles || [])[l.roleIndex] : null; return !r ? -Infinity : r.current ? Infinity : Number.isInteger(r.endYear) ? r.endYear : (Number.isInteger(r.startYear) ? r.startYear : -1e9); };
+  return out.map((l, n) => ({ l, n })).sort((a, b) => (recency(b.l) - recency(a.l)) || (a.n - b.n) || 0)
+    .slice(0, max).sort((a, b) => a.n - b.n).map(x => x.l);
 }
-
 function splitSentences(line) {
   // "Did A. Did B." -> two sentences. A number such as "3.5" or a short initial ("B.Com") does not end one.
   // (no look-behind: older Safari on iPhone does not have it, so the end mark is matched and kept)
@@ -116,6 +122,8 @@ function unit(v) {
 //   perLine    at most this many suggestions from one sentence (default 2)
 //   cap        at most this many suggestions in all (default 12)
 //   onProgress called with (done, total) sentences
+//   yieldToUi  async () => void, awaited after every sentence. The browser passes a function that lets the page repaint and answer taps; Node passes nothing.
+//   cancelled  () => boolean, asked before and after every sentence. When it says true, suggest() throws Tier2Cancelled.
 // Returns [{ id, score, sourceLine, line }], best first, one per id (its best sentence). Ties go to the smaller id, so the result is stable.
 export async function suggest(lines, opts) {
   const { embed, vecs } = opts || {};
@@ -127,6 +135,7 @@ export async function suggest(lines, opts) {
   const best = new Map();   // id -> { id, score, sourceLine, line }
   const BATCH = EMBED_BATCH;
   for (let i = 0; i < lines.length; i += BATCH) {
+    if (opts.cancelled && opts.cancelled()) throw new Tier2Cancelled('cancelled');
     const part = lines.slice(i, i + BATCH);
     const got = await embed(part.map(l => l.text));
     if (!got || got.length !== part.length) throw new Error('tier2: embed returned ' + (got ? got.length : 0) + ' vectors for ' + part.length + ' sentences');
@@ -143,6 +152,8 @@ export async function suggest(lines, opts) {
       }
     });
     if (opts.onProgress) opts.onProgress(Math.min(i + BATCH, lines.length), lines.length);
+    if (opts.yieldToUi) await opts.yieldToUi();
+    if (opts.cancelled && opts.cancelled()) throw new Tier2Cancelled('cancelled');
   }
   return [...best.values()].sort((a, b) => (b.score - a.score) || (a.id < b.id ? -1 : 1)).slice(0, cap);
 }

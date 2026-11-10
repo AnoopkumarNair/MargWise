@@ -83,7 +83,7 @@ if (!ready) {
       const box = page.locator('#more-skills');
       await box.waitFor();
       const label = await page.locator('#more-go').innerText();
-      assert.equal(label, `Look for more skills in your resume (downloads ${MB} MB once, runs on this device)`, 'the size shown is the real total');
+      assert.equal(label, `Look for more skills in your resume (downloads about ${MB} MB, runs on this device)`, 'the size shown is the real total');
       assert.deepEqual(w.requests.filter(r => MODELISH.test(r.url)), [], 'the model, the runtime and the vectors are not requested before the person agrees');
       assert.equal(await page.locator('#more-list li').count(), 0, 'no suggestions before agreeing');
       assert.equal(await noSideScroll(page), true);
@@ -104,8 +104,8 @@ if (!ready) {
         assert.equal(await li.locator('input[type=checkbox]').isChecked(), false, 'a suggestion is not ticked');
         assert.equal(await li.locator('fieldset.strength').isVisible(), false);
         const src = await li.locator('.src').innerText();
-        assert.match(src, /^From your resume: “.+”$/, 'a suggestion shows the line it came from');
-        assert.ok(OPS.text.includes(src.replace(/^From your resume: “/, '').replace(/”$/, '').replace(/…$/, '')), 'the source line is a line of the resume: ' + src);
+        assert.match(src, /^Because of this line in your resume: “.+”$/, 'a suggestion shows the line it came from, and says it is the reason (it does not name the skill)');
+        assert.ok(OPS.text.includes(src.replace(/^Because of this line in your resume: “/, '').replace(/”$/, '').replace(/…$/, '')), 'the source line is a line of the resume: ' + src);
       }
       assert.equal(await page.locator('#skill-count').innerText(), before, 'nothing was ticked for the person');
       assert.match(await page.locator('#more-status').innerText(), /You may also have|We found \d+ skills? you may also have\. None is ticked yet\./);
@@ -162,8 +162,12 @@ if (!ready) {
     assert.deepEqual(w.requests.filter(r => MODELISH.test(r.url)), [], 'no model, runtime or vector request');
     assert.ok(skills > 0);
     assert.deepEqual(pageErrors(w), []);
-    // back to the confirm screen: the offer is still there and nothing was downloaded
-    await page.goto(base + '/work/#/intake'); await page.locator('#show-paste').click();
+    // read the resume again: the offer is there as before, and still nothing was downloaded
+    await page.goto(base + '/work/#/intake'); await page.locator('#show-paste').click(); await page.locator('#resume-text').fill(OPS.text); await page.locator('#read-pasted').click();
+    await page.locator('#more-go').waitFor();
+    assert.equal(await page.locator('#more-go').isVisible(), true); assert.equal(await page.locator('#more-list li').count(), 0);
+    assert.deepEqual(w.requests.filter(r => MODELISH.test(r.url)), [], 'still no model, runtime or vector request');
+    assert.deepEqual(pageErrors(w), []);
     await ctx.close();
   });
 
