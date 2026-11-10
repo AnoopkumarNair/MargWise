@@ -27,6 +27,16 @@ The last command is the test server (it applies the same `_headers` as Cloudflar
 | 8 | Open `/work/tiers.html`. Press **Run tier 1**, then **Run tier 2**. | Two columns for the pasted sample: tier 1 (the dictionary skills with their lines) and tier 2 (suggestions with scores). Change the threshold (try 0.30 and 0.50) and run tier 2 again. |
 | 9 | Stop the test server, build with the model missing (`mv app/adult/tools/model_cache /tmp/`, then `python3 app/adult/build.py --dev`), serve again, and repeat step 1. | The build says "tier 2 ... is NOT in this build". The confirm screen has no "Look for more skills" section, and everything else works. Put the folder back and build again. |
 
+## Run the evaluation (T7.3)
+
+The owner runs this on the 30 real resumes. The guide is `app/adult/tests/EVAL.md`. It prints only aggregate numbers, writes nothing, and refuses a folder inside the repository.
+
+```bash
+node app/adult/tests/eval_intake.mjs /path/outside/the/repo/people --now 2026
+```
+
+To see it work without real people, copy the synthetic fixtures to a folder outside the repository (`app/adult/tests/intake/eval_harness.test.mjs` builds one in the temp folder). On 13 readable fixtures with profiles made from their `expected.json` (one person with a wrong job and recorded edits, for the demo), it prints SKILLS, ROLE, TIME, REDACTION and SPEC 11 TARGETS blocks, for example: tier 1 precision 76.1%, recall 100.0% (the "confirmed" skills here are the fixtures' must-find lists, so recall is 1 by construction); tier 2 adds 31 suggestions that none of those lists confirm; redaction "not measured (arrives with S6)". These numbers describe the synthetic set, not real resumes.
+
 ## What the numbers are
 
 - Download: 38,606,275 bytes (library and runtime 14.9 MB, model 23.7 MB, skill vectors 44 KB). Compressed on the wire it is about 20 MB. The button shows the uncompressed size.

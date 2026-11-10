@@ -663,3 +663,38 @@ Written by the S5 implementation lane for BUILD_PLAN T4.5. Each entry is a propo
 - We did: `app/adult/dev/tiers.html` and `tiers.js` show tier 1 (dictionary skills with their lines) and tier 2 (suggestions with scores) side by side for pasted text, with a threshold and a cap, and a tier 2 button that says it downloads 39 MB. `build.py --dev` writes them to `/work/tiers.html` (at the top of `work/`, because the page reads `manifest.json` and the modules from its own folder, and the policy forbids a `<base>`). A release build does not write them, and a unit test checks that. Tier 1 and tier 2 stay callable from Node for the evaluation harness: `readResume()` in `intake/read.js`, and `achievementLines()`, `suggest()` and `suggestFromText()` in `intake/tier2.js` (with `loadNodeEmbedder()` in `tools/embed/node_embedder.mjs`, and `tests/lib/tier2_eval.mjs` for scoring).
 - We also: the library swallows a failed download and waits for ever, so `intake_embed.js` reports a failed or aborted file itself. The `.wasm`, `.onnx` and `.bin` types were added to the e2e static server. `build.py` now also stamps `manifest.json` with `slice: 'S5'`. The confirm screen's "only this visit" choice stores nothing, so no persistence pattern was needed.
 - Decision: proposed (owner approves)
+
+### D50. The evaluation harness: what it measures against each SPEC 11 target, and how
+- Slice and ticket: S5, T7.3
+- Date: 2026-11-10
+- Author: S5 evaluation lane
+- Plan said: report "precision and recall per tier; role match; redaction misses, listed; time measures", aggregate only.
+- We did: `app/adult/tests/eval_intake.mjs`. Precision is suggested and confirmed over suggested; recall is confirmed and suggested over confirmed ("recall of confirmed skills without typing"), both pooled over all people, with the median person beside them. Tier 1 is the dictionary reader. Tier 2 is only the extra skills it adds (tier 1's ids are excluded, as in the app). Combined is the union. The precision target is judged on tier 1 (the skills the app ticks). The recall target is judged on tier 1 and tier 2 together, because a tapped suggestion is not typing; with tier 2 not measured it is judged on tier 1 alone and says so. The role target is "right after at most one edit": the harness reports the first choice being right, and right with one pick from the three offered choices; when 5 or more people have `roleEdits` in their meta files, the target uses those recorded edits instead. The time target uses the median of `secondsToConfirm` from meta files (hand-timed; needs 5). Reader times are measured on the machine that runs it, warm. Everything is aggregate and shown from 5 people up (BUILD_PLAN); with fewer, it prints nothing and exits 2.
+- Privacy, as built: it prints counts, rates, medians and fixed words only; it writes nothing; the model runs from the local cache with remote files off; it refuses a folder, or a file that is a link, that resolves inside the repository; errors name no path. A test runs it on the synthetic fixtures in the temp folder and checks that no canary, file name, fixture name, skill id or resume line reaches stdout or stderr.
+- Why: the owner needs one command that gives the SPEC 11 intake numbers without anyone reading the resumes in the output.
+- Decision: proposed (owner approves)
+
+### D51. Redaction is not measured until S6; the baseline says "contain"
+- Slice and ticket: S5, T7.3 (waits for S6, T6.1)
+- Date: 2026-11-10
+- Author: S5 evaluation lane
+- Plan said: report "redaction misses, listed". `redact.js` is T6.1 and does not exist.
+- We did: the harness prints "redaction: not measured (arrives with S6)" and the PASS/FAIL line reads NOT MEASURED. It counts how many resumes contain an email, a phone-like number (10 or more digits) or an ID-like number (PAN, or 12 digits), with simple documented patterns in `lib/eval_measures.mjs`, labelled "contain", not "leaked". The patterns are wide (a 12-digit Aadhaar also counts as phone-like). A redactor plugs in by existing as `app/adult/intake/redact.js` with an exported `redact(text)` that returns a string or `{ text }`; the harness then lists misses as "resume #7: 1 email" (category, count, anonymous position) and judges the zero-miss rule. If S6 uses another name or shape, change the one `import` block in the harness. Person-name, employer and college replacement rates (SPEC 11 99% and 95%) need labelled names and are not measured by this ticket.
+- Decision: proposed (owner approves)
+
+### D52. No export of the confirmed profile on the no-account path (open item)
+- Slice and ticket: S5, T7.3
+- Date: 2026-11-10
+- Author: S5 evaluation lane
+- Plan said: the harness reads "each person's confirmed profile JSON".
+- What exists: with an account, `POST /api/v1/me/export` and the "Download my data" button give a file with a `profiles` table (the harness reads that file as it is). Without an account the profile is memory only (S1, S3) and there is no export. We did not build one.
+- Effect: for the 30 people the owner either has each make an account and download the data, or writes the profile file by hand from the person's confirmed ticks (shape in `contracts/profile.schema.json`; only `roles` and `skills` ids are read). The download also holds the person's email and other rows: the harness ignores them, but the owner should not keep that file longer than needed. If a small on-device "copy my profile" button is wanted for the pilot, it needs a ticket and the owner's yes.
+- Decision: proposed (owner approves)
+
+### D53. PDF and DOCX are read in Node with the vendored libraries
+- Slice and ticket: S5, T7.3
+- Date: 2026-11-10
+- Author: S5 evaluation lane
+- We did: `app/adult/tests/lib/eval_files.mjs` imports the vendored `pdf.min.mjs` directly and runs `mammoth.browser.min.js` in a Node `vm` context. No new dependency, no browser. It reuses `MAX_BYTES`, `MAX_PAGES` and `pageText()` from `app/adult/intake_file.js` and copies the join rules and the scan numbers (40 and 120 characters); `eval_harness.test.mjs` fails if those lines change in `intake_file.js`. The text is the same libraries and rules as the browser, not the browser itself; a layout difference between Node and Chromium pdf.js is not expected but was not measured. The pdf.js "cannot load canvas" warnings are silenced.
+- Decision: proposed (owner approves)
+

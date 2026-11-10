@@ -76,3 +76,11 @@ Never deploy, never apply SQL to the live database, never push to `main`, no scr
 - **Vectors are made by hand:** `node app/adult/tools/embed/embed_skills.mjs` (needs the model and the tool's packages). `pipeline/run.py` never recomputes them and `validate_graph.py --exports` fails if they go stale. `--accept` carries them into the release and refuses stale ones.
 - **For T7.3 (the evaluation harness):** tier 1 is `readResume(text, { skillsIndex, titles, now, occupations })` in `app/adult/intake/read.js`. Tier 2 is `suggestFromText(text, { nowYear, embed, vecs, exclude, roles })` in `app/adult/intake/tier2.js` (or `achievementLines` then `suggest`), with `embed` from `loadNodeEmbedder()` (`app/adult/tools/embed/node_embedder.mjs`) and `vecs` from `decodeVectors(bin, json)`. `app/adult/tests/lib/tier2_eval.mjs` scores suggestions against lines that list what they must or may give.
 - **Not done / open:** tested in Chromium only; the manual checks on Android Chrome and iPhone Safari (WebAssembly memory) are still the owner's. The tier 2 fixtures are synthetic and small; real recall and precision are unknown until T7.3.
+
+## Update, 10 Nov 2026 (T7.3, the evaluation harness)
+
+- **Built:** `app/adult/tests/eval_intake.mjs` (with `lib/eval_files.mjs`, `lib/eval_measures.mjs`) and the owner guide `app/adult/tests/EVAL.md`. It reads a folder outside the repository of resumes (PDF, DOCX, TXT) and confirmed profile files, and prints only aggregate numbers: precision and recall for tier 1, tier 2 and both, role match, reader times, upload-to-confirmed from hand-written meta files, and pass or fail against each SPEC 11 target. Test: `app/adult/tests/intake/eval_harness.test.mjs` (in the existing `intake-unit` glob).
+- **Not measured:** redaction (the redactor is S6, T6.1; the tool plugs in `app/adult/intake/redact.js` `redact(text)` when it exists and lists misses by position), and the time target until you record at least 5 timings.
+- **Needs the owner:** the no-account path has no way to export the confirmed profile (D52); for the 30 people use an account and "Download my data", or write the profile by hand. Decisions D50 to D53 in `deviations.md`.
+- **Before running on real people:** `python3 pipeline/run.py`, `python3 app/adult/tools/fetch_model.py`, `cd app/adult/tools/embed && npm ci`.
+
