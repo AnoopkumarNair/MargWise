@@ -1,8 +1,5 @@
-// What a screen reader hears while tier 2 works. The progress bar and the visible numbers can change many times a second; a live region that
-// repeats each change is unusable. This keeps the spoken text to its start, one update each time a phase passes another 10 percent, and the end.
-//   const a = makeAnnouncer(text => { liveRegion.textContent = text; });
-//   a.update('download', 0.37, 'Downloading… 14 MB of 39 MB');    // says something only when the phase is new, or has passed another 10 percent step
-//   a.finish('We found 3 skills you may also have.');             // always says it
+// What a screen reader hears while tier 2 works: the start, each 10 percent of a phase, and the end. Not every change.
+//   a = makeAnnouncer(say); a.update(phase, fraction, text); a.finish(text)   // finish always speaks
 export const STEP = 0.1;
 
 export function makeAnnouncer(say) {

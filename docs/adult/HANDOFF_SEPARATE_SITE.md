@@ -78,12 +78,13 @@ git diff main -- hosting/functions/api/ ':!hosting/functions/api/v1' hosting/pub
 
 - **Merged:** adult branch `ccr-4a84cc2e-h7kisr` (S0 to S4) onto current `main`, five conflicts resolved, all checks green.
 - **S5 built:** tier 2 on-device suggestions (T4.5) and the evaluation harness (T7.3, `app/adult/tests/EVAL.md`).
-- **S5 reviewed and fixed:** `docs/adult/S5_REVIEW.md`; fixes in `deviations.md` D54 to D58. Confirm the last fix commits passed the full check set before you build on them (`git log`, then run the checks).
+- **S5 reviewed and fixed:** `docs/adult/S5_REVIEW.md`; fixes in `deviations.md` D54 to D58. The full check set was run after the last fix on 11 Nov 2026 and is green: adult e2e and privacy 51 of 51, adult unit and intake 220 of 220, contracts, API and matcher 439 of 439, student tests 11 of 11, engine 16 of 16, and an offline rebuild changes no committed data.
 - **Pushed:** everything, to `claude/compassionate-hopper-u04goa`. GitHub's secret scanner flagged a class name in `hosting/public/vendor/transformers/transformers.min.js` as a Mistral key; the owner approved it as a false positive. If the file moves folders and the scanner objects again, tell the owner; do not change the vendored bytes.
 
 ## Known problems that are not yours to hide
 
 - **`python3 app/build.py` dirties tracked files on plain `main`:** it changes `app/dist/index.html` and `hosting/public/manifest.json` and writes untracked `video/` folders. Revert after running it; do not commit that output. Tell the owner.
+- **The adult app is at its size budget.** The e2e budget test allows 300 KB of HTML, JS and CSS for the whole app, counted unminified. It stands at 306,893 of 307,200 bytes. The S5 review fixes went over it and were brought back by shortening comments. The next feature will go over again. Do not loosen the test on your own: ask the owner to choose between stripping comments in `app/adult/build.py`, counting gzipped bytes, or a new number.
 - **Tier 2 is weak on synthetic resumes.** See the strict numbers in `deviations.md` D47 and the review fixes. The owner's run on 30 real resumes decides whether it stays.
 - **Tier 2 is tested in Chromium only.** Android Chrome and iPhone Safari are manual checks.
 

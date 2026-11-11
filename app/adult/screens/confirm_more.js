@@ -1,7 +1,5 @@
-// "Look for more skills" on the confirm screen (T4.5, tier 2). One plain action. Nothing is downloaded until the person presses it, and its label
-// says how much it downloads. It adds a group "You may also have" of skills that are NOT ticked: the person ticks the ones that are true.
-// Each one shows the line of the resume it came from. If the person never presses it, or it fails, the screen is exactly what tier 1 gave.
-// The choice is remembered for this visit only (the group stays while the confirm model is in memory); nothing is stored.
+// "Look for more skills" on the confirm screen (T4.5, tier 2). Nothing is downloaded until the person presses it; the label says how much.
+// It adds "You may also have": skills that are NOT ticked, each with its resume line. Unused or failed, the screen is what tier 1 gave. Nothing is stored.
 import { h, mount, clear } from '../dom.js';
 import { megabytes, startScan, currentScan, currentLoad, isLoaded } from '../intake_embed.js';
 import { strengthFromYear } from '../intake_profile.js';
@@ -18,8 +16,7 @@ export function moreSkillsBox(deps) {
   const keep = h('p', { class: 'hint', id: 'more-keep', hidden: isLoaded() }, 'Your browser usually keeps these files, so next time is quicker. It may remove them to save space.');
   const cancel = h('button', { type: 'button', class: 'btn small', id: 'more-cancel', hidden: true }, 'Cancel');
   const bar = h('progress', { id: 'more-progress', max: 100, value: 0, hidden: true, 'aria-label': 'Download progress' });
-  // The visible text changes with every chunk and sentence. It is NOT a live region: a screen reader would read every change. `live` is the one that speaks:
-  // its text changes at the start, each 10 percent, and the end (announce.js).
+  // The visible text is NOT a live region (it changes too often). `live` speaks at the start, each 10 percent and the end (announce.js).
   const status = h('p', { id: 'more-status', class: 'status', tabindex: '-1' });
   const live = h('p', { id: 'more-live', class: 'sr', role: 'status', 'aria-live': 'polite' });
   const say = makeAnnouncer(t => { live.textContent = t; });
@@ -54,8 +51,7 @@ export function moreSkillsBox(deps) {
     const t = downloadText(ev); status.textContent = t; say.update(ev.text === 'Downloading…' ? 'download' : 'start', ev.doneBytes / ev.totalBytes, t);
   };
 
-  // Follows a download that is already running without a scan of this screen (the person went Back and came here again). No second button, no second download:
-  // when it ends, the button comes back and a scan needs no download.
+  // Follows a download already running without a scan of this screen (Back, then here again): no second button or download.
   function followLoad(l) {
     btn.hidden = true; cancel.hidden = false; bar.hidden = false;
     let on = true;

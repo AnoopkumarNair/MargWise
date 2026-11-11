@@ -11,10 +11,8 @@
 //   currentScan() -> the scan in flight, or null (a screen drawn again while a scan runs attaches to it instead of starting another)
 //   findMoreSkills(lines, opts) -> promise of [{ id, score, sourceLine, line }]    (startScan(...).promise; lines from intake/tier2.js achievementLines)
 //
-// The download is made once per visit, however many times the screen is drawn: the load in flight is kept at module level and reset if it fails.
-// The model files live under models/<first 12 characters of the revision>/ (manifest tier2.model_path). The library keeps them in the browser's Cache API
-// (transformers-cache), so a later visit does not download them again unless the browser has removed them; a new revision is a new path, so an old copy
-// is never used for it (docs/adult/deviations.md D54).
+// One download per visit: the load in flight is kept at module level and reset if it fails. Model files sit under models/<revision>/ and the library
+// keeps them in the Cache API, so a later visit need not download them again; a new revision is a new path (docs/adult/deviations.md D54).
 import { loadManifest, loadSkillsIndex } from './data.js';
 import { state } from './state.js';
 
@@ -100,8 +98,7 @@ async function load(info, say, signal) {
   return { embed, vecs };
 }
 
-// The library keeps each file it reads in the Cache API under its address. A new model revision has a new address, so the old files are never used
-// again: remove them so they do not take space. (Best effort; only entries under this site's models/ folder that are not under the current path.)
+// Removes cached model files of an older revision (best effort; only entries under this site's models/ folder).
 async function dropOldModelCopies(keep) {
   try {
     const root = new URL('models/', document.baseURI).pathname, c = await caches.open('transformers-cache');
@@ -109,8 +106,7 @@ async function dropOldModelCopies(keep) {
   } catch (e) { /* the cache is not available: nothing to clean */ }
 }
 
-// The one load of this visit. The first caller starts it; a caller that comes while it runs joins it (same promise, same progress events). A failure or a
-// cancel clears it, so a retry starts again. It does not belong to a scan: if the person leaves the screen, the download goes on and the next scan uses it.
+// The one load of this visit. Later callers join it. A failure or a cancel clears it. It outlives a scan: leaving the screen does not stop it.
 function ensureLoaded(info) {
   if (loaded) return { promise: Promise.resolve(loaded) };
   if (!loading) {
@@ -131,12 +127,10 @@ export function currentScan() { return scan; }
 export function currentLoad() { return loading; }
 export function isLoaded() { return !!loaded; }
 
-// Starts a scan of `lines` (from intake/tier2.js achievementLines): downloads and starts the model if this visit has not, loads the skill vectors, finds skills.
-// Returns at once: { promise, cancel(), orphan(), subscribe(fn), last, owner }. promise resolves with [{ id, score, sourceLine, line }] or rejects with Tier2Problem
-// (a failure) or Tier2Cancelled (cancel() was called: the download, if it was running, is stopped and the next scan starts it again; orphan() stops only the
-// scan and lets the download go on, for a screen that was left). The caller keeps its tier 1 result either way.
-// subscribe(fn) calls fn now with the latest event and then with each new one: { kind: 'download', doneBytes, totalBytes, text } or { kind: 'read', done, total }.
-// Only one scan runs at a time (a second call throws Tier2Problem). opts.owner is any object that says whose scan it is (the confirm model).
+// Starts a scan of `lines` (from achievementLines): loads the model if this visit has not, loads the vectors, finds skills. One scan at a time.
+// Returns { promise, cancel(), orphan(), subscribe(fn), last, owner }. promise gives [{ id, score, sourceLine, line }], or rejects with Tier2Problem or
+// Tier2Cancelled. cancel() also stops the download; orphan() stops only the scan (for a screen that was left). opts.owner says whose scan it is.
+// subscribe(fn) gets the latest event, then each new one: { kind: 'download', doneBytes, totalBytes, text } or { kind: 'read', done, total }.
 export function startScan(lines, opts) {
   if (scan) throw new Tier2Problem('a scan is already running');
   const o = opts || {};

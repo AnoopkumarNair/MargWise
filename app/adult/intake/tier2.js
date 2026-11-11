@@ -1,9 +1,6 @@
 // Tier 2 of the resume read (BUILD_PLAN T4.5): suggest skills a resume only hints at. Pure logic, no model in this file.
 //
-//   const lines = achievementLines(text, { nowYear });          // the sentences worth comparing
-//   const vecs  = decodeVectors(binBytes, vecsJson);            // skill_vecs.bin (int8) + skill_vecs.json (ids)
-//   const found = await suggest(lines, { embed, vecs, exclude: tier1Ids });
-//   // found: [{ id, score, sourceLine, line }]  best first. Every id is an id that already exists in the graph.
+//   achievementLines(text) -> decodeVectors(bin, json) -> suggest(lines, { embed, vecs, exclude }) -> [{ id, score, sourceLine, line }], best first.
 //
 // `embed(texts) -> Promise<array of vectors>` is injected: the browser passes the on-device model (intake_embed.js), a Node test or the
 // evaluation harness passes its own, and the unit tests pass fake vectors. Nothing here loads a model, touches the network or stores text.
@@ -13,26 +10,21 @@
 import { splitLines, sectionMap, injectionLines, sourceLine } from './lines.js';
 import { parseDateRange, joinWrappedDates } from './roles.js';
 
-// Sentences go to the model one at a time. The model is int8 and a batch pads its texts, so the numbers for a sentence would change a little with
-// the other sentences in its batch (a cosine of about 0.99). One at a time, a sentence gets the same vector in every resume, and the skill vectors
-// are made the same way (embed_skills.mjs).
+// One sentence at a time: a batch pads its texts, which shifts an int8 vector a little. The skill vectors are made the same way (deviations D47).
 export const EMBED_BATCH = 1;
 export const VERSION = 2;   // bump with any change to the line rules or the scoring below (2: Achievements, Awards, Volunteering and the like are read)
-// Tuned on the synthetic tier 2 fixtures (app/adult/tests/fixtures/tier2, docs/adult/deviations.md D47). A sentence is much shorter than
-// an O*NET description, so cosine scores are lower than the 0.55 the plan guessed.
+// Tuned on the synthetic tier 2 fixtures (docs/adult/deviations.md D47).
 export const DEFAULTS = Object.freeze({ threshold: 0.4, perLine: 2, cap: 12, maxLines: 120 });
 
 // Thrown by suggest() when opts.cancelled() says so. Not a failure: the person pressed Cancel.
 export class Tier2Cancelled extends Error {}
 
 const CONTACT = /[\w.+-]+@[\w-]+\.[\w.-]+|(?:\+?\d[\d\s().-]{8,}\d)|https?:\/\/|www\./i;
-// Sections left out: education, skills lists, certificates, personal details, and the summary. "other" (Achievements, Awards, Volunteering, Interests, ...) IS read:
-// on the fixtures it adds suggestions without lowering precision, and the summary does lower it (docs/adult/deviations.md D55).
+// Left out: education, skills lists, certificates, personal details and the summary. "other" (Achievements, Awards, ...) is read (deviations D55).
 const SKIP_SECTIONS = new Set(['education', 'skills', 'certs', 'personal', 'summary']);
 const MIN_WORDS = 5, MIN_LETTERS = 20, MAX_SENTENCE = 300;
 
-// The sentences of a resume that describe what the person did. Headings, contact lines, skill lists, date lines, education, personal
-// details and lines that read like instructions to an AI are left out. A long line is cut into sentences.
+// The sentences that say what the person did. Headings, contact and date lines, skill lists and AI-instruction lines are left out; long lines are cut.
 // Returns [{ text, sourceLine, line (index of the line in the text), roleIndex (index into opts.roles, or -1) }], at most opts.maxLines.
 // opts: { nowYear (required), roles (optional, from readResume: used to say which job a sentence is in), maxLines, skipSections (optional list of section kinds to leave out; default SKIP_SECTIONS) }
 export function achievementLines(text, opts) {
@@ -59,8 +51,7 @@ export function achievementLines(text, opts) {
     }
   }
   if (out.length <= max) return out;
-  // Too many to read on a phone in good time: keep the newest jobs first (a job that is current or ended most recently), then the order of the
-  // resume. Sentences outside any dated job come after the dated ones. The kept sentences stay in the order they have in the resume.
+  // Too many for a phone: keep the newest jobs first, then resume order. Kept sentences stay in resume order.
   const recency = l => { const r = l.roleIndex >= 0 ? (o.roles || [])[l.roleIndex] : null; return !r ? -Infinity : r.current ? Infinity : Number.isInteger(r.endYear) ? r.endYear : (Number.isInteger(r.startYear) ? r.startYear : -1e9); };
   return out.map((l, n) => ({ l, n })).sort((a, b) => (recency(b.l) - recency(a.l)) || (a.n - b.n) || 0)
     .slice(0, max).sort((a, b) => a.n - b.n).map(x => x.l);
